@@ -33,9 +33,15 @@
   box-shadow: 0 8px 10px rgba(0, 0, 0, 0.25);
   border: 0;
 }
+.button--theme--tangerin:active {
+  background-color: #EC8660;
+}
 .button--theme--tangerin-transparent {
   border: 1px solid #E6551E;
   color: #E6551E;
+}
+.button--theme--tangerin-transparent:active {
+  background-color: #F4D7CC;
 }
 .button--theme--light {
   background: #FFFFFF;
@@ -43,14 +49,22 @@
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
   border: 0;
 }
+.button--theme--light:active {
+  background-color: #D1D1D1;
+}
 .button--theme--dark-transparent {
   border: 1px solid #000000;
   color: #000000;
 }
-.button--theme--smoke {
-  background: #F7F7F7;
+.button--theme--dark-transparent:active {
+  background-color: #D1D1D1;
+}
+.button--theme--oranges-transparent {
   color: #E6551E;
   border: 0;
+}
+.button--theme--oranges-transparent:active {
+  background-color: #F4D7CC;
 }
 
 /*# sourceMappingURL=button.css.map */
