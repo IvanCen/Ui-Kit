@@ -1,0 +1,140 @@
+@import './fonts/SanFrancisco/stylesheet.css';
+.title {
+  font-family: "SF UI Display";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 28px;
+}
+
+.input__label, .input__area {
+  font-family: "SF UI Text";
+  font-style: normal;
+  font-weight: bold;
+  font-size: 15px;
+  line-height: 20px;
+}
+
+.input__area:focus + .input__label,
+.input__area:valid + .input__label, .input__helper {
+  font-family: "SF UI Text";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 18px;
+}
+
+/*.input {
+  @extend %style-5;
+  border: 0;
+  border-bottom: 1px solid #D9D9D9;
+  position: relative;
+  min-width: 100px;
+  padding-right: 40px;
+
+
+  &__icon-visible {
+    background-image: url(../images/eye__visible.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 24px;
+    height: 24px;
+    background-position: 100% 0;
+  }
+
+  &__icon-nonvisible {
+    background-image: url(../images/eye__visible.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 24px;
+    height: 24px;
+    background-position: 60% 0;
+  }
+
+}*/
+.container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-around;
+  margin-top: 30px;
+  border: 1px solid whitesmoke;
+  padding: 21px;
+  border-radius: 4px;
+}
+
+.title {
+  margin: 0;
+}
+
+.input {
+  margin-bottom: 1.5rem;
+  position: relative;
+  width: 20.4375rem;
+}
+
+.input__area {
+  border: none;
+  border-bottom: 0.125rem solid #D9D9D9;
+  width: 100%;
+  padding-top: 28px;
+  padding-bottom: 0.5rem;
+}
+.input__area_access {
+  border-color: #219653;
+}
+.input__area_error {
+  border-color: #D62B1F;
+}
+.input__area_disabled {
+  color: #D1D1D1;
+}
+.input__area:focus {
+  outline: none;
+}
+
+.input__label {
+  position: absolute;
+  top: 24px;
+  left: 0;
+  line-height: 147.6%;
+  color: #000000;
+  transition: top 0.2s;
+}
+.input__label_access {
+  color: #219653;
+}
+.input__label_error {
+  color: #D62B1F;
+}
+.input__label_disabled {
+  color: #D1D1D1;
+}
+
+.input__svg {
+  position: absolute;
+  top: 0.9375rem;
+  right: 0.875rem;
+  fill: #000000;
+}
+
+.input__helper {
+  color: #000000;
+  top: 0;
+  left: 0;
+  position: absolute;
+  transform: translateY(65px);
+}
+.input__helper_access {
+  color: #219653;
+}
+.input__helper_error {
+  color: #D62B1F;
+}
+
+.input__area:focus + .input__label,
+.input__area:valid + .input__label {
+  margin-bottom: 32px;
+  top: 0;
+}
+
+/*# sourceMappingURL=input.css.map */
