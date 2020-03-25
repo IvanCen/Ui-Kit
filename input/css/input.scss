@@ -1,0 +1,106 @@
+@import "../../index.scss";
+
+.container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-around;
+  margin-top: 30px;
+  border: 1px solid whitesmoke;
+  padding: 21px;
+  border-radius: 4px;
+}
+
+.title {
+  @extend %style-2;
+  margin: 0;
+}
+
+.input {
+  margin-bottom: 1.5rem;
+  position: relative;
+  width: 20.4375rem;
+}
+
+.input__area {
+  border: none;
+  border-bottom: 0.125rem solid $gainsboroGray;
+  width: 100%;
+  padding-top: 28px;
+  padding-bottom: 0.5rem;
+  @extend %style-4;
+
+  &_access {
+    border-color: $seaGreen;
+  }
+
+  &_error {
+    border-color: $alizarinCrimson;
+  }
+
+  &_disabled {
+    color: $gray-dim;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+}
+
+.input__label {
+  position: absolute;
+  top: 24px;
+  left: 0;
+  line-height: 147.6%;
+  color: $black;
+  transition: top .2s;
+  @extend %style-4;
+
+  &_access {
+    color: $seaGreen;
+  }
+
+  &_error {
+    color: $alizarinCrimson;
+  }
+
+  &_disabled {
+    color: $gray-dim;
+  }
+
+}
+
+.input__svg {
+  position: absolute;
+  top: 0.9375rem;
+  right: 0.875rem;
+  fill: $black;
+}
+
+.input__helper {
+  @extend %style-6;
+  color: $black;
+  top: 0;
+  left: 0;
+  position: absolute;
+  transform: translateY(65px);
+
+  &_access {
+    color: $seaGreen;
+  }
+
+  &_error {
+    color: $alizarinCrimson;
+  }
+}
+
+.input__area:focus + .input__label,
+.input__area:valid + .input__label {
+  @extend %style-6;
+  margin-bottom: 32px;;
+  top: 0;
+}
+
+
+
+
