@@ -1,0 +1,70 @@
+@import './fonts/SanFrancisco/stylesheet.css';
+.container {
+  font-family: "SF UI Text";
+  font-style: normal;
+  font-weight: bold;
+  font-size: 15px;
+  line-height: 20px;
+}
+
+.container {
+  display: flex;
+  position: relative;
+  padding-left: 42px;
+  margin-bottom: 12px;
+  min-height: 25px;
+  cursor: pointer;
+  user-select: none;
+  align-items: center;
+}
+
+.container input {
+  /*position: absolute;*/
+  display: flex;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  /*position: absolute;*/
+  top: 12px;
+  left: 0;
+  height: 24px;
+  width: 24px;
+  background-color: transparent;
+  border: 1px solid #906848;
+  border-radius: 8px;
+  transform: translateX(-74px);
+}
+
+.container:hover input ~ .checkmark {
+  background-color: #D1D1D1;
+}
+
+.container input:checked ~ .checkmark {
+  background-color: #906848;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.container .checkmark:after {
+  background-image: url("../icons/Icons_Checkbox.svg");
+  background-position: center;
+  background-size: cover;
+  width: 15px;
+  height: 15px;
+  top: 5px;
+  left: 5px;
+}
+
+/*# sourceMappingURL=checkbox.css.map */
