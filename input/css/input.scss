@@ -27,6 +27,7 @@
   width: 100%;
   padding-top: 28px;
   padding-bottom: 0.5rem;
+  padding-right: 80px;
   @extend %style-4;
 
   &_access {
@@ -49,7 +50,7 @@
 
 .input__label {
   position: absolute;
-  top: 24px;
+  top: 30px;
   left: 0;
   line-height: 147.6%;
   color: $black;
@@ -70,11 +71,17 @@
 
 }
 
-.input__svg {
+.input__icon-container {
   position: absolute;
-  top: 0.9375rem;
-  right: 0.875rem;
-  fill: $black;
+  top: 26px;
+  right: 0;
+  display: flex;
+  flex-direction: row;
+}
+
+.input__icon {
+  top: 26px;
+  right: 0;
 }
 
 .input__helper {
@@ -82,15 +89,24 @@
   color: $black;
   top: 0;
   left: 0;
-  position: absolute;
-  transform: translateY(65px);
+  display: flex;
 
   &_access {
     color: $seaGreen;
   }
 
   &_error {
-    color: $alizarinCrimson;
+    color: $black;
+  }
+}
+
+.input__helper-icon {
+  margin-right: 10px;
+  &_access {
+
+  }
+  &_error {
+
   }
 }
 
