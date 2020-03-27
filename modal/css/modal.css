@@ -46,7 +46,7 @@
 .modal_open {
   pointer-events: auto;
 }
-.modal .modal__button:first-child {
+.modal__button:first-child {
   margin-right: 16px;
 }
 .modal__content {

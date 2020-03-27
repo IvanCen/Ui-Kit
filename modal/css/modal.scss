@@ -43,7 +43,7 @@
     pointer-events: auto;
   }
 
-  .modal__button {
+  &__button {
     &:first-child {
       margin-right: 16px;
     }
