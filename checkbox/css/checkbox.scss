@@ -1,9 +1,10 @@
 @import "../../index.scss";
 
-.container {
+.checkbox {
   display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
   position: relative;
-  padding-left: 42px;
   margin-bottom: 12px;
   min-height: 25px;
   cursor: pointer;
@@ -12,8 +13,7 @@
   align-items: center;
 }
 
-.container input {
-  /*position: absolute;*/
+.checkbox__input {
   display: flex;
   opacity: 0;
   cursor: pointer;
@@ -21,43 +21,33 @@
   width: 0;
 }
 
-.checkmark {
-  /*position: absolute;*/
-  top: 12px;
+.checkbox__checkmark {
+  position: relative;
+  top: 0;
   left: 0;
   height: 24px;
   width: 24px;
   background-color: transparent;
   border: 1px solid $brown;
   border-radius: 8px;
-  transform: translateX(-74px);
+  margin-right: 1em;
+
+  &:after {
+    content: "";
+    position: absolute;
+    display: block;
+    background-image: url("../icons/Icons_Checkbox.svg");
+    background-position: center;
+    background-size: cover;
+    width: 15px;
+    height: 15px;
+    top: 5px;
+    left: 5px;
+  }
 }
 
-.container:hover input ~ .checkmark {
-  background-color: $gray-dim;
-}
-
-.container input:checked ~ .checkmark {
+.checkbox__input:checked ~ .checkbox__checkmark {
   background-color: $brown;
 }
 
-.checkmark:after {
-  content: "";
-  position: absolute;
-  display: none;
-}
-
-.container input:checked ~ .checkmark:after {
-  display: block;
-}
-
-.container .checkmark:after {
-  background-image: url("../icons/Icons_Checkbox.svg");
-  background-position: center;
-  background-size: cover;
-  width: 15px;
-  height: 15px;
-  top: 5px;
-  left: 5px;
-}
 
