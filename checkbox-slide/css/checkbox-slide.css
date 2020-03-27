@@ -10,6 +10,7 @@
   position: relative;
   padding: 0 0 0 60px;
   cursor: pointer;
+  height: 26px;
 }
 
 .checkbox-slide__text:before {
