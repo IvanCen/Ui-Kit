@@ -43,7 +43,7 @@
   overflow: auto;
   max-height: 400px;
 }
-.modal_open {
+.modal--open {
   pointer-events: auto;
 }
 .modal__button:first-child {
@@ -52,7 +52,7 @@
 .modal__content {
   flex: 1;
 }
-.modal_open .modal__container {
+.modal--open .modal__container {
   opacity: 1;
   transform: translateX(-50%);
 }
