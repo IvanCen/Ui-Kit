@@ -15,8 +15,7 @@
   line-height: 20px;
 }
 
-.input__area:focus + .input__label,
-.input__area:valid + .input__label, .input__helper {
+.input--focused, .input__helper {
   font-family: "SF UI Text";
   font-style: normal;
   font-weight: 500;
@@ -112,9 +111,7 @@
 .input__helper-icon {
   margin-right: 10px;
 }
-.input__area:focus + .input__label,
-.input__area:valid + .input__label {
-  margin-bottom: 32px;
+.input--focused {
   top: 0;
 }
 

@@ -110,13 +110,9 @@
   }
 }
 
-.input__area:focus + .input__label,
-.input__area:valid + .input__label {
+.input--focused {
   @extend %style-6;
-  margin-bottom: 32px;;
   top: 0;
 }
-
-
 
 
