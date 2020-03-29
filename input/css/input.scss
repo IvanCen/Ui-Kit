@@ -30,15 +30,15 @@
   padding-right: 80px;
   @extend %style-4;
 
-  &_access {
+  &--access {
     border-color: $seaGreen;
   }
 
-  &_error {
+  &--error {
     border-color: $alizarinCrimson;
   }
 
-  &_disabled {
+  &--disabled {
     color: $gray-dim;
   }
 
@@ -57,15 +57,15 @@
   transition: top .2s;
   @extend %style-4;
 
-  &_access {
+  &--access {
     color: $seaGreen;
   }
 
-  &_error {
+  &--error {
     color: $alizarinCrimson;
   }
 
-  &_disabled {
+  &--disabled {
     color: $gray-dim;
   }
 
@@ -91,21 +91,21 @@
   left: 0;
   display: flex;
 
-  &_access {
+  &--access {
     color: $seaGreen;
   }
 
-  &_error {
+  &--error {
     color: $black;
   }
 }
 
 .input__helper-icon {
   margin-right: 10px;
-  &_access {
+  &--access {
 
   }
-  &_error {
+  &--error {
 
   }
 }
