@@ -1,18 +1,21 @@
 @import './fonts/SanFrancisco/stylesheet.css';
 .radio {
+  position: relative;
+}
+
+.radio__input {
   position: absolute;
   z-index: -1;
   opacity: 0;
   margin: 10px 0 0 7px;
 }
 
-.radio + label {
+.radio__label {
   position: relative;
   padding: 0 0 0 35px;
   cursor: pointer;
 }
-
-.radio + label:before {
+.radio__label:before {
   content: "";
   position: absolute;
   top: 0;
@@ -23,8 +26,7 @@
   border-radius: 50%;
   background: #FFFFFF;
 }
-
-.radio + label:after {
+.radio__label:after {
   content: "";
   position: absolute;
   top: 4px;
@@ -38,7 +40,7 @@
   transition: 0.2s;
 }
 
-.radio:checked + label:after {
+.radio__input:checked + label:after {
   opacity: 1;
 }
 
