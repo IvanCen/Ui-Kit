@@ -4,6 +4,39 @@
   max-width: 320px;
   width: 100%;
   box-shadow: 0 5px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 50px;
+  min-height: 200px;
+
+  &--theme--dark {
+    background-color: $bokaraGrey;
+    color: $white;
+  }
+
+  &__select-container {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__select-item {
+    @extend %style-4;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+    padding: 0 0 20px;
+    border: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+
+    &--size--small {
+      width: auto;
+      margin-left: 30px;
+    }
+
+    &--theme--dark {
+      background-color: $bokaraGrey;
+      color: $white;
+    }
+  }
 
   &__content-container {
     padding: 50px 16px 0 16px;
@@ -24,11 +57,27 @@
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+
+    &--position--center {
+      text-align: center;
+    }
+  }
+
+  &__info {
+    color: $gray;
+    @extend %style-8;
+    text-transform: none;
   }
 
   &__title {
     @extend %style-2;
     margin: 0 0 10px;
+  }
+
+  &__header-title {
+    @extend %style-3;
+    margin: 0;
+    text-align: center;
   }
 
   &__subtitle {
@@ -45,7 +94,6 @@
 
   &__button {
     border: none;
-    outline: none;
     padding: 0;
     display: flex;
     align-items: center;
@@ -53,26 +101,28 @@
     &--position--right {
       justify-self: flex-end;
     }
+
+    &--theme--dark {
+      background-color: $bokaraGrey;
+    }
   }
 
-
-  &__icon {
-
-  }
-
-  &__icon-back {
+  &__back-button {
     grid-area: back;
+    justify-self: flex-start;
+    padding: 0;
+  }
+
+  &__search-button {
+    justify-self: flex-end;
+    grid-area: search;
+    padding: 0;
   }
 
   &__icon-text {
     padding-left: 10px;
     white-space: nowrap;
     grid-area: text;
-  }
-
-  &__icon-search {
-    justify-self: flex-end;
-    grid-area: search;
   }
 
   &__tab-container {
@@ -85,7 +135,7 @@
     outline: none;
     color: $gray;
 
-    &-active {
+    &--active {
       border-bottom: 3px solid $orange;
       color: $black;
     }

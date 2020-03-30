@@ -7,6 +7,23 @@
   line-height: 28px;
 }
 
+.top-bar__header-title {
+  font-family: "SF UI Text";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 17px;
+  line-height: 22px;
+  letter-spacing: 0.02em;
+}
+
+.top-bar__select-item {
+  font-family: "SF UI Text";
+  font-style: normal;
+  font-weight: bold;
+  font-size: 15px;
+  line-height: 20px;
+}
+
 .top-bar__subtitle, .top-bar__text {
   font-family: "SF UI Text";
   font-style: normal;
@@ -15,10 +32,47 @@
   line-height: 19px;
 }
 
+.top-bar__info {
+  font-family: "SF UI Text";
+  font-style: normal;
+  font-weight: bold;
+  font-size: 10px;
+  line-height: 15px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
 .top-bar {
   max-width: 320px;
   width: 100%;
   box-shadow: 0 5px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 50px;
+  min-height: 200px;
+}
+.top-bar--theme--dark {
+  background-color: #2E2925;
+  color: #FFFFFF;
+}
+.top-bar__select-container {
+  display: flex;
+  justify-content: space-between;
+}
+.top-bar__select-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+  padding: 0 0 20px;
+  border: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+.top-bar__select-item--size--small {
+  width: auto;
+  margin-left: 30px;
+}
+.top-bar__select-item--theme--dark {
+  background-color: #2E2925;
+  color: #FFFFFF;
 }
 .top-bar__content-container {
   padding: 50px 16px 0 16px;
@@ -37,8 +91,19 @@
   overflow: hidden;
   white-space: nowrap;
 }
+.top-bar__text--position--center {
+  text-align: center;
+}
+.top-bar__info {
+  color: #787878;
+  text-transform: none;
+}
 .top-bar__title {
   margin: 0 0 10px;
+}
+.top-bar__header-title {
+  margin: 0;
+  text-align: center;
 }
 .top-bar__subtitle {
   margin: 0 0 10px;
@@ -51,7 +116,6 @@
 }
 .top-bar__button {
   border: none;
-  outline: none;
   padding: 0;
   display: flex;
   align-items: center;
@@ -59,17 +123,23 @@
 .top-bar__button--position--right {
   justify-self: flex-end;
 }
-.top-bar__icon-back {
+.top-bar__button--theme--dark {
+  background-color: #2E2925;
+}
+.top-bar__back-button {
   grid-area: back;
+  justify-self: flex-start;
+  padding: 0;
+}
+.top-bar__search-button {
+  justify-self: flex-end;
+  grid-area: search;
+  padding: 0;
 }
 .top-bar__icon-text {
   padding-left: 10px;
   white-space: nowrap;
   grid-area: text;
-}
-.top-bar__icon-search {
-  justify-self: flex-end;
-  grid-area: search;
 }
 .top-bar__tab-container {
   display: flex;
@@ -80,7 +150,7 @@
   outline: none;
   color: #787878;
 }
-.top-bar__tab-active {
+.top-bar__tab--active {
   border-bottom: 3px solid #E6551E;
   color: #000000;
 }
