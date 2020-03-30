@@ -1,0 +1,37 @@
+@import "../../index.scss";
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  width: 320px;
+  padding: 10px 16px;
+
+  &__button {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    @extend %style-8;
+    text-transform: none;
+    padding: 0;
+    color: $gray;
+    &--active {
+      color: $orange;
+    }
+  }
+
+  &__icon {
+    fill: $gray;
+    &--active {
+      fill: $orange;
+    }
+  }
+  &__icon-dot {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 8px;
+    height: 8px;
+  }
+}
