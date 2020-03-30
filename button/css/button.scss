@@ -16,7 +16,7 @@
 
   &--size--small {
     @extend %style-5;
-    padding: 6px 15px;
+    padding: 4px 15px;
   }
 
   &--theme--tangerin {
@@ -71,6 +71,12 @@
   &--theme--chocolate {
     color: $brown;
     border: 0;
+  }
+
+  &--theme--light-transparent {
+    background: transparent;
+    color: $white;
+    border: 1px solid $white;
   }
 }
 

@@ -26,7 +26,7 @@
   padding: 8px 18px;
 }
 .button--size--small {
-  padding: 6px 15px;
+  padding: 4px 15px;
 }
 .button--theme--tangerin {
   background: #E6551E;
@@ -70,6 +70,11 @@
 .button--theme--chocolate {
   color: #906848;
   border: 0;
+}
+.button--theme--light-transparent {
+  background: transparent;
+  color: #FFFFFF;
+  border: 1px solid #FFFFFF;
 }
 
 /*# sourceMappingURL=button.css.map */
