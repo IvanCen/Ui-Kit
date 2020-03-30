@@ -66,5 +66,9 @@
 .button--theme--oranges-transparent:active {
   background-color: #F4D7CC;
 }
+.button--theme--chocolate {
+  color: #906848;
+  border: 0;
+}
 
 /*# sourceMappingURL=button.css.map */
