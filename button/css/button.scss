@@ -2,6 +2,7 @@
 
 .button {
   border-radius: 50px;
+  border: 0;
 
   &--size--big {
     @extend %style-4;
