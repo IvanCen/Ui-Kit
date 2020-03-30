@@ -11,40 +11,42 @@
   user-select: none;
   @extend %style-4;
   align-items: center;
-}
 
-.checkbox__input {
-  display: flex;
-  opacity: 0;
-  cursor: pointer;
-  height: 0;
-  width: 0;
-}
+  &__input {
+    display: flex;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
 
-.checkbox__checkmark {
-  position: relative;
-  top: 0;
-  left: 0;
-  height: 24px;
-  width: 24px;
-  background-color: transparent;
-  border: 1px solid $brown;
-  border-radius: 8px;
-  margin-right: 1em;
+  &__checkmark {
+    position: relative;
+    top: 0;
+    left: 0;
+    height: 24px;
+    width: 24px;
+    background-color: transparent;
+    border: 1px solid $brown;
+    border-radius: 8px;
+    margin-right: 1em;
 
-  &:after {
-    content: "";
-    position: absolute;
-    display: block;
-    background-image: url("../icons/Icons_Checkbox.svg");
-    background-position: center;
-    background-size: cover;
-    width: 15px;
-    height: 15px;
-    top: 5px;
-    left: 5px;
+    &:after {
+      content: "";
+      position: absolute;
+      display: block;
+      background-image: url("../icons/Icons_Checkbox.svg");
+      background-position: center;
+      background-size: cover;
+      width: 15px;
+      height: 15px;
+      top: 5px;
+      left: 5px;
+    }
   }
 }
+
+
 
 .checkbox__input:checked ~ .checkbox__checkmark {
   background-color: $brown;
