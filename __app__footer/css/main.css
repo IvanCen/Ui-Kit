@@ -1,0 +1,46 @@
+@import './fonts/SanFrancisco/stylesheet.css';
+.footer__button {
+  font-family: "SF UI Text";
+  font-style: normal;
+  font-weight: bold;
+  font-size: 10px;
+  line-height: 15px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  width: 320px;
+  padding: 10px 16px;
+  box-shadow: 0px -1px 0px rgba(0, 0, 0, 0.1);
+}
+.footer__button {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-transform: none;
+  padding: 0;
+  color: #787878;
+}
+.footer__button--active {
+  color: #E6551E;
+}
+.footer__icon {
+  fill: #787878;
+}
+.footer__icon--active {
+  fill: #E6551E;
+}
+.footer__icon-dot {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 8px;
+  height: 8px;
+}
+
+/*# sourceMappingURL=main.css.map */
