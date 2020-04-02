@@ -1,4 +1,4 @@
-@import './fonts/SanFrancisco/stylesheet.css';
+@import '__app__fonts/SanFrancisco/main.css';
 .checkbox-slide__input {
   position: absolute;
   z-index: -1;

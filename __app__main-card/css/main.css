@@ -1,4 +1,4 @@
-@import './fonts/SanFrancisco/stylesheet.css';
+@import '__app__fonts/SanFrancisco/main.css';
 .main-card {
   margin: 20px 16px;
   border-radius: 6px;
@@ -7,7 +7,7 @@
   padding-bottom: 20px;
 }
 .main-card__img {
-  background: url("../../images/no_image.jpg") no-repeat #787878;
+  background: url("../../__app__images/no_image.jpg") no-repeat #787878;
   background-size: cover;
   width: 100%;
 }

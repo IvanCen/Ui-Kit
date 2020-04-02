@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="new.xleb.ru">
+  <component name="PublishConfigData" autoUpload="Always" serverName="new.xleb.ru" autoUploadExternalChanges="true">
     <serverData>
       <paths name="new.xleb.ru">
         <serverdata>
           <mappings>
-            <mapping deploy="/newxleb/public_html/assets/chunks" local="" web="/" />
+            <mapping deploy="/newxleb/public_html/assets/chunks" local="$PROJECT_DIR$/evo__chunks" web="" />
           </mappings>
         </serverdata>
       </paths>
     </serverData>
+    <option name="myAutoUpload" value="ALWAYS" />
   </component>
 </project>

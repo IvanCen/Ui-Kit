@@ -1,4 +1,4 @@
-@import './fonts/SanFrancisco/stylesheet.css';
+@import '__app__fonts/SanFrancisco/main.css';
 .button--size--medium, .button--size--big {
   font-family: "SF UI Text";
   font-style: normal;

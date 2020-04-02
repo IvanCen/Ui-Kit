@@ -1,4 +1,4 @@
-@import './fonts/SanFrancisco/stylesheet.css';
+@import '__app__fonts/SanFrancisco/main.css';
 .size-bar__info, .size-bar__title {
   font-family: "SF UI Text";
   font-style: normal;

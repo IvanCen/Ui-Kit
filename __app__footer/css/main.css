@@ -1,4 +1,4 @@
-@import './fonts/SanFrancisco/stylesheet.css';
+@import '__app__fonts/SanFrancisco/main.css';
 .footer__button {
   font-family: "SF UI Text";
   font-style: normal;

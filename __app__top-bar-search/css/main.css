@@ -1,4 +1,4 @@
-@import './fonts/SanFrancisco/stylesheet.css';
+@import '__app__fonts/SanFrancisco/main.css';
 .top-bar-search__input-area.input__area {
   font-family: "SF UI Display";
   font-style: normal;

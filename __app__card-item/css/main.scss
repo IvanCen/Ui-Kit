@@ -1,7 +1,7 @@
 @import "../../index.scss";
 
 %background-noimage {
-  background: url("../../images/no_image.jpg") no-repeat $gray;
+  background: url("../../__app__images/no_image.jpg") no-repeat $gray;
   background-size: cover;
   border-radius: 50%;
 

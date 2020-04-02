@@ -1,4 +1,4 @@
-@import './fonts/SanFrancisco/stylesheet.css';
+@import '__app__fonts/SanFrancisco/main.css';
 .card-item__title--text--bold {
   font-family: "SF UI Text";
   font-style: normal;
@@ -17,7 +17,7 @@
 }
 
 .card-item__image--size--big, .card-item__image--size--medium, .card-item__image--size--small {
-  background: url("../../images/no_image.jpg") no-repeat #787878;
+  background: url("../../__app__images/no_image.jpg") no-repeat #787878;
   background-size: cover;
   border-radius: 50%;
 }

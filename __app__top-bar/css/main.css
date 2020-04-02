@@ -1,4 +1,4 @@
-@import './fonts/SanFrancisco/stylesheet.css';
+@import '__app__fonts/SanFrancisco/main.css';
 .top-bar__title {
   font-family: "SF UI Display";
   font-style: normal;
@@ -43,7 +43,6 @@
 }
 
 .top-bar {
-  max-width: 320px;
   width: 100%;
   box-shadow: 0 5px 6px rgba(0, 0, 0, 0.1);
   margin-bottom: 50px;

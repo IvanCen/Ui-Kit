@@ -1,0 +1,90 @@
+@import "../../__app__head-style-and-script/css/main.scss";
+
+.button {
+  border-radius: 50px;
+  border: 0;
+
+  &--size--big {
+    @extend %style-4;
+    padding: 15px 27px;
+  }
+
+  &--size--medium {
+    @extend %style-4;
+    padding: 8px 18px;
+  }
+
+  &--size--small {
+    @extend %style-5;
+    padding: 4px 15px;
+  }
+
+  &--theme--tangerin {
+    background: $orange;
+    color: $white;
+
+    border: 0;
+
+    &:active {
+      background-color: $orange-dim;
+    }
+  }
+
+   &--theme--shadow-big {
+     box-shadow: 0 8px 10px rgba(0, 0, 0, 0.25);
+   }
+
+  &--theme--shadow-medium {
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+  }
+
+  &--theme--tangerin-transparent {
+    border: 1px solid $orange;
+    color: $orange;
+
+    &:active {
+      background-color: $cinderella;
+    }
+  }
+
+  &--theme--light {
+    background: $white;
+    color: $black;
+
+    border: 0;
+
+    &:active {
+      background-color: $gray-dim;
+    }
+  }
+
+  &--theme--dark-transparent {
+    border: 1px solid $black;
+    color: $black;
+
+    &:active {
+      background-color: $gray-dim;
+    }
+  }
+
+  &--theme--oranges-transparent {
+    color: $orange;
+    border: 0;
+
+    &:active {
+      background-color: $cinderella;
+    }
+  }
+
+  &--theme--chocolate {
+    color: $brown;
+    border: 0;
+  }
+
+  &--theme--light-transparent {
+    background: transparent;
+    color: $white;
+    border: 1px solid $white;
+  }
+}
+
