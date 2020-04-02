@@ -1,0 +1,18 @@
+@import "../../__app__head-style-and-script/css/main.scss";
+
+.top-bar-search {
+  width: 100%;
+  border-bottom: 1px solid $gainsboroGray;
+  padding: 13px 16px;
+
+  &__input-area.input__area {
+    @extend %style-1;
+    padding-bottom: 0;
+    padding-top: 15px;
+  }
+
+  &__info {
+    @extend %style-8;
+    color: $gray;
+  }
+}

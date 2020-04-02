@@ -1,0 +1,71 @@
+@import "../../__app__head-style-and-script/css/main.scss";
+
+
+.modal {
+  pointer-events: none;
+
+  &__title {
+    @extend %style-2;
+    margin: 0 0 17px;
+  }
+
+  &__text {
+    @extend %style-6;
+    margin: 0 0 20px;
+  }
+
+  &__container {
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    z-index: 110;
+
+    display: flex;
+    flex-direction: column;
+
+    width: 40%;
+    min-width: 300px;
+    padding: 30px;
+
+    border-radius: 6px;
+    background: $white;
+
+    box-shadow: 0 10px 60px rgba(0, 0, 0, 0.2);
+
+    opacity: 0;
+    transform: translateX(-50%) scale(.8);
+    transition: transform .2s, opacity .2s;
+    overflow: auto;
+    max-height: 400px;
+  }
+
+  &--open {
+    pointer-events: auto;
+  }
+
+  &__button {
+    &:first-child {
+      margin-right: 16px;
+    }
+  }
+
+  &__content {
+    flex: 1;
+  }
+
+  &--open &__container {
+    opacity: 1;
+    transform: translateX(-50%);
+  }
+
+  &__button-container {
+    align-self: flex-end;
+  }
+}
+
+
+
+
+
+
+
