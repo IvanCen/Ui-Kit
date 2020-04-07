@@ -7,6 +7,7 @@
   min-height: 110px;
   background-color: $bokaraGrey;
   color: $white;
+  overflow: hidden;
 
   &__select-container {
     padding: 0 16px;
@@ -71,4 +72,22 @@
     text-transform: none;
     padding: 10px 16px 0;
   }
+
+  &__icon {
+    &--type--basket {
+      fill: $gray;
+    }
+
+    &--full {
+      fill: $orange;
+    }
+  }
+
+  &__counter {
+    position: absolute;
+    bottom: 4px;
+    right: 12px;
+
+  }
+
 }

@@ -96,6 +96,7 @@
     padding: 0;
     display: flex;
     align-items: center;
+    position: relative;
 
     &--position--right {
       justify-self: flex-end;
@@ -118,10 +119,23 @@
     padding: 0;
   }
 
+  &__filter-button {
+    grid-area: search;
+    margin-right: 20px;
+  }
+
   &__icon-text {
     padding-left: 10px;
     white-space: nowrap;
     grid-area: text;
+  }
+
+  &__icon-dot {
+    position: absolute;
+    top: 0;
+    left: 19px;
+    width: 8px;
+    height: 8px;
   }
 
   &__tab-container {
@@ -140,7 +154,7 @@
     }
 
     &:active {
-      background: $gray-dim;
+      background: $lightGrey;
     }
 
   }

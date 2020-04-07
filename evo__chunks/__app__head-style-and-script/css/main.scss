@@ -11,14 +11,16 @@ $black: #000000;
 $white: #FFFFFF;
 $cinderella: #F4D7CC;
 $orange-dim: #EC8660;
-$gray-dim: #D1D1D1;
+$lightGrey: #D1D1D1;
 $whitelight: #EEEEEF;
 $birch: #3E3B34;
 $nero: #141414;
+$SuvaGrey: #939393;
+$dimGray: #6B6B6B;
 
 
 %style-1 {
-  //font-family: 'SF UI Display';
+
   font-style: normal;
   font-weight: 600;
   font-size: 27px;
@@ -28,7 +30,7 @@ $nero: #141414;
 %style-2 {
   //font-family: 'SF UI Display';
   font-style: normal;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 22px;
   line-height: 28px;
 }

@@ -1,7 +1,7 @@
 @import "../../__app__head-style-and-script/css/main.scss";
 
 @mixin checkbox-textslide-branding(
-  $checkbox-textslide-off-color: $gray-dim,
+  $checkbox-textslide-off-color: $lightGrey,
   $checkbox-textslide-on-color: $black,
   $checkbox-textslide-inactive-text: $gray,
   $checkbox-textslide-transition: cubic-bezier(0.860, 0.000, 0.070, 1.000)

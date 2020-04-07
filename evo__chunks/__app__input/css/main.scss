@@ -10,13 +10,7 @@
   border-radius: 4px;
 }
 
-.title {
-  @extend %style-2;
-  margin: 0;
-}
-
 .input {
-  margin-bottom: 1.5rem;
   position: relative;
 }
 
@@ -38,23 +32,23 @@
   }
 
   &--disabled {
-    color: $gray-dim;
+    color: $lightGrey;
   }
 
   &:focus {
     outline: none;
   }
-
 }
 
 .input__label {
   position: absolute;
-  top: 30px;
+  top: 27px;
   left: 0;
   line-height: 147.6%;
   color: $black;
   transition: top .2s;
   @extend %style-4;
+  font-weight: normal;
 
   &--access {
     color: $seaGreen;
@@ -65,7 +59,7 @@
   }
 
   &--disabled {
-    color: $gray-dim;
+    color: $lightGrey;
   }
 
 }
@@ -101,9 +95,11 @@
 
 .input__helper-icon {
   margin-right: 10px;
+
   &--access {
 
   }
+
   &--error {
 
   }
@@ -111,7 +107,8 @@
 
 .input--focused {
   @extend %style-6;
-  top: 0;
+  top: 10px;
+  color: $gray;
 }
 
 

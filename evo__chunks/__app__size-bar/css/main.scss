@@ -6,7 +6,6 @@
   align-items: center;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   padding: 12px 16px;
-  margin: 10px;
   &--theme--dark {
     background: $nero;
     flex-direction: column;
@@ -39,11 +38,12 @@
     height: 45px;
     border-radius: 4px;
     background: transparent;
-    color: $white;
+    color: $SuvaGrey;
     padding: 0;
 
     &--active {
       background: $gray;
+      color: $white;
     }
   }
 }

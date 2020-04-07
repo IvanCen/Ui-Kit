@@ -4,14 +4,14 @@
     <form>
       <div class="input">
         <label class="input__underlined">
-          <input class="input__area" required>
+          <input class="input__area input__area--type--fly-label" required>
           <span class="input__label">Normal</span>
           <span class="input__helper">Helper Text</span>
         </label>
       </div>
       <div class="input">
         <label class="input__underlined input--error">
-          <input class="input__area input__area--error" required>
+          <input class="input__area input__area--type--fly-label input__area--error" required>
           <span class="input__label input__label--error">Error</span>
           <span class="input__helper input__helper--error">Helper Text</span>
           <span class="input__helper input__helper--error">
@@ -27,25 +27,25 @@
       </div>
       <div class="input">
         <label class="input__underlined input__underlined--access">
-          <input class="input__area input__area--access" type="password" required>
+          <input class="input__area input__area--type--fly-label input__area--access" type="password" required>
           <span class="input__label input__label--access">Password</span>
         </label>
       </div>
       <div class="input">
         <label class="input__underlined">
-          <input class="input__area input__area--disabled" required disabled>
+          <input class="input__area input__area--type--fly-label input__area--disabled" required disabled>
           <span class="input__label input__label--disabled">DISABLED</span>
         </label>
       </div>
       <div class="input">
         <label class="input__underlined">
-          <input class="input__area" type="email" required>
+          <input pattern="^([a-zA-Z0-9][_.-]?)+(?<!\W)@([a-zA-Z0-9][_.-]?)+(\.[a-zA-Z-]{2,})+$" class="input__area input__area--type--fly-label" type="email" required>
           <span class="input__label">Email</span>
         </label>
       </div>
       <div class="input">
         <label class="input__underlined">
-          <input class="input__area input__area-password" type="password" required>
+          <input class="input__area input__area--type--fly-label input__area-password" type="password" required>
           <span class="input__label">Password</span>
           <div class="input__icon-container">
             <img src="[+chunkWebPath+]/img/icon-eye-noVisible.svg" alt="" class="input__icon input__icon-eye">
@@ -54,7 +54,7 @@
       </div>
       <div class="input">
         <label class="input__underlined">
-          <input class="input__area input__area--error input__area-password" type="password" required>
+          <input class="input__area input__area--type--fly-label input__area--error input__area-password" type="password" required>
           <span class="input__label input__label--error">Password</span>
           <div class="input__icon-container">
             <img src="[+chunkWebPath+]/img/icon-eye-noVisible.svg" alt="" class="input__icon input__icon-eye">
@@ -64,19 +64,38 @@
       </div>
       <div class="input">
         <label class="input__underlined">
-          <input class="input__area" type="tel" required>
+          <input pattern="^\+?\d\s?(\(\d{3}\))?(\s?\d{3})([\s-]?\d{3})?(-?[\s0-9]{2}){2}(?![0-9])$" class="input__area input__area--type--fly-label" type="tel" required>
           <span class="input__label">Telephone</span>
           <div class="input__icon-container">
             <img src="[+chunkWebPath+]/img/icon-phone.svg" alt="" class="input__icon">
+          </div>
+          <span class="input__helper">Helper Text</span>
+        </label>
+      </div>
+      <div class="input">
+        <label class="input__underlined">
+          <input class="input__area input__area--type--fly-label" type="text" required>
+          <span class="input__label">Address</span>
+          <div class="input__icon-container">
+            <img src="[+chunkWebPath+]/img/icon-on-map.svg" alt="" class="input__icon">
           </div>
         </label>
       </div>
       <div class="input">
         <label class="input__underlined">
-          <input class="input__area" type="text" required>
-          <span class="input__label">Address</span>
+          <input class="input__area input__area--type--fly-label input__area-password" type="text" required>
+          <span class="input__label accordion__input-label">Card number</span>
           <div class="input__icon-container">
-            <img src="[+chunkWebPath+]/img/icon-on-map.svg" alt="" class="input__icon">
+            <img src="[+chunkWebPath+]/img/icon-barcode.svg" alt="" class="input__icon input__icon-eye">
+          </div>
+        </label>
+      </div>
+      <div class="input">
+        <label class="input__underlined">
+          <input class="input__area input__area--type--fly-label input__area-password" type="password" required>
+          <span class="input__label accordion__input-label">Security code</span>
+          <div class="input__icon-container">
+            <img src="[+chunkWebPath+]/img/icon-eye-noVisible.svg" alt="" class="input__icon input__icon-eye">
           </div>
         </label>
       </div>

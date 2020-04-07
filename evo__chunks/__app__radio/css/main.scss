@@ -14,11 +14,21 @@
   position: relative;
   padding: 0 0 0 35px;
   cursor: pointer;
+  &--default {
+    &:before {
+      top: 0;
+      left: 0;
+    }
+    &:after {
+      top: 4px;
+      left: 4px;
+    }
+  }
   &:before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
+    /*top: 0;
+    left: 0;*/
     width: 19px;
     height: 19px;
     border: 1px solid $brown;
@@ -28,8 +38,8 @@
   &:after {
     content: '';
     position: absolute;
-    top: 4px;
-    left: 4px;
+/*    top: 4px;
+    left: 4px;*/
     width: 13px;
     height: 13px;
     border-radius: 50%;

@@ -1,0 +1,25 @@
+@import "../../__app__head-style-and-script/css/main.scss";
+
+.title {
+
+  &__container {
+    display: flex;
+    align-items: center;
+    padding: 20px 16px;
+    justify-content: space-between;
+  }
+
+  &__button.button {
+    padding: 0;
+  }
+
+  &--size--medium {
+    @extend %style-2;
+  }
+  &--size--small {
+    @extend %style-8;
+  }
+  &--theme--shadow {
+    color: $gray;
+  }
+}

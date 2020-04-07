@@ -1,4 +1,4 @@
-const main = document.querySelectorAll('input');
+const inputAreaTypeFlyLabel = document.querySelectorAll('.input__area--type--fly-label');
 const iconContainer = document.querySelectorAll('.input__icon-eye');
 const inputAreaPassword = document.querySelectorAll('.input__area-password');
 
@@ -22,7 +22,7 @@ function unfocused(el) {
     }
 }
 
-[...main].forEach(item => {
+[...inputAreaTypeFlyLabel].forEach(item => {
     item.addEventListener('focus', () => focused(item));
     item.addEventListener('blur', () => unfocused(item));
 });

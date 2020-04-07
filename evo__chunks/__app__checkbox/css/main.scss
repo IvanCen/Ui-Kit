@@ -5,11 +5,10 @@
   flex-direction: row-reverse;
   justify-content: flex-end;
   position: relative;
-  margin-bottom: 12px;
   min-height: 25px;
   cursor: pointer;
   user-select: none;
-  @extend %style-4;
+  @extend %style-6;
   align-items: center;
 
   &__input {

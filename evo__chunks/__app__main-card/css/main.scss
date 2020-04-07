@@ -1,14 +1,16 @@
 @import "../../__app__head-style-and-script/css/main.scss";
 
 .main-card {
-  margin: 20px 16px;
-  border-radius: 6px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
   overflow: hidden;
   padding-bottom: 20px;
 
+  &--type--border {
+    margin: 20px 16px;
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+  }
+
   &__img {
-    background: url("../../__app__images/no_image.jpg") no-repeat $gray;
     background-size: cover;
     width: 100%;
   }
@@ -22,7 +24,15 @@
     margin: 0 0 20px;
   }
 
+  &__button-container {
+    display: flex;
+  }
+
   &__button {
     width: 78px;
+
+    &:first-child {
+      margin-right: 16px;
+    }
   }
 }

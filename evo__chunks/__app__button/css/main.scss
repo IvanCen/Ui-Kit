@@ -54,7 +54,7 @@
     border: 0;
 
     &:active {
-      background-color: $gray-dim;
+      background-color: $lightGrey;
     }
   }
 
@@ -63,17 +63,13 @@
     color: $black;
 
     &:active {
-      background-color: $gray-dim;
+      background-color: $lightGrey;
     }
   }
 
   &--theme--oranges-transparent {
     color: $orange;
     border: 0;
-
-    &:active {
-      background-color: $cinderella;
-    }
   }
 
   &--theme--chocolate {
