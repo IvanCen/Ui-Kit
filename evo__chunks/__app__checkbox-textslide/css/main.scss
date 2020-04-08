@@ -86,7 +86,17 @@
 .checkbox-textslide {
   position: relative;
   @include checkbox-textslide-branding();
-  @include checkbox-textslide-appearance();
+  @include checkbox-textslide-appearance(
+          $checkbox-textslide-width: 375px,
+          $checkbox-textslide-height: 32px,
+          $checkbox-textslide-border-radius: 50px,
+          $checkbox-textslide-offset: 0px,
+          $checkbox-textslide-label-font-size: 14px,
+          $checkbox-textslide-switch-font-size: 12px,);
+
+  @media (max-width: 375px) {
+    @include checkbox-textslide-appearance();
+  }
 
   *, *:before, *:after {
     box-sizing: border-box;

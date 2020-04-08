@@ -1,12 +1,5 @@
 @import "../../__app__head-style-and-script/css/main.scss";
 
-
-%background-noimage {
-  background: url("[+chunkWebPath+]/../__app__images/no-image.jpg") no-repeat $gray;
-  background-size: cover;
-  border-radius: 50%;
-}
-
 .card-item {
   justify-content: center;
 
@@ -105,21 +98,25 @@
     &--size--small {
       width: 65px;
       height: 65px;
-      @extend %background-noimage;
     }
 
     &--size--medium {
       width: 136px;
       height: 136px;
-      @extend %background-noimage;
+
+      @media (max-width: 375px) {
+        width: 125px;
+        height: 125px;
+      }
     }
 
     &--size--big {
       width: 165px;
       height: 165px;
-      @extend %background-noimage;
-      @media screen and (max-width: 375px) {
-        width: 100%;
+
+      @media (max-width: 375px) {
+        width: 125px;
+        height: 125px;
       }
     }
 

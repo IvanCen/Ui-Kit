@@ -20,6 +20,7 @@
     text-transform: none;
     padding: 0;
     color: $gray;
+
     &--active {
       color: $orange;
     }
@@ -27,10 +28,12 @@
 
   &__icon {
     fill: $gray;
+
     &--active {
       fill: $orange;
     }
   }
+
   &__icon-dot {
     position: absolute;
     top: 0;

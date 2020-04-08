@@ -1,12 +1,8 @@
 @import "../../__app__head-style-and-script/css/main.scss";
 
 .container {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-around;
-  margin-top: 30px;
   border: 1px solid whitesmoke;
-  padding: 21px;
+  padding: 20px 16px;
   border-radius: 4px;
 }
 

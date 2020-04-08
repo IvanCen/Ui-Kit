@@ -21,18 +21,32 @@
   }
 
   &__content-container {
+    display: flex;
 
-
-    &--direction--column {
-      display: flex;
+    &--direction--row {
       width: 100%;
       justify-content: space-between;
       margin-bottom: 10px;
     }
+
+    &--direction--column {
+      flex-direction: column;
+    }
   }
 
   &__title {
-    @extend %style-5;
+
+    &--size--small {
+      @extend %style-5;
+    }
+
+    &--size--normal {
+      @extend %style-4;
+    }
+
+    &--type--bold {
+      font-weight: bold;
+    }
   }
 
   &__text {
@@ -42,13 +56,17 @@
     &--theme--shadow {
       color: $gray;
     }
+
+    &--indentation--big {
+      margin-bottom: 32px;
+    }
   }
 
   &__info {
     display: flex;
-    @extend %style-6;
+    @extend %style-5;
     color: $gray;
-    //margin: 7px 0;
+    padding-top: 11px;
 
     &--text-size--normal {
       font-weight: normal;
@@ -63,7 +81,22 @@
   }
 
   &__info-number {
-    margin-left: 5px;
+    display: block;
+
+    &--addition--left {
+      margin-left: 5px;
+    }
+
+    &--addition--top {
+      padding-top: 5px;
+    }
+  }
+
+  &__info-available {
+    display: block;
+    @extend %style-5;
+    color: $gray;
+    padding: 7px 0;
   }
 
   &__list {
@@ -71,7 +104,6 @@
     color: $brown;
     list-style: none;
     padding: 0;
-    margin: 0 0 12px;
   }
 
   &__list-item {
@@ -100,8 +132,13 @@
 
   &__button {
 
+    &--type--share {
+      align-self: flex-end;
+    }
+
     &--type--more {
       align-self: flex-end;
+      @extend %style-5;
     }
 
   }

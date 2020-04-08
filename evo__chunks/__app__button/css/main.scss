@@ -1,38 +1,45 @@
 @import "../../__app__head-style-and-script/css/main.scss";
 
 .button {
-  border-radius: 50px;
   border: 0;
 
   &--size--big {
     @extend %style-4;
     padding: 15px 27px;
+    border-radius: 50px;
   }
 
   &--size--medium {
     @extend %style-4;
     padding: 8px 18px;
+    border-radius: 50px;
   }
 
   &--size--small {
     @extend %style-5;
     padding: 4px 15px;
+    border-radius: 50px;
+  }
+
+  &--size--large {
+    max-width: 343px;
+    width: 100%;
+    height: 44px;
+    border-radius: 9px;
   }
 
   &--theme--tangerin {
     background: $orange;
     color: $white;
 
-    border: 0;
-
     &:active {
       background-color: $orange-dim;
     }
   }
 
-   &--theme--shadow-big {
-     box-shadow: 0 8px 10px rgba(0, 0, 0, 0.25);
-   }
+  &--theme--shadow-big {
+    box-shadow: 0 8px 10px rgba(0, 0, 0, 0.25);
+  }
 
   &--theme--shadow-medium {
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
@@ -51,8 +58,6 @@
     background: $white;
     color: $black;
 
-    border: 0;
-
     &:active {
       background-color: $lightGrey;
     }
@@ -69,18 +74,33 @@
 
   &--theme--oranges-transparent {
     color: $orange;
-    border: 0;
+
+    &:active {
+      background-color: $cinderella;
+    }
   }
 
   &--theme--chocolate {
     color: $brown;
-    border: 0;
   }
 
   &--theme--light-transparent {
     background: transparent;
     color: $white;
     border: 1px solid $white;
+  }
+
+  &--type--cancel {
+    @extend %style-3;
+    background: $white;
+    color: $dodgerBlue;
+  }
+
+  &--type--discard {
+    @extend %style-3;
+    font-weight: normal;
+    background: $ghostWhite;
+    color: $alizarinCrimson;
   }
 }
 
