@@ -1,0 +1,46 @@
+@import "../../__app__head-style-and-script/css/main.scss";
+
+.map {
+  width: 100%;
+  padding: 12px 16px 0 16px;
+  display: flex;
+  flex-direction: column;
+
+  &__container {
+    width: 100%;
+  }
+
+  &__item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+  }
+
+  &__content {
+    display: flex;
+  }
+
+  &__item-title {
+    @extend %style-5;
+  }
+
+  &__item-text {
+    @extend %style-6;
+    color: $dimGray;
+  }
+
+  &__radio-button {
+    width: 80%;
+  }
+  &__radio-label {
+
+    &:before {
+      top: 16px;
+      left: 0;
+    }
+    &:after {
+      top: 20px;
+      left: 4px;
+    }
+  }
+}

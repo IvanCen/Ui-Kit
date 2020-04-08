@@ -1,1 +1,104 @@
-.buy-form .buy-form__controls{display:flex}.buy-form .buy-form__buy-button{display:none}.buy-form--empty .buy-form__controls{display:none}.buy-form--empty .buy-form__buy-button{display:block}.buy-form__controls{flex-direction:row;flex-wrap:nowrap;justify-content:space-between;align-items:center;position:absolute;right:8px;bottom:6px;font-size:14px;z-index:1}@media all and (min-width: 600px){.buy-form__controls{right:16px;bottom:12px}}@media all and (min-width: 1000px){.buy-form__controls{right:32px;bottom:24px;font-size:18px}}@media all and (min-width: 1300px){.buy-form__controls{right:40px;bottom:30px;font-size:22px}}.buy-form__control{position:relative;width:11.2px;height:11.2px}@media all and (min-width: 1000px){.buy-form__control{width:14.4px;height:14.4px}}@media all and (min-width: 1300px){.buy-form__control{width:17.6px;height:17.6px}}.buy-form__control:before{width:100%;border-top:2px solid;content:"";display:block;position:absolute;left:0;right:0;top:calc(50% - 1px);bottom:0}.buy-form__control--plus:after{height:100%;border-left:2px solid;content:"";display:block;position:absolute;top:0;left:calc(50% - 1px)}.buy-form__value{text-align:center;padding:0 3px;min-width:47.6px}@media all and (min-width: 1000px){.buy-form__value{min-width:61.2px}}@media all and (min-width: 1300px){.buy-form__value{min-width:74.8px}}
+.buy-form .buy-form__controls {
+  display: flex;
+}
+.buy-form .buy-form__buy-button {
+  display: none;
+}
+.buy-form--empty .buy-form__controls {
+  display: none;
+}
+.buy-form--empty .buy-form__buy-button {
+  display: block;
+}
+
+.buy-form__controls {
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  right: 8px;
+  bottom: 6px;
+  font-size: 14px;
+  z-index: 1;
+}
+@media all and (min-width: 600px) {
+  .buy-form__controls {
+    right: 16px;
+    bottom: 12px;
+  }
+}
+@media all and (min-width: 1000px) {
+  .buy-form__controls {
+    right: 32px;
+    bottom: 24px;
+    font-size: 18px;
+  }
+}
+@media all and (min-width: 1300px) {
+  .buy-form__controls {
+    right: 40px;
+    bottom: 30px;
+    font-size: 22px;
+  }
+}
+
+.buy-form__control {
+  position: relative;
+  width: 11.2px;
+  height: 11.2px;
+}
+@media all and (min-width: 1000px) {
+  .buy-form__control {
+    width: 14.4px;
+    height: 14.4px;
+  }
+}
+@media all and (min-width: 1300px) {
+  .buy-form__control {
+    width: 17.6px;
+    height: 17.6px;
+  }
+}
+.buy-form__control:before {
+  width: 100%;
+  /*height: 2px;
+  background: #ffffff;*/
+  border-top: 2px solid;
+  content: "";
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(50% - 1px);
+  bottom: 0;
+}
+.buy-form__control--plus:after {
+  height: 100%;
+  /*width: 2px;
+  background: #ffffff;*/
+  border-left: 2px solid;
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: calc(50% - 1px);
+}
+
+.buy-form__value {
+  text-align: center;
+  padding: 0 3px;
+  min-width: 47.6px;
+}
+@media all and (min-width: 1000px) {
+  .buy-form__value {
+    min-width: 61.2px;
+  }
+}
+@media all and (min-width: 1300px) {
+  .buy-form__value {
+    min-width: 74.8px;
+  }
+}
+
+/*# sourceMappingURL=main.css.map */

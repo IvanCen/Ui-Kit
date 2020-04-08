@@ -1,0 +1,44 @@
+@import "../../__app__head-style-and-script/css/main.scss";
+
+.main-card {
+  overflow: hidden;
+
+  &--type--border {
+    margin: 20px 16px;
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+  }
+
+  &__img {
+    background-size: cover;
+    width: 100%;
+  }
+
+  &__text-area {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 16px;
+  }
+
+  &__title {
+    @extend %style-4;
+    margin-bottom: 10px;
+  }
+
+  &__text {
+    @extend %style-6;
+    margin-bottom: 20px;
+  }
+
+  &__button-container {
+    display: flex;
+  }
+
+  &__button {
+    width: 78px;
+
+    &:first-child {
+      margin-right: 16px;
+    }
+  }
+}
