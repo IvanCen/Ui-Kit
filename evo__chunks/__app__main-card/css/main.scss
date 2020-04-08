@@ -2,7 +2,6 @@
 
 .main-card {
   overflow: hidden;
-  padding-bottom: 20px;
 
   &--type--border {
     margin: 20px 16px;
@@ -18,10 +17,17 @@
   &__text-area {
     display: flex;
     flex-direction: column;
+    padding: 20px 16px;
   }
 
-  &__text.text-area__text {
-    margin: 0 0 20px;
+  &__title {
+    @extend %style-4;
+    margin-bottom: 10px;
+  }
+
+  &__text {
+    @extend %style-6;
+    margin-bottom: 20px;
   }
 
   &__button-container {

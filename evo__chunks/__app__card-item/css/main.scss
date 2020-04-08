@@ -13,6 +13,7 @@
   &--border--bottom {
     border-bottom: 1px solid $gainsboroGray;
     grid-gap: 0 20px;
+    padding: 0 16px;
   }
 
   &--direction--row {
@@ -32,17 +33,19 @@
 
 
   &__container {
-    padding: 20px 16px;
+
 
     &--direction--row {
       display: grid;
       grid-template-columns: 1fr 1fr;
       grid-row-gap: 20px;
       grid-column-gap: 13px;
+      padding: 20px 16px;
     }
 
     &--direction--column {
       display: grid;
+
     }
 
     &--indentation-column--small {
@@ -51,6 +54,10 @@
 
     &--indentation-column--normal {
       grid-gap: 20px;
+    }
+
+    &--with--border {
+      padding: 20px 16px;
     }
   }
 
@@ -111,6 +118,9 @@
       width: 165px;
       height: 165px;
       @extend %background-noimage;
+      @media screen and (max-width: 375px) {
+        width: 100%;
+      }
     }
 
     &--disable {

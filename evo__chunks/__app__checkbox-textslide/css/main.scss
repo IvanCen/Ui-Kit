@@ -30,7 +30,7 @@
 }
 
 @mixin checkbox-textslide-appearance(
-  $checkbox-textslide-width: 340px,
+  $checkbox-textslide-width: 300px,
   $checkbox-textslide-height: 32px,
   $checkbox-textslide-border-radius: 50px,
   $checkbox-textslide-offset: 0px,
@@ -140,7 +140,7 @@
       &:after {
         content: attr(data-unchecked);
         position: absolute;
-        z-index: 5;
+        z-index: 1;
         text-align: center;
         background: $white;
         transform: translate3d(0, 0, 0);
