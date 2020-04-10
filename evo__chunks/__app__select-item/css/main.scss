@@ -1,0 +1,33 @@
+@import "../../__app__head-style-and-script/css/main.scss";
+
+.select-item {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  width: 156px;
+  padding: 0 16px;
+  position: relative;
+  z-index: 2;
+
+  &__button-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    border-bottom: 1px solid $gainsboroGray;
+    background-color: transparent;
+    padding-bottom: 7px;
+  }
+
+  &__info {
+    display: block;
+    color: $dimGray;
+    @extend %style-6;
+    padding-bottom: 7px;
+  }
+
+  &__button {
+    @extend %style-4;
+    font-weight: normal;
+  }
+}

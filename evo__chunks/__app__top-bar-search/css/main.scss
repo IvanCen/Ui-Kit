@@ -24,10 +24,11 @@
   &__icon {
 
     &--type--delete {
-
-    }
-
-    &--type--close {
+      position: absolute;
+      right: 0;
+      top: 5px;
+      display: flex;
+      padding: 20px 0 20px 40px;
 
     }
   }

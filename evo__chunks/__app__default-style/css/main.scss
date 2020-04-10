@@ -1,4 +1,4 @@
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -12,19 +12,19 @@
   text-size-adjust: 100%;
 }
 
-a{
+a {
   color: black;
   text-decoration: underline;
 }
 
-html{
-  font-family: 'SF UI Display', 'SF UI Text', 'Helvetica', Arial, sans-serif;
+html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Droid Sans', 'Trebuchet MS', Arial, sans-serif;
   font-size: 62.5%;
-  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
-body{
-  font-family: 'SF UI Display', 'SF UI Text', 'Helvetica', Arial, sans-serif;
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Droid Sans', 'Trebuchet MS', Arial, sans-serif;
   font-weight: 400;
   font-size: 1.4rem;
   line-height: 1.5;

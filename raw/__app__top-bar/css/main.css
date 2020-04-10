@@ -1,1 +1,17 @@
-@import'raw/__app__fonts/SanFrancisco/main.css';.top-bar__title{font-family:"SF UI Display";font-style:normal;font-weight:500;font-size:22px;line-height:28px}.top-bar__header-title{font-family:"SF UI Text";font-style:normal;font-weight:600;font-size:17px;line-height:22px;letter-spacing:.02em}.top-bar__select-item{font-family:"SF UI Text";font-style:normal;font-weight:bold;font-size:15px;line-height:20px}.top-bar__subtitle,.top-bar__text{font-family:"SF UI Text";font-style:normal;font-weight:600;font-size:13px;line-height:19px}.top-bar__info{font-family:"SF UI Text";font-style:normal;font-weight:bold;font-size:10px;line-height:15px;letter-spacing:.05em;text-transform:uppercase}.top-bar{width:100%;box-shadow:0 5px 6px rgba(0,0,0,.1);margin-bottom:50px;min-height:200px}.top-bar--theme--dark{background-color:#2e2925;color:#fff}.top-bar__select-container{display:flex;justify-content:space-between}.top-bar__select-item{display:flex;align-items:center;width:100%;justify-content:space-between;padding:0 0 20px;border:0;border-bottom:1px solid rgba(255,255,255,.2)}.top-bar__select-item--size--small{width:auto;margin-left:30px}.top-bar__select-item--theme--dark{background-color:#2e2925;color:#fff}.top-bar__content-container{padding:50px 16px 0 16px}.top-bar__header{display:grid;grid-template-columns:1fr 6fr 1fr;justify-content:space-between;align-items:center;min-height:30px;margin-bottom:16px;grid-template-areas:"back text search"}.top-bar__text{text-overflow:ellipsis;overflow:hidden;white-space:nowrap}.top-bar__text--position--center{text-align:center}.top-bar__info{color:#787878;text-transform:none}.top-bar__title{margin:0 0 10px}.top-bar__header-title{margin:0;text-align:center}.top-bar__subtitle{margin:0 0 10px}.top-bar__nav-container{display:grid;grid-gap:2%;grid-template-columns:2fr 2fr 2fr 1fr 1fr;margin-bottom:16px}.top-bar__button{border:none;padding:0;display:flex;align-items:center}.top-bar__button--position--right{justify-self:flex-end}.top-bar__button--theme--dark{background-color:#2e2925}.top-bar__back-button{grid-area:back;justify-self:flex-start;padding:0}.top-bar__search-button{justify-self:flex-end;grid-area:search;padding:0}.top-bar__icon-text{padding-left:10px;white-space:nowrap;grid-area:text}.top-bar__tab-container{display:flex}.top-bar__tab{padding:14px 16px;border:none;outline:none;color:#787878}.top-bar__tab--active{border-bottom:3px solid #e6551e;color:#000}.top-bar__tab:active{background:#d1d1d1}
+/* Error: Undefined variable.
+ *     ,
+ * 144 |       background: $gray-dim;
+ *     |                   ^^^^^^^^^
+ *     '
+ *   main.scss 144:19  root stylesheet */
+
+body::before {
+  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
+      "Droid Sans Mono", monospace, monospace;
+  white-space: pre;
+  display: block;
+  padding: 1em;
+  margin-bottom: 1em;
+  border-bottom: 2px solid black;
+  content: "Error: Undefined variable.\a     \2577 \a 144 \2502        background: $gray-dim;\a     \2502                    ^^^^^^^^^\a     \2575 \a   main.scss 144:19  root stylesheet";
+}
