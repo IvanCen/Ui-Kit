@@ -2,6 +2,7 @@
 
 .button {
   border: 0;
+  box-sizing: border-box;
 
   &--size--big {
     @extend %style-4;
