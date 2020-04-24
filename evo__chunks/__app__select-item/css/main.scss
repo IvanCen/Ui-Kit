@@ -29,5 +29,19 @@
   &__button {
     @extend %style-4;
     font-weight: normal;
+    position: relative;
+
+    &:after {
+      content: '';
+      background: url("[+chunkWebPath+]/img/icon-ruble.svg") no-repeat;
+      background-size: cover;
+      position: absolute;
+      right: -12px;
+      top: 5px;
+      width: 9px;
+      height: 11px;
+    }
   }
+
 }
+

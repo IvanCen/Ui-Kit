@@ -3,11 +3,16 @@
 .top-bar {
   width: 100%;
   box-shadow: 0 5px 6px rgba(0, 0, 0, 0.1);
-  margin-bottom: 50px;
+  padding: 0 16px;
 
   &--theme--dark {
     background-color: $bokaraGrey;
     color: $white;
+  }
+
+  &--size--small {
+    padding-top: 15px;
+    padding-bottom: 11px;
   }
 
   &__select-container {
@@ -18,19 +23,19 @@
 
   &__select-item {
     @extend %style-4;
+    position: relative;
     display: flex;
     align-items: center;
-    width: 100%;
     justify-content: space-between;
+    width: 100%;
     padding: 0 0 20px;
-    border: 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    position: relative;
 
     &--size--small {
       width: 26%;
       margin-left: 30px;
       justify-content: center;
+
       &:after {
         content: '';
         position: absolute;
@@ -41,6 +46,7 @@
         display: block;
         width: 5px;
       }
+
       &:before {
         content: '';
         position: absolute;
@@ -100,7 +106,12 @@
 
   &__title {
     @extend %style-1;
-    margin: 0 0 11px;
+    margin-bottom: 11px;
+
+    &--type--single {
+      padding-top: 86px;
+      margin-bottom: 24px;
+    }
   }
 
   &__header-title {
@@ -118,7 +129,11 @@
     display: grid;
     grid-gap: 5%;
     grid-template-columns: 2fr 2fr 2fr 1fr 1fr;
-    margin-bottom: 16px;
+    padding-bottom: 16px;
+
+    @media (max-width: 374px) {
+      grid-gap: 3%;
+    }
   }
 
   &__button {
@@ -163,6 +178,7 @@
   }
 
   &__icon-text {
+    @extend %style-5;
     padding-left: 10px;
     white-space: nowrap;
     grid-area: text;
@@ -207,11 +223,11 @@
       &:after {
         content: '';
         position: absolute;
-        background: $orange;
         bottom: 0;
         left: 0;
-        height: 3px;
         width: 100%;
+        height: 3px;
+        background: $orange;
       }
     }
   }

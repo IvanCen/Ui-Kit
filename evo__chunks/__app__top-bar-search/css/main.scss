@@ -8,8 +8,7 @@
 
   &__input-area.input__area {
     @extend %style-1;
-    padding-bottom: 0;
-    padding-top: 15px;
+    padding: 15px 0 0;
   }
 
   &__info {
@@ -24,12 +23,11 @@
   &__icon {
 
     &--type--delete {
+      display: flex;
       position: absolute;
       right: 0;
       top: 5px;
-      display: flex;
       padding: 20px 0 20px 40px;
-
     }
   }
 }

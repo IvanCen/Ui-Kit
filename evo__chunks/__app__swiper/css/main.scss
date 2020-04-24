@@ -1,0 +1,39 @@
+@import "../../__app__head-style-and-script/css/main.scss";
+
+.swiper {
+  box-sizing: border-box;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  padding: 0 0 20px 16px;
+  max-height: 251px;
+}
+
+.swiper-small {
+  box-sizing: border-box;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  padding: 20px 0 20px 16px;
+  max-height: 140px;
+}
+
+.swiper-slide {
+  background: #000000;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &--size--normal {
+    width: 90%;
+  }
+
+  &--size--small {
+    width: 158px;
+  }
+
+  &:last-child {
+    margin-right: 40px;
+  }
+}

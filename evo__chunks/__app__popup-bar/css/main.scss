@@ -23,6 +23,7 @@
   }
 
   &__button {
+    position: relative;
     width: 100%;
     padding: 13px 16px;
     @extend %style-4;
@@ -36,6 +37,20 @@
     &:active {
       background: $gainsboroGray;
     }
+  }
 
+  &__number {
+    position: relative;
+
+    &:after {
+      background: url("[+chunkWebPath+]/img/icon-ruble.svg") no-repeat;
+      background-size: cover;
+      content: '';
+      position: absolute;
+      right: -12px;
+      top: 4px;
+      width: 9px;
+      height: 11px;
+    }
   }
 }

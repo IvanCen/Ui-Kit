@@ -1,0 +1,13 @@
+.body {
+  overflow: hidden;
+}
+
+.main-page {
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+  }
+
+}
+

@@ -1,0 +1,36 @@
+<div class="container">
+  <form class="registration" id="registration">
+    <h1>Registration Form</h1>
+    <!--<label class="input__underlined" for="username">
+      <input type="text" id="username" minlength="3" required>
+      <ul class="input__requirements">
+        <li>At least 3 characters long</li>
+        <li>Must only contain letters and numbers (no special characters)</li>
+      </ul>
+    </label>-->
+
+<div class="input">
+    <label class="input__underlined" for="password">
+
+      <input class="input__area input__area--type--fly-label input__area--type--password" type="password" id="password" maxlength="100" minlength="8" required>
+
+      <ul class="input__requirements">
+        <li>At least 8 characters long (and less than 100 characters)</li>
+        <li>Contains at least 1 number</li>
+        <li>Contains at least 1 lowercase letter</li>
+        <li>Contains at least 1 uppercase letter</li>
+        <li>Contains a special character (e.g. @ !)</li>
+      </ul>
+    </label>
+</div>
+    <label for="password_repeat">
+      <span>Repeat Password</span>
+      <input type="password" id="password_repeat" maxlength="100" minlength="8" required>
+    </label>
+
+    <br>
+
+    <input type="submit">
+
+  </form>
+</div>

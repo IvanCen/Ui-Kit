@@ -8,7 +8,7 @@
   background: $white;
   position: sticky;
   bottom: 0;
-  z-index: 2;
+  z-index: 3;
   background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(27px);
 
@@ -30,6 +30,8 @@
 
   &__icon {
     fill: $gray;
+    width: 24px;
+    height: 24px;
 
     &--active {
       fill: $orange;
