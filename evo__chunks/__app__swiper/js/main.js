@@ -1,36 +1,42 @@
-function createSwiper() {
-    const element = document.createElement('div');
-    element.classList.add('swiper');
+class CreateSwiper extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+    this.element = document.createElement(this.parameters.selector);
+    this.template = `
+      <div class="swiper-wrapper">
+        <div class="swiper-slide swiper-slide--size--normal"></div>
+        <div class="swiper-slide swiper-slide--size--normal"></div>
+        <div class="swiper-slide swiper-slide--size--normal"></div>
+        <div class="swiper-slide swiper-slide--size--normal"></div>
+    </div>`;
+  }
 
-    const template = `
-    <div class="swiper-wrapper">
-        <div class="swiper-slide swiper-slide&#45;&#45;size&#45;&#45;normal"></div>
-        <div class="swiper-slide swiper-slide&#45;&#45;size&#45;&#45;normal"></div>
-        <div class="swiper-slide swiper-slide&#45;&#45;size&#45;&#45;normal"></div>
-        <div class="swiper-slide swiper-slide&#45;&#45;size&#45;&#45;normal"></div>
-    </div>`
+  create() {
+    if (typeof this.parameters.text === 'object') {
+      this.element.textContent = this.parameters.text;
+    }
 
-    element.insertAdjacentHTML('beforeend', template);
+    this.element.insertAdjacentHTML('beforeend', this.template);
 
-    return element;
+    return super.create(this.element);
+  }
 }
 
-/*const swiper = new Swiper('.swiper', {
+/* const swiper = new Swiper('.swiper', {
     slidesPerView: 'auto',
     spaceBetween: 16,
-});*/
+}); */
 
-/*const swiperSmall = new Swiper('.swiper-small', {
+/* const swiperSmall = new Swiper('.swiper-small', {
     slidesPerView: '2',
     spaceBetween: 16,
     width: 338,
-});*/
+}); */
 
 
-/*const swiperMedium = new Swiper('.swiper-medium', {
+/* const swiperMedium = new Swiper('.swiper-medium', {
     slidesPerView: '2',
     spaceBetween: 16,
     width: 338,
-});*/
-
-
+}); */

@@ -1,163 +1,128 @@
 const mainPage = document.querySelector('.main-page');
 const mainPageContent = document.querySelector('.main-page__content');
 const body = document.querySelector('body');
-/*
-Универсальная функция создания
-*/
-
-/*function createItem(parameters) {
-    if (typeof parameters !== 'object') {
-        parameters = {};
-    }
-
-    const element = document.createElement(parameters['tagName']);
-
-    if (typeof parameters['styles'] === 'object') {
-        for (let style of parameters['styles']) {
-            element.classList.add(style);
-        }
-    }
-
-    if (typeof parameters['template'] === 'object') {
-        element.insertAdjacentHTML('beforeend', parameters['template']);
-    }
-
-    if (typeof parameters['text'] === 'object') {
-        element.textContent = parameters['text']
-    }
-
-    if (typeof parameters['events'] === 'object') {
-
-        for (let event of parameters['events']) {
-            element.addEventListener(event['type'], event['callback']);
-        }
-
-    }
-
-    return element;
-}*/
-
 
 function toggleSignInPage() {
-    body.append(createPage());
-    const page = document.querySelector('.page');
+  body.append(createPage());
+  const page = document.querySelector('.page');
 
-    function deletePage() {
-        setTimeout(() => page.remove(), 200);
+  function deletePage() {
+    setTimeout(() => page.remove(), 200);
+  }
 
-    }
+  function closePage() {
+    page.classList.remove('page--opened');
+    body.classList.remove('body');
+  }
 
-    function closePage() {
-        page.classList.remove('page--opened');
-        body.classList.remove('body');
-    }
+  function openPage() {
+    setTimeout(() => {
+      page.classList.add('page--opened');
+      body.classList.add('body');
+    }, 100);
+  }
 
-    function openPage() {
-        setTimeout(() => {
-            page.classList.add('page--opened');
-            body.classList.add('body');
-        }, 100);
+  function renderSubPage() {
+    const signInTopBar = new CreateTopBarSignIn({
+      selector: ['div'],
+      style: ['top-bar'],
+      styles: ['--size--small'],
+      textTitle: ['Sign in to Rewards'],
+      eventCloseIcon: [
+        { type: 'click', callback: closePage },
+        { type: 'click', callback: deletePage },
+      ],
+    });
+    const formInputSignIn = createFormInputSignIn({
+      selector: ['div'],
+      styles: ['form'],
+      events: [
+        { type: 'click', callback: closePage },
+        { type: 'click', callback: deletePage },
+      ],
+    });
 
-    }
+    page.append(signInTopBar.create());
+    page.append(formInputSignIn);
+    inputFlyLabel();
+    inputVisibleTogglePass();
+    validation();
+  }
 
-    function renderSubPage() {
-        const signInTopBar = createTopBarSignIn({
-            styles: ['top-bar', 'top-bar--size--small'],
-            textTitle: ['Sign in to Rewards'],
-            events: [
-                {type: 'click', callback: closePage},
-                {type: 'click', callback: deletePage}
-            ],
-        });
-        const formInputSignIn = createFormInputSignIn({
-            styles: ['form'],
-            events: [
-                {type: 'click', callback: closePage},
-                {type: 'click', callback: deletePage}
-            ],
-        });
-
-        page.append(signInTopBar);
-        page.append(formInputSignIn);
-        inputFlyLabel();
-        inputVisibleTogglePass();
-        validation();
-    }
-
-    renderSubPage();
-    openPage();
-
+  renderSubPage();
+  openPage();
 }
 
 (function renderMainPage() {
-    const mainPageTopBar = createTopBar({
-        events: [
-            //{type: ['click', 'touchstart'], callback: toggleSignInPage},
-            {type: 'click', callback: toggleSignInPage}
-        ],
-        textTitle: ['Отличный день для кофе ☕'],
-    });
+  const mainPageTopBar = new CreateTopBar({
+    selector: ['div'],
+    style: ['top-bar'],
+    styles: ['--size--small'],
+    textTitle: ['Отличный день для кофе ☕'],
+    eventOpenSignInPage: [{ type: 'click', callback: toggleSignInPage }],
+  });
 
-    const mainPageTitleBar = createTitleBar({
-        styles: ['title-bar__title',
-            'title-bar__title--size--small',
-        ],
-        text: ['starbucks rewards'],
-    });
+  const mainPageTitleBar = new CreateTitleBar({
+    selector: ['h2'],
+    style: ['title-bar'],
+    styles: ['__title', '__title--size--small'],
+    text: ['starbucks rewards'],
+  });
 
-    const mainPageSwiper = createSwiper();
-    const mainPageMainCard = createMainCard();
-    const mainPageFooter = createFooter();
+  const mainPageSwiper = new CreateSwiper({
+    selector: ['div'],
+    style: ['swiper'],
+  });
+  const mainPageMainCard = new CreateMainCard({
+    selector: ['div'],
+    style: ['main-card'],
+    styles: ['--type--border'],
+  });
+  const mainPageFooter = new CreateFooter({
+    selector: ['div'],
+    style: ['footer'],
+  });
 
-    const mainPageButtonJoinDark = buttonCreate(
-        {
-            styles: ['button--size--small',
-                'button--theme--dark-transparent',
-                'button--indentation--left',
-            ],
-            text: ['Join Now'],
-        }
-    )
+  const mainPageButtonJoinDark = new CreateButton(
+    {
+      selector: ['button'],
+      style: ['button'],
+      styles: ['--size--small',
+        '--theme--dark-transparent',
+        '--indentation--left',
+      ],
+      text: ['Join Now'],
+    },
+  );
 
-    const mainPageButtonJoinOrange = buttonCreate({
-            styles: ['button--size--big',
-                'button--theme--tangerin',
-                'button--indentation--bottom',
-                'button--indentation--right',
-                'button--position--right',
-                'button--theme--shadow-big',
-            ],
-            events: [{type: 'click', callback: toggleSignInPage}],
-            text: ['Join Now'],
-            //events: [{type: 'click', callback: toggleSignInPage}],
-        }
-    )
+  const mainPageButtonJoinOrange = new CreateButton({
+    selector: ['button'],
+    style: ['button'],
+    styles: ['--size--big',
+      '--theme--tangerin',
+      '--indentation--bottom',
+      '--indentation--right',
+      '--position--right',
+      '--theme--shadow-big',
+    ],
+    text: ['Join Now'],
+    events: [{ type: 'click', callback: toggleSignInPage }],
+  });
 
-    mainPage.prepend(mainPageSwiper);
-    mainPage.prepend(mainPageTitleBar);
-    mainPage.prepend(mainPageTopBar);
-    mainPageContent.append(mainPageButtonJoinDark);
-    mainPageContent.append(mainPageMainCard);
-    mainPageContent.append(mainPageButtonJoinOrange);
-    mainPage.append(mainPageFooter);
-
-    const swiper = new Swiper('.swiper', {
-        slidesPerView: 'auto',
-        spaceBetween: 16,
-    });
-
-    switchActiveFooter();
-    activeButton();
-
-})();
-
-
-function switcherPages(deletePage, switchPage) {
-    deletePage.remove();
-    switchPage();
-}
+  mainPage.prepend(mainPageSwiper.create());
+  mainPage.prepend(mainPageTitleBar.create());
+  mainPage.prepend(mainPageTopBar.create());
+  mainPageContent.append(mainPageButtonJoinDark.create());
+  mainPageContent.append(mainPageMainCard.create());
+  mainPageContent.append(mainPageButtonJoinOrange.create());
+  mainPage.append(mainPageFooter.create());
 
 
-//switcherPages(page, renderSubPage);
+  const swiper = new Swiper('.swiper', {
+    slidesPerView: 'auto',
+    spaceBetween: 16,
+  });
 
-
+  switchActiveFooter();
+  activeButton();
+}());

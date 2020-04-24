@@ -1,27 +1,38 @@
 
-
 function switchActiveFooter() {
-    const footerButton = document.querySelectorAll('.footer__button');
-    [...footerButton].forEach((item) => {
-        item.addEventListener('click', function() {
-            [...footerButton].forEach(item => {
-                item.classList.remove('footer__button--active');
-                item.firstElementChild.classList.remove('footer__icon--active');
-            });
-            this.classList.add('footer__button--active');
-            this.firstElementChild.classList.add('footer__icon--active');
-        })
+  const footerButton = document.querySelectorAll('.footer__button');
+  [...footerButton].forEach((item) => {
+    item.addEventListener('click', function () {
+      [...footerButton].forEach((item) => {
+        item.classList.remove('footer__button--active');
+        item.firstElementChild.classList.remove('footer__icon--active');
+      });
+      this.classList.add('footer__button--active');
+      this.firstElementChild.classList.add('footer__icon--active');
     });
+  });
 }
 
 
-function createFooter() {
+/*function createFooter() {
+  const element = document.createElement('div');
+  element.classList.add('footer');
 
-    const element = document.createElement('div');
-    element.classList.add('footer');
+  const template = `
+        `;
 
-    const template = `
-        <button class="footer__button footer__button--active">
+  element.insertAdjacentHTML('beforeend', template);
+
+  return element;
+}*/
+
+class CreateFooter extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+    this.element = document.createElement(this.parameters.selector);
+    this.template = `
+      <button class="footer__button footer__button--active">
             <svg class="footer__icon footer__icon--active" viewBox="0 0 24 24"  xmlns="http://www.w3.org/2000/svg">
               <path d="M16.38 1.84009C12.36 1.84009 9.29002 5.16009 8.56002 9.19009C8.54002 9.31009 8.38002 9.33009 8.33002 9.22009C7.95002 8.33009 7.74002 7.36009 7.74002 6.34009C7.74002 4.72009 8.27002 3.22009 9.16002 2.02009C8.67002 1.90009 8.15002 1.84009 7.62002 1.84009C3.91002 1.84009 0.900024 4.85009 0.900024 8.56009C0.900024 14.4801 12 22.1601 12 22.1601C12 22.1601 23.1 14.4801 23.1 8.56009C23.1 4.85009 20.09 1.84009 16.38 1.84009ZM16.38 11.1501C14.95 11.1501 13.79 9.99009 13.79 8.56009C13.79 7.13009 14.95 5.97009 16.38 5.97009C17.81 5.97009 18.97 7.13009 18.97 8.56009C18.97 9.99009 17.81 11.1501 16.38 11.1501Z"/>
             </svg>
@@ -53,10 +64,12 @@ function createFooter() {
               <path d="M20.53 9.6301C20.53 16.4901 12 22.9001 12 22.9001C12 22.9001 3.46997 16.4901 3.46997 9.6301C3.46997 4.9201 7.28997 1.1001 12 1.1001C16.71 1.1001 20.53 4.9201 20.53 9.6301ZM12 5.8901C10.02 5.8901 8.40997 7.5001 8.40997 9.4801C8.40997 11.4601 10.02 13.0701 12 13.0701C13.98 13.0701 15.59 11.4601 15.59 9.4801C15.59 7.5001 13.98 5.8901 12 5.8901Z"/>
             </svg>
         Stores
-        </button>`
+        </button>`;
+  }
 
-    element.insertAdjacentHTML('beforeend', template);
+  create() {
+    this.element.insertAdjacentHTML('beforeend', this.template);
 
-    return element;
+    return super.create(this.element);
+  }
 }
-
