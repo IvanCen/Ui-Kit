@@ -32,9 +32,14 @@ class CreateItem {
 
 class TogglePage {
   constructor(parameters) {
+    this.parameters = parameters;
     this.body = document.querySelector('body');
     this.page = document.querySelector('.page');
-    this.parameters = parameters;
+
+    this.closePage = this.closePage.bind(this);
+    this.deletePage = this.deletePage.bind(this);
+    this.openPage = this.openPage.bind(this);
+
     if (typeof this.parameters !== 'object') {
       this.parameters = {};
     }

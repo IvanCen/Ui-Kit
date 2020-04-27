@@ -2,95 +2,73 @@ const mainPage = document.querySelector('.main-page');
 const mainPageContent = document.querySelector('.main-page__content');
 const body = document.querySelector('body');
 
-function toggleSignInPage() {
-  body.append(createPage());
-  const page = document.querySelector('.page');
-
-  function deletePage() {
-    setTimeout(() => page.remove(), 200);
+class TogglePageSignIn extends TogglePage {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+    this.rendering = this.rendering.bind(this);
   }
 
-  function closePage() {
-    page.classList.remove('page--opened');
-    body.classList.remove('body');
-  }
-
-  function openPage() {
-    setTimeout(() => {
-      page.classList.add('page--opened');
-      body.classList.add('body');
-    }, 100);
-  }
-
-  function renderSubPage() {
+  rendering() {
+    this.body.append(createPage());
+    this.page = document.querySelector('.page');
     const signInTopBar = new CreateTopBarSignIn({
       selector: ['div'],
       style: ['top-bar'],
       modifier: ['--size--small'],
       textTitle: ['Sign in to Rewards'],
       eventCloseIcon: [
-        { type: 'click', callback: closePage },
-        { type: 'click', callback: deletePage },
+        { type: 'click', callback: this.closePage },
+        { type: 'click', callback: this.deletePage },
       ],
     });
     const formInputSignIn = createFormInputSignIn({
       selector: ['div'],
       modifier: ['form'],
       events: [
-        { type: 'click', callback: closePage },
-        { type: 'click', callback: deletePage },
+        { type: 'click', callback: this.closePage },
+        { type: 'click', callback: this.deletePage },
       ],
     });
 
-    page.append(signInTopBar.create());
-    page.append(formInputSignIn);
+    this.page.append(signInTopBar.create());
+    this.page.append(formInputSignIn);
     inputFlyLabel();
     inputVisibleTogglePass();
     validation();
+    this.openPage();
   }
-
-  renderSubPage();
-  openPage();
 }
 
-function toggleCardPage() {
-  body.append(createPage());
-  const page = document.querySelector('.page');
-
-  function deletePage() {
-    setTimeout(() => page.remove(), 200);
+class TogglePageCards extends TogglePage {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+    this.rendering = this.rendering.bind(this);
   }
 
-  function closePage() {
-    page.classList.remove('page--opened');
-    body.classList.remove('body');
-  }
-
-  function openPage() {
-    setTimeout(() => {
-      page.classList.add('page--opened');
-      body.classList.add('body');
-    }, 100);
-  }
-
-  function renderSubPageCards() {
+  rendering() {
+    this.body.append(createPage());
+    this.page = document.querySelector('.page');
     const signInTopBar = new CreateTopBarSignIn({
       selector: ['div'],
       style: ['top-bar'],
       modifier: ['--size--small'],
       textTitle: ['Cards'],
       eventCloseIcon: [
-        { type: 'click', callback: closePage },
-        { type: 'click', callback: deletePage },
+        { type: 'click', callback: this.closePage },
+        { type: 'click', callback: this.deletePage },
       ],
     });
 
-    page.append(signInTopBar.create());
-  }
+    this.page.append(signInTopBar.create());
 
-  renderSubPageCards();
-  openPage();
+    this.openPage();
+  }
 }
+
+const togglePageSignIn = new TogglePageSignIn();
+const togglePageCards = new TogglePageCards();
 
 function renderMainPage() {
   const mainPageTopBar = new CreateTopBar({
@@ -98,7 +76,7 @@ function renderMainPage() {
     style: ['top-bar'],
     modifier: ['--size--small'],
     textTitle: ['Отличный день для кофе ☕'],
-    eventOpenSignInPage: [{ type: 'click', callback: toggleSignInPage }],
+    eventOpenSignInPage: [{ type: 'click', callback: togglePageSignIn.rendering }],
   });
 
   const mainPageTitleBarSmall = new CreateTitleBar({
@@ -128,7 +106,7 @@ function renderMainPage() {
     selector: ['div'],
     style: ['footer'],
     eventOpenMainPage: [{ type: 'click', callback: renderMainPage }],
-    eventOpenCardsPage: [{ type: 'click', callback: toggleCardPage }],
+    eventOpenCardsPage: [{ type: 'click', callback: togglePageCards.rendering }],
   });
 
   const mainPageButtonJoinDark = new CreateButton(
@@ -154,7 +132,7 @@ function renderMainPage() {
       '--theme--shadow-big',
     ],
     text: ['Join Now'],
-    events: [{ type: 'click', callback: toggleSignInPage }],
+    events: [{ type: 'click', callback: togglePageSignIn.rendering }],
   });
 
   mainPage.prepend(mainPageSwiper.create());
