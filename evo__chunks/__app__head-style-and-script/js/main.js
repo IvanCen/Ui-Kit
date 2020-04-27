@@ -1,8 +1,8 @@
 function switchActive(nodeList, activeClass) {
   [...nodeList].forEach((item) => {
     item.addEventListener('click', function () {
-      [...nodeList].forEach((item) => {
-        item.classList.remove(activeClass);
+      [...nodeList].forEach((el) => {
+        el.classList.remove(activeClass);
       });
       this.classList.add(activeClass);
     });
@@ -20,12 +20,39 @@ class CreateItem {
   create(element) {
     element.classList.add(this.parameters.style);
 
-    if (typeof this.parameters.styles === 'object') {
+    if (typeof this.parameters.modifier === 'object') {
       const { className } = element;
-      for (const style of this.parameters.styles) {
+      for (const style of this.parameters.modifier) {
         element.classList.add(className + style);
       }
     }
     return element;
+  }
+}
+
+class TogglePage {
+  constructor(parameters) {
+    this.body = document.querySelector('body');
+    this.page = document.querySelector('.page');
+    this.parameters = parameters;
+    if (typeof this.parameters !== 'object') {
+      this.parameters = {};
+    }
+  }
+
+  deletePage() {
+    setTimeout(() => this.page.remove(), 200);
+  }
+
+  closePage() {
+    this.page.classList.remove('page--opened');
+    this.body.classList.remove('body');
+  }
+
+  openPage() {
+    setTimeout(() => {
+      this.page.classList.add('page--opened');
+      this.body.classList.add('body');
+    }, 100);
   }
 }

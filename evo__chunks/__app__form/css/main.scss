@@ -1,70 +1,181 @@
 @import "../../__app__head-style-and-script/css/main.scss";
 
-
-
-
-
-
-/* Custom ------------------ */
-
-
-input:not([type="submit"]):valid {
-  border-color: #2ecc71;
-}
-
-
-/* Hide and show related .input__requirements when interacting with input */
-
-input:not([type="submit"]) + .input__requirements {
-  overflow: hidden;
-  max-height: 0;
-  transition: max-height 1s ease-out;
-}
-
-input:not([type="submit"]):hover + .input__requirements,
-input:not([type="submit"]):focus + .input__requirements,
-input:not([type="submit"]):active + .input__requirements {
-  max-height: 1000px; /* any large number (bigger then the .input__requirements list) */
-  transition: max-height 1s ease-in;
-}
-
 .container {
-  margin: 80px auto;
-  width: 90%;
-  max-width: 800px;
+  border: 1px solid whitesmoke;
+  padding: 20px 16px;
+  border-radius: 4px;
 }
 
-.registration {
-  background-color: #fff;
-  max-width: 600px;
-  margin: 0 auto;
-  padding-bottom: 20px;
-  box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.3);
-  border-bottom: 5px solid #ffdb3a;
+.form {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 16px;
+  height: 82vh;
+  position: relative;
+
+  &__fieldset {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__button {
+    margin-top: 34px;
+    align-self: flex-end;
+    height: auto;
+
+    &--type--sign-in {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+    }
+  }
+
+
+  .form__input {
+    position: relative;
+  }
+
+  .form__input-area {
+    border-bottom: 1px solid;
+    border-color: $gainsboroGray;
+    width: 100%;
+    padding-top: 28px;
+    padding-bottom: 0.5rem;
+    padding-right: 80px;
+    @extend %style-4;
+
+    &:focus + .form__input-label {
+      top: 10px;
+      color: $gray;
+      @extend %style-6;
+    }
+
+    &:hover + .form__input-label {
+      top: 10px;
+      color: $gray;
+      @extend %style-6;
+    }
+
+    &:active + .form__input-label {
+      top: 10px;
+      color: $gray;
+      @extend %style-6;
+    }
+
+    & ~ .form__input-requirements {
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 1s ease-out;
+    }
+
+    &:hover ~ .form__input-requirements,
+    &:focus ~ .form__input-requirements,
+    &:active ~ .form__input-requirements {
+      max-height: 1000px;
+      transition: max-height 1s ease-in;
+    }
+
+    &:valid {
+      border-color: $seaGreen;
+    }
+
+    &--invalid {
+      border-color: $alizarinCrimson;
+    }
+
+    &--disabled {
+      color: $lightGrey;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .form__input-label {
+    position: absolute;
+    top: 27px;
+    left: 0;
+    line-height: 147.6%;
+    color: $black;
+    transition: top .2s;
+    @extend %style-4;
+    font-weight: normal;
+
+    &--disabled {
+      color: $lightGrey;
+    }
+
+  }
+
+  .form__input-icon-container {
+    position: absolute;
+    top: 26px;
+    right: 0;
+    display: flex;
+    flex-direction: row;
+  }
+
+  .form__input-icon {
+    top: 26px;
+    right: 0;
+  }
+
+  .form__input-helper-icon {
+    margin-right: 10px;
+  }
+
+  .form__input-icon-error {
+    display: none;
+
+    &--visible {
+      display: block;
+    }
+  }
+
+  .form__input--focused {
+    @extend %style-6;
+    top: 10px;
+    color: $gray;
+  }
+
 }
 
-
-.input__requirements {
+.form__input-requirements {
+  list-style-type: none;
   font-size: 1.3rem;
   font-style: italic;
   text-align: left;
-  list-style: disc;
   list-style-position: inside;
   max-width: 400px;
-  margin: 10px auto;
-  color: rgb(150,150,150);
+  margin: 10px auto 0;
+}
+
+.form__input-requirement {
+  @extend %style-6;
+
+  &--invalid {
+    color: $alizarinCrimson;
+
+    &:before {
+      display: inline-block;
+      transform: translateY(1px);
+      margin-right: 10px;
+      content: url("[+chunkWebPath+]/img/icon-no.svg");
+    }
+  }
+
+  &--valid {
+    color: $seaGreen;
+
+    &:before {
+      display: inline-block;
+      transform: translateY(1px);
+      margin-right: 10px;
+      content: url("[+chunkWebPath+]/img/icon-yes.svg");
+    }
+  }
 }
 
 
-.input__requirements li.invalid {
-  color: #e74c3c;
-}
-.input__requirements li.valid {
-  color: #2ecc71;
-}
 
-.input__requirements li.valid:after {
-  display: inline-block;
-  padding-left: 10px;
-  content: "\2713";
-}

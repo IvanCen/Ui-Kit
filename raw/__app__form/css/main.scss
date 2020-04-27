@@ -1,0 +1,69 @@
+
+
+
+
+
+
+/* Custom ------------------ */
+
+
+input:not([type="submit"]):valid {
+  border-color: #2ecc71;
+}
+
+
+/* Hide and show related .input__requirements when interacting with input */
+
+input:not([type="submit"]) + .input__requirements {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 1s ease-out;
+}
+
+input:not([type="submit"]):hover + .input__requirements,
+input:not([type="submit"]):focus + .input__requirements,
+input:not([type="submit"]):active + .input__requirements {
+  max-height: 1000px; /* any large number (bigger then the .input__requirements list) */
+  transition: max-height 1s ease-in;
+}
+
+.container {
+  margin: 80px auto;
+  width: 90%;
+  max-width: 800px;
+}
+
+.registration {
+  background-color: #fff;
+  max-width: 600px;
+  margin: 0 auto;
+  padding-bottom: 20px;
+  box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.3);
+  border-bottom: 5px solid #ffdb3a;
+}
+
+
+.input__requirements {
+  font-size: 1.3rem;
+  font-style: italic;
+  text-align: left;
+  list-style: disc;
+  list-style-position: inside;
+  max-width: 400px;
+  margin: 10px auto;
+  color: rgb(150,150,150);
+}
+
+
+.input__requirements li.invalid {
+  color: #e74c3c;
+}
+.input__requirements li.valid {
+  color: #2ecc71;
+}
+
+.input__requirements li.valid:after {
+  display: inline-block;
+  padding-left: 10px;
+  content: "\2713";
+}

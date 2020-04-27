@@ -24,7 +24,6 @@ class CreateMainCard extends CreateItem {
           sophisticated new twist</p>
         <div class="main-card__button-container">
           <button class="button button--size--small button--theme--tangerin main-card__button">Details</button>
-          <button class="button button--size--small button--theme--tangerin-transparent main-card__button">Details</button>
         </div>
       </div>`;
   }

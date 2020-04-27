@@ -12,6 +12,11 @@
       @extend %style-2;
     }
 
+    &--size--medium-low {
+      @extend %style-3;
+      margin-bottom: 30px;
+    }
+
     &--size--small {
       @extend %style-8;
     }

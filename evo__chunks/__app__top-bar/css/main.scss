@@ -109,7 +109,7 @@
     margin-bottom: 11px;
 
     &--type--single {
-      padding-top: 86px;
+      padding-top: 66px;
       margin-bottom: 24px;
     }
   }
@@ -129,7 +129,6 @@
     display: grid;
     grid-gap: 5%;
     grid-template-columns: 2fr 2fr 2fr 1fr 1fr;
-    padding-bottom: 16px;
 
     @media (max-width: 374px) {
       grid-gap: 3%;

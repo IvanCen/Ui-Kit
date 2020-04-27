@@ -1,0 +1,1 @@
+.banners{width:100%;position:relative;overflow:hidden}.banner__container{display:flex;flex-direction:row;flex-wrap:nowrap;position:relative}.banner__container--with-animation{transition:transform .3s ease}.banners__banner{width:75vw;position:relative;flex-shrink:0;padding-left:16px}.banners__banner-filler{padding-bottom:57%;background:#e6551e;border-radius:6px}
