@@ -1,11 +1,13 @@
-.page {
+@import "../../__app__head-style-and-script/css/main.scss";
+
+.subpage {
   position: fixed;
   left: 100%;
   width: 80%;
   height: 100%;
   bottom: 0;
-  z-index: 3;
-  background-color: white;
+  z-index: 5;
+  background-color: $whisper;
   flex-grow: 1;
   transition: all .2s ease-out;
   display: flex;
@@ -15,12 +17,30 @@
   overflow-x: hidden;
   overflow-y: scroll;
 
+
   &--opened {
     flex-direction: column;
     justify-content: flex-start;
     left: 0;
     top: 0;
     width: 100%;
-    height: 100%;
+    height: calc(100vh - 78px);
+  }
+
+  &--opened--bottom-bar {
+    flex-direction: column;
+    justify-content: flex-start;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: calc(100vh - 133px);
+  }
+
+  &__content {
+
+    &--page--cards {
+      display: flex;
+      flex-direction: column;
+    }
   }
 }

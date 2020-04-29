@@ -1,3 +1,5 @@
+@import "../../__app__head-style-and-script/css/main.scss";
+
 .banners {
   width: 100%;
   position: relative;
@@ -16,16 +18,42 @@
 
 }
 
+.banners__text {
+  @extend %style-6;
+  font-weight: bold;
+  display: block;
+  text-align: center;
+}
+
 .banners__banner {
-  width: 75vw;
+
   position: relative;
   flex-shrink: 0;
-  padding-left: 16px;
+
+  &---type--circle {
+    width: 136px;
+    padding-left: 13px;;
+  }
+
+  &--type--rectangle {
+    width: 75vw;
+    padding-left: 16px;
+  }
 
 }
 
 .banners__banner-filler {
-  padding-bottom: 57%;
   background: #e6551e;
-  border-radius: 6px;
+
+  &---type--circle {
+    border-radius: 50%;
+    padding-bottom: 100%;
+    margin-bottom: 10px;
+  }
+
+  &--type--rectangle {
+    border-radius: 6px;
+
+    padding-bottom: 57%;
+  }
 }

@@ -1,0 +1,43 @@
+.page {
+  position: fixed;
+  left: 100%;
+  width: 80%;
+  height: 100%;
+  bottom: 0;
+  z-index: 3;
+  background-color: white;
+  flex-grow: 1;
+  transition: all .2s ease-out;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: stretch;
+  overflow-x: hidden;
+  overflow-y: scroll;
+
+  &--opened {
+    flex-direction: column;
+    justify-content: flex-start;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: calc(100vh - 78px);
+  }
+
+  &--opened--bottom-bar {
+    flex-direction: column;
+    justify-content: flex-start;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: calc(100vh - 133px);
+  }
+
+  &__content {
+
+    &--page--cards {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}

@@ -3,7 +3,6 @@
 .top-bar {
   width: 100%;
   box-shadow: 0 5px 6px rgba(0, 0, 0, 0.1);
-  padding: 0 16px;
 
   &--theme--dark {
     background-color: $bokaraGrey;
@@ -13,6 +12,19 @@
   &--size--small {
     padding-top: 15px;
     padding-bottom: 11px;
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  &--size--medium {
+    padding-top: 40px;
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  &--indentation--top {
+    padding-top: 15px;
+
   }
 
   &__select-container {

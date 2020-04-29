@@ -3,11 +3,13 @@
 .bottom-bar {
   width: 100%;
   box-shadow: 0 5px 6px rgba(0, 0, 0, 0.1);
-  margin-bottom: 50px;
+  position: sticky;
+  bottom: 78px;
   background-color: $bokaraGrey;
   color: $white;
   display: flex;
   justify-content: space-between;
+  z-index: 6;
 
 
   &--indentation--normal {
@@ -42,6 +44,7 @@
       align-self: center;
       border-radius: 50px;
       padding: 11px;
+      transform: translateX(-6px);
     }
 
     &--size--normal {

@@ -1,24 +1,3 @@
-/* function createTitleBar(parameters) {
-  if (typeof parameters !== 'object') {
-    parameters = {};
-  }
-
-  const element = document.createElement('h2');
-  element.classList.add('title-bar', 'title-bar__title');
-
-  if (typeof parameters.styles === 'object') {
-    for (const style of parameters.styles) {
-      element.classList.add(`title-bar__title${style}`);
-    }
-  }
-
-  if (typeof parameters.text === 'object') {
-    element.textContent = parameters.text;
-  }
-
-  return element;
-} */
-
 class CreateTitleBar extends CreateItem {
   constructor(parameters) {
     super();
@@ -31,6 +10,26 @@ class CreateTitleBar extends CreateItem {
       this.element.textContent = this.parameters.text;
     }
 
+    return super.create(this.element);
+  }
+}
+
+
+class CreateTitleBarOrder extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+    this.element = document.createElement(this.parameters.selector);
+    this.template = `
+      <h2 class="title-bar__title title-bar__title--size--medium">${this.parameters.title}</h2>
+      <button class="title-bar__button">${this.parameters.buttonText}</button>`;
+  }
+
+  create() {
+    if (typeof this.parameters.text === 'object') {
+      this.element.textContent = this.parameters.text;
+    }
+    this.element.insertAdjacentHTML('beforeend', this.template);
     return super.create(this.element);
   }
 }

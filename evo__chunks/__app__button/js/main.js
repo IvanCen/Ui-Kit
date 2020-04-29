@@ -56,21 +56,26 @@ class CreateButton extends CreateItem {
         this.element.addEventListener(event.type, event.callback);
       }
     }
+    if (typeof this.parameters.eventsOpen === 'object') {
+      for (const eventOpen of this.parameters.eventsOpen) {
+        this.element.addEventListener(eventOpen.type, eventOpen.callback);
+      }
+    }
     this.addEventListenerButton(this.element);
     return super.create(this.element);
   }
 
   addEventListenerButton(item) {
-    const buttonActive = 'button--active';
+    this.buttonActive = 'button--active';
     item.addEventListener('click', function () {
       this.focus();
     });
     item.addEventListener('focus', function () {
-      this.classList.add(buttonActive);
+      this.classList.add(this.buttonActive);
       this.innerText += '';
     });
     item.addEventListener('blur', function () {
-      this.classList.remove(buttonActive);
+      this.classList.remove(this.buttonActive);
     });
   }
 }

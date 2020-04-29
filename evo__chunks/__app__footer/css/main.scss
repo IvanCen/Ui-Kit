@@ -8,9 +8,13 @@
   background: $white;
   position: sticky;
   bottom: 0;
-  z-index: 3;
+  z-index: 10;
   background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(27px);
+
+  &--position--over {
+    z-index: 10;
+  }
 
   &__button {
     display: flex;

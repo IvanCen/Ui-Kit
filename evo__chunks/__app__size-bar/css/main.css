@@ -1,1 +1,18 @@
-.size-bar__info,.size-bar__title{font-style:normal;font-weight:500;font-size:13px;line-height:19px}.size-bar{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(0,0,0,.2);padding:12px 16px}.size-bar--theme--dark{background:#141414;flex-direction:column}.size-bar__title{margin:0}.size-bar__title--theme--dark{color:#fff;align-self:flex-start}.size-bar__info{color:#906848}.size-bar__button-container{width:100%;display:flex;justify-content:space-around}.size-bar__button{border:0;width:71px;height:45px;border-radius:4px;background:transparent;color:#939393;padding:0}.size-bar__button--active{background:#787878;color:#fff}
+/* Error: expected "{".
+ *    ,
+ * 25 |   font-weight: 600;
+ *    |                   ^
+ *    '
+ *   ../../__app__head-style-and-script/css/main.scss 25:19  @import
+ *   main.scss 1:9                                           root stylesheet */
+
+body::before {
+  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
+      "Droid Sans Mono", monospace, monospace;
+  white-space: pre;
+  display: block;
+  padding: 1em;
+  margin-bottom: 1em;
+  border-bottom: 2px solid black;
+  content: 'Error: expected "{".\a    \2577 \a 25 \2502    font-weight: 600;\a    \2502                    ^\a    \2575 \a   ../../__app__head-style-and-script/css/main.scss 25:19  @import\a   main.scss 1:9                                           root stylesheet';
+}

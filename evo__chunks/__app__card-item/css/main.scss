@@ -13,7 +13,7 @@
     display: grid;
     grid-template-columns: 65px 1fr;
     justify-items: flex-start;
-    grid-gap: 0 13px;
+    grid-gap: 10px 13px;
   }
 
   &--direction--column {
@@ -22,6 +22,11 @@
     justify-items: center;
     grid-gap: 10px;
     grid-template-rows: max-content;
+  }
+
+  &--addition--bottom {
+    margin-bottom: 10px;
+    padding: 0 16px;
   }
 
 
@@ -62,7 +67,7 @@
 
     &--text--bold {
       @extend %style-3;
-      padding-top: 20px;
+      margin: auto 0;
     }
 
     &--text--normal {

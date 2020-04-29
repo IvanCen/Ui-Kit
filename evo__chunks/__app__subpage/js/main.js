@@ -1,15 +1,9 @@
-/* const page = document.querySelector('.page');
-const buttonPage = document.querySelector('.button-page');
-
-
-buttonPage.addEventListener('click',function(){
-    page.classList.toggle('page--opened');
-}); */
-
-
-function createPage() {
+function createSubPage() {
   const element = document.createElement('div');
-  element.classList.add('page');
+  const section = document.createElement('section');
+  element.classList.add('subpage');
+  section.classList.add('subpage__content');
+  element.append(section);
 
   return element;
 }

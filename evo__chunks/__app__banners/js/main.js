@@ -1,21 +1,21 @@
-class CreateBanners extends CreateItem {
+class CreateBannersMain extends CreateItem {
   constructor(parameters) {
     super();
     this.parameters = parameters;
     this.element = document.createElement(this.parameters.selector);
     this.template = `
       <div class="banner__container">
-        <div text="Hello" class="banners__banner">
-            <div class="banners__banner-filler"></div>
+        <div text="Hello" class="banners__banner banners__banner--type--rectangle">
+            <div class="banners__banner-filler banners__banner-filler--type--rectangle"></div>
         </div>
-        <div class="banners__banner">
-            <div class="banners__banner-filler"></div>
+        <div text="Hello" class="banners__banner banners__banner--type--rectangle">
+            <div class="banners__banner-filler banners__banner-filler--type--rectangle"></div>
         </div>
-        <div class="banners__banner">
-            <div class="banners__banner-filler"></div>
+        <div text="Hello" class="banners__banner banners__banner--type--rectangle">
+            <div class="banners__banner-filler banners__banner-filler--type--rectangle"></div>
         </div>
-        <div class="banners__banner">
-            <div class="banners__banner-filler"></div>
+        <div text="Hello" class="banners__banner banners__banner--type--rectangle">
+            <div class="banners__banner-filler banners__banner-filler--type--rectangle"></div>
         </div>
     </div>`;
   }
@@ -27,6 +27,44 @@ class CreateBanners extends CreateItem {
   }
 }
 
+class CreateBannersOrder extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+    this.element = document.createElement(this.parameters.selector);
+    this.template = `
+      <div class="banner__container">
+        <div name="Blonde Caffe Americano" text="Hello" class="banners__banner banners__banner---type--circle">
+            <div class="banners__banner-filler banners__banner-filler---type--circle"></div>
+            <span class="banners__text">Starbucks Blonde Caffe Americano</span>
+        </div>
+        <div text="Hello" class="banners__banner banners__banner---type--circle">
+            <div class="banners__banner-filler banners__banner-filler---type--circle"></div>
+        </div>
+        <div text="Hello" class="banners__banner banners__banner---type--circle">
+            <div class="banners__banner-filler banners__banner-filler---type--circle"></div>
+        </div>
+        <div text="Hello" class="banners__banner banners__banner---type--circle">
+            <div class="banners__banner-filler banners__banner-filler---type--circle"></div>
+        </div>
+    </div>`;
+  }
+
+
+  create() {
+    this.element.insertAdjacentHTML('beforeend', this.template);
+
+    this.card = this.element.querySelector('[name="Blonde Caffe Americano"]');
+    if (typeof this.parameters.eventCard === 'object') {
+      for (const event of this.parameters.eventCard) {
+        this.card.addEventListener(event.type, event.callback);
+      }
+
+
+      return super.create(this.element);
+    }
+  }
+}
 function activeBanners() {
   const bannerContainer = document.querySelector('.banner__container');
   let dragStart = 0;

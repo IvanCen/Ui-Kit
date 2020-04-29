@@ -1,4 +1,3 @@
-
 function switchActiveFooter() {
   const footerButton = document.querySelectorAll('.footer__button');
   [...footerButton].forEach((item) => {
@@ -20,13 +19,13 @@ class CreateFooter extends CreateItem {
     this.element = document.createElement(this.parameters.selector);
     this.template = `
       <button class="footer__button footer__button--active footer__button--type--main">
-            <svg class="footer__icon footer__icon--active" viewBox="0 0 24 24"  xmlns="http://www.w3.org/2000/svg">
+            <svg class="footer__icon footer__icon--active footer__icon--type--main" viewBox="0 0 24 24"  xmlns="http://www.w3.org/2000/svg">
               <path d="M16.38 1.84009C12.36 1.84009 9.29002 5.16009 8.56002 9.19009C8.54002 9.31009 8.38002 9.33009 8.33002 9.22009C7.95002 8.33009 7.74002 7.36009 7.74002 6.34009C7.74002 4.72009 8.27002 3.22009 9.16002 2.02009C8.67002 1.90009 8.15002 1.84009 7.62002 1.84009C3.91002 1.84009 0.900024 4.85009 0.900024 8.56009C0.900024 14.4801 12 22.1601 12 22.1601C12 22.1601 23.1 14.4801 23.1 8.56009C23.1 4.85009 20.09 1.84009 16.38 1.84009ZM16.38 11.1501C14.95 11.1501 13.79 9.99009 13.79 8.56009C13.79 7.13009 14.95 5.97009 16.38 5.97009C17.81 5.97009 18.97 7.13009 18.97 8.56009C18.97 9.99009 17.81 11.1501 16.38 11.1501Z"/>
             </svg>
         Main
         </button>
         <button class="footer__button footer__button--type--cards">
-            <svg class="footer__icon" viewBox="0 0 26 24"  xmlns="http://www.w3.org/2000/svg">
+            <svg class="footer__icon footer__icon--type--cards" viewBox="0 0 26 24"  xmlns="http://www.w3.org/2000/svg">
               <path d="M26 8.46008V19.9801C26 20.7801 25.35 21.4201 24.56 21.4201H6.08C5.28 21.4201 4.64 20.7701 4.64 19.9801V18.4301H19.93C21.52 18.4301 22.82 17.1301 22.82 15.5401V7.02008H24.57C25.35 7.02008 26 7.66008 26 8.46008ZM21.37 15.4801V4.08008C21.37 3.25008 20.7 2.58008 19.87 2.58008H1.5C0.67 2.58008 0 3.25008 0 4.08008V15.4901C0 16.3201 0.67 16.9901 1.5 16.9901H19.87C20.69 16.9801 21.37 16.3101 21.37 15.4801Z"/>
             </svg>
         Cards
@@ -70,13 +69,13 @@ class CreateFooter extends CreateItem {
         this.buttonCards.addEventListener(event.type, event.callback);
       }
     }
-    /* this.buttonCards = this.element.querySelector('.footer__button--type--cards');
-    if (typeof this.parameters.eventOpenCardsPage === 'object') {
-      for (const event of this.parameters.eventOpenCardsPage) {
-        this.buttonCards.addEventListener(event.type, event.callback);
+    this.buttonOrder = this.element.querySelector('.footer__button--type--order');
+    if (typeof this.parameters.eventOpenOrderPage === 'object') {
+      for (const event of this.parameters.eventOpenOrderPage) {
+        this.buttonOrder.addEventListener(event.type, event.callback);
       }
     }
-    this.buttonCards = this.element.querySelector('.footer__button--type--cards');
+    /*  this.buttonCards = this.element.querySelector('.footer__button--type--cards');
     if (typeof this.parameters.eventOpenCardsPage === 'object') {
       for (const event of this.parameters.eventOpenCardsPage) {
         this.buttonCards.addEventListener(event.type, event.callback);
