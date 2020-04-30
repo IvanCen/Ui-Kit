@@ -76,7 +76,7 @@ class CreateTopBarSignIn extends CreateItem {
   }
 }
 
-class CreateTopBarCards extends CreateItem {
+class CreateTopBarDefault extends CreateItem {
   constructor(parameters) {
     super();
     this.parameters = parameters;

@@ -5,6 +5,16 @@ class TogglePageOrderCategory extends TogglePage {
     this.rendering = this.rendering.bind(this);
   }
 
+  openPage() {
+    super.openPage();
+    this.mainPage.classList.add('main-page--fixed');
+  }
+
+  closePage() {
+    super.closePage();
+    this.mainPage.classList.remove('main-page--fixed');
+  }
+
   rendering() {
     super.rendering();
     const orderCardTopBar = new CreateTopBarOrderCard({
@@ -34,6 +44,7 @@ class TogglePageOrderCategory extends TogglePage {
     this.page.append(orderCardTopBar.create());
     this.page.append(orderCardTitleAmericano.create());
     this.page.append(orderCardBannersAmericano.create());
+
     activeBanners();
     this.openPage();
   }

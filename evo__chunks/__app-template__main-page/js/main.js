@@ -1,7 +1,10 @@
 const mainPage = document.querySelector('.main-page');
 const body = document.querySelector('body');
 
-const toggleOrderContent = new ToggleOrderContent();
+const toggleOrderMenuContent = new ToggleOrderMenuContent();
+const toggleOrderHitsContent = new ToggleOrderHitsContent();
+const toggleOrderHistoryContent = new ToggleOrderHistoryContent();
+const toggleOrderFavoriteContent = new ToggleOrderFavoriteContent();
 const togglePageSignIn = new TogglePageSignIn({
   classOpen: ['page--opened'],
 });
@@ -13,8 +16,8 @@ const togglePageOrderCategory = new TogglePageOrderCategory({
 });
 const toggleCards = new ToggleCards();
 const toggleOrder = new ToggleOrder();
+const toggleGift = new ToggleGift();
 const renderMainPage = new ToggleMain();
-
 
 renderMainPage.rendering();
 
@@ -40,6 +43,15 @@ const mainPageFooter = new CreateFooter({
   eventOpenOrderPage: [
     { type: 'click', callback: toggleOrder.clearPage },
     { type: 'click', callback: toggleOrder.rendering },
+    { type: 'click', callback: toggleOrderMenuContent.rendering },
+    { type: 'click', callback: togglePageOrderCategory.closePage },
+    { type: 'click', callback: togglePageOrderCategory.deletePage },
+    { type: 'click', callback: toggleSubPageProductCard.closePage },
+    { type: 'click', callback: toggleSubPageProductCard.deletePage },
+  ],
+  eventOpenGiftPage: [
+    { type: 'click', callback: toggleGift.clearPage },
+    { type: 'click', callback: toggleGift.rendering },
     { type: 'click', callback: togglePageOrderCategory.closePage },
     { type: 'click', callback: togglePageOrderCategory.deletePage },
     { type: 'click', callback: toggleSubPageProductCard.closePage },

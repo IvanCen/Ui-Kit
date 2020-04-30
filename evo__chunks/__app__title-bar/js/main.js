@@ -15,13 +15,13 @@ class CreateTitleBar extends CreateItem {
 }
 
 
-class CreateTitleBarOrder extends CreateItem {
+class CreateTitleBarWithButton extends CreateItem {
   constructor(parameters) {
     super();
     this.parameters = parameters;
     this.element = document.createElement(this.parameters.selector);
     this.template = `
-      <h2 class="title-bar__title title-bar__title--size--medium">${this.parameters.title}</h2>
+      <h2 class="title-bar__title title-bar__title--size--${this.parameters.titleSize}">${this.parameters.title}</h2>
       <button class="title-bar__button">${this.parameters.buttonText}</button>`;
   }
 

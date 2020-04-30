@@ -58,11 +58,19 @@
 
   &__text {
     @extend %style-6;
-    margin-bottom: 20px;
   }
 
   &__button-container {
     display: flex;
+
+    &--addition--left {
+      padding-left: 16px;
+    }
+
+    &--addition--bottom {
+      padding-bottom: 20px;
+    }
+
   }
 
   &__button {

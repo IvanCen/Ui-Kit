@@ -4,12 +4,13 @@
   width: 100%;
   box-shadow: 0 5px 6px rgba(0, 0, 0, 0.1);
   position: sticky;
+  left: 0;
   bottom: 78px;
   background-color: $bokaraGrey;
   color: $white;
   display: flex;
   justify-content: space-between;
-  z-index: 6;
+  z-index: 3;
 
 
   &--indentation--normal {
@@ -111,6 +112,6 @@
   &__counter {
     position: absolute;
     bottom: 14px;
-    right: 23px;
+    right: 22px;
   }
 }

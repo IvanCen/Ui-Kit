@@ -7,20 +7,29 @@
 
   &--size--big {
     @extend %style-4;
+    font-weight: bold;
     padding: 15px 27px;
     border-radius: 50px;
+    max-height: 50px;
+    height: 100%;
   }
 
   &--size--medium {
     @extend %style-4;
+    font-weight: bold;
     padding: 8px 18px;
     border-radius: 50px;
+    max-height: 35px;
+    height: 100%;
   }
 
   &--size--small {
     @extend %style-5;
+    font-weight: bold;
     padding: 4px 15px;
     border-radius: 50px;
+    max-height: 29px;
+    height: 100%;
   }
 
   &--size--large {

@@ -5,9 +5,15 @@ class ToggleCards extends ToggleMainPage {
     this.rendering = this.rendering.bind(this);
   }
 
+  closePage() {
+    super.closePage();
+    this.mainPageContent.classList.remove('main-page__content--size--small');
+  }
+
   rendering() {
     super.rendering();
-    const cardsTopBar = new CreateTopBarCards({
+    this.mainPageContent.classList.add('main-page__content--size--small');
+    const cardsTopBar = new CreateTopBarDefault({
       selector: ['div'],
       style: ['top-bar'],
       modifier: ['--size--medium'],

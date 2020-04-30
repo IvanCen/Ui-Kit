@@ -21,12 +21,12 @@
   &__button {
     margin-top: 34px;
     align-self: flex-end;
-    height: auto;
 
-    &--type--sign-in {
+    &--type--sign-in.button {
       position: absolute;
       bottom: 16px;
       right: 16px;
+      width: auto;
     }
   }
 

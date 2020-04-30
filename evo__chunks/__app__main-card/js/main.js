@@ -10,9 +10,9 @@ class CreateMainCard extends CreateItem {
         <p class="main-card__text">Notes of smoked butterscotch intermingle with our signature espresso,
           giving your latte a
           sophisticated new twist</p>
-        <div class="main-card__button-container">
-          <button class="button button--size--small button--theme--tangerin main-card__button">Details</button>
-        </div>
+      </div>
+      <div class="main-card__button-container main-card__button-container--addition--left main-card__button-container--addition--bottom">
+        <button class="button button--size--small button--theme--tangerin main-card__button">Details</button>
       </div>`;
   }
 
@@ -38,6 +38,42 @@ class CreateCardsCard extends CreateItem {
   create() {
     this.element.insertAdjacentHTML('beforeend', this.template);
 
+    return super.create(this.element);
+  }
+}
+
+class CreateOrderMainCard extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+    this.element = document.createElement(this.parameters.selector);
+    this.template = `
+        <img src="[+chunkWebPath+]/img/main-card-noimg.jpg" alt="" class="main-card__img">
+        <div class="main-card__text-area">
+          <h2 class="main-card__title">${this.parameters.title}</h2>
+          <p class="main-card__text">${this.parameters.text}</p>
+        </div>
+        <div class="main-card__button-container main-card__button-container--addition--left main-card__button-container--addition--bottom">
+          <button class="button button--size--small button--theme--tangerin main-card__button main-card__button-sign-in">Sign in</button>
+          <button class="button button--size--small button--theme--tangerin-transparent main-card__button main-card__button-join-now">Join now</button>
+        </div>`;
+  }
+
+  create() {
+    this.element.insertAdjacentHTML('beforeend', this.template);
+
+    this.buttonSignIn = this.element.querySelector('.main-card__button-sign-in');
+    this.buttonJoinNow = this.element.querySelector('.main-card__button-join-now');
+    if (typeof this.parameters.eventOpenSignInPage === 'object') {
+      for (const event of this.parameters.eventOpenSignInPage) {
+        this.buttonSignIn.addEventListener(event.type, event.callback);
+      }
+    }
+    if (typeof this.parameters.eventOpenJoinNowPage === 'object') {
+      for (const event of this.parameters.eventOpenJoinNowPage) {
+        this.buttonJoinNow.addEventListener(event.type, event.callback);
+      }
+    }
     return super.create(this.element);
   }
 }

@@ -36,6 +36,7 @@ class TogglePage {
     this.body = document.querySelector('body');
     this.page = document.querySelector('.page');
     this.pageContent = document.querySelector('.page__content');
+    this.mainPage = document.querySelector('.main-page');
     this.classOpen = this.parameters.classOpen;
 
     this.closePage = this.closePage.bind(this);
@@ -169,12 +170,10 @@ class ToggleOrderContent {
 
   rendering() {
     this.mainPageContent = document.querySelector('.main-page__content');
-    console.log(this.mainPageContent);
   }
 
   clearPage() {
     this.mainPageContent = document.querySelector('.main-page__content');
-
     this.arrHtml = Array.from(this.mainPageContent.children);
     this.arrHtml.forEach((item) => item.remove());
   }

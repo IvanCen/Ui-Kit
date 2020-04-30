@@ -58,6 +58,8 @@ class CreateFooter extends CreateItem {
 
     this.buttonMain = this.element.querySelector('.footer__button--type--main');
     this.buttonCards = this.element.querySelector('.footer__button--type--cards');
+    this.buttonOrder = this.element.querySelector('.footer__button--type--order');
+    this.buttonGift = this.element.querySelector('.footer__button--type--gift');
 
     if (typeof this.parameters.eventOpenMainPage === 'object') {
       for (const event of this.parameters.eventOpenMainPage) {
@@ -69,19 +71,19 @@ class CreateFooter extends CreateItem {
         this.buttonCards.addEventListener(event.type, event.callback);
       }
     }
-    this.buttonOrder = this.element.querySelector('.footer__button--type--order');
+
     if (typeof this.parameters.eventOpenOrderPage === 'object') {
       for (const event of this.parameters.eventOpenOrderPage) {
         this.buttonOrder.addEventListener(event.type, event.callback);
       }
     }
-    /*  this.buttonCards = this.element.querySelector('.footer__button--type--cards');
-    if (typeof this.parameters.eventOpenCardsPage === 'object') {
-      for (const event of this.parameters.eventOpenCardsPage) {
-        this.buttonCards.addEventListener(event.type, event.callback);
+
+    if (typeof this.parameters.eventOpenGiftPage === 'object') {
+      for (const event of this.parameters.eventOpenGiftPage) {
+        this.buttonGift.addEventListener(event.type, event.callback);
       }
     }
-    this.buttonCards = this.element.querySelector('.footer__button--type--cards');
+    /* this.buttonCards = this.element.querySelector('.footer__button--type--cards');
     if (typeof this.parameters.eventOpenCardsPage === 'object') {
       for (const event of this.parameters.eventOpenCardsPage) {
         this.buttonCards.addEventListener(event.type, event.callback);

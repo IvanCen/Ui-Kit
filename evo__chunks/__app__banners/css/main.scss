@@ -11,6 +11,7 @@
   flex-direction: row;
   flex-wrap: nowrap;
   position: relative;
+
   //touch-action: none; // нужно расскомментировать когда вертикальный скролл будет сделан на js
   &--with-animation {
     transition: transform .3s ease;
