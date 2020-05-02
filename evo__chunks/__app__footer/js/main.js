@@ -60,6 +60,7 @@ class CreateFooter extends CreateItem {
     this.buttonCards = this.element.querySelector('.footer__button--type--cards');
     this.buttonOrder = this.element.querySelector('.footer__button--type--order');
     this.buttonGift = this.element.querySelector('.footer__button--type--gift');
+    this.buttonStores = this.element.querySelector('.footer__button--type--stores');
 
     if (typeof this.parameters.eventOpenMainPage === 'object') {
       for (const event of this.parameters.eventOpenMainPage) {
@@ -83,12 +84,12 @@ class CreateFooter extends CreateItem {
         this.buttonGift.addEventListener(event.type, event.callback);
       }
     }
-    /* this.buttonCards = this.element.querySelector('.footer__button--type--cards');
-    if (typeof this.parameters.eventOpenCardsPage === 'object') {
-      for (const event of this.parameters.eventOpenCardsPage) {
-        this.buttonCards.addEventListener(event.type, event.callback);
+
+    if (typeof this.parameters.eventOpenStoresPage === 'object') {
+      for (const event of this.parameters.eventOpenStoresPage) {
+        this.buttonStores.addEventListener(event.type, event.callback);
       }
-    } */
+    }
 
     return super.create(this.element);
   }

@@ -135,5 +135,11 @@
     align-self: flex-start;
   }
 
+  &--type--fixed {
+    position: fixed;
+    bottom: 95px;
+    right: 16px;
+  }
+
 }
 

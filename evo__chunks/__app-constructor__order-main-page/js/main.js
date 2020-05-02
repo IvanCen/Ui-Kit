@@ -7,6 +7,7 @@ class ToggleOrder extends ToggleMainPage {
 
   rendering() {
     super.rendering();
+    this.mainPageContent.classList.add('main-page__content--with--bottom-bar');
     const orderTopBar = new CreateTopBarOrder({
       selector: ['div'],
       style: ['top-bar'],

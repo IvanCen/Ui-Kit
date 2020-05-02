@@ -18,7 +18,7 @@ class ToggleMain extends ToggleMainPage {
     const mainPageTitleBarSmall = new CreateTitleBar({
       selector: ['h2'],
       style: ['title-bar'],
-      modifier: ['__title', '__title--size--small'],
+      modifier: ['__title', '__title--size--small', '--indentation--top'],
       text: ['starbucks rewards'],
     });
 
@@ -29,14 +29,15 @@ class ToggleMain extends ToggleMainPage {
       text: ['Let Starbucks Rewards add'],
     });
 
-    const mainPageBanners = new CreateBannersMain({
+    const mainPageBanners = new CreateBannersRectangle({
       selector: ['div'],
       style: ['banners'],
+      bannerSize: ['medium'],
     });
     const mainPageMainCard = new CreateMainCard({
       selector: ['div'],
       style: ['main-card'],
-      modifier: ['--type--border'],
+      modifier: ['--type--border', '--theme--shadow'],
     });
 
 
@@ -47,6 +48,7 @@ class ToggleMain extends ToggleMainPage {
         modifier: ['--size--small',
           '--theme--dark-transparent',
           '--indentation--left',
+          '--indentation--bottom',
         ],
         text: ['Join Now'],
       },

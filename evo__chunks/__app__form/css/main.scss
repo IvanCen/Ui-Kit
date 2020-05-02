@@ -75,7 +75,7 @@
       transition: max-height 1s ease-in;
     }
 
-    &:valid {
+    &--valid {
       border-color: $seaGreen;
     }
 

@@ -19,7 +19,7 @@ class ToggleCards extends ToggleMainPage {
       modifier: ['--size--medium'],
       textTitle: ['Cards'],
     });
-    const cardsCard = new CreateCardsCard({
+    const cardsCard = new CreateCardsMainCard({
       selector: ['div'],
       style: ['main-card'],
     });

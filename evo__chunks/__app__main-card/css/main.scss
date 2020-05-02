@@ -3,10 +3,14 @@
 .main-card {
 
   &--type--border {
-    margin: 20px 16px;
-    border-radius: 6px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+    margin: 0 16px 20px;
+  }
+
+  &--theme--shadow {
     overflow: hidden;
+    min-height: max-content;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+    border-radius: 6px;
   }
 
   &__content {
@@ -43,12 +47,18 @@
   &__img {
     background-size: cover;
     width: 100%;
+    margin-bottom: 20px;
+
+    &--theme--shadow {
+      box-shadow: 0 5px 5px rgba(0, 0, 0, 0.22);
+      border-radius: 12px;
+    }
   }
 
   &__text-area {
     display: flex;
     flex-direction: column;
-    padding: 20px 16px;
+    padding: 0 16px 20px;
   }
 
   &__title {
@@ -63,11 +73,11 @@
   &__button-container {
     display: flex;
 
-    &--addition--left {
+    &--indentation--left {
       padding-left: 16px;
     }
 
-    &--addition--bottom {
+    &--indentation--bottom {
       padding-bottom: 20px;
     }
 

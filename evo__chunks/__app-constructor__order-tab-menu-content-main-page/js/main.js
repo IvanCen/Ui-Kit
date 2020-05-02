@@ -12,6 +12,8 @@ class ToggleOrderMenuContent extends ToggleOrderContent {
       selector: ['div'],
       style: ['title-bar'],
       title: ['Напитки'],
+      modifier: ['--indentation--top'],
+      titleSize: ['medium'],
       buttonText: ['Посмотреть 26'],
     });
     const orderTitleBarFoods = new CreateTitleBarWithButton({
@@ -26,7 +28,7 @@ class ToggleOrderMenuContent extends ToggleOrderContent {
       style: ['card-item'],
       modifier: [
         '--direction--row',
-        '--addition--bottom',
+        '--indentation--bottom',
       ],
       title: ['Горячий кофе'],
       events: [{ type: 'click', callback: togglePageOrderCategory.rendering }],
@@ -36,7 +38,7 @@ class ToggleOrderMenuContent extends ToggleOrderContent {
       style: ['card-item'],
       modifier: [
         '--direction--row',
-        '--addition--bottom',
+        '--indentation--bottom',
       ],
       title: ['Горячий чай'],
     });
@@ -45,7 +47,7 @@ class ToggleOrderMenuContent extends ToggleOrderContent {
       style: ['card-item'],
       modifier: [
         '--direction--row',
-        '--addition--bottom',
+        '--indentation--bottom',
       ],
       title: ['Горячий напитки'],
     });
@@ -54,7 +56,7 @@ class ToggleOrderMenuContent extends ToggleOrderContent {
       style: ['card-item'],
       modifier: [
         '--direction--row',
-        '--addition--bottom',
+        '--indentation--bottom',
       ],
       title: ['Кофейные и молочные коктейли'],
     });
@@ -63,7 +65,7 @@ class ToggleOrderMenuContent extends ToggleOrderContent {
       style: ['card-item'],
       modifier: [
         '--direction--row',
-        '--addition--bottom',
+        '--indentation--bottom',
       ],
       title: ['Холодные напитки'],
     });
@@ -72,7 +74,7 @@ class ToggleOrderMenuContent extends ToggleOrderContent {
       style: ['card-item'],
       modifier: [
         '--direction--row',
-        '--addition--bottom',
+        '--indentation--bottom',
       ],
       title: ['Завтраки'],
     });
@@ -81,7 +83,7 @@ class ToggleOrderMenuContent extends ToggleOrderContent {
       style: ['card-item'],
       modifier: [
         '--direction--row',
-        '--addition--bottom',
+        '--indentation--bottom',
       ],
       title: ['Бизнес-ланчи'],
     });
@@ -90,7 +92,7 @@ class ToggleOrderMenuContent extends ToggleOrderContent {
       style: ['card-item'],
       modifier: [
         '--direction--row',
-        '--addition--bottom',
+        '--indentation--bottom',
       ],
       title: ['Выпечка'],
     });
@@ -99,7 +101,7 @@ class ToggleOrderMenuContent extends ToggleOrderContent {
       style: ['card-item'],
       modifier: [
         '--direction--row',
-        '--addition--bottom',
+        '--indentation--bottom',
       ],
       title: ['Десерты'],
     });
@@ -108,7 +110,7 @@ class ToggleOrderMenuContent extends ToggleOrderContent {
       style: ['card-item'],
       modifier: [
         '--direction--row',
-        '--addition--bottom',
+        '--indentation--bottom',
       ],
       title: ['Снеки'],
     });

@@ -7,7 +7,7 @@ class ToggleSubPageProductCard extends ToggleSubPage {
 
   rendering() {
     super.rendering();
-    const productCardMainCard = new CreateOrderProductCard({
+    const productCardMainCard = new CreateOrderProductMainCard({
       selector: ['div'],
       style: ['main-card'],
       title: ['Smoked Butterscotch Latte'],

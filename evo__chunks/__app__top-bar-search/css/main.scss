@@ -3,8 +3,8 @@
 .top-bar-search {
   width: 100%;
   border-bottom: 1px solid $gainsboroGray;
+  border-top: 1px solid $gainsboroGray;
   padding: 16px 16px 7px;
-  border-radius: 9px 9px 0 0;
 
   &__input-area.input__area {
     @extend %style-1;

@@ -2,12 +2,23 @@
 
 .select-item {
   display: flex;
-  justify-content: space-between;
-  flex-direction: column;
-  width: 156px;
-  padding: 0 16px;
-  position: relative;
-  z-index: 2;
+  margin: 0 16px 20px;
+
+  &__img {
+    max-height: 108px;
+    height: 100%;
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.15);
+    border-radius: 6px;
+  }
+
+  &__choice-content {
+    display: flex;
+    flex-direction: column;
+    width: 156px;
+    padding: 0 16px;
+    position: relative;
+    z-index: 2;
+  }
 
   &__button-container {
     display: flex;

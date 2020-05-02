@@ -3,14 +3,14 @@
 .bottom-bar {
   width: 100%;
   box-shadow: 0 5px 6px rgba(0, 0, 0, 0.1);
-  position: sticky;
+  position: fixed;
   left: 0;
   bottom: 78px;
   background-color: $bokaraGrey;
   color: $white;
   display: flex;
   justify-content: space-between;
-  z-index: 3;
+  z-index: 5;
 
 
   &--indentation--normal {

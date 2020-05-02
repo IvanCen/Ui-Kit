@@ -160,13 +160,18 @@ function validation() {
     if (input.CustomValidation.invalidities.length === 0 && input.value !== '') {
       input.setCustomValidity('');
       input.classList.remove('form__input-area--invalid');
-      input.classList.remove('form__input-area--invalid');
-      iconError.classList.remove('form__input-icon-error--visible');
+      input.classList.add('form__input-area--valid');
+      if (iconError) {
+        iconError.classList.remove('form__input-icon-error--visible');
+      }
     } else {
       const message = input.CustomValidation.getInvalidities();
       input.setCustomValidity(message);
       input.classList.add('form__input-area--invalid');
-      iconError.classList.add('form__input-icon-error--visible');
+      input.classList.remove('form__input-area--valid');
+      if (iconError) {
+        iconError.classList.add('form__input-icon-error--visible');
+      }
     }
   }
 
@@ -206,21 +211,96 @@ function validation() {
   }
 }
 
-
-function createFormInputSignIn(parameters) {
-  if (typeof parameters !== 'object') {
-    parameters = {};
+class CreateFormInputSignIn extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+    this.element = document.createElement(this.parameters.selector);
+    this.template = `
+      <div class="form__input">
+          <label class="form__input-underlined">
+            <input class="form__input-area form__input-area--type--fly-label form__input-area--type--email" type="email" required>
+            <span class="form__input-label">Email</span>
+            <ul class="form__input-requirements">
+              <li class="form__input-requirement form__input-requirement--type--email">Please enter a valid email address</li>
+            </ul>
+            <div class="form__input-icon-container">
+              <img src="[+chunkWebPath+]/img/icon-attention-triangle.svg" alt="" class="form__input-icon form__input-icon-error">
+            </div>
+          </label>
+          </div>
+          <div class="form__input">
+          <label class="form__input-underlined">
+            <input class="form__input-area form__input-area--type--fly-label form__input-area--type--password"
+                   type="password" maxlength="100" minlength="8" required>
+            <span class="form__input-label">Password</span>
+            <ul class="form__input-requirements">
+              <li class="form__input-requirement form__input-requirement--type--password">At least 8 characters long (and less than
+                100 characters)
+              </li>
+              <li class="form__input-requirement form__input-requirement--type--password">Contains at least 1 number</li>
+              <li class="form__input-requirement form__input-requirement--type--password">Contains at least 1 lowercase letter</li>
+              <li class="form__input-requirement form__input-requirement--type--password">Contains at least 1 uppercase letter</li>
+              <li class="form__input-requirement form__input-requirement--type--password">Contains a special character (e.g. @ !)
+              </li>
+            </ul>
+            <div class="form__input-icon-container">
+              <img src="[+chunkWebPath+]/img/icon-eye-noVisible.svg" alt="" class="form__input-icon form__input-icon-eye">
+              <img src="[+chunkWebPath+]/img/icon-attention-triangle.svg" alt="" class="form__input-icon form__input-icon-error">
+            </div>
+          </label>
+     </div> 
+     <button class="button form__button button--theme--size--small button--theme--oranges-transparent button--position--left">Forgot password?</button> 
+     <button class="button form__button button--theme--size--small button--theme--oranges-transparent button--position--left">Forgot username?</button> 
+     <button class="button button--theme--tangerin button--size--big button--theme--shadow-big form__button form__button--type--sign-in" type="submit">Sign in</button>
+   `;
   }
-  const element = document.createElement('form');
 
-  if (typeof parameters.modifier === 'object') {
-    for (const style of parameters.modifier) {
-      element.classList.add(style);
+  create() {
+    this.element.insertAdjacentHTML('beforeend', this.template);
+
+    this.buttonSignIn = this.element.querySelector('.form__button--type--sign-in');
+
+    if (typeof this.parameters.events === 'object') {
+      for (const event of this.parameters.events) {
+        this.buttonSignIn.addEventListener(event.type, event.callback);
+      }
     }
-  }
 
-  const template = `
-    <div class="form__input">
+    return super.create(this.element);
+  }
+}
+
+class CreateFormGiftCard extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+    this.element = document.createElement(this.parameters.selector);
+    this.template = `
+      <div class="form__input">
+        <label class="form__input-underlined">
+          <input class="form__input-area form__input-area--type--fly-label form__input-area--type--text" type="text">
+          <span class="form__input-label">Add a message (optional)</span>
+          <ul class="form__input-requirements">
+            <li class="form__input-requirement form__input-requirement--type--text"></li>
+          </ul>
+          <div class="form__input-icon-container">
+            <img src="[+chunkWebPath+]/img/icon-attention-triangle.svg" alt="" class="form__input-icon form__input-icon-error">
+          </div>
+        </label>
+      </div>
+      <div class="form__input">
+        <label class="form__input-underlined">
+          <input class="form__input-area form__input-area__name form__input-area--type--fly-label" minlength="2">
+          <span class="form__input-label">Name</span>
+          <ul class="form__input-requirements">
+            <li class="form__input-requirement form__input-requirement--type--name">This input needs to be at least 2 characters
+            </li>
+            <li class="form__input-requirement form__input-requirement--type--name">Only russian letters are allowed</li>
+          </ul>
+        </label>
+      </div>
+      <div class="form__input">
         <label class="form__input-underlined">
           <input class="form__input-area form__input-area--type--fly-label form__input-area--type--email" type="email" required>
           <span class="form__input-label">Email</span>
@@ -231,46 +311,23 @@ function createFormInputSignIn(parameters) {
             <img src="[+chunkWebPath+]/img/icon-attention-triangle.svg" alt="" class="form__input-icon form__input-icon-error">
           </div>
         </label>
-        </div>
-        <div class="form__input">
-        <label class="form__input-underlined">
-          <input class="form__input-area form__input-area--type--fly-label form__input-area--type--password"
-                 type="password" maxlength="100" minlength="8" required>
-          <span class="form__input-label">Password</span>
-          <ul class="form__input-requirements">
-            <li class="form__input-requirement form__input-requirement--type--password">At least 8 characters long (and less than
-              100 characters)
-            </li>
-            <li class="form__input-requirement form__input-requirement--type--password">Contains at least 1 number</li>
-            <li class="form__input-requirement form__input-requirement--type--password">Contains at least 1 lowercase letter</li>
-            <li class="form__input-requirement form__input-requirement--type--password">Contains at least 1 uppercase letter</li>
-            <li class="form__input-requirement form__input-requirement--type--password">Contains a special character (e.g. @ !)
-            </li>
-          </ul>
-          <div class="form__input-icon-container">
-            <img src="[+chunkWebPath+]/img/icon-eye-noVisible.svg" alt="" class="form__input-icon form__input-icon-eye">
-            <img src="[+chunkWebPath+]/img/icon-attention-triangle.svg" alt="" class="form__input-icon form__input-icon-error">
-          </div>
-        </label>
-   </div> 
-   <button class="button form__button button--theme--size--small button--theme--oranges-transparent button--position--left">Forgot password?</button> 
-   <button class="button form__button button--theme--size--small button--theme--oranges-transparent button--position--left">Forgot username?</button> 
-   <button class="button button--theme--tangerin button--size--big button--theme--shadow-big form__button form__button--type--sign-in" type="submit">Sign in</button>
- `;
-
-  element.insertAdjacentHTML('beforeend', template);
-
-  const buttonSignIn = element.querySelector('.form__button--type--sign-in');
-
-  if (typeof parameters.events === 'object') {
-    for (const event of parameters.events) {
-      buttonSignIn.addEventListener(event.type, event.callback);
-    }
+       </div>
+         
+     <button class="button button--theme--tangerin button--size--big button--theme--shadow-big form__button form__button--type--sign-in" type="submit">Checkout</button>
+   `;
   }
-  if (typeof parameters.modifier === 'object') {
-    for (const style of parameters.modifier) {
-      buttonSignIn.classList.add(style);
+
+  create() {
+    this.element.insertAdjacentHTML('beforeend', this.template);
+
+    this.buttonCheckout = this.element.querySelector('.form__button--type--sign-in');
+
+    if (typeof this.parameters.events === 'object') {
+      for (const event of this.parameters.events) {
+        this.buttonCheckout.addEventListener(event.type, event.callback);
+      }
     }
+
+    return super.create(this.element);
   }
-  return element;
 }

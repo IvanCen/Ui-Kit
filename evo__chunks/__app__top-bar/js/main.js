@@ -60,10 +60,6 @@ class CreateTopBarSignIn extends CreateItem {
   }
 
   create() {
-    if (typeof this.parameters.text === 'object') {
-      this.element.textContent = this.parameters.text;
-    }
-
     this.element.insertAdjacentHTML('beforeend', this.template);
     this.iconClose = this.element.querySelector('.top-bar__icon--type--close');
     if (typeof this.parameters.eventCloseIcon === 'object') {
@@ -88,15 +84,33 @@ class CreateTopBarDefault extends CreateItem {
   }
 
   create() {
-    if (typeof this.parameters.text === 'object') {
-      this.element.textContent = this.parameters.text;
-    }
-
     this.element.insertAdjacentHTML('beforeend', this.template);
-    this.iconBack = this.element.querySelector('.top-bar__icon--type--back');
+    return super.create(this.element);
+  }
+}
+
+class CreateTopBarWithBackButton extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+    this.element = document.createElement(this.parameters.selector);
+    this.template = `
+      <div class="top-bar__content-container">
+       <div class="top-bar__header">
+          <button class="button top-bar__back-button">
+            <img src="[+chunkWebPath+]/img/icon-back.svg" alt="Кнопка назад" class="top-bar__icon top-bar__icon-back">
+          </button>
+        </div>
+        <h1 class="top-bar__title">${this.parameters.textTitle}</h1>
+      </div>`;
+  }
+
+  create() {
+    this.element.insertAdjacentHTML('beforeend', this.template);
+    this.buttonBack = this.element.querySelector('.top-bar__back-button');
     if (typeof this.parameters.eventBack === 'object') {
       for (const event of this.parameters.eventBack) {
-        this.iconBack.addEventListener(event.type, event.callback);
+        this.buttonBack.addEventListener(event.type, event.callback);
       }
     }
 
@@ -127,9 +141,6 @@ class CreateTopBarOrder extends CreateItem {
   }
 
   create() {
-    if (typeof this.parameters.text === 'object') {
-      this.element.textContent = this.parameters.text;
-    }
     this.element.insertAdjacentHTML('beforeend', this.template);
 
     this.topBarTabMenu = this.element.querySelector('.top-bar__tab--menu');
@@ -197,10 +208,6 @@ class CreateTopBarOrderCard extends CreateItem {
   }
 
   create() {
-    if (typeof this.parameters.text === 'object') {
-      this.element.textContent = this.parameters.text;
-    }
-
     this.element.insertAdjacentHTML('beforeend', this.template);
     this.iconBack = this.element.querySelector('.top-bar__back-button');
     if (typeof this.parameters.eventBack === 'object') {
@@ -208,6 +215,29 @@ class CreateTopBarOrderCard extends CreateItem {
         this.iconBack.addEventListener(event.type, event.callback);
       }
     }
+
+    return super.create(this.element);
+  }
+}
+
+class CreateTopBarStores extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+    this.element = document.createElement(this.parameters.selector);
+    this.template = `
+      <div class="top-bar__content-container top-bar__content-container--size--small">
+        <div class="top-bar__header">
+          <button class="button button--size--small top-bar__filter-button">Фильтр</button>
+          <button class="button top-bar__search-button">
+          <img src="[+chunkWebPath+]/img/icon-search.svg" alt="Кнопка поиска" class="top-bar__icon">
+          </button>
+        </div>
+      </div>`;
+  }
+
+  create() {
+    this.element.insertAdjacentHTML('beforeend', this.template);
 
     return super.create(this.element);
   }

@@ -17,9 +17,9 @@ class TogglePageSignIn extends TogglePage {
         { type: 'click', callback: this.deletePage },
       ],
     });
-    const formInputSignIn = createFormInputSignIn({
+    const formInputSignIn = new CreateFormInputSignIn({
       selector: ['div'],
-      modifier: ['form'],
+      style: ['form'],
       events: [
         { type: 'click', callback: this.closePage },
         { type: 'click', callback: this.deletePage },
@@ -27,7 +27,7 @@ class TogglePageSignIn extends TogglePage {
     });
 
     this.page.append(signInTopBar.create());
-    this.page.append(formInputSignIn);
+    this.page.append(formInputSignIn.create());
     inputFlyLabel();
     inputVisibleTogglePass();
     validation();

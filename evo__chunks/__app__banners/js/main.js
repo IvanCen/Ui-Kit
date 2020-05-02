@@ -72,24 +72,24 @@ function activeBanners() {
 }
 
 
-class CreateBannersMain extends CreateItem {
+class CreateBannersRectangle extends CreateItem {
   constructor(parameters) {
     super();
     this.parameters = parameters;
     this.element = document.createElement(this.parameters.selector);
     this.template = `
       <div class="banner__container">
-        <div text="Hello" class="banners__banner banners__banner--type--rectangle">
-            <div class="banners__banner-filler banners__banner-filler--type--rectangle"></div>
+        <div text="Hello" class="banners__banner banners__banner--type--rectangle banners__banner--size--${this.parameters.bannerSize}">
+            <div class="banners__banner-filler banners__banner-filler--type--rectangle banners__banner-filler--size--${this.parameters.bannerSize}"></div>
         </div>
-        <div text="Hello" class="banners__banner banners__banner--type--rectangle">
-            <div class="banners__banner-filler banners__banner-filler--type--rectangle"></div>
+        <div text="Hello" class="banners__banner banners__banner--type--rectangle banners__banner--size--${this.parameters.bannerSize}">
+            <div class="banners__banner-filler banners__banner-filler--type--rectangle banners__banner-filler--size--${this.parameters.bannerSize}"></div>
         </div>
-        <div text="Hello" class="banners__banner banners__banner--type--rectangle">
-            <div class="banners__banner-filler banners__banner-filler--type--rectangle"></div>
+        <div text="Hello" class="banners__banner banners__banner--type--rectangle banners__banner--size--${this.parameters.bannerSize}">
+            <div class="banners__banner-filler banners__banner-filler--type--rectangle banners__banner-filler--size--${this.parameters.bannerSize}"></div>
         </div>
-        <div text="Hello" class="banners__banner banners__banner--type--rectangle">
-            <div class="banners__banner-filler banners__banner-filler--type--rectangle"></div>
+        <div text="Hello" class="banners__banner banners__banner--type--rectangle banners__banner--size--${this.parameters.bannerSize}">
+            <div class="banners__banner-filler banners__banner-filler--type--rectangle banners__banner-filler--size--${this.parameters.bannerSize}"></div>
         </div>
     </div>`;
   }
@@ -110,7 +110,7 @@ class CreateBannersOrder extends CreateItem {
       <div class="banner__container">
         <div name="Blonde Caffe Americano" text="Hello" class="banners__banner banners__banner---type--circle">
             <div class="banners__banner-filler banners__banner-filler---type--circle"></div>
-            <span class="banners__text">Starbucks Blonde Caffe Americano</span>
+            <span class="banners__text">Americano</span>
         </div>
         <div text="Hello" class="banners__banner banners__banner---type--circle">
             <div class="banners__banner-filler banners__banner-filler---type--circle"></div>

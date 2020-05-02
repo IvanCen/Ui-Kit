@@ -11,7 +11,7 @@ class CreateMainCard extends CreateItem {
           giving your latte a
           sophisticated new twist</p>
       </div>
-      <div class="main-card__button-container main-card__button-container--addition--left main-card__button-container--addition--bottom">
+      <div class="main-card__button-container main-card__button-container--indentation--left main-card__button-container--indentation--bottom">
         <button class="button button--size--small button--theme--tangerin main-card__button">Details</button>
       </div>`;
   }
@@ -23,7 +23,7 @@ class CreateMainCard extends CreateItem {
   }
 }
 
-class CreateCardsCard extends CreateItem {
+class CreateCardsMainCard extends CreateItem {
   constructor(parameters) {
     super();
     this.parameters = parameters;
@@ -53,7 +53,7 @@ class CreateOrderMainCard extends CreateItem {
           <h2 class="main-card__title">${this.parameters.title}</h2>
           <p class="main-card__text">${this.parameters.text}</p>
         </div>
-        <div class="main-card__button-container main-card__button-container--addition--left main-card__button-container--addition--bottom">
+        <div class="main-card__button-container main-card__button-container--indentation--left main-card__button-container--indentation--bottom">
           <button class="button button--size--small button--theme--tangerin main-card__button main-card__button-sign-in">Sign in</button>
           <button class="button button--size--small button--theme--tangerin-transparent main-card__button main-card__button-join-now">Join now</button>
         </div>`;
@@ -78,7 +78,7 @@ class CreateOrderMainCard extends CreateItem {
   }
 }
 
-class CreateOrderProductCard extends CreateItem {
+class CreateOrderProductMainCard extends CreateItem {
   constructor(parameters) {
     super();
     this.parameters = parameters;
@@ -98,6 +98,29 @@ class CreateOrderProductCard extends CreateItem {
     if (typeof this.parameters.eventCloseIcon === 'object') {
       for (const event of this.parameters.eventCloseIcon) {
         this.iconClose.addEventListener(event.type, event.callback);
+      }
+    }
+
+    return super.create(this.element);
+  }
+}
+
+class CreateGiftMainCard extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+    this.element = document.createElement(this.parameters.selector);
+    this.template = `
+      <img src="[+chunkWebPath+]/img/main-card-noimg.jpg" alt="" class="main-card__img main-card__img--theme--shadow">
+      <h2 class="main-card__title">${this.parameters.title}</h2>`;
+  }
+
+  create() {
+    this.element.insertAdjacentHTML('beforeend', this.template);
+
+    if (typeof this.parameters.eventOpenCard === 'object') {
+      for (const event of this.parameters.eventOpenCard) {
+        this.element.addEventListener(event.type, event.callback);
       }
     }
 

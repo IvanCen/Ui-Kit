@@ -20,8 +20,9 @@ class TogglePageOrderCategory extends TogglePage {
     const orderCardTopBar = new CreateTopBarOrderCard({
       selector: ['div'],
       style: ['top-bar'],
-      modifier: ['__title--size--small'],
+      modifier: ['__title--size--small', '--indentation--bottom'],
       title: ['Горячий кофе'],
+
       eventBack: [
         { type: 'click', callback: this.closePage },
         { type: 'click', callback: this.deletePage },

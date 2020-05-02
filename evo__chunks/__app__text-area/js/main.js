@@ -104,19 +104,19 @@ class CreateTextAreaShareProductCard extends CreateItem {
         <div class="text-area__content-container text-area__content-container--direction--row">
           <div class="text-area__text-container">
             <h2 class="text-area__title text-area__title--size--normal">Nutrition Information</h2>
-            <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--addition--top">16 fl oz</span>
+            <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--top">16 fl oz</span>
             <span class="text-area__info text-area__info--text-size--normal text-area__info--text-bold">
               Calories
              <span
-                  class="text-area__info-number text-area__info--text-size--normal text-area__info-number--addition--left">5</span>
+                  class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--left">5</span>
             </span>
             <span class="text-area__info text-area__info--text-size--normal text-area__info--text-bold">
               Total Fat
-              <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--addition--left">0g</span>
+              <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--left">0g</span>
             </span>
             <span class="text-area__info text-area__info--text-size--normal text-area__info--text-bold">
               Total Carbohydrate
-              <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--addition--left">0g</span>
+              <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--left">0g</span>
             </span>
           </div>
           <button class="button button--theme--chocolate text-area__button text-area__button--type--more">

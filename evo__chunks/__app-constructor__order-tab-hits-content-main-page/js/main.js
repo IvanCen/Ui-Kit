@@ -12,12 +12,14 @@ class ToggleOrderHitsContent extends ToggleOrderContent {
       selector: ['div'],
       style: ['title-bar'],
       title: ['Напитки'],
+      modifier: ['--indentation--top'],
       titleSize: ['medium'],
       buttonText: ['Посмотреть 6'],
     });
     const orderTitleBarFoods = new CreateTitleBarWithButton({
       selector: ['div'],
       style: ['title-bar'],
+      modifier: ['--indentation--top'],
       title: ['Еда'],
       titleSize: ['medium'],
       buttonText: ['Посмотреть 35'],

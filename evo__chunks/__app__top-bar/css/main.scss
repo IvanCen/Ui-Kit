@@ -9,6 +9,10 @@
     color: $white;
   }
 
+  &--theme--light {
+    background-color: $white;
+  }
+
   &--size--small {
     padding-top: 15px;
     padding-bottom: 11px;
@@ -24,7 +28,10 @@
 
   &--indentation--top {
     padding-top: 15px;
+  }
 
+  &--indentation--bottom {
+    margin-bottom: 20px;
   }
 
   &__select-container {

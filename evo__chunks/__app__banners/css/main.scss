@@ -4,6 +4,8 @@
   width: 100%;
   position: relative;
   overflow: hidden;
+  padding-bottom: 20px;
+  min-height: max-content;
 }
 
 .banner__container {
@@ -37,14 +39,26 @@
   }
 
   &--type--rectangle {
-    width: 75vw;
     padding-left: 16px;
+  }
+
+  &--size--big {
+    width: 93vw;
+  }
+
+  &--size--medium {
+    width: 75vw;
+  }
+
+  &--size--small {
+    width: 46vw;
   }
 
 }
 
 .banners__banner-filler {
   background: #e6551e;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.22);
 
   &---type--circle {
     border-radius: 50%;
@@ -52,9 +66,18 @@
     margin-bottom: 10px;
   }
 
-  &--type--rectangle {
-    border-radius: 6px;
+  &--size--big {
+    padding-bottom: 64%;
+    border-radius: 12px;
+  }
 
+  &--size--medium {
     padding-bottom: 57%;
+    border-radius: 6px;
+  }
+
+  &--size--small {
+    padding-bottom: 64%;
+    border-radius: 6px;
   }
 }

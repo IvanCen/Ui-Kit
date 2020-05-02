@@ -55,9 +55,14 @@ class TogglePage {
   }
 
   closePage() {
+    this.page = document.querySelector('.page');
     if (this.page) {
-      this.page.classList.remove(this.classOpen);
-      this.body.classList.remove('body');
+      if (typeof this.parameters.classOpen === 'object') {
+        for (const style of this.parameters.classOpen) {
+          this.page.classList.remove(style);
+        }
+      }
+      setTimeout(() => this.body.classList.remove('body'), 100);
     }
   }
 
@@ -98,9 +103,14 @@ class ToggleSubPage {
   }
 
   closePage() {
+    this.subPage = document.querySelector('.subpage');
     if (this.subPage) {
-      this.subPage.classList.remove(this.classOpen);
-      this.body.classList.remove('body');
+      if (typeof this.parameters.classOpen === 'object') {
+        for (const style of this.parameters.classOpen) {
+          this.subPage.classList.remove(style);
+        }
+      }
+      setTimeout(() => this.body.classList.remove('body'), 100);
     }
   }
 
@@ -124,7 +134,6 @@ class ToggleMainPage {
     this.mainPage = document.querySelector('.main-page');
 
     this.closePage = this.closePage.bind(this);
-    this.deletePage = this.deletePage.bind(this);
     if (typeof this.parameters !== 'object') {
       this.parameters = {};
     }
@@ -132,12 +141,8 @@ class ToggleMainPage {
 
   rendering() {
     this.mainPageContent = document.createElement('div');
-    this.mainPageContent.classList.add('main-page__content');
+    this.mainPageContent.classList.add('main-page__content', 'main-page__content--size--small');
     this.mainPage.prepend(this.mainPageContent);
-  }
-
-  deletePage() {
-    setTimeout(() => this.page.remove(), 100);
   }
 
   closePage() {
@@ -146,7 +151,14 @@ class ToggleMainPage {
 
   clearPage() {
     this.mainPage = document.querySelector('.main-page');
+    if (this.mainPage.classList.contains('main-page--type--search')) {
+      this.mainPage.classList.remove('main-page--type--search');
+    }
+
     this.bottomBar = document.querySelector('.bottom-bar');
+    if (this.bottomBar) {
+      this.bottomBar.remove();
+    }
     if (this.bottomBar) {
       this.bottomBar.remove();
     }
@@ -176,5 +188,46 @@ class ToggleOrderContent {
     this.mainPageContent = document.querySelector('.main-page__content');
     this.arrHtml = Array.from(this.mainPageContent.children);
     this.arrHtml.forEach((item) => item.remove());
+  }
+}
+
+class ToggleModal {
+  constructor(parameters) {
+    this.parameters = parameters;
+
+    this.modal = document.querySelector('.modal');
+
+    this.closePage = this.closePage.bind(this);
+    this.deletePage = this.deletePage.bind(this);
+    this.openPage = this.openPage.bind(this);
+
+    if (typeof this.parameters !== 'object') {
+      this.parameters = {};
+    }
+  }
+
+  deletePage() {
+    if (this.modal) {
+      setTimeout(() => this.modal.remove(), 100);
+    }
+  }
+
+  closePage() {
+    this.modal = document.querySelector('.modal');
+    if (this.modal) {
+      this.modal.classList.remove('modal--open');
+    }
+  }
+
+
+  openPage() {
+    this.modal = document.querySelector('.modal');
+    this.modal.classList.add('modal--open');
+    closeModal();
+  }
+
+  rendering() {
+    this.mainPage = document.querySelector('.main-page');
+    this.mainPage.append(createModal());
   }
 }
