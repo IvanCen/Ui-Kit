@@ -34,10 +34,13 @@ class ToggleOrder extends ToggleMainPage {
       selector: ['div'],
       style: ['bottom-bar'],
       modifier: ['--indentation--normal'],
-      title: ['Снеки'],
+      eventBasket: [
+        { type: 'click', callback: toggleFourthPageReviewOrder.clearPage },
+        { type: 'click', callback: toggleFourthPageReviewOrder.rendering },
+      ],
     });
 
-    this.mainPage.prepend(orderTopBar.create());
+    this.mainPageContent.prepend(orderTopBar.create());
     const footer = document.querySelector('.footer');
     footer.before(orderBottomBar.create());
 

@@ -6,7 +6,7 @@
   width: 100%;
   bottom: 0;
   z-index: 4;
-  background-color: $whiteSmoke;
+
   flex-grow: 1;
   transition: all .2s ease-out;
   display: flex;
@@ -21,10 +21,12 @@
   &--opened {
     height: calc(100vh - 78px);
     left: 0;
+    background-color: $whiteSmoke;
   }
 
   &--opened--bottom-bar {
     left: 0;
+    background-color: $pattensBlue;
   }
 
   &__content {

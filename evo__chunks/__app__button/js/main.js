@@ -12,6 +12,17 @@ function addEventListenerButton(item) {
   });
 }
 
+function activeFilterButton() {
+  const buttonThemeTangerinTransparent = document.querySelectorAll('.button--theme--tangerin-transparent');
+
+  [...buttonThemeTangerinTransparent].forEach((item) => {
+    item.addEventListener('click', function () {
+      this.classList.toggle('button--theme--tangerin-transparent');
+      this.classList.toggle('button--theme--tangerin');
+    });
+  });
+}
+
 function activeButton() {
   const buttonThemeTangerinTransparent = document.querySelectorAll('.button--theme--tangerin-transparent');
   const buttonThemeLight = document.querySelectorAll('.button--theme--light');

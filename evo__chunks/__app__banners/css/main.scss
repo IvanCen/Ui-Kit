@@ -57,7 +57,10 @@
 }
 
 .banners__banner-filler {
-  background: #e6551e;
+  background-color: $orange;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
   box-shadow: 0 5px 5px rgba(0, 0, 0, 0.22);
 
   &---type--circle {

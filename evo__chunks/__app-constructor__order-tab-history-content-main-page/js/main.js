@@ -1,4 +1,4 @@
-class ToggleOrderHistoryContent extends ToggleOrderContent {
+class ToggleOrderHistoryContent extends ToggleOrderTabContent {
   constructor(parameters) {
     super();
     this.parameters = parameters;
@@ -18,8 +18,8 @@ class ToggleOrderHistoryContent extends ToggleOrderContent {
       //eventOpenJoinNowPage: [{ type: 'click', callback: togglePageSignIn.rendering }],
     });
 
-    this.mainPageContent.append(orderHistoryMainCard.create());
-
+    this.mainPageTabContent.append(orderHistoryMainCard.create());
+    this.mainPageContent.append(this.mainPageTabContent);
     activeButton();
   }
 }

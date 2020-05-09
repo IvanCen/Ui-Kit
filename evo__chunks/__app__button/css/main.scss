@@ -3,15 +3,16 @@
 .button {
   border: 0;
   box-sizing: border-box;
-  width: fit-content;
+  //width: fit-content;
 
   &--size--big {
     @extend %style-4;
     font-weight: bold;
-    padding: 15px 27px;
+    //padding: 15px 27px;
     border-radius: 50px;
     max-height: 50px;
     height: 100%;
+    padding: 15px 27px 35px;
   }
 
   &--size--medium {
@@ -21,15 +22,17 @@
     border-radius: 50px;
     max-height: 35px;
     height: 100%;
+    width: fit-content;
   }
 
   &--size--small {
     @extend %style-5;
     font-weight: bold;
-    padding: 4px 15px;
+    padding: 6px 15px 23px;
     border-radius: 50px;
     max-height: 29px;
     height: 100%;
+    width: fit-content;
   }
 
   &--size--large {
@@ -138,6 +141,18 @@
   &--type--fixed {
     position: fixed;
     bottom: 95px;
+    right: 16px;
+  }
+
+  &--type--fixed-low {
+    position: fixed;
+    bottom: 20px;
+    right: 16px;
+  }
+
+  &--type--fixed-with-bottom-bar {
+    position: fixed;
+    bottom: 150px;
     right: 16px;
   }
 

@@ -7,7 +7,7 @@ class TogglePageSignIn extends TogglePage {
 
   rendering() {
     super.rendering();
-    const signInTopBar = new CreateTopBarSignIn({
+    const signInTopBar = new CreateTopBarWithCloseIcon({
       selector: ['div'],
       style: ['top-bar'],
       modifier: ['--size--small'],
@@ -20,6 +20,7 @@ class TogglePageSignIn extends TogglePage {
     const formInputSignIn = new CreateFormInputSignIn({
       selector: ['div'],
       style: ['form'],
+      modifier: ['--indentation--sign-in', '--indentation'],
       events: [
         { type: 'click', callback: this.closePage },
         { type: 'click', callback: this.deletePage },

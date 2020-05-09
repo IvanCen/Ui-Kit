@@ -1,4 +1,4 @@
-class ToggleOrderFavoriteContent extends ToggleOrderContent {
+class ToggleOrderFavoriteContent extends ToggleOrderTabContent {
   constructor(parameters) {
     super();
     this.parameters = parameters;
@@ -8,18 +8,14 @@ class ToggleOrderFavoriteContent extends ToggleOrderContent {
   rendering() {
     super.rendering();
 
-    const orderFavoriteMainCard = new CreateOrderMainCard({
+    const favoriteCardItem = new CreateCardItemFavAndHisOrder({
       selector: ['div'],
-      style: ['main-card'],
-      title: ['No messages right now'],
-      text: ['Check back for seasonal offers, new menu items and promotions'],
-      eventOpenSignInPage: [{ type: 'click', callback: togglePageSignIn.rendering }],
-      //Страницы еще нет
-      //eventOpenJoinNowPage: [{ type: 'click', callback: togglePageSignIn.rendering }],
+      style: ['card-item__container'],
+      modifier: ['--direction--column', '--indentation-column--normal', '--indentation--top'],
     });
 
-    this.mainPageContent.append(orderFavoriteMainCard.create());
-
-    activeButton();
+    this.mainPageTabContent.append(favoriteCardItem.create());
+    this.mainPageContent.append(this.mainPageTabContent);
+    activeLike();
   }
 }

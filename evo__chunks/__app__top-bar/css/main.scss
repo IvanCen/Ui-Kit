@@ -34,6 +34,10 @@
     margin-bottom: 20px;
   }
 
+  &--indentation--bottom-big {
+    margin-bottom: 30px;
+  }
+
   &__select-container {
     display: flex;
     justify-content: space-between;
@@ -103,6 +107,10 @@
     min-height: 30px;
     padding-bottom: 14px;
     grid-template-areas: 'back text search';
+
+    &--indentation--top {
+      padding-top: 30px;
+    }
   }
 
   &__text {
@@ -131,17 +139,21 @@
       padding-top: 66px;
       margin-bottom: 24px;
     }
+
   }
 
   &__header-title {
     @extend %style-3;
     margin: 0;
     text-align: center;
+
+    &--type--uppercase {
+      text-transform: uppercase;
+    }
   }
 
   &__subtitle {
     @extend %style-5;
-    margin: 0 0 10px;
   }
 
   &__nav-container {

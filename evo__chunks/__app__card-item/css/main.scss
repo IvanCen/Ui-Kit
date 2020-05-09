@@ -55,8 +55,12 @@
     }
 
     &--with--border {
-      padding: 20px 16px;
+      padding: 0 16px 20px;
     }
+    &--indentation--top {
+      margin-top: 20px;
+    }
+
   }
 
   &__title {
@@ -99,6 +103,10 @@
 
   &__image {
     border-radius: 50%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color:  $orange;
 
     &--size--small {
       width: 65px;

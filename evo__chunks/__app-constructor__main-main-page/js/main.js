@@ -13,22 +13,21 @@ class ToggleMain extends ToggleMainPage {
       modifier: ['--size--small'],
       textTitle: ['Отличный день для кофе ☕'],
       eventOpenSignInPage: [{ type: 'click', callback: togglePageSignIn.rendering }],
+      eventOpenInboxPage: [{ type: 'click', callback: togglePageInbox.rendering }],
+      eventOpenAccountPage: [{ type: 'click', callback: togglePageAccount.rendering }],
     });
-
     const mainPageTitleBarSmall = new CreateTitleBar({
       selector: ['h2'],
       style: ['title-bar'],
       modifier: ['__title', '__title--size--small', '--indentation--top'],
       text: ['starbucks rewards'],
     });
-
     const mainPageTitleBar = new CreateTitleBar({
       selector: ['h2'],
       style: ['title-bar'],
       modifier: ['__title', '__title--size--medium-low'],
       text: ['Let Starbucks Rewards add'],
     });
-
     const mainPageBanners = new CreateBannersRectangle({
       selector: ['div'],
       style: ['banners'],
@@ -39,8 +38,6 @@ class ToggleMain extends ToggleMainPage {
       style: ['main-card'],
       modifier: ['--type--border', '--theme--shadow'],
     });
-
-
     const mainPageButtonJoinDark = new CreateButton(
       {
         selector: ['button'],
@@ -53,7 +50,6 @@ class ToggleMain extends ToggleMainPage {
         text: ['Join Now'],
       },
     );
-
     const mainPageButtonJoinOrange = new CreateButton({
       selector: ['button'],
       style: ['button'],

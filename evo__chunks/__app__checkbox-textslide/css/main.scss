@@ -84,6 +84,8 @@
 .checkbox-textslide {
   position: relative;
   max-width: 343px;
+  padding-top: 25px;
+  padding-left: 16px;
   @include checkbox-textslide-branding();
   @include checkbox-textslide-appearance(
           $checkbox-textslide-width: 343px,
@@ -92,7 +94,7 @@
           $checkbox-textslide-offset: 0px,
           $checkbox-textslide-label-font-size: 14px,
           $checkbox-textslide-switch-font-size: 12px,);
-  
+
   @media (max-width: 374px) {
     max-width: 300px;
     @include checkbox-textslide-appearance();

@@ -219,7 +219,7 @@ class CreateFormInputSignIn extends CreateItem {
     this.template = `
       <div class="form__input">
           <label class="form__input-underlined">
-            <input class="form__input-area form__input-area--type--fly-label form__input-area--type--email" type="email" required>
+            <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--email" type="email" required>
             <span class="form__input-label">Email</span>
             <ul class="form__input-requirements">
               <li class="form__input-requirement form__input-requirement--type--email">Please enter a valid email address</li>
@@ -231,7 +231,7 @@ class CreateFormInputSignIn extends CreateItem {
           </div>
           <div class="form__input">
           <label class="form__input-underlined">
-            <input class="form__input-area form__input-area--type--fly-label form__input-area--type--password"
+            <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--password"
                    type="password" maxlength="100" minlength="8" required>
             <span class="form__input-label">Password</span>
             <ul class="form__input-requirements">
@@ -279,7 +279,7 @@ class CreateFormGiftCard extends CreateItem {
     this.template = `
       <div class="form__input">
         <label class="form__input-underlined">
-          <input class="form__input-area form__input-area--type--fly-label form__input-area--type--text" type="text">
+          <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--text" type="text">
           <span class="form__input-label">Add a message (optional)</span>
           <ul class="form__input-requirements">
             <li class="form__input-requirement form__input-requirement--type--text"></li>
@@ -291,7 +291,7 @@ class CreateFormGiftCard extends CreateItem {
       </div>
       <div class="form__input">
         <label class="form__input-underlined">
-          <input class="form__input-area form__input-area__name form__input-area--type--fly-label" minlength="2">
+          <input class="form__input-area form__input-area--font--normal form__input-area__name form__input-area--type--fly-label" minlength="2">
           <span class="form__input-label">Name</span>
           <ul class="form__input-requirements">
             <li class="form__input-requirement form__input-requirement--type--name">This input needs to be at least 2 characters
@@ -302,7 +302,7 @@ class CreateFormGiftCard extends CreateItem {
       </div>
       <div class="form__input">
         <label class="form__input-underlined">
-          <input class="form__input-area form__input-area--type--fly-label form__input-area--type--email" type="email" required>
+          <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--email" type="email" required>
           <span class="form__input-label">Email</span>
           <ul class="form__input-requirements">
             <li class="form__input-requirement form__input-requirement--type--email">Please enter a valid email address</li>

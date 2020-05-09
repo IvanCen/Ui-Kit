@@ -6,6 +6,10 @@
     margin: 0 16px 20px;
   }
 
+  &--indentation--top {
+    margin-top: 20px;
+  }
+
   &--theme--shadow {
     overflow: hidden;
     min-height: max-content;
@@ -25,9 +29,11 @@
 
   &__content-img {
     position: absolute;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     top: 0;
     left: 0;
-    background-size: cover;
     width: 100%;
     height: 100%;
   }
@@ -46,6 +52,8 @@
 
   &__img {
     background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     width: 100%;
     margin-bottom: 20px;
 

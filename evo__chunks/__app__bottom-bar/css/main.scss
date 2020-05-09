@@ -55,6 +55,7 @@
 
   &__icon-popup {
     transition: opacity 0.3s;
+    display: none;
     opacity: 0;
     position: absolute;
     top: 11px;
@@ -62,6 +63,7 @@
     transform: translate(22px, -82px);
 
     &--open {
+      display: block;
       opacity: 1;
     }
   }
@@ -112,6 +114,6 @@
   &__counter {
     position: absolute;
     bottom: 14px;
-    right: 22px;
+    right: 23px;
   }
 }

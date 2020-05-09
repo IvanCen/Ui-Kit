@@ -5,6 +5,7 @@ function closeModal() {
   document.addEventListener('click', (event) => {
     if (event.target === modal || event.target === modalButtonAccept) {
       modal.classList.remove('modal--open');
+      modal.remove();
     }
   });
 }
@@ -27,5 +28,7 @@ function createModal() {
           </div>`;
 
   element.innerHTML = template;
+
+
   return element;
 }

@@ -1,4 +1,4 @@
-class ToggleOrderHitsContent extends ToggleOrderContent {
+class ToggleOrderHitsContent extends ToggleOrderTabContent {
   constructor(parameters) {
     super();
     this.parameters = parameters;
@@ -39,10 +39,11 @@ class ToggleOrderHitsContent extends ToggleOrderContent {
       ], */
     });
 
-    this.mainPageContent.append(orderTitleBarDrinks.create());
-    this.mainPageContent.append(orderFutureBannersDrinks.create());
-    this.mainPageContent.append(orderTitleBarFoods.create());
-    this.mainPageContent.append(orderFutureBannersFood.create());
+    this.mainPageTabContent.append(orderTitleBarDrinks.create());
+    this.mainPageTabContent.append(orderFutureBannersDrinks.create());
+    this.mainPageTabContent.append(orderTitleBarFoods.create());
+    this.mainPageTabContent.append(orderFutureBannersFood.create());
+    this.mainPageContent.append(this.mainPageTabContent);
     activeBanners();
   }
 }

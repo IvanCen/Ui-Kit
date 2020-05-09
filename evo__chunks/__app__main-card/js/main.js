@@ -78,22 +78,73 @@ class CreateOrderMainCard extends CreateItem {
   }
 }
 
-class CreateOrderProductMainCard extends CreateItem {
+class CreateInboxMainCardNews extends CreateItem {
   constructor(parameters) {
     super();
     this.parameters = parameters;
     this.element = document.createElement(this.parameters.selector);
     this.template = `
-      <div class="main-card__content">
-        <img src="[+chunkWebPath+]/img/icon-close-white.svg" alt="" class="main-card__icon main-card__icon-close">
-        <img src="[+chunkWebPath+]/img/main-card-noimg.jpg" alt="" class="main-card__content-img">
-        <h2 class="main-card__content-title">${this.parameters.title}</h2>
-      </div>`;
+        <img src="[+chunkWebPath+]/img/main-card-noimg.jpg" alt="" class="main-card__img">
+        <div class="main-card__text-area">
+          <h2 class="main-card__title">${this.parameters.title}</h2>
+          <p class="main-card__text">${this.parameters.text}</p>
+        </div>
+        <div class="main-card__button-container main-card__button-container--indentation--left main-card__button-container--indentation--bottom">
+          <button class="button button--size--small button--theme--tangerin main-card__button main-card__button-details">Подробнее</button>
+          <button class="button button--size--small button--theme--tangerin-transparent main-card__button main-card__button-delete">Удалить</button>
+        </div>`;
+  }
+
+  create() {
+    this.element.insertAdjacentHTML('beforeend', this.template);
+    this.buttonDetails = this.element.querySelector('.main-card__button-details');
+    this.buttonDelete = this.element.querySelector('.main-card__button-delete');
+    if (typeof this.parameters.eventOpenDetails === 'object') {
+      for (const event of this.parameters.eventOpenDetails) {
+        this.buttonDetails.addEventListener(event.type, event.callback);
+      }
+    }
+    this.buttonDelete.addEventListener('click', () => this.element.remove());
+
+    return super.create(this.element);
+  }
+}
+
+class CreateInboxMainCard extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+    this.element = document.createElement(this.parameters.selector);
+    this.template = `
+        <img src="[+chunkWebPath+]/img/main-card-noimg.jpg" alt="" class="main-card__img">
+        <div class="main-card__text-area">
+          <h2 class="main-card__title">${this.parameters.title}</h2>
+          <p class="main-card__text">${this.parameters.text}</p>
+        </div>`;
   }
 
   create() {
     this.element.insertAdjacentHTML('beforeend', this.template);
 
+    return super.create(this.element);
+  }
+}
+
+class CreateOrderProductMainCard extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+    this.element = document.createElement(this.parameters.selector);
+  }
+
+  create(productInfo) {
+    this.template = `
+      <div class="main-card__content">
+        <img src="[+chunkWebPath+]/img/icon-close-white.svg" alt="" class="main-card__icon main-card__icon-close">
+        <div style="background-image: url('${productInfo.mainPhoto}')" alt="" class="main-card__content-img"></div>
+        <h2 class="main-card__content-title">${this.parameters.title}</h2>
+      </div>`;
+    this.element.insertAdjacentHTML('beforeend', this.template);
     this.iconClose = this.element.querySelector('.main-card__icon-close');
     if (typeof this.parameters.eventCloseIcon === 'object') {
       for (const event of this.parameters.eventCloseIcon) {

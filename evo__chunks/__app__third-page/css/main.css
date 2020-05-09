@@ -1,0 +1,1 @@
+.third-page{position:fixed;left:100%;width:100%;bottom:0;z-index:4;background-color:#d8dcde;flex-grow:1;transition:all .2s ease-out;display:flex;align-items:stretch;overflow-x:hidden;overflow-y:scroll;flex-direction:column;justify-content:flex-start;top:0;height:calc(100vh - 78px)}.third-page--opened{left:0}.third-page__content--page--cards{display:flex;flex-direction:column}

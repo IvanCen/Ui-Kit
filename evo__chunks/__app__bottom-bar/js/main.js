@@ -10,7 +10,7 @@ class CreateBottomBarOrder extends CreateItem {
             <img src="[+chunkWebPath+]/img/icon-expand-direction-bottom-white.svg" alt="" class="bottom-bar__icon">
           </button>
         </div>
-        <button class="bottom-bar__select-item bottom-bar__select-item--size--small">
+        <button class="bottom-bar__select-item bottom-bar__select-item--size--small bottom-bar__select-item--type--basket">
           <svg class="bottom-bar__icon bottom-bar__icon--type--basket" viewBox="0 0 32 32"
                xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" clip-rule="evenodd"
@@ -24,10 +24,10 @@ class CreateBottomBarOrder extends CreateItem {
 
   create() {
     this.element.insertAdjacentHTML('beforeend', this.template);
-    this.iconBack = this.element.querySelector('.top-bar__back-button');
-    if (typeof this.parameters.eventBack === 'object') {
-      for (const event of this.parameters.eventBack) {
-        this.iconBack.addEventListener(event.type, event.callback);
+    this.basket = this.element.querySelector('.bottom-bar__select-item--type--basket');
+    if (typeof this.parameters.eventBasket === 'object') {
+      for (const event of this.parameters.eventBasket) {
+        this.basket.addEventListener(event.type, event.callback);
       }
     }
 

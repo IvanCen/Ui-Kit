@@ -9,6 +9,24 @@ function switchActive(nodeList, activeClass) {
   });
 }
 
+function counterOrder() {
+  const cardItem = document.querySelectorAll('.card-item--type--order');
+  const counterNumber = document.querySelector('.top-bar__all-counter-order');
+  counterNumber.textContent = cardItem.length;
+}
+
+function counterBasket() {
+  const basket = document.querySelector('.bottom-bar__icon--type--basket');
+  const counterIcon = document.querySelector('.bottom-bar__counter');
+  basket.classList.add('bottom-bar__icon--full');
+
+  if (counterIcon.textContent === 0) {
+    counterIcon.textContent = 1;
+  } else {
+    counterIcon.textContent = Number(`${counterIcon.textContent}`) + 1;
+  }
+}
+
 class CreateItem {
   constructor(parameters) {
     this.parameters = parameters;
@@ -48,6 +66,12 @@ class TogglePage {
     }
   }
 
+  clearPage() {
+    this.page = document.querySelector('.page');
+    this.arrHtml = Array.from(this.page.children);
+    this.arrHtml.forEach((item) => item.remove());
+  }
+
   deletePage() {
     if (this.page) {
       setTimeout(() => this.page.remove(), 100);
@@ -70,7 +94,7 @@ class TogglePage {
     setTimeout(() => {
       this.page.classList.add(this.classOpen);
       this.body.classList.add('body');
-    }, 100);
+    }, 200);
   }
 
   rendering() {
@@ -127,11 +151,108 @@ class ToggleSubPage {
   }
 }
 
+class ToggleThirdPage {
+  constructor(parameters) {
+    this.parameters = parameters;
+    this.body = document.querySelector('body');
+    this.thirdPage = document.querySelector('.third-page');
+    this.thirdPageContent = document.querySelector('.third-page__content');
+    this.classOpen = this.parameters.classOpen;
+
+    this.closePage = this.closePage.bind(this);
+    this.deletePage = this.deletePage.bind(this);
+    this.openPage = this.openPage.bind(this);
+
+    if (typeof this.parameters !== 'object') {
+      this.parameters = {};
+    }
+  }
+
+  deletePage() {
+    if (this.thirdPage) {
+      setTimeout(() => this.thirdPage.remove(), 100);
+    }
+  }
+
+  closePage() {
+    this.thirdPage = document.querySelector('.third-page');
+    if (this.thirdPage) {
+      if (typeof this.parameters.classOpen === 'object') {
+        for (const style of this.parameters.classOpen) {
+          this.thirdPage.classList.remove(style);
+        }
+      }
+      setTimeout(() => this.body.classList.remove('body'), 100);
+    }
+  }
+
+  openPage() {
+    setTimeout(() => {
+      this.thirdPage.classList.add(this.classOpen);
+      this.body.classList.add('body');
+    }, 100);
+  }
+
+  rendering() {
+    this.body.append(createThirdPage());
+    this.thirdPage = document.querySelector('.third-page');
+  }
+}
+
+class ToggleFourthPage {
+  constructor(parameters) {
+    this.parameters = parameters;
+    this.body = document.querySelector('body');
+    this.fourthPage = document.querySelector('.fourth-page');
+    this.fourthPageContent = document.querySelector('.fourth-page__content');
+    this.classOpen = this.parameters.classOpen;
+
+    this.closePage = this.closePage.bind(this);
+    this.deletePage = this.deletePage.bind(this);
+    this.openPage = this.openPage.bind(this);
+
+    if (typeof this.parameters !== 'object') {
+      this.parameters = {};
+    }
+  }
+
+  deletePage() {
+    if (this.fourthPage) {
+      setTimeout(() => this.fourthPage.remove(), 100);
+    }
+  }
+
+  closePage() {
+    this.fourthPage = document.querySelector('.fourth-page');
+    if (this.fourthPage) {
+      if (typeof this.parameters.classOpen === 'object') {
+        for (const style of this.parameters.classOpen) {
+          this.fourthPage.classList.remove(style);
+        }
+      }
+      setTimeout(() => this.body.classList.remove('body'), 100);
+    }
+  }
+
+  openPage() {
+    setTimeout(() => {
+      this.fourthPage.classList.add(this.classOpen);
+      this.body.classList.add('body');
+    }, 100);
+  }
+
+  rendering() {
+    this.body.append(createFourthPage());
+    this.fourthPage = document.querySelector('.fourth-page');
+  }
+}
+
 class ToggleMainPage {
   constructor(parameters) {
     this.parameters = parameters;
     this.body = document.querySelector('body');
     this.mainPage = document.querySelector('.main-page');
+    this.mainPageContent = document.querySelector('.main-page__content');
 
     this.closePage = this.closePage.bind(this);
     if (typeof this.parameters !== 'object') {
@@ -145,8 +266,17 @@ class ToggleMainPage {
     this.mainPage.prepend(this.mainPageContent);
   }
 
+  openPage() {
+    this.mainPageContent = document.querySelector('.main-page__content');
+    setTimeout(() => {
+      this.mainPageContent.classList.add('main-page__content--opened');
+    }, 100);
+  }
+
   closePage() {
-    this.body.classList.remove('body');
+    this.mainPageContent = document.querySelector('.main-page__content');
+    this.mainPageContent.classList.remove('main-page__content--opened');
+    setTimeout(() => this.body.classList.remove('body'), 100);
   }
 
   clearPage() {
@@ -168,7 +298,7 @@ class ToggleMainPage {
 }
 
 
-class ToggleOrderContent {
+class ToggleOrderTabContent {
   constructor(parameters) {
     this.parameters = parameters;
     this.body = document.querySelector('body');
@@ -181,13 +311,38 @@ class ToggleOrderContent {
   }
 
   rendering() {
+    this.mainPageTabContent = document.createElement('div');
+    this.mainPageTabContent.classList.add('main-page__tab-content');
     this.mainPageContent = document.querySelector('.main-page__content');
   }
 
   clearPage() {
-    this.mainPageContent = document.querySelector('.main-page__content');
-    this.arrHtml = Array.from(this.mainPageContent.children);
-    this.arrHtml.forEach((item) => item.remove());
+    this.mainPageTabContent = document.querySelector('.main-page__tab-content');
+    this.mainPageTabContent.remove();
+  }
+}
+
+class ToggleInboxTabContent {
+  constructor(parameters) {
+    this.parameters = parameters;
+    this.body = document.querySelector('body');
+    this.page = document.querySelector('.page');
+
+    this.clearPage = this.clearPage.bind(this);
+    if (typeof this.parameters !== 'object') {
+      this.parameters = {};
+    }
+  }
+
+  rendering() {
+    this.pageTabContent = document.createElement('div');
+    this.pageTabContent.classList.add('page__tab-content');
+    this.pageContent = document.querySelector('.page__content');
+  }
+
+  clearPage() {
+    this.pageTabContent = document.querySelector('.page__tab-content');
+    this.pageTabContent.remove();
   }
 }
 

@@ -12,6 +12,10 @@
     padding-top: 20px;
   }
 
+  &--indentation--top-big {
+    padding-top: 30px;
+  }
+
   &__title {
 
     &--size--medium {
@@ -25,6 +29,10 @@
 
     &--size--small {
       @extend %style-8;
+    }
+
+    &--size--small-big {
+      @extend %style-5;
     }
 
     &--theme--shadow {

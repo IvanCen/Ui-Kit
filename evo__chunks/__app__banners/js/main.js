@@ -105,35 +105,39 @@ class CreateBannersOrder extends CreateItem {
   constructor(parameters) {
     super();
     this.parameters = parameters;
-    this.element = document.createElement(this.parameters.selector);
+  }
+
+  create(productInfo) {
+    console.log(productInfo);
+    this.element = document.createElement('div');
+    this.element.classList.add('banners__banner', 'banners__banner---type--circle');
     this.template = `
-      <div class="banner__container">
-        <div name="Blonde Caffe Americano" text="Hello" class="banners__banner banners__banner---type--circle">
-            <div class="banners__banner-filler banners__banner-filler---type--circle"></div>
-            <span class="banners__text">Americano</span>
-        </div>
-        <div text="Hello" class="banners__banner banners__banner---type--circle">
-            <div class="banners__banner-filler banners__banner-filler---type--circle"></div>
-        </div>
-        <div text="Hello" class="banners__banner banners__banner---type--circle">
-            <div class="banners__banner-filler banners__banner-filler---type--circle"></div>
-        </div>
-        <div text="Hello" class="banners__banner banners__banner---type--circle">
-            <div class="banners__banner-filler banners__banner-filler---type--circle"></div>
-        </div>
-    </div>`;
+          <div style="background-image: url('${productInfo.mainPhoto}')" class="banners__banner-filler banners__banner-filler---type--circle"></div>
+          <span class="banners__text">${productInfo.name}</span>
+          `;
+    this.element.insertAdjacentHTML('beforeend', this.template);
+    this.element.addEventListener('click', () => {
+      toggleSubPageProductCard.rendering(productInfo);
+      toggleSubPageProductCard.openPage();
+    });
+
+    return this.element;
+  }
+}
+
+class CreateBannersContainerOrder extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
   }
 
   create() {
+    this.element = document.createElement('div');
+    this.element.classList.add('banners');
+    this.template = '<div class="banner__container"></div>';
     this.element.insertAdjacentHTML('beforeend', this.template);
 
-    this.card = this.element.querySelector('[name="Blonde Caffe Americano"]');
-    if (typeof this.parameters.eventCard === 'object') {
-      for (const event of this.parameters.eventCard) {
-        this.card.addEventListener(event.type, event.callback);
-      }
-    }
-    return super.create(this.element);
+    return this.element;
   }
 }
 

@@ -19,27 +19,6 @@
     justify-content: space-between;
   }
 
-  &__content {
-    display: flex;
-    flex-direction: column;
-
-    &--type--search {
-      height: 50%;
-    }
-
-    &--size--small {
-      max-height: calc(100vh - 78px);
-      overflow-x: hidden;
-      overflow-y: scroll;
-    }
-
-    &--with--bottom-bar {
-      overflow-x: hidden;
-      overflow-y: scroll;
-      max-height: calc(100vh - 286px);
-    }
-
-  }
 }
 
 

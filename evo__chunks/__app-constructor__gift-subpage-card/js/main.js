@@ -25,6 +25,7 @@ class ToggleSubPageGiftCard extends ToggleSubPage {
     const giftForm = new CreateFormGiftCard({
       selector: ['div'],
       style: ['form'],
+      modifier: ['--indentation', '--size--full'],
       events: [
         { type: 'click', callback: this.closePage },
         { type: 'click', callback: this.deletePage },

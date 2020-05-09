@@ -1,4 +1,4 @@
-class ToggleOrderMenuContent extends ToggleOrderContent {
+class ToggleOrderMenuContent extends ToggleOrderTabContent {
   constructor(parameters) {
     super();
     this.parameters = parameters;
@@ -11,122 +11,127 @@ class ToggleOrderMenuContent extends ToggleOrderContent {
     const orderTitleBarDrinks = new CreateTitleBarWithButton({
       selector: ['div'],
       style: ['title-bar'],
-      title: ['Напитки'],
       modifier: ['--indentation--top'],
+      title: ['Напитки'],
       titleSize: ['medium'],
-      buttonText: ['Посмотреть 26'],
+      eventButtonClassAdd: ['title-bar__button--type--drinks'],
     });
     const orderTitleBarFoods = new CreateTitleBarWithButton({
       selector: ['div'],
       style: ['title-bar'],
       title: ['Еда'],
       titleSize: ['medium'],
-      buttonText: ['Посмотреть 35'],
+      eventButtonClassAdd: ['title-bar__button--type--foods'],
     });
-    const orderCardItemCoffee = new CreateCardItemOrder({
+    const orderTitleBarProducts = new CreateTitleBarWithButton({
       selector: ['div'],
-      style: ['card-item'],
-      modifier: [
-        '--direction--row',
-        '--indentation--bottom',
-      ],
-      title: ['Горячий кофе'],
-      events: [{ type: 'click', callback: togglePageOrderCategory.rendering }],
+      style: ['title-bar'],
+      title: ['Продукты'],
+      titleSize: ['medium'],
+      eventButtonClassAdd: ['title-bar__button--type--products'],
     });
-    const orderCardItemTea = new CreateCardItemOrder({
+    const orderTitleBarWraper = new CreateTitleBarWithButton({
       selector: ['div'],
-      style: ['card-item'],
-      modifier: [
-        '--direction--row',
-        '--indentation--bottom',
-      ],
-      title: ['Горячий чай'],
+      style: ['title-bar'],
+      title: ['Упаковка'],
+      titleSize: ['medium'],
+      eventButtonClassAdd: ['title-bar__button--type--wraper'],
     });
-    const orderCardItemDrinks = new CreateCardItemOrder({
-      selector: ['div'],
-      style: ['card-item'],
-      modifier: [
-        '--direction--row',
-        '--indentation--bottom',
-      ],
-      title: ['Горячий напитки'],
-    });
-    const orderCardItemCoffeeMilkDrink = new CreateCardItemOrder({
-      selector: ['div'],
-      style: ['card-item'],
-      modifier: [
-        '--direction--row',
-        '--indentation--bottom',
-      ],
-      title: ['Кофейные и молочные коктейли'],
-    });
-    const orderCardItemColdDrinks = new CreateCardItemOrder({
-      selector: ['div'],
-      style: ['card-item'],
-      modifier: [
-        '--direction--row',
-        '--indentation--bottom',
-      ],
-      title: ['Холодные напитки'],
-    });
-    const orderCardItemBreakfast = new CreateCardItemOrder({
-      selector: ['div'],
-      style: ['card-item'],
-      modifier: [
-        '--direction--row',
-        '--indentation--bottom',
-      ],
-      title: ['Завтраки'],
-    });
-    const orderCardItemBusinessLunch = new CreateCardItemOrder({
-      selector: ['div'],
-      style: ['card-item'],
-      modifier: [
-        '--direction--row',
-        '--indentation--bottom',
-      ],
-      title: ['Бизнес-ланчи'],
-    });
-    const orderCardItemBakery = new CreateCardItemOrder({
-      selector: ['div'],
-      style: ['card-item'],
-      modifier: [
-        '--direction--row',
-        '--indentation--bottom',
-      ],
-      title: ['Выпечка'],
-    });
-    const orderCardItemDesert = new CreateCardItemOrder({
-      selector: ['div'],
-      style: ['card-item'],
-      modifier: [
-        '--direction--row',
-        '--indentation--bottom',
-      ],
-      title: ['Десерты'],
-    });
-    const orderCardItemSnack = new CreateCardItemOrder({
-      selector: ['div'],
-      style: ['card-item'],
-      modifier: [
-        '--direction--row',
-        '--indentation--bottom',
-      ],
-      title: ['Снеки'],
-    });
+    const orderCardItemContainerDrinks = new CreateCardItemContainer();
+    const orderCardItemContainerFoods = new CreateCardItemContainer();
+    const orderCardItemContainerProducts = new CreateCardItemContainer();
+    const orderCardItemContainerWraper = new CreateCardItemContainer();
+    const orderCardItem = new CreateCardItemOrder();
 
 
-    this.mainPageContent.append(orderTitleBarDrinks.create());
-    this.mainPageContent.append(orderCardItemCoffee.create());
-    this.mainPageContent.append(orderCardItemTea.create());
-    this.mainPageContent.append(orderCardItemDrinks.create());
-    this.mainPageContent.append(orderCardItemCoffeeMilkDrink.create());
-    this.mainPageContent.append(orderCardItemColdDrinks.create());
-    this.mainPageContent.append(orderTitleBarFoods.create());
-    this.mainPageContent.append(orderCardItemBreakfast.create());
-    this.mainPageContent.append(orderCardItemBusinessLunch.create());
-    this.mainPageContent.append(orderCardItemBakery.create());
-    this.mainPageContent.append(orderCardItemDesert.create());
-    this.mainPageContent.append(orderCardItemSnack.create());
+    function renderProduct(data) {
+      const products = data.successData;
+
+      const drinks = [];
+      const food = [];
+      const product = [];
+      const wraper = [];
+
+      let drinksItemsLength = 0;
+      let foodItemsLength = 0;
+      let productItemsLength = 0;
+      let wraperItemsLength = 0;
+
+      for (const item of Object.values(products.categories)) {
+        if (item.parent === 33) {
+          drinks.push(item);
+          drinksItemsLength += item.items.length;
+        }
+        if (item.parent === 34) {
+          food.push(item);
+          foodItemsLength += item.items.length;
+        }
+        if (item.parent === 'Продукты') {
+          product.push(item);
+          productItemsLength += item.items.length;
+        }
+        if (item.parent === 'Упаковка') {
+          wraper.push(item);
+          wraperItemsLength += item.items.length;
+        }
+      }
+
+      const drinkContainer = document.querySelector('.card-item__container--drinks');
+      const foodContainer = document.querySelector('.card-item__container--foods');
+      const productsContainer = document.querySelector('.card-item__container--products');
+      const wraperContainer = document.querySelector('.card-item__container--wraper');
+
+      const drinksButtonTitle = document.querySelector('.title-bar__button--type--drinks');
+      const foodButtonTitle = document.querySelector('.title-bar__button--type--foods');
+      const productsButtonTitle = document.querySelector('.title-bar__button--type--products');
+      const wraperButtonTitle = document.querySelector('.title-bar__button--type--wraper');
+
+      drinksButtonTitle.textContent = `Посмотреть ${drinksItemsLength}`;
+      foodButtonTitle.textContent = `Посмотреть ${foodItemsLength}`;
+      productsButtonTitle.textContent = `Посмотреть ${productItemsLength}`;
+      wraperButtonTitle.textContent = `Посмотреть ${wraperItemsLength}`;
+
+      drinksButtonTitle.addEventListener('click', () => {
+        togglePageOrderCategoryAll.rendering(drinks, 'Напитки', drinksItemsLength, products.items);
+        togglePageOrderCategoryAll.openPage;
+      });
+
+      foodButtonTitle.addEventListener('click', () => {
+        togglePageOrderCategoryAll.rendering(food, 'Еда', foodItemsLength, products.items);
+        togglePageOrderCategoryAll.openPage;
+      });
+
+      productsButtonTitle.addEventListener('click', () => {
+        togglePageOrderCategoryAll.rendering(product, 'Продукты', productItemsLength, products.items);
+        togglePageOrderCategoryAll.openPage;
+      });
+
+      wraperButtonTitle.addEventListener('click', () => {
+        togglePageOrderCategoryAll.rendering(wraper, 'Упаковка', wraperItemsLength, products.items);
+        togglePageOrderCategoryAll.openPage;
+      });
+
+      function rendered(arr, container) {
+        arr.forEach((item) => {
+          container.append(orderCardItem.create(item, products));
+        });
+      }
+      rendered(drinks, drinkContainer);
+      rendered(food, foodContainer);
+      rendered(product, productsContainer);
+      rendered(wraper, wraperContainer);
+    }
+
+    this.mainPageTabContent.append(orderTitleBarDrinks.create());
+    this.mainPageTabContent.append(orderCardItemContainerDrinks.create('drinks'));
+    this.mainPageTabContent.append(orderTitleBarFoods.create());
+    this.mainPageTabContent.append(orderCardItemContainerFoods.create('foods'));
+    this.mainPageTabContent.append(orderTitleBarProducts.create());
+    this.mainPageTabContent.append(orderCardItemContainerProducts.create('products'));
+    this.mainPageTabContent.append(orderTitleBarWraper.create());
+    this.mainPageTabContent.append(orderCardItemContainerWraper.create('wraper'));
+    this.parameters.api.productApi(renderProduct);
+
+    this.mainPageContent.append(this.mainPageTabContent);
   }
 }
