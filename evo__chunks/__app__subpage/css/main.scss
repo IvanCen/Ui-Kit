@@ -16,7 +16,7 @@
   flex-direction: column;
   justify-content: flex-start;
   top: 0;
-  height: calc(100vh - 133px);
+
 
   &--opened {
     height: calc(100vh - 78px);
@@ -27,6 +27,7 @@
   &--opened--bottom-bar {
     left: 0;
     background-color: $pattensBlue;
+    height: calc(100vh - 133px);
   }
 
   &__content {

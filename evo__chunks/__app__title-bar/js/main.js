@@ -22,7 +22,7 @@ class CreateTitleBarWithButton extends CreateItem {
     this.element = document.createElement(this.parameters.selector);
     this.template = `
       <h2 class="title-bar__title title-bar__title--size--${this.parameters.titleSize}">${this.parameters.title}</h2>
-      <button class="title-bar__button">${this.parameters.buttonText}</button>`;
+      <button class="title-bar__button">Посмотреть</button>`;
   }
 
   create(products) {

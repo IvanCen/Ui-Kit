@@ -1,16 +1,13 @@
 const mainPage = document.querySelector('.main-page');
 const body = document.querySelector('body');
 const api = new Api();
-const toggleOrderMenuContent = new ToggleOrderMenuContent({
-  api,
-});
-const toggleOrderHitsContent = new ToggleOrderHitsContent();
+const toggleOrderMenuContent = new ToggleOrderMenuContent({ api });
+const toggleOrderHitsContent = new ToggleOrderHitsContent({ api });
 const toggleOrderHistoryContent = new ToggleOrderHistoryContent();
 const toggleOrderFavoriteContent = new ToggleOrderFavoriteContent();
 
 const toggleInboxTabMessagesContent = new ToggleInboxTabMessagesContent();
 const toggleInboxTabLastOffersContent = new ToggleInboxTabLastOffersContent();
-
 
 const togglePageSeeAll = new TogglePageSeeAll({
   classOpen: ['page--opened'],
@@ -48,11 +45,9 @@ const togglePageOrderCategory = new TogglePageOrderCategory({
 const toggleCards = new ToggleCards();
 const toggleOrder = new ToggleOrder();
 const toggleGift = new ToggleGift();
-const toggleStores = new ToggleStores({
-  api,
-});
+const toggleStores = new ToggleStores({ api });
 const toggleModal = new ToggleModal();
-const renderMainPage = new ToggleMain();
+const renderMainPage = new ToggleMain({ api });
 const togglePage = new TogglePage({
   classOpen: ['page--opened--bottom-bar', 'page--opened'],
 });
@@ -64,6 +59,7 @@ const toggleThirdPage = new ToggleThirdPage({
 });
 const togglePageSignIn = new TogglePageSignIn({
   classOpen: ['page--opened'],
+  api,
 });
 const togglePageInbox = new TogglePageInbox({
   classOpen: ['page--opened'],
@@ -107,6 +103,9 @@ const mainPageFooter = new CreateFooter({
     { type: 'click', callback: toggleOrder.rendering },
     { type: 'click', callback: toggleOrder.openPage },
     { type: 'click', callback: toggleOrderMenuContent.rendering },
+    { type: 'click', callback: toggleOrderHitsContent.rendering },
+    { type: 'click', callback: toggleOrderHistoryContent.rendering },
+    { type: 'click', callback: toggleOrderFavoriteContent.rendering },
     { type: 'click', callback: togglePage.closePage },
     { type: 'click', callback: togglePage.deletePage },
     { type: 'click', callback: toggleSubPage.closePage },

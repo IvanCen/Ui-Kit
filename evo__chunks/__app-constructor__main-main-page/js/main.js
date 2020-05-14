@@ -33,11 +33,7 @@ class ToggleMain extends ToggleMainPage {
       style: ['banners'],
       bannerSize: ['medium'],
     });
-    const mainPageMainCard = new CreateMainCard({
-      selector: ['div'],
-      style: ['main-card'],
-      modifier: ['--type--border', '--theme--shadow'],
-    });
+    const mainPageMainCard = new CreateMainCard();
     const mainPageButtonJoinDark = new CreateButton(
       {
         selector: ['button'],
@@ -48,6 +44,7 @@ class ToggleMain extends ToggleMainPage {
           '--indentation--bottom',
         ],
         text: ['Join Now'],
+        events: [{ type: 'click', callback: togglePageSignIn.rendering }],
       },
     );
     const mainPageButtonJoinOrange = new CreateButton({
@@ -55,20 +52,35 @@ class ToggleMain extends ToggleMainPage {
       style: ['button'],
       modifier: ['--size--big',
         '--theme--tangerin',
-        '--indentation--bottom',
-        '--indentation--right',
         '--position--right',
         '--theme--shadow-big',
+        '--type--fixed',
       ],
       text: ['Join Now'],
       events: [{ type: 'click', callback: togglePageSignIn.rendering }],
     });
 
+
+    function renderPosts(dataPosts) {
+      const buttonDark = document.querySelector('.button--theme--dark-transparent');
+      dataPosts.successData.forEach((item) => {
+        buttonDark.after(mainPageMainCard.create(item));
+      });
+    }
+    function renderPromo(dataPromo) {
+      const buttonDark = document.querySelector('.button--theme--dark-transparent');
+      dataPromo.successData.forEach((item) => {
+        buttonDark.after(mainPageMainCard.create(item));
+      });
+    }
+
+
     this.mainPageContent.prepend(mainPageButtonJoinOrange.create());
-    this.mainPageContent.prepend(mainPageMainCard.create());
+    this.parameters.api.postsApi(renderPosts);
     this.mainPageContent.prepend(mainPageButtonJoinDark.create());
     this.mainPageContent.prepend(mainPageTitleBar.create());
     this.mainPageContent.prepend(mainPageBanners.create());
+    this.parameters.api.promoApi(renderPromo);
     this.mainPageContent.prepend(mainPageTitleBarSmall.create());
     this.mainPageContent.prepend(mainPageTopBar.create());
 

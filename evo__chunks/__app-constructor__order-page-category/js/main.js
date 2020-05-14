@@ -17,8 +17,7 @@ class TogglePageOrderCategory extends TogglePage {
 
   rendering(categoryName, category) {
     super.rendering();
-    /* console.log(categoryName);
-    console.log(category); */
+
     const orderCardTopBar = new CreateTopBarOrderCard({
       selector: ['div'],
       style: ['top-bar'],

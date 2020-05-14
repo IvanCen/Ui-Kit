@@ -8,6 +8,7 @@ class ToggleOrderMenuContent extends ToggleOrderTabContent {
   rendering() {
     super.rendering();
 
+
     const orderTitleBarDrinks = new CreateTitleBarWithButton({
       selector: ['div'],
       style: ['title-bar'],
@@ -131,7 +132,7 @@ class ToggleOrderMenuContent extends ToggleOrderTabContent {
     this.mainPageTabContent.append(orderTitleBarWraper.create());
     this.mainPageTabContent.append(orderCardItemContainerWraper.create('wraper'));
     this.parameters.api.productApi(renderProduct);
-
+    this.mainPageTabContent.classList.add('main-page__tab-content--main', 'main-page__tab-content--open');
     this.mainPageContent.append(this.mainPageTabContent);
   }
 }

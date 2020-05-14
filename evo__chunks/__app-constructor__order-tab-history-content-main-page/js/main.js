@@ -6,7 +6,6 @@ class ToggleOrderHistoryContent extends ToggleOrderTabContent {
   }
 
   rendering() {
-    super.rendering();
 
     const orderHistoryMainCard = new CreateOrderMainCard({
       selector: ['div'],
@@ -18,8 +17,11 @@ class ToggleOrderHistoryContent extends ToggleOrderTabContent {
       //eventOpenJoinNowPage: [{ type: 'click', callback: togglePageSignIn.rendering }],
     });
 
-    this.mainPageTabContent.append(orderHistoryMainCard.create());
-    this.mainPageContent.append(this.mainPageTabContent);
+    this.mainPageContent = document.querySelector('.main-page__content');
+    this.mainPageTabContentHistory = document.createElement('div');
+    this.mainPageTabContentHistory.classList.add('main-page__tab-content', 'main-page__tab-content--history');
+    this.mainPageContent.append(this.mainPageTabContentHistory);
+    this.mainPageTabContentHistory.append(orderHistoryMainCard.create());
     activeButton();
   }
 }

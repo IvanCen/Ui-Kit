@@ -2,24 +2,27 @@ class CreateMainCard extends CreateItem {
   constructor(parameters) {
     super();
     this.parameters = parameters;
-    this.element = document.createElement(this.parameters.selector);
-    this.template = `
-      <img src="[+chunkWebPath+]/img/main-card-noimg.jpg" alt="" class="main-card__img">
-      <div class="main-card__text-area">
-        <h2 class="main-card__title">Buy one, get one free</h2>
-        <p class="main-card__text">Notes of smoked butterscotch intermingle with our signature espresso,
-          giving your latte a
-          sophisticated new twist</p>
-      </div>
-      <div class="main-card__button-container main-card__button-container--indentation--left main-card__button-container--indentation--bottom">
-        <button class="button button--size--small button--theme--tangerin main-card__button">Details</button>
-      </div>`;
   }
 
-  create() {
+  create(postInfo) {
+    this.element = document.createElement('div');
+    this.element.classList.add('main-card--type--border', 'main-card--theme--shadow');
+    this.template = `
+      <img src="${postInfo.mainPhoto}" alt="" class="main-card__img">
+      <div class="main-card__text-area">
+        <h2 class="main-card__title">${postInfo.title}</h2>
+        <p class="main-card__text">${postInfo.intro}</p>
+      </div>
+      <div class="main-card__button-container main-card__button-container--indentation--left main-card__button-container--indentation--bottom">
+        <button class="button button--size--small button--theme--tangerin main-card__button">${postInfo.linkTitle}</button>
+      </div>`;
     this.element.insertAdjacentHTML('beforeend', this.template);
-
-    return super.create(this.element);
+    this.button = this.element.querySelector('.main-card__button');
+    this.button.addEventListener('click', () => {
+      toggleModal.renderingPost(postInfo);
+      toggleModal.openPage();
+    });
+    return this.element;
   }
 }
 

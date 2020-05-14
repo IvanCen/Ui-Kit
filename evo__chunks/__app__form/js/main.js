@@ -38,7 +38,7 @@ function inputFlyLabel() {
 }
 
 function validation() {
-  const usernameInput = document.querySelector('.form__input-area__name');
+  const usernameInput = document.querySelector('.form__input-area--type--name');
   const passwordInput = document.querySelector('.form__input-area--type--password');
   const passwordRepeatInput = document.querySelector('.form__input-area--type--password-repeat');
   const emailInput = document.querySelector('.form__input-area--type--email');
@@ -218,41 +218,66 @@ class CreateFormInputSignIn extends CreateItem {
     this.element = document.createElement(this.parameters.selector);
     this.template = `
       <div class="form__input">
-          <label class="form__input-underlined">
-            <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--email" type="email" required>
-            <span class="form__input-label">Email</span>
-            <ul class="form__input-requirements">
-              <li class="form__input-requirement form__input-requirement--type--email">Please enter a valid email address</li>
-            </ul>
-            <div class="form__input-icon-container">
-              <img src="[+chunkWebPath+]/img/icon-attention-triangle.svg" alt="" class="form__input-icon form__input-icon-error">
-            </div>
-          </label>
+        <label class="form__input-underlined">
+          <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--phone" type="tel" required>
+          <span class="form__input-label">Введите номер телефона</span>
+          <ul class="form__input-requirements">
+            <li class="form__input-requirement form__input-requirement--type--phone"></li>
+          </ul>
+          <div class="form__input-icon-container">
+            <img src="[+chunkWebPath+]/img/icon-attention-triangle.svg" alt="" class="form__input-icon form__input-icon-error">
           </div>
-          <div class="form__input">
-          <label class="form__input-underlined">
-            <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--password"
-                   type="password" maxlength="100" minlength="8" required>
-            <span class="form__input-label">Password</span>
-            <ul class="form__input-requirements">
-              <li class="form__input-requirement form__input-requirement--type--password">At least 8 characters long (and less than
-                100 characters)
-              </li>
-              <li class="form__input-requirement form__input-requirement--type--password">Contains at least 1 number</li>
-              <li class="form__input-requirement form__input-requirement--type--password">Contains at least 1 lowercase letter</li>
-              <li class="form__input-requirement form__input-requirement--type--password">Contains at least 1 uppercase letter</li>
-              <li class="form__input-requirement form__input-requirement--type--password">Contains a special character (e.g. @ !)
-              </li>
-            </ul>
-            <div class="form__input-icon-container">
-              <img src="[+chunkWebPath+]/img/icon-eye-noVisible.svg" alt="" class="form__input-icon form__input-icon-eye">
-              <img src="[+chunkWebPath+]/img/icon-attention-triangle.svg" alt="" class="form__input-icon form__input-icon-error">
+        </label>
+        </div>
+        <p class="form__text form__text--error form__text--hide"></p>
+        <div class="form__call-container">
+           <a href="" class="form__link form__link--type--call">Позвонить</a>
+           <p class="form__text">Авторизация осуществляется по бесплатному звонку, как только соединение будет установлено - мы вас авторизуем.</p>
+        </div>
+        <p class="form__text form__text--success form__text--hide">Вы авторизованны!</p>
+        <div class="form__inputs-container form__inputs-container--hide">
+          <div class="form__input-container form__input-container--name form__input-container--hide">
+            <div class="form__input">
+            <label class="form__input-underlined">
+              <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--name" minlength="2">
+              <span class="form__input-label">Имя</span>
+              <ul class="form__input-requirements">
+                <li class="form__input-requirement form__input-requirement--type--name">Имя должно содержать больше двух букв</li>
+                <li class="form__input-requirement form__input-requirement--type--name">Только русские буквы</li>
+              </ul>
+            </label>
+           </div>
+           <h2 class="form__title">Давайте знакомиться, меня зовут Хлебник, а вас?</h2>
+          </div>
+          <div class="form__input-container form__input-container--birthday form__input-container--hide"> 
+            <div class="form__input">
+              <label class="form__input-underlined">
+                <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--birthday" type="date" min="1900-01-01">
+                <span class="form__input-label form__input--focused">День рождения</span>
+                <ul class="form__input-requirements"></ul>
+              </label>
             </div>
-          </label>
-     </div> 
-     <button class="button form__button button--theme--size--small button--theme--oranges-transparent button--position--left">Forgot password?</button> 
-     <button class="button form__button button--theme--size--small button--theme--oranges-transparent button--position--left">Forgot username?</button> 
-     <button class="button button--theme--tangerin button--size--big button--theme--shadow-big form__button form__button--type--sign-in" type="submit">Sign in</button>
+            <h2 class="form__title">Хотите рассказать нам о своей дате рождения? Мы регулярно проводим специальные акции для именинников.</h2>  
+          </div>
+          <div class="form__input-container form__input-container--email form__input-container--hide"> 
+            <div class="form__input">
+              <label class="form__input-underlined">
+                <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--email" type="email">
+                <span class="form__input-label">Email</span>
+                <ul class="form__input-requirements">
+                  <li class="form__input-requirement form__input-requirement--type--email">Пожалуйста введите правильный email адрес</li>
+                </ul>
+                <div class="form__input-icon-container">
+                  <img src="[+chunkWebPath+]/img/icon-attention-triangle.svg" alt="" class="form__input-icon form__input-icon-error">
+                </div>
+              </label>
+            </div>
+            <h2 class="form__title">Хотите подписаться на нашу рассылку? Оставьте нам свой email. В любой момент можно будет отписаться от рассылки через ссылку в каждом отправляемом нами письме.</h2>
+          </div>
+        <button class="button button--size--medium button--theme--light button--theme--shadow-medium form__button--type--skip">Пропустить</button>
+        <button class="button button--theme--tangerin button--size--big button--theme--shadow-big form__button form__button--type--agree">Подтвердить</button>
+       </div>
+       <button class="button button--theme--tangerin button--size--big button--theme--shadow-big form__button form__button--type--sign-in">Подтвердить</button>
    `;
   }
 
@@ -260,10 +285,27 @@ class CreateFormInputSignIn extends CreateItem {
     this.element.insertAdjacentHTML('beforeend', this.template);
 
     this.buttonSignIn = this.element.querySelector('.form__button--type--sign-in');
+    this.buttonSkip = this.element.querySelector('.form__button--type--skip');
+    this.buttonAgree = this.element.querySelector('.form__button--type--agree');
 
     if (typeof this.parameters.events === 'object') {
       for (const event of this.parameters.events) {
         this.buttonSignIn.addEventListener(event.type, event.callback);
+      }
+    }
+    if (typeof this.parameters.eventSkip === 'object') {
+      for (const event of this.parameters.eventSkip) {
+        this.buttonSkip.addEventListener(event.type, event.callback);
+      }
+    }
+    if (typeof this.parameters.eventAgree === 'object') {
+      for (const event of this.parameters.eventAgree) {
+        this.buttonAgree.addEventListener(event.type, event.callback);
+      }
+    }
+    if (typeof this.parameters.eventAgree === 'object') {
+      for (const event of this.parameters.eventAgree) {
+        this.buttonAgree.addEventListener(event.type, event.callback);
       }
     }
 
@@ -331,3 +373,4 @@ class CreateFormGiftCard extends CreateItem {
     return super.create(this.element);
   }
 }
+validation();

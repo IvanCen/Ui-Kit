@@ -26,7 +26,7 @@ class CreateMapItemStores extends CreateItem {
     this.create = this.create.bind(this);
   }
 
-  create(store) {
+  create(store, placemark, myMap) {
     this.element = document.createElement('div');
     this.element.classList.add('map__item');
     this.template = `
@@ -43,13 +43,39 @@ class CreateMapItemStores extends CreateItem {
             </button>`;
     this.element.insertAdjacentHTML('beforeend', this.template);
     this.buttonDetails = this.element.querySelector('.map__button');
+    const radioInput = this.element.querySelector('.radio__input');
     this.buttonDetails.addEventListener('click', () => {
       togglePageStoresDetails.rendering(store);
       togglePageStoresDetails.openPage();
     });
-
-
+    placemark.events
+      .add('click', (e) => {
+        e.get('target').options.set('iconImageHref', '[+chunkWebPath+]/img/icon-map-point-select.svg');
+        const radioInputId = document.getElementById(store.id);
+        radioInputId.checked = 'checked';
+      })
+      .add('click', (e) => {
+        if (e.get('target') == false) {
+          e.get('target').options.set('iconImageHref', '[+chunkWebPath+]/img/icon-map-point.svg');
+        }
+      });
+    this.element.addEventListener('click', (e) => {
+      e.preventDefault();
+      radioInput.checked = 'checked';
+      placemark.options.set('iconImageHref', '[+chunkWebPath+]/img/icon-map-point-select.svg');
+      myMap.panTo([Number(store.latitude), Number(store.longitude)], {
+        delay: 1000,
+      }).then(() => {
+        myMap.setZoom(15);
+      });
+    });
+    /*radioInput.addEventListener('change', function () {
+      if (this.checked) {
+        console.log(';hello');
+      } else {
+        console.log('s');
+      }
+    });*/
     return this.element;
   }
 }
-

@@ -72,12 +72,16 @@ class CreateCardItemContainerProductCard extends CreateItem {
     this.parameters = parameters;
   }
 
-  create(identificator) {
+  create(identificator, classAdd) {
     this.element = document.createElement('div');
+    if (classAdd) {
+      this.element.classList.add(classAdd);
+    }
     this.element.classList.add(
       'card-item__container',
       'card-item__container--with--border',
       'card-item__container--direction--row',
+      `card-item__container--${identificator}`,
     );
 
     return this.element;

@@ -9,11 +9,12 @@ class ToggleStores extends ToggleMainPage {
   rendering() {
     super.rendering();
     this.mainPage.classList.add('main-page--type--search');
+    this.mainPageContent.classList.add('main-page__content--type--noscroll');
 
     const storesTopBar = new CreateTopBarStores({
       selector: ['div'],
       style: ['top-bar'],
-      modifier: ['--size--medium'],
+      // modifier: ['--size--medium'],
       eventOpenFilter: [
         { type: 'click', callback: togglePageStoresFilter.rendering },
         { type: 'click', callback: togglePageStoresFilter.openPage },
@@ -57,23 +58,23 @@ class ToggleStores extends ToggleMainPage {
     this.mainPageContent.append(storesMapItemWraper.create());
 
     function renderStores(stores) {
-      const mainPageContainer = document.querySelector('.map__container');
+      console.log(stores);
+      /* const mainPageContainer = document.querySelector('.map__container');
       stores.successData.forEach((item) => {
         mainPageContainer.append(storesMapItem.create(item));
-      });
+      }); */
 
       ymaps.ready(() => {
         const myMap = new ymaps.Map('map', {
           center: [59.938, 30.3],
           zoom: 11,
-          controls: ['smallMapDefaultSet'],
-        }, {
-          searchControlProvider: 'yandex#search',
+          controls: [],
         });
 
         const myCollection = new ymaps.GeoObjectCollection();
+        const mainPageContainer = document.querySelector('.map__container');
         stores.successData.forEach((item) => {
-          myCollection.add(new ymaps.Placemark([item.latitude, item.longitude], {
+          const placemark = new ymaps.Placemark([item.latitude, item.longitude], {
           }, {
             // Опции.
             // Необходимо указать данный тип макета.
@@ -82,38 +83,21 @@ class ToggleStores extends ToggleMainPage {
             iconImageHref: '[+chunkWebPath+]/img/icon-map-point.svg',
             // Размеры метки.
             iconImageSize: [25, 25],
-          }));
+          });
+          mainPageContainer.append(storesMapItem.create(item, placemark, myMap));
+          myCollection.add(placemark);
         });
-        myCollection.getMap()
+        let activePlacemark;
+        myCollection.events.add('click', (e) => {
+          if (activePlacemark) {
+            activePlacemark.options.set('iconImageHref', '[+chunkWebPath+]/img/icon-map-point.svg');
+          }
+          console.log(e.get('coords'));
+          activePlacemark = e.get('target');
+          activePlacemark.options.set('iconImageHref', '[+chunkWebPath+]/img/icon-map-point-select.svg');
+        });
         myMap.geoObjects.add(myCollection);
       });
-      /*ymaps.geocode(myMap.getCenter(), {
-        /!**
-         * Опции запроса
-         * @see https://api.yandex.ru/maps/doc/jsapi/2.1/ref/reference/geocode.xml
-         *!/
-        // Ищем только станции метро.
-        kind: 'metro',
-        // Запрашиваем не более 20 результатов.
-        results: 20,
-      }).then((res) => {
-        // Задаем изображение для иконок меток.
-        res.geoObjects.options.set('preset', 'islands#redCircleIcon');
-        res.geoObjects.events
-          // При наведении на метку показываем хинт с названием станции метро.
-          .add('mouseenter', (event) => {
-            const geoObject = event.get('target');
-            myMap.hint.open(geoObject.geometry.getCoordinates(), geoObject.getPremise());
-          })
-          // Скрываем хинт при выходе курсора за пределы метки.
-          .add('mouseleave', (event) => {
-            myMap.hint.close(true);
-          });
-        // Добавляем коллекцию найденных геообъектов на карту.
-        myMap.geoObjects.add(res.geoObjects);
-        // Масштабируем карту на область видимости коллекции.
-        myMap.setBounds(res.geoObjects.getBounds());
-      });*/
     }
 
     this.parameters.api.storesApi(renderStores);

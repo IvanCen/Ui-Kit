@@ -8,25 +8,51 @@ class ToggleOrder extends ToggleMainPage {
   rendering() {
     super.rendering();
     this.mainPageContent.classList.add('main-page__content--with--bottom-bar');
+
+    function switchTabHits() {
+      const elements = document.querySelectorAll('.main-page__tab-content');
+      [...elements].forEach((item) => item.classList.remove('main-page__tab-content--open'));
+      const element = document.querySelector('.main-page__tab-content--hits');
+      element.classList.add('main-page__tab-content--open');
+    }
+    function switchTabMain() {
+      const elements = document.querySelectorAll('.main-page__tab-content');
+      [...elements].forEach((item) => item.classList.remove('main-page__tab-content--open'));
+      const element = document.querySelector('.main-page__tab-content--main');
+      element.classList.add('main-page__tab-content--open');
+    }
+    function switchTabHistory() {
+      const elements = document.querySelectorAll('.main-page__tab-content');
+      [...elements].forEach((item) => item.classList.remove('main-page__tab-content--open'));
+      const element = document.querySelector('.main-page__tab-content--history');
+      element.classList.add('main-page__tab-content--open');
+    }
+    function switchTabFavorite() {
+      const elements = document.querySelectorAll('.main-page__tab-content');
+      [...elements].forEach((item) => item.classList.remove('main-page__tab-content--open'));
+      const element = document.querySelector('.main-page__tab-content--favorite');
+      element.classList.add('main-page__tab-content--open');
+    }
+
     const orderTopBar = new CreateTopBarOrder({
       selector: ['div'],
       style: ['top-bar'],
       modifier: ['--indentation--top'],
       eventToggleMenu: [
-        { type: 'click', callback: toggleOrderMenuContent.clearPage },
-        { type: 'click', callback: toggleOrderMenuContent.rendering },
+        // { type: 'click', callback: toggleOrderMenuContent.clearPage },
+        // { type: 'click', callback: toggleOrderMenuContent.rendering },
+        { type: 'click', callback: switchTabMain },
       ],
       eventToggleHits: [
-        { type: 'click', callback: toggleOrderHitsContent.clearPage },
-        { type: 'click', callback: toggleOrderHitsContent.rendering },
+        // { type: 'click', callback: toggleOrderHitsContent.clearPage },
+        // { type: 'click', callback: toggleOrderHitsContent.rendering },
+        { type: 'click', callback: switchTabHits },
       ],
       eventToggleHistory: [
-        { type: 'click', callback: toggleOrderHistoryContent.clearPage },
-        { type: 'click', callback: toggleOrderHistoryContent.rendering },
+        { type: 'click', callback: switchTabHistory },
       ],
       eventToggleFavorite: [
-        { type: 'click', callback: toggleOrderFavoriteContent.clearPage },
-        { type: 'click', callback: toggleOrderFavoriteContent.rendering },
+        { type: 'click', callback: switchTabFavorite },
       ],
     });
 

@@ -6,44 +6,27 @@ class ToggleOrderHitsContent extends ToggleOrderTabContent {
   }
 
   rendering() {
-    super.rendering();
+    const cardItemContainer = new CreateCardItemContainerProductCard();
+    const orderCardItemHits = new CreateCardItemOrderProductCard();
+    function renderTabHits(dataItems) {
+      const hits = [];
 
-    const orderTitleBarDrinks = new CreateTitleBarWithButton({
-      selector: ['div'],
-      style: ['title-bar'],
-      title: ['Напитки'],
-      modifier: ['--indentation--top'],
-      titleSize: ['medium'],
-      buttonText: ['Посмотреть 6'],
-    });
-    const orderTitleBarFoods = new CreateTitleBarWithButton({
-      selector: ['div'],
-      style: ['title-bar'],
-      modifier: ['--indentation--top'],
-      title: ['Еда'],
-      titleSize: ['medium'],
-      buttonText: ['Посмотреть 35'],
-    });
-    const orderFutureBannersDrinks = new CreateBannersTabHits({
-      selector: ['div'],
-      style: ['banners'],
-      /* eventCard: [
-        { type: 'click', callback: toggleSubPageProductCard.rendering },
-      ], */
-    });
-    const orderFutureBannersFood = new CreateBannersTabHits({
-      selector: ['div'],
-      style: ['banners'],
-      /* eventCard: [
-        { type: 'click', callback: toggleSubPageProductCard.rendering },
-      ], */
-    });
+      for (const item of Object.values(dataItems.successData.items)) {
+        if (item.hitFlag === '1') {
+          hits.push(item);
+        }
+      }
+      const cardItemContainerEl = document.querySelector('.card-item__container--hits');
+      hits.forEach((el) => {
+        cardItemContainerEl.append(orderCardItemHits.create(el));
+      });
+    }
+    this.mainPageContent = document.querySelector('.main-page__content');
+    this.mainPageTabContentHits = document.createElement('div');
+    this.mainPageTabContentHits.classList.add('main-page__tab-content', 'main-page__tab-content--hits');
+    this.mainPageContent.append(this.mainPageTabContentHits);
+    this.mainPageTabContentHits.append(cardItemContainer.create('hits', 'card-item__container--indentation--top'));
 
-    this.mainPageTabContent.append(orderTitleBarDrinks.create());
-    this.mainPageTabContent.append(orderFutureBannersDrinks.create());
-    this.mainPageTabContent.append(orderTitleBarFoods.create());
-    this.mainPageTabContent.append(orderFutureBannersFood.create());
-    this.mainPageContent.append(this.mainPageTabContent);
-    activeBanners();
+    this.parameters.api.productApi(renderTabHits);
   }
 }

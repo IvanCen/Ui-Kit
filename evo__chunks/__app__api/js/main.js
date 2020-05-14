@@ -1,32 +1,3 @@
-/* (async () => {
-  const request = {
-    method: 'get-shops',
-    outputFormat: 'json',
-  };
-  const rawResponse = await fetch('[~30~]', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'text/html',
-    },
-    body: JSON.stringify(request),
-  });
-  console.log(JSON.parse(await rawResponse.text()));
-})();
-(async () => {
-  const request = {
-    method: 'get-catalog',
-    outputFormat: 'json',
-  };
-  const rawResponse = await fetch('[~30~]', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'text/html',
-    },
-    body: JSON.stringify(request),
-  });
-  console.log(JSON.parse(await rawResponse.text()));
-})(); */
-
 class Api {
   constructor() {
     this.options = {
@@ -40,7 +11,6 @@ class Api {
   productApi(renderProduct) {
     const request = {
       method: 'get-catalog',
-      //view: 'tree',
       outputFormat: 'json',
 
     };
@@ -82,6 +52,158 @@ class Api {
       })
       .then((storesInfo) => storesInfo)
       .then(renderCards)
+      .catch((err) => {
+        console.log('Ошибка. Запрос не выполнен: ', err);
+      });
+  }
+
+  promoApi(renderPromo) {
+    const request = {
+      method: 'get-promo',
+      offset: 0,
+      length: 3,
+      outputFormat: 'json',
+    };
+    fetch(this.options.baseUrl, {
+      method: 'POST',
+      headers: this.options.headers,
+      body: JSON.stringify(request),
+
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+      .then((promoInfo) => promoInfo)
+      .then(renderPromo)
+      .catch((err) => {
+        console.log('Ошибка. Запрос не выполнен: ', err);
+      });
+  }
+
+  postsApi(renderPosts) {
+    const request = {
+      method: 'get-posts',
+      offset: 0,
+      length: 2,
+      outputFormat: 'json',
+    };
+    fetch(this.options.baseUrl, {
+      method: 'POST',
+      headers: this.options.headers,
+      body: JSON.stringify(request),
+
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+      .then((postsInfo) => postsInfo)
+      .then(renderPosts)
+      .catch((err) => {
+        console.log('Ошибка. Запрос не выполнен: ', err);
+      });
+  }
+
+  signInApi(phoneSend, func) {
+    const request = {
+      method: 'sign-in',
+      sendCodeMethod: 'callOut',
+      phone: `+${phoneSend}`,
+      outputFormat: 'json',
+    };
+
+    fetch('[~30~]', {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/html' },
+      body: JSON.stringify(request),
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+      .then((signInInfo) => signInInfo)
+      .then(func)
+      .catch((err) => {
+        console.log('Ошибка. Запрос не выполнен: ', err);
+      });
+  }
+
+  authorizeApi(func, code, phoneNumber, timerRegSuccess) {
+    const request = {
+      method: 'authorize',
+      sendCodeMethod: 'callOut',
+      phone: phoneNumber,
+      code,
+      outputFormat: 'json',
+    };
+
+    fetch('[~30~]', {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/html' },
+      body: JSON.stringify(request),
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+      .then((authorizeInfo) => {
+        if (authorizeInfo.success === true) {
+          clearInterval(timerRegSuccess);
+        }
+        return authorizeInfo;
+      })
+      .then(func)
+      .catch((err) => {
+        console.log('Ошибка. Запрос не выполнен: ', err);
+      });
+  }
+
+  getClientApi(func) {
+    const request = {
+      method: 'get-client',
+      outputFormat: 'json',
+    };
+
+    fetch('[~30~]', {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/html' },
+      body: JSON.stringify(request),
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+      .then((userInfo) => userInfo)
+      .then(func)
+      .catch((err) => {
+        console.log('Ошибка. Запрос не выполнен: ', err);
+      });
+  }
+
+  setClientApi(request) {
+    fetch('[~30~]', {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/html' },
+      body: JSON.stringify(request),
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+      .then((userInfo) => console.log(userInfo))
       .catch((err) => {
         console.log('Ошибка. Запрос не выполнен: ', err);
       });

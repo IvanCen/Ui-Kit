@@ -374,7 +374,6 @@ class ToggleModal {
     }
   }
 
-
   openPage() {
     this.modal = document.querySelector('.modal');
     this.modal.classList.add('modal--open');
@@ -384,5 +383,15 @@ class ToggleModal {
   rendering() {
     this.mainPage = document.querySelector('.main-page');
     this.mainPage.append(createModal());
+  }
+
+  renderingPost(modalInfo) {
+    this.mainPage = document.querySelector('.main-page');
+    this.mainPage.append(createModalPost(modalInfo));
+  }
+
+  renderingEmail() {
+    this.mainPage = document.querySelector('.main-page');
+    this.mainPage.append(createModalEmail());
   }
 }
