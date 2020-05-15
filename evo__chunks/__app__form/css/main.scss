@@ -42,7 +42,7 @@
 
     &--type--sign-in.button {
       position: absolute;
-      bottom: 116px;
+      bottom: 100px;
       right: 16px;
       width: auto;
     }
@@ -53,13 +53,13 @@
 
     &--type--agree {
       position: fixed;
-      bottom: 195px;
+      bottom: 180px;
       right: 16px;
     }
 
     &--type--skip {
       position: fixed;
-      bottom: 260px;
+      bottom: 245px;
       right: 16px;
     }
 
@@ -230,9 +230,15 @@
   &--success.form__text {
     @extend %style-2;
     text-align: center;
+    margin-top: 20px;
   }
 
   &--error.form__text {
+    color: $alizarinCrimson;
+    margin-top: 20px;
+  }
+
+  &--error-phone.form__text {
     color: $alizarinCrimson;
     margin-top: 20px;
   }
@@ -267,7 +273,7 @@
   flex-direction: column;
   opacity: 1;
   visibility: visible;
-  transition: opacity 0.2s ease-in;
+  transition: all 0.2s ease-in;
 
   &--hide {
     opacity: 0;
@@ -286,7 +292,7 @@
   justify-content: space-around;
   align-items: center;
   min-height: 200px;
-  transition: opacity 0.3s ease-in;
+  transition: all 0.3s ease-in;
 
   &--open {
     display: flex;
@@ -310,5 +316,6 @@
 }
 
 .form__title {
-  @extend %style-5;
+  @extend %style-4;
+  padding-top: 20px;
 }

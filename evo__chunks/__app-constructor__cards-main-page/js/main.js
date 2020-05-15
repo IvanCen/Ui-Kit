@@ -40,7 +40,8 @@ class ToggleCards extends ToggleMainPage {
           { type: 'click', callback: this.deletePage },
         ], */
         eventsOpen: [
-          { type: 'click', callback: togglePageSignIn.rendering }],
+          { type: 'click', callback: togglePageSignIn.rendering },
+        ],
       },
     );
 
@@ -55,10 +56,13 @@ class ToggleCards extends ToggleMainPage {
         '--position--right',
         '--theme--shadow-big',
       ],
-      text: ['Add item'],
+      text: ['Join Now'],
+      eventsOpen: [
+        { type: 'click', callback: togglePageSignIn.rendering },
+      ],
     });
     this.mainPageContent.prepend(cardsButtonJoinOrange.create());
-    this.mainPageContent.prepend(cardsButtonSignInLight.create());
+    // this.mainPageContent.prepend(cardsButtonSignInLight.create());
     this.mainPageContent.prepend(cardsCard.create());
     this.mainPageContent.prepend(cardsTopBar.create());
   }

@@ -19,10 +19,12 @@ class TogglePageSignIn extends TogglePage {
       const callContainer = document.querySelector('.form__call-container');
       const textSuccess = document.querySelector('.form__text--success');
       const textError = document.querySelector('.form__text--error');
+      const textErrorPhone = document.querySelector('.form__text--error-phone');
       const phoneNumber = inputArea.value;
 
       function regCall(info) {
         if (info.success === true) {
+          textErrorPhone.classList.add('form__text--close', 'form__text--hide');
           const { code, phone } = info.successData;
           textError.classList.add('form__text--hide');
           callContainer.classList.add('form__call-container--open');
@@ -40,6 +42,11 @@ class TogglePageSignIn extends TogglePage {
             console.log(infoSuccess);
             if (infoSuccess.success === true) {
               function render(userInfo) {
+                function delay(ms) {
+                  return new Promise((resolve) => setTimeout(resolve, ms));
+                }
+
+
                 console.log(userInfo);
                 callContainer.remove();
                 textSuccess.classList.remove('form__text--hide');
@@ -58,20 +65,22 @@ class TogglePageSignIn extends TogglePage {
                 const buttonAgree = document.querySelector('.form__button--type--agree');
                 const form = document.querySelector('.form');
                 form.classList.add('form--indentation--bottom');
-                validation();
 
+                function sendData(setName, value) {
+                  const request = {
+                    method: 'set-client',
+                    set: setName,
+                    name: inputAreaName.value,
+                    outputFormat: 'json',
+                  };
+                  request[setName] = value;
+                  setClientApi(request);
+                }
+
+                validation();
                 if (name === '') {
                   inputNameContainer.classList.remove('form__input-container--hide');
                 }
-                /*if (email === '') {
-                  inputEmailContainer.classList.remove('form__input-container--hide');
-                }
-                if (birthday === '') {
-                  if (inputAreaBirthday) {
-                    inputAreaBirthday.focus();
-                  }
-                  inputBirthdayContainer.classList.remove('form__input-container--hide');
-                }*/
                 if (name !== '' && email !== '' && name !== '') {
                   setTimeout(() => {
                     togglePage.closePage();
@@ -79,63 +88,68 @@ class TogglePageSignIn extends TogglePage {
                     inputsContainer.classList.remove('form__inputs-container--hide');
                   }, 2500);
                 }
-                setTimeout(() => {
-                  textSuccess.classList.add('form__text--close');
-                  textError.classList.add('form__text--close');
-                  inputsContainer.classList.remove('form__inputs-container--hide');
-                  buttonAgree.addEventListener('click', () => {
-                    [inputAreaName, inputAreaEmail, inputAreaBirthday].forEach((item) => {
-                      if (item.value !== '') {
-                        if (item === inputAreaName) {
-                          const request = {
-                            method: 'set-client',
-                            set: 'name',
-                            name: item.value,
-                            outputFormat: 'json',
-                          };
-                          setClientApi(request);
+                delay(2000)
+                  .then(() => {
+                    textSuccess.classList.add('form__text--close');
+                    inputsContainer.classList.remove('form__inputs-container--hide');
+                    if (name === '') {
+                      buttonAgree.addEventListener('click', () => {
+                        if (inputAreaName.value === '') {
+                          textError.classList.remove('form__text--close', 'form__text--hide');
+                          textError.textContent = 'Введите имя';
                         }
-                        if (item === inputAreaEmail) {
-                          const request = {
-                            method: 'set-client',
-                            set: 'email',
-                            email: item.value,
-                            outputFormat: 'json',
-                          };
-                          setClientApi(request);
-                          toggleModal.renderingEmail();
-                          toggleModal.openPage();
+                        if (inputAreaName.value !== '') {
+                          textError.classList.add('form__text--close', 'form__text--hide');
+                          sendData('name', inputAreaName.value);
+                          inputAreaName.value = '';
+                          inputNameContainer.classList.add('form__input-container--hide');
+                          if (birthday === '') {
+                            inputBirthdayContainer.classList.remove('form__input-container--hide');
+                            buttonAgree.addEventListener('click', () => {
+                              if (inputAreaBirthday.value === '') {
+                                textError.classList.remove('form__text--close', 'form__text--hide');
+                                textError.textContent = 'Укажите дату своего рождения';
+                              }
+                              if (inputAreaBirthday.value !== '') {
+                                textError.classList.add('form__text--close', 'form__text--hide');
+                                sendData('birthday', inputAreaBirthday.value);
+                                inputAreaBirthday.value = '';
+                                inputBirthdayContainer.classList.add('form__input-container--hide');
+                                if (email === '') {
+                                  inputEmailContainer.classList.remove('form__input-container--hide');
+                                  buttonAgree.addEventListener('click', () => {
+                                    if (inputAreaEmail.value === '') {
+                                      textError.classList.remove('form__text--close', 'form__text--hide');
+                                      textError.textContent = 'Укажите email';
+                                    }
+                                    if (inputAreaEmail.value !== '') {
+                                      textError.classList.add('form__text--close', 'form__text--hide');
+                                      sendData('email', inputAreaEmail.value);
+                                      inputAreaEmail.value = '';
+                                      inputEmailContainer.classList.add('form__input-container--hide');
+                                      textSuccess.textContent = `Добро пожаловать в Хлебник ${inputAreaName.value}!`;
+                                      buttonAgree.classList.add('form__button--hide');
+                                      textSuccess.classList.remove('form__text--close', 'form__text--hide');
+                                      textSuccess.classList.add('form__text--indentation');
+                                      toggleModal.renderingEmail();
+                                      toggleModal.openPage();
+                                    }
+                                    if (!modal) {
+                                      setTimeout(() => {
+                                        togglePage.closePage();
+                                        togglePage.deletePage();
+                                        inputsContainer.classList.remove('form__inputs-container--hide');
+                                      }, 2500);
+                                    }
+                                  });
+                                }
+                              }
+                            });
+                          }
                         }
-                        if (item === inputAreaBirthday) {
-                          const request = {
-                            method: 'set-client',
-                            set: 'birthday',
-                            birthday: item.value,
-                            outputFormat: 'json',
-                          };
-                          setClientApi(request);
-                        }
-                        textError.classList.add('form__text--hide', 'form__text--close');
-                      }
-                    });
-                    if (inputAreaName.value === '' && inputAreaEmail.value === '' && inputAreaBirthday.value === '') {
-                      textError.textContent = 'Вы ничего не ввели в поля';
-                      textError.classList.remove('form__text--hide', 'form__text--close');
+                      });
                     }
-                    const modal = document.querySelector('modal');
-                    /*if (!modal) {
-                      inputsContainer.classList.add('form__inputs-container--hide');
-                      textSuccess.textContent = `Добро пожаловать в Хлебник ${inputAreaName.value}!`;
-                      textSuccess.classList.remove('form__text--close', 'form__text--hide');
-                      textSuccess.classList.add('form__text--indentation');
-                      setTimeout(() => {
-                        togglePage.closePage();
-                        togglePage.deletePage();
-                        inputsContainer.classList.remove('form__inputs-container--hide');
-                      }, 2500);
-                    }*/
                   });
-                }, 2000);
               }
               getClientApi(render);
             }
@@ -146,8 +160,8 @@ class TogglePageSignIn extends TogglePage {
             }, 1000);
           });
         } else {
-          textError.innerHTML = info.errors[0];
-          textError.classList.remove('form__text--hide');
+          textErrorPhone.innerHTML = info.errors[0];
+          textErrorPhone.classList.remove('form__text--close', 'form__text--hide');
         }
       }
       signInApi(phoneNumber, regCall);

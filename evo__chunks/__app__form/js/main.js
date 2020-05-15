@@ -229,7 +229,7 @@ class CreateFormInputSignIn extends CreateItem {
           </div>
         </label>
         </div>
-        <p class="form__text form__text--error form__text--hide"></p>
+        <p class="form__text form__text--error-phone form__text--hide"></p>
         <div class="form__call-container">
            <a href="" class="form__link form__link--type--call">Позвонить</a>
            <p class="form__text">Авторизация осуществляется по бесплатному звонку, как только соединение будет установлено - мы вас авторизуем.</p>
@@ -237,6 +237,7 @@ class CreateFormInputSignIn extends CreateItem {
         <p class="form__text form__text--success form__text--hide">Вы авторизованны!</p>
         <div class="form__inputs-container form__inputs-container--hide">
           <div class="form__input-container form__input-container--name form__input-container--hide">
+            <h2 class="form__title">Давайте знакомиться, меня зовут Хлебник, а вас?</h2>
             <div class="form__input">
             <label class="form__input-underlined">
               <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--name" minlength="2">
@@ -247,9 +248,9 @@ class CreateFormInputSignIn extends CreateItem {
               </ul>
             </label>
            </div>
-           <h2 class="form__title">Давайте знакомиться, меня зовут Хлебник, а вас?</h2>
           </div>
-          <div class="form__input-container form__input-container--birthday form__input-container--hide"> 
+          <div class="form__input-container form__input-container--birthday form__input-container--hide">
+            <h2 class="form__title">Хотите рассказать нам о своей дате рождения? Мы регулярно проводим специальные акции для именинников.</h2>  
             <div class="form__input">
               <label class="form__input-underlined">
                 <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--birthday" type="date" min="1900-01-01">
@@ -257,9 +258,9 @@ class CreateFormInputSignIn extends CreateItem {
                 <ul class="form__input-requirements"></ul>
               </label>
             </div>
-            <h2 class="form__title">Хотите рассказать нам о своей дате рождения? Мы регулярно проводим специальные акции для именинников.</h2>  
           </div>
-          <div class="form__input-container form__input-container--email form__input-container--hide"> 
+          <div class="form__input-container form__input-container--email form__input-container--hide">
+            <h2 class="form__title">Хотите подписаться на нашу рассылку? Оставьте нам свой email. В любой момент можно будет отписаться от рассылки через ссылку в каждом отправляемом нами письме.</h2> 
             <div class="form__input">
               <label class="form__input-underlined">
                 <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--email" type="email">
@@ -272,8 +273,8 @@ class CreateFormInputSignIn extends CreateItem {
                 </div>
               </label>
             </div>
-            <h2 class="form__title">Хотите подписаться на нашу рассылку? Оставьте нам свой email. В любой момент можно будет отписаться от рассылки через ссылку в каждом отправляемом нами письме.</h2>
           </div>
+          <p class="form__text form__text--error form__text--hide"></p>
         <button class="button button--size--medium button--theme--light button--theme--shadow-medium form__button--type--skip">Пропустить</button>
         <button class="button button--theme--tangerin button--size--big button--theme--shadow-big form__button form__button--type--agree">Подтвердить</button>
        </div>

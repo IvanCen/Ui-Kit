@@ -17,6 +17,7 @@
   flex-direction: column;
   justify-content: flex-start;
   top: 0;
+  padding-bottom: 100px; //убрать потом, сделанно для отображение с панелькой телефонов
 
   &--opened {
     height: calc(100vh - 78px);
