@@ -21,7 +21,9 @@ class TogglePageSignIn extends TogglePage {
       const textError = document.querySelector('.form__text--error');
       const textErrorPhone = document.querySelector('.form__text--error-phone');
       const phoneNumber = inputArea.value;
-
+      function refreshNumber(infoNumber) {
+        callLink.href = `tel:${infoNumber.successData.phone}`;
+      }
       function regCall(info) {
         if (info.success === true) {
           textErrorPhone.classList.add('form__text--close', 'form__text--hide');
@@ -32,9 +34,6 @@ class TogglePageSignIn extends TogglePage {
           accessButton.classList.add('form__button--hide');
           callLink.href = `tel:${phone}`;
 
-          function refreshNumber(infoNumber) {
-            callLink.href = `tel:${infoNumber.successData.phone}`;
-          }
           const refreshLink = setInterval(() => {
             signInApi(phone, refreshNumber);
           }, 240000);
@@ -45,7 +44,6 @@ class TogglePageSignIn extends TogglePage {
                 function delay(ms) {
                   return new Promise((resolve) => setTimeout(resolve, ms));
                 }
-
 
                 console.log(userInfo);
                 callContainer.remove();
