@@ -61,7 +61,9 @@ class ToggleCards extends ToggleMainPage {
         { type: 'click', callback: togglePageSignIn.rendering },
       ],
     });
-    this.mainPageContent.prepend(cardsButtonJoinOrange.create());
+    if (localStorage.getItem('user-sign-in') === 'false') {
+      this.mainPageContent.prepend(cardsButtonJoinOrange.create());
+    }
     // this.mainPageContent.prepend(cardsButtonSignInLight.create());
     this.mainPageContent.prepend(cardsCard.create());
     this.mainPageContent.prepend(cardsTopBar.create());

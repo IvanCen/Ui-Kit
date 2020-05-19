@@ -39,13 +39,9 @@ class ToggleOrder extends ToggleMainPage {
       style: ['top-bar'],
       modifier: ['--indentation--top'],
       eventToggleMenu: [
-        // { type: 'click', callback: toggleOrderMenuContent.clearPage },
-        // { type: 'click', callback: toggleOrderMenuContent.rendering },
         { type: 'click', callback: switchTabMain },
       ],
       eventToggleHits: [
-        // { type: 'click', callback: toggleOrderHitsContent.clearPage },
-        // { type: 'click', callback: toggleOrderHitsContent.rendering },
         { type: 'click', callback: switchTabHits },
       ],
       eventToggleHistory: [

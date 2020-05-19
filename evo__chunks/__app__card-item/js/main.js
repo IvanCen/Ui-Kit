@@ -30,10 +30,64 @@ class CreateCardItemOrder extends CreateItem {
       togglePageOrderCategory.openPage();
     });
     this.template = `
-      <div style="background-image: url('${productInfo.mainPhoto}')" class="card-item__image card-item__image--size--small"></div>
+      <div class="card-item__image card-item__image--size--small"></div>
       <h3 class="card-item__title card-item__title--text--bold">${productInfo.name}</h3>`;
 
     this.element.insertAdjacentHTML('beforeend', this.template);
+
+    const imgEl = this.element.querySelector('.card-item__image');
+
+    let devicePixelRatio = 0;
+    devicePixelRatio = window.devicePixelRatio;
+    const windowScreenWidth = window.screen.width * devicePixelRatio;
+    function countScreenRatio(windowScreen) {
+      const maxSize = 6000;
+      if (windowScreen >= maxSize) {
+        windowScreen = maxSize;
+        return windowScreen;
+      }
+      return windowScreen;
+    }
+
+    function loadImg(timer) {
+      function getCache(info) {
+        if (info.success === false && info.errors[0] === 'Кеш файл еще не готов') {
+          const timerSuccess = (delay) => setTimeout(() => {
+            loadImg(timerSuccess);
+            timerSuccess(delay * 2);
+            if (delay > 32) {
+              clearInterval(timer);
+            }
+          }, delay * 1000);
+          timerSuccess(1);
+        }
+      }
+      const screenRatio = countScreenRatio(Math.ceil(windowScreenWidth));
+      const urlPhoto = productInfo.mainPhoto;
+      if (urlPhoto !== null) {
+        const regExp = /(assets\/images\/docs)(\/\d*\/)([\d\D]*\.)(\D+)/g;
+        const productName = urlPhoto.name.replace(regExp, '$3');
+        const img = document.createElement('img');
+        img.src = `http://demo.xleb.ru/${urlPhoto.name}_cache/${urlPhoto.edit}/${screenRatio}x${screenRatio}/${productName}webp`;
+
+        img.onerror = () => {
+          const request = {
+            method: 'image-cache-queue',
+            originalFileUrl: urlPhoto.name,
+            fileEditDate: urlPhoto.edit,
+            extension: 'webp',
+            sizeX: `${screenRatio}`,
+            sizeY: `${screenRatio}`,
+          };
+          api.imageCacheQueueApi(request, getCache);
+        };
+        img.onload = () => {
+          clearInterval(timer);
+          imgEl.style.backgroundImage = `url(${img.src})`;
+        };
+      }
+    }
+    loadImg();
 
     return this.element;
   }
@@ -54,13 +108,66 @@ class CreateCardItemOrderProductCard extends CreateItem {
       toggleSubPageProductCard.openPage();
     });
     this.template = `
-      <div style="background-image: url('${productInfo.mainPhoto}')" class="card-item__image card-item__image--size--big"></div>
+      <div class="card-item__image card-item__image--size--big"></div>
       <div class="card-item__info-container">
         <h3 class="card-item__title card-item__title--text--normal card-item__title--position--center">${productInfo.name}</h3>
         <span class="card-item__available-info card-item__available-info--show">
       </div>`;
-
     this.element.insertAdjacentHTML('beforeend', this.template);
+
+    const imgEl = this.element.querySelector('.card-item__image');
+
+    let devicePixelRatio = 0;
+    devicePixelRatio = window.devicePixelRatio;
+    const windowScreenWidth = window.screen.width * devicePixelRatio;
+    function countScreenRatio(windowScreen) {
+      const maxSize = 6000;
+      if (windowScreen >= maxSize) {
+        windowScreen = maxSize;
+        return windowScreen;
+      }
+      return windowScreen;
+    }
+
+    function loadImg(timer) {
+      function getCache(info) {
+        if (info.success === false && info.errors[0] === 'Кеш файл еще не готов') {
+          const timerSuccess = (delay) => setTimeout(() => {
+            loadImg(timerSuccess);
+            timerSuccess(delay * 2);
+            if (delay > 32) {
+              clearInterval(timer);
+            }
+          }, delay * 1000);
+          timerSuccess(1);
+        }
+      }
+      const screenRatio = countScreenRatio(Math.ceil(windowScreenWidth));
+      const urlPhoto = productInfo.mainPhoto;
+      if (urlPhoto !== null) {
+        const regExp = /(assets\/images\/docs)(\/\d*\/)([\d\D]*\.)(\D+)/g;
+        const productName = urlPhoto.name.replace(regExp, '$3');
+        const img = document.createElement('img');
+        img.src = `http://demo.xleb.ru/${urlPhoto.name}_cache/${urlPhoto.edit}/${screenRatio}x${screenRatio}/${productName}webp`;
+
+        img.onerror = () => {
+          const request = {
+            method: 'image-cache-queue',
+            originalFileUrl: urlPhoto.name,
+            fileEditDate: urlPhoto.edit,
+            extension: 'webp',
+            sizeX: `${screenRatio}`,
+            sizeY: `${screenRatio}`,
+          };
+          api.imageCacheQueueApi(request, getCache);
+        };
+        img.onload = () => {
+          clearInterval(timer);
+          imgEl.style.backgroundImage = `url(${img.src})`;
+        };
+      }
+    }
+    loadImg();
 
     return this.element;
   }

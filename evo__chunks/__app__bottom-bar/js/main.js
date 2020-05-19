@@ -6,7 +6,7 @@ class CreateBottomBarOrder extends CreateItem {
     this.template = `
         <div class="bottom-bar__select-container">
           <span class="bottom-bar__info">Самовывоз по адресу</span>
-          <button class="bottom-bar__select-item">Адрес магазина
+          <button class="bottom-bar__select-item">${localStorage.getItem('short-name-shop') || 'Адрес магазина'}
             <img src="[+chunkWebPath+]/img/icon-expand-direction-bottom-white.svg" alt="" class="bottom-bar__icon">
           </button>
         </div>

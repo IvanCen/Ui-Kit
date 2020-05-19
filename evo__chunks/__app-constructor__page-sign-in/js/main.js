@@ -3,167 +3,193 @@ class TogglePageSignIn extends TogglePage {
     super(parameters);
     this.parameters = parameters;
     this.rendering = this.rendering.bind(this);
+    this.regCall = this.regCall.bind(this);
+    this.regSuccess = this.regSuccess.bind(this);
+    this.registrationNumber = this.registrationNumber.bind(this);
+    this.sendData = this.sendData.bind(this);
+    this.askUserInfo = this.askUserInfo.bind(this);
+  }
+
+  registrationNumber() {
+    this.inputArea = document.querySelector('.form__input-area--type--phone');
+    this.phoneNumber = this.inputArea.value;
+    this.parameters.api.signInApi(this.phoneNumber, this.regCall);
+  }
+
+  sendData(setName, value) {
+    const request = {
+      method: 'set-client',
+      set: setName,
+      outputFormat: 'json',
+    };
+    request[setName] = value;
+    this.parameters.api.setClientApi(request, this.showError);
+  }
+
+  regCall(info) {
+    const inputArea = document.querySelector('.form__input-area--type--phone');
+    const phoneNumber = inputArea.value;
+    const input = document.querySelector('.form__input');
+    const callLink = document.querySelector('.form__link--type--call');
+    const accessButton = document.querySelector('.form__button--type--sign-in');
+    const callContainer = document.querySelector('.form__call-container');
+    const textError = document.querySelector('.form__text--error');
+    const textErrorPhone = document.querySelector('.form__text--error-phone');
+    function refreshNumber(infoNumber) {
+      callLink.href = `tel:${infoNumber.successData.phone}`;
+    }
+    if (info.success === true) {
+      const { code, phone } = info.successData;
+
+      textErrorPhone.classList.add('form__text--close', 'form__text--hide');
+      textError.classList.add('form__text--hide');
+      callContainer.classList.add('form__call-container--open');
+      input.classList.add('form__input--close');
+      accessButton.classList.add('form__button--hide');
+      callLink.href = `tel:${phone}`;
+
+      const refreshLink = setInterval(() => {
+        this.parameters.api.signInApi(phone, refreshNumber);
+      }, 240000);
+
+      callLink.addEventListener('click', () => {
+        const timerRegSuccess = setInterval(() => {
+          this.parameters.api.authorizeApi(this.regSuccess, code, phoneNumber, timerRegSuccess, refreshLink);
+        }, 1000);
+      });
+    } else {
+      textErrorPhone.innerHTML = info.errors[0];
+      textErrorPhone.classList.remove('form__text--close', 'form__text--hide');
+    }
+  }
+
+  regSuccess(infoSuccess) {
+    if (infoSuccess.success === true) {
+      const callContainer = document.querySelector('.form__call-container');
+
+      callContainer.remove();
+
+      this.parameters.api.getClientApi(this.askUserInfo);
+    }
+  }
+
+  askUserInfo(userInfo) {
+    if (userInfo.success === true) {
+      localStorage.setItem('user-sign-in', 'true');
+      const { birthday, email, name } = userInfo.successData;
+      const inputsContainer = document.querySelector('.form__inputs-container');
+      const textSuccess = document.querySelector('.form__text--success');
+      const buttonAgree = document.querySelector('.form__button--type--agree');
+
+      textSuccess.classList.add('form__text--close');
+      inputsContainer.classList.remove('form__inputs-container--hide');
+
+      if (name === '') {
+        this.askUserName();
+      } else if (birthday === '') {
+        this.askUserBirthday();
+      } else if (email === '') {
+        this.askUserEmail();
+      } else {
+        setTimeout(() => {
+          buttonAgree.classList.add('form__button--hide');
+          textSuccess.textContent = 'Добро пожаловать в Хлебник!';
+          textSuccess.classList.remove('form__text--close', 'form__text--hide');
+          textSuccess.classList.add('form__text--indentation');
+          togglePage.closePage();
+          togglePage.deletePage();
+          inputsContainer.classList.remove('form__inputs-container--hide');
+        }, 2500);
+      }
+    } else {
+      this.showError(userInfo);
+    }
+  }
+
+  showError(info) {
+    const textError = document.querySelector('.form__text--error');
+    textError.classList.remove('form__text--close', 'form__text--hide');
+    textError.innerHTML = info.errors[0];
+  }
+
+  askUserName() {
+    const inputNameContainer = document.querySelector('.form__input-container--name');
+    const inputAreaName = document.querySelector('.form__input-area--type--name');
+    const buttonAgree = document.querySelector('.form__button--type--agree');
+    const textError = document.querySelector('.form__text--error');
+
+    inputNameContainer.classList.remove('form__input-container--hide');
+    validation();
+
+    buttonAgree.addEventListener('click', () => {
+      if (inputAreaName.value === '') {
+        textError.classList.remove('form__text--close', 'form__text--hide');
+        textError.textContent = 'Введите имя';
+      }
+      if (inputAreaName.value !== '') {
+        textError.classList.add('form__text--close', 'form__text--hide');
+        this.sendData('name', inputAreaName.value);
+        inputAreaName.value = '';
+        inputNameContainer.classList.add('form__input-container--hide');
+        this.parameters.api.getClientApi(this.askUserInfo);
+      }
+    });
+  }
+
+  askUserBirthday() {
+    const buttonAgree = document.querySelector('.form__button--type--agree');
+    const textError = document.querySelector('.form__text--error');
+    const inputBirthdayContainer = document.querySelector('.form__input-container--birthday');
+    const inputAreaBirthday = document.querySelector('.form__input-area--type--birthday');
+
+    inputBirthdayContainer.classList.remove('form__input-container--hide');
+
+    buttonAgree.addEventListener('click', () => {
+      if (inputAreaBirthday.value === '') {
+        textError.classList.remove('form__text--close', 'form__text--hide');
+        textError.textContent = 'Укажите дату своего рождения';
+      }
+      if (inputAreaBirthday.value !== '') {
+        textError.classList.add('form__text--close', 'form__text--hide');
+        this.sendData('birthday', inputAreaBirthday.value);
+        inputAreaBirthday.value = '';
+        inputBirthdayContainer.classList.add('form__input-container--hide');
+        this.parameters.api.getClientApi(this.askUserInfo);
+      }
+    });
+  }
+
+  askUserEmail() {
+    const buttonAgree = document.querySelector('.form__button--type--agree');
+    const textError = document.querySelector('.form__text--error');
+    const inputEmailContainer = document.querySelector('.form__input-container--email');
+    const inputAreaEmail = document.querySelector('.form__input-area--type--email');
+
+    inputEmailContainer.classList.remove('form__input-container--hide');
+    validation();
+
+    buttonAgree.addEventListener('click', () => {
+      if (inputAreaEmail.value === '') {
+        textError.classList.remove('form__text--close', 'form__text--hide');
+        textError.textContent = 'Укажите email';
+      }
+      if (inputAreaEmail.value !== '') {
+        textError.classList.add('form__text--close', 'form__text--hide');
+        this.sendData('email', inputAreaEmail.value);
+        inputAreaEmail.value = '';
+        inputEmailContainer.classList.add('form__input-container--hide');
+        toggleModal.renderingEmail();
+        toggleModal.openPage();
+      }
+      if (!modal) {
+        this.parameters.api.getClientApi(this.askUserInfo);
+      }
+    });
   }
 
   rendering() {
     super.rendering();
-    const {
-      signInApi, authorizeApi, getClientApi, setClientApi,
-    } = this.parameters.api;
 
-    function registration() {
-      const input = document.querySelector('.form__input');
-      const inputArea = document.querySelector('.form__input-area--type--phone');
-      const callLink = document.querySelector('.form__link--type--call');
-      const accessButton = document.querySelector('.form__button--type--sign-in');
-      const callContainer = document.querySelector('.form__call-container');
-      const textSuccess = document.querySelector('.form__text--success');
-      const textError = document.querySelector('.form__text--error');
-      const textErrorPhone = document.querySelector('.form__text--error-phone');
-      const phoneNumber = inputArea.value;
-      function refreshNumber(infoNumber) {
-        callLink.href = `tel:${infoNumber.successData.phone}`;
-      }
-      function regCall(info) {
-        if (info.success === true) {
-          textErrorPhone.classList.add('form__text--close', 'form__text--hide');
-          const { code, phone } = info.successData;
-          textError.classList.add('form__text--hide');
-          callContainer.classList.add('form__call-container--open');
-          input.classList.add('form__input--close');
-          accessButton.classList.add('form__button--hide');
-          callLink.href = `tel:${phone}`;
-
-          const refreshLink = setInterval(() => {
-            signInApi(phone, refreshNumber);
-          }, 240000);
-          function regSuccess(infoSuccess) {
-            console.log(infoSuccess);
-            if (infoSuccess.success === true) {
-              function render(userInfo) {
-                function delay(ms) {
-                  return new Promise((resolve) => setTimeout(resolve, ms));
-                }
-
-                console.log(userInfo);
-                callContainer.remove();
-                textSuccess.classList.remove('form__text--hide');
-                clearInterval(refreshLink);
-                setTimeout(() => {
-                  textSuccess.classList.add('form__text--hide');
-                }, 2000);
-                const { birthday, email, name } = userInfo.successData;
-                const inputsContainer = document.querySelector('.form__inputs-container');
-                const inputNameContainer = document.querySelector('.form__input-container--name');
-                const inputEmailContainer = document.querySelector('.form__input-container--email');
-                const inputBirthdayContainer = document.querySelector('.form__input-container--birthday');
-                const inputAreaName = document.querySelector('.form__input-area--type--name');
-                const inputAreaEmail = document.querySelector('.form__input-area--type--email');
-                const inputAreaBirthday = document.querySelector('.form__input-area--type--birthday');
-                const buttonAgree = document.querySelector('.form__button--type--agree');
-                const form = document.querySelector('.form');
-                form.classList.add('form--indentation--bottom');
-
-                function sendData(setName, value) {
-                  const request = {
-                    method: 'set-client',
-                    set: setName,
-                    name: inputAreaName.value,
-                    outputFormat: 'json',
-                  };
-                  request[setName] = value;
-                  setClientApi(request);
-                }
-
-                validation();
-                if (name === '') {
-                  inputNameContainer.classList.remove('form__input-container--hide');
-                }
-                if (name !== '' && email !== '' && name !== '') {
-                  setTimeout(() => {
-                    togglePage.closePage();
-                    togglePage.deletePage();
-                    inputsContainer.classList.remove('form__inputs-container--hide');
-                  }, 2500);
-                }
-                delay(2000)
-                  .then(() => {
-                    textSuccess.classList.add('form__text--close');
-                    inputsContainer.classList.remove('form__inputs-container--hide');
-                    if (name === '') {
-                      buttonAgree.addEventListener('click', () => {
-                        if (inputAreaName.value === '') {
-                          textError.classList.remove('form__text--close', 'form__text--hide');
-                          textError.textContent = 'Введите имя';
-                        }
-                        if (inputAreaName.value !== '') {
-                          textError.classList.add('form__text--close', 'form__text--hide');
-                          sendData('name', inputAreaName.value);
-                          inputAreaName.value = '';
-                          inputNameContainer.classList.add('form__input-container--hide');
-                          if (birthday === '') {
-                            inputBirthdayContainer.classList.remove('form__input-container--hide');
-                            buttonAgree.addEventListener('click', () => {
-                              if (inputAreaBirthday.value === '') {
-                                textError.classList.remove('form__text--close', 'form__text--hide');
-                                textError.textContent = 'Укажите дату своего рождения';
-                              }
-                              if (inputAreaBirthday.value !== '') {
-                                textError.classList.add('form__text--close', 'form__text--hide');
-                                sendData('birthday', inputAreaBirthday.value);
-                                inputAreaBirthday.value = '';
-                                inputBirthdayContainer.classList.add('form__input-container--hide');
-                                if (email === '') {
-                                  inputEmailContainer.classList.remove('form__input-container--hide');
-                                  buttonAgree.addEventListener('click', () => {
-                                    if (inputAreaEmail.value === '') {
-                                      textError.classList.remove('form__text--close', 'form__text--hide');
-                                      textError.textContent = 'Укажите email';
-                                    }
-                                    if (inputAreaEmail.value !== '') {
-                                      textError.classList.add('form__text--close', 'form__text--hide');
-                                      sendData('email', inputAreaEmail.value);
-                                      inputAreaEmail.value = '';
-                                      inputEmailContainer.classList.add('form__input-container--hide');
-                                      textSuccess.textContent = `Добро пожаловать в Хлебник ${inputAreaName.value}!`;
-                                      buttonAgree.classList.add('form__button--hide');
-                                      textSuccess.classList.remove('form__text--close', 'form__text--hide');
-                                      textSuccess.classList.add('form__text--indentation');
-                                      toggleModal.renderingEmail();
-                                      toggleModal.openPage();
-                                    }
-                                    if (!modal) {
-                                      setTimeout(() => {
-                                        togglePage.closePage();
-                                        togglePage.deletePage();
-                                        inputsContainer.classList.remove('form__inputs-container--hide');
-                                      }, 2500);
-                                    }
-                                  });
-                                }
-                              }
-                            });
-                          }
-                        }
-                      });
-                    }
-                  });
-              }
-              getClientApi(render);
-            }
-          }
-          callLink.addEventListener('click', () => {
-            const timerRegSuccess = setInterval(() => {
-              authorizeApi(regSuccess, code, phoneNumber, timerRegSuccess);
-            }, 1000);
-          });
-        } else {
-          textErrorPhone.innerHTML = info.errors[0];
-          textErrorPhone.classList.remove('form__text--close', 'form__text--hide');
-        }
-      }
-      signInApi(phoneNumber, regCall);
-    }
     const signInTopBar = new CreateTopBarWithCloseIcon({
       selector: ['div'],
       style: ['top-bar'],
@@ -182,8 +208,8 @@ class TogglePageSignIn extends TogglePage {
         '--indentation',
       ],
       events: [
-        { type: 'click', callback: registration },
-        { type: 'keydown', callback: registration },
+        { type: 'click', callback: () => { this.registrationNumber(this); } },
+        { type: 'keydown', callback: () => { this.registrationNumber(this); } },
       ],
       eventSkip: [
         { type: 'click', callback: this.closePage },
@@ -195,13 +221,6 @@ class TogglePageSignIn extends TogglePage {
     this.page.append(formInputSignIn.create());
     inputFlyLabel();
     activeButton();
-    const inputAreaPhone = document.querySelector('.form__input-area--type--phone');
-
-    inputAreaPhone.addEventListener('keydown', (event) => {
-      if (event.keyCode === 13) {
-        registration();
-      }
-    });
     this.openPage();
   }
 }

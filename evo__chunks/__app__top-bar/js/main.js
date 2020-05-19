@@ -52,6 +52,11 @@ class CreateTopBar extends CreateItem {
         this.buttonAccount.addEventListener(event.type, event.callback);
       }
     }
+    if (localStorage.getItem('user-sign-in') === 'true') {
+      this.buttonSignIn.remove();
+    }
+
+
     return super.create(this.element);
   }
 }

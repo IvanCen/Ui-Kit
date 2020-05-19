@@ -23,8 +23,14 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-start;
-    min-height: 229px;
+    margin: auto;
     width: 100%;
+    overflow: hidden;
+
+    &:before {
+      content: "";
+      padding-bottom: 100%;
+    }
   }
 
   &__content-img {
@@ -40,12 +46,18 @@
 
   &__content-title {
     @extend %style-3;
-    color: $white;
+    color: $black;
     padding: 0 0 8px 16px;
     z-index: 1;
+    position: absolute;
+    left: 0;
+    bottom: 0;
   }
 
   &__icon {
+    position: absolute;
+    top: 0;
+    left: 0;
     padding: 55px 0 0 16px;
     z-index: 1;
   }
@@ -72,6 +84,7 @@
   &__title {
     @extend %style-4;
     margin-bottom: 10px;
+
   }
 
   &__text {

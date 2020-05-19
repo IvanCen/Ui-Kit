@@ -22,6 +22,7 @@ class CreateMainCard extends CreateItem {
       toggleModal.renderingPost(postInfo);
       toggleModal.openPage();
     });
+
     return this.element;
   }
 }
@@ -143,9 +144,9 @@ class CreateOrderProductMainCard extends CreateItem {
   create(productInfo) {
     this.template = `
       <div class="main-card__content">
-        <img src="[+chunkWebPath+]/img/icon-close-white.svg" alt="" class="main-card__icon main-card__icon-close">
-        <div style="background-image: url('${productInfo.mainPhoto}')" alt="" class="main-card__content-img"></div>
-        <h2 class="main-card__content-title">${this.parameters.title}</h2>
+        <img src="[+chunkWebPath+]/img/icon-close.svg" alt="" class="main-card__icon main-card__icon-close">
+        <div alt="" class="main-card__content-img"></div>
+        <h2 class="main-card__content-title main-card__content-title">${this.parameters.title}</h2>
       </div>`;
     this.element.insertAdjacentHTML('beforeend', this.template);
     this.iconClose = this.element.querySelector('.main-card__icon-close');
@@ -154,6 +155,60 @@ class CreateOrderProductMainCard extends CreateItem {
         this.iconClose.addEventListener(event.type, event.callback);
       }
     }
+
+    const imgEl = this.element.querySelector('.main-card__content-img');
+
+    let devicePixelRatio = 0;
+    devicePixelRatio = window.devicePixelRatio;
+    const windowScreenWidth = window.screen.width * devicePixelRatio;
+    function countScreenRatio(windowScreen) {
+      const maxSize = 6000;
+      if (windowScreen >= maxSize) {
+        windowScreen = maxSize;
+        return windowScreen;
+      }
+      return windowScreen;
+    }
+
+    function loadImg(timer) {
+      function getCache(info) {
+        if (info.success === false && info.errors[0] === 'Кеш файл еще не готов') {
+          const timerSuccess = (delay) => setTimeout(() => {
+            loadImg(timerSuccess);
+            timerSuccess(delay * 2);
+            if (delay > 32) {
+              clearInterval(timer);
+            }
+          }, delay * 1000);
+          timerSuccess(1);
+        }
+      }
+      const screenRatio = countScreenRatio(Math.ceil(windowScreenWidth));
+      const urlPhoto = productInfo.mainPhoto;
+      if (urlPhoto !== null) {
+        const regExp = /(assets\/images\/docs)(\/\d*\/)([\d\D]*\.)(\D+)/g;
+        const productName = urlPhoto.name.replace(regExp, '$3');
+        const img = document.createElement('img');
+        img.src = `http://demo.xleb.ru/${urlPhoto.name}_cache/${urlPhoto.edit}/${screenRatio}x${screenRatio}/${productName}webp`;
+
+        img.onerror = () => {
+          const request = {
+            method: 'image-cache-queue',
+            originalFileUrl: urlPhoto.name,
+            fileEditDate: urlPhoto.edit,
+            extension: 'webp',
+            sizeX: `${screenRatio}`,
+            sizeY: `${screenRatio}`,
+          };
+          api.imageCacheQueueApi(request, getCache);
+        };
+        img.onload = () => {
+          clearInterval(timer);
+          imgEl.style.backgroundImage = `url(${img.src})`;
+        };
+      }
+    }
+    loadImg();
 
     return super.create(this.element);
   }

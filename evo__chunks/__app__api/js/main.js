@@ -135,7 +135,7 @@ class Api {
       });
   }
 
-  authorizeApi(func, code, phoneNumber, timerRegSuccess) {
+  authorizeApi(func, code, phoneNumber, timerRegSuccess, refreshLink) {
     const request = {
       method: 'authorize',
       sendCodeMethod: 'callOut',
@@ -158,6 +158,7 @@ class Api {
       .then((authorizeInfo) => {
         if (authorizeInfo.success === true) {
           clearInterval(timerRegSuccess);
+          clearInterval(refreshLink);
         }
         return authorizeInfo;
       })
@@ -191,7 +192,7 @@ class Api {
       });
   }
 
-  setClientApi(request) {
+  setClientApi(request, func) {
     fetch('[~30~]', {
       method: 'POST',
       headers: { 'Content-Type': 'text/html' },
@@ -203,7 +204,27 @@ class Api {
         }
         return Promise.reject(`Ошибка: ${res.status}`);
       })
-      .then((userInfo) => console.log(userInfo))
+      .then((userInfo) => userInfo)
+      .then(func)
+      .catch((err) => {
+        console.log('Ошибка. Запрос не выполнен: ', err);
+      });
+  }
+
+  imageCacheQueueApi(request, func) {
+    fetch('[~30~]', {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/html' },
+      body: JSON.stringify(request),
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+      .then((userInfo) => userInfo)
+      .then(func)
       .catch((err) => {
         console.log('Ошибка. Запрос не выполнен: ', err);
       });

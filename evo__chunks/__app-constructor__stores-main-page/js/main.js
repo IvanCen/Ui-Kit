@@ -6,6 +6,22 @@ class ToggleStores extends ToggleMainPage {
     this.rendering = this.rendering.bind(this);
   }
 
+  chooseShop(stores) {
+    const buttonChoose = document.querySelector('.button--type--choose');
+    buttonChoose.addEventListener('click', () => {
+      const radioInputs = document.querySelectorAll('.radio__input');
+      [...radioInputs].forEach((item) => {
+        if (item.checked) {
+          stores.successData.forEach((el) => {
+            if (el.id === Number(item.id)) {
+              localStorage.setItem('short-name-shop', el.shortTitle);
+            }
+          });
+        }
+      });
+    });
+  }
+
   rendering() {
     super.rendering();
     this.mainPage.classList.add('main-page--type--search');
@@ -35,12 +51,13 @@ class ToggleStores extends ToggleMainPage {
         '--theme--tangerin',
         '--type--fixed',
         '--theme--shadow-big',
+        '--type--choose',
       ],
       text: ['Выбрать'],
-      events: [
+      /* events: [
         { type: 'click', callback: toggleModal.rendering },
         { type: 'click', callback: toggleModal.openPage },
-      ],
+      ], */
     });
 
     const storesMapItemWraper = new CreateMapItemStoresWraper({
@@ -58,11 +75,7 @@ class ToggleStores extends ToggleMainPage {
     this.mainPageContent.append(storesMapItemWraper.create());
 
     function renderStores(stores) {
-      console.log(stores);
-      /* const mainPageContainer = document.querySelector('.map__container');
-      stores.successData.forEach((item) => {
-        mainPageContainer.append(storesMapItem.create(item));
-      }); */
+      console.log(stores.successData);
 
       ymaps.ready(() => {
         const myMap = new ymaps.Map('map', {
@@ -103,7 +116,7 @@ class ToggleStores extends ToggleMainPage {
     this.parameters.api.storesApi(renderStores);
     this.mainPageContent.append(storesButtonChoiceOrange.create());
 
-
+    this.parameters.api.storesApi(this.chooseShop);
     activeButton();
   }
 }

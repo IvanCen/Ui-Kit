@@ -63,21 +63,38 @@ class ToggleMain extends ToggleMainPage {
 
     function renderPosts(dataPosts) {
       const buttonDark = document.querySelector('.button--theme--dark-transparent');
-      dataPosts.successData.forEach((item) => {
-        buttonDark.after(mainPageMainCard.create(item));
-      });
+      const banners = document.querySelector('.banners');
+      if (buttonDark !== null) {
+        dataPosts.successData.forEach((item) => {
+          buttonDark.after(mainPageMainCard.create(item));
+        });
+      } else {
+        dataPosts.successData.forEach((item) => {
+          banners.after(mainPageMainCard.create(item));
+        });
+      }
     }
     function renderPromo(dataPromo) {
       const buttonDark = document.querySelector('.button--theme--dark-transparent');
-      dataPromo.successData.forEach((item) => {
-        buttonDark.after(mainPageMainCard.create(item));
-      });
+      const banners = document.querySelector('.banners');
+      if (buttonDark !== null) {
+        dataPromo.successData.forEach((item) => {
+          buttonDark.after(mainPageMainCard.create(item));
+        });
+      } else {
+        dataPromo.successData.forEach((item) => {
+          banners.after(mainPageMainCard.create(item));
+        });
+      }
     }
 
-
-    this.mainPageContent.prepend(mainPageButtonJoinOrange.create());
+    if (localStorage.getItem('user-sign-in') === 'false') {
+      this.mainPageContent.prepend(mainPageButtonJoinOrange.create());
+    }
     this.parameters.api.postsApi(renderPosts);
-    this.mainPageContent.prepend(mainPageButtonJoinDark.create());
+    if (localStorage.getItem('user-sign-in') === 'false') {
+      this.mainPageContent.prepend(mainPageButtonJoinDark.create());
+    }
     this.mainPageContent.prepend(mainPageTitleBar.create());
     this.mainPageContent.prepend(mainPageBanners.create());
     this.parameters.api.promoApi(renderPromo);

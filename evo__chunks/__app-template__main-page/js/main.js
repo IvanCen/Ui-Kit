@@ -1,6 +1,11 @@
 const mainPage = document.querySelector('.main-page');
 const body = document.querySelector('body');
 const api = new Api();
+/*function hellos(info) {
+  console.log(info);
+}
+api.getClientApi(hellos);*/
+
 const toggleOrderMenuContent = new ToggleOrderMenuContent({ api });
 const toggleOrderHitsContent = new ToggleOrderHitsContent({ api });
 const toggleOrderHistoryContent = new ToggleOrderHistoryContent();

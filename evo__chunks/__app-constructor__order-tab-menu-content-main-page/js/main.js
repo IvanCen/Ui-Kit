@@ -122,17 +122,22 @@ class ToggleOrderMenuContent extends ToggleOrderTabContent {
       rendered(product, productsContainer);
       rendered(wraper, wraperContainer);
     }
-
-    this.mainPageTabContent.append(orderTitleBarDrinks.create());
-    this.mainPageTabContent.append(orderCardItemContainerDrinks.create('drinks'));
-    this.mainPageTabContent.append(orderTitleBarFoods.create());
-    this.mainPageTabContent.append(orderCardItemContainerFoods.create('foods'));
-    this.mainPageTabContent.append(orderTitleBarProducts.create());
-    this.mainPageTabContent.append(orderCardItemContainerProducts.create('products'));
-    this.mainPageTabContent.append(orderTitleBarWraper.create());
-    this.mainPageTabContent.append(orderCardItemContainerWraper.create('wraper'));
-    this.parameters.api.productApi(renderProduct);
-    this.mainPageTabContent.classList.add('main-page__tab-content--main', 'main-page__tab-content--open');
-    this.mainPageContent.append(this.mainPageTabContent);
+    (async () => {
+      try {
+        this.mainPageTabContent.append(orderTitleBarDrinks.create());
+        this.mainPageTabContent.append(orderCardItemContainerDrinks.create('drinks'));
+        this.mainPageTabContent.append(orderTitleBarFoods.create());
+        this.mainPageTabContent.append(orderCardItemContainerFoods.create('foods'));
+        this.mainPageTabContent.append(orderTitleBarProducts.create());
+        this.mainPageTabContent.append(orderCardItemContainerProducts.create('products'));
+        this.mainPageTabContent.append(orderTitleBarWraper.create());
+        this.mainPageTabContent.append(orderCardItemContainerWraper.create('wraper'));
+        await this.parameters.api.productApi(renderProduct);
+        this.mainPageTabContent.classList.add('main-page__tab-content--main', 'main-page__tab-content--open');
+        this.mainPageContent.append(this.mainPageTabContent);
+      } catch (e) {
+        console.log(e);
+      }
+    })();
   }
 }

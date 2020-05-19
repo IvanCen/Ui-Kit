@@ -1,5 +1,4 @@
 
-
 class ToggleFourthPageReviewOrder extends ToggleFourthPage {
   constructor(parameters) {
     super(parameters);
