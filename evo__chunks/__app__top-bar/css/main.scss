@@ -51,12 +51,14 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: 0 0 20px;
+    padding: 0 20px 5px 0;
+
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 
     &--size--small {
       width: 26%;
       margin-left: 30px;
+      padding: 0 0 20px;
       justify-content: center;
 
       &:after {
@@ -158,11 +160,11 @@
 
   &__nav-container {
     display: grid;
-    grid-gap: 5%;
+    grid-gap: 3%;
     grid-template-columns: 2fr 2fr 2fr 1fr 1fr;
 
     @media (max-width: 374px) {
-      grid-gap: 3%;
+      grid-gap: 1%;
     }
   }
 
@@ -212,6 +214,10 @@
     padding-left: 10px;
     white-space: nowrap;
     grid-area: text;
+
+    @media (max-width: 374px) {
+      padding-left: 3px;
+    }
   }
 
   &__icon-dot {

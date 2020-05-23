@@ -30,6 +30,10 @@
     color: $gray;
     height: 39px;
 
+    @media (max-width: 374px) {
+      font-size: 9px;
+    }
+
     &--active {
       color: $orange;
     }
@@ -46,10 +50,15 @@
   }
 
   &__icon-dot {
+    display: none;
     position: absolute;
     top: 0;
     right: 0;
     width: 8px;
     height: 8px;
+
+    &--show {
+      display: block;
+    }
   }
 }

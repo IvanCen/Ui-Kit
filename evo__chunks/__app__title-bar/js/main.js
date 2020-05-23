@@ -7,7 +7,7 @@ class CreateTitleBar extends CreateItem {
   create(name) {
     this.element = document.createElement(this.parameters.selector);
     if (typeof this.parameters.text === 'object') {
-      this.element.textContent = name;
+      this.element.textContent = name || this.parameters.text;
     }
 
     return super.create(this.element);

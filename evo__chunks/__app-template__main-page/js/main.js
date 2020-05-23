@@ -1,11 +1,14 @@
 const mainPage = document.querySelector('.main-page');
 const body = document.querySelector('body');
 const api = new Api();
-/*function hellos(info) {
-  console.log(info);
-}
-api.getClientApi(hellos);*/
+let dataProductApi;
+let dataStoresApi;
+const itemsArray = JSON.parse(localStorage.getItem('items')) || [];
+const basketArray = JSON.parse(localStorage.getItem('basket')) || [];
+const userDataArray = JSON.parse(localStorage.getItem('userData')) || [];
 
+api.productApi();
+api.storesApi();
 const toggleOrderMenuContent = new ToggleOrderMenuContent({ api });
 const toggleOrderHitsContent = new ToggleOrderHitsContent({ api });
 const toggleOrderHistoryContent = new ToggleOrderHistoryContent();
@@ -20,8 +23,30 @@ const togglePageSeeAll = new TogglePageSeeAll({
 const togglePageStoresSearch = new TogglePageStoresSearch({
   classOpen: ['page--opened'],
 });
+const togglePageOrderSearch = new TogglePageOrderSearch({
+  classOpen: ['page--opened'],
+});
 const togglePageStoresDetails = new TogglePageStoresDetails({
   classOpen: ['page--opened'],
+});
+const togglePageStoresFilter = new TogglePageStoresFilter({
+  classOpen: ['page--opened'],
+});
+const togglePageOrderCategoryAll = new TogglePageOrderCategoryAll({
+  classOpen: ['page--opened--bottom-bar'],
+});
+const togglePageOrderCategory = new TogglePageOrderCategory({
+  classOpen: ['page--opened--bottom-bar'],
+});
+const togglePageBalanceHistoryScore = new TogglePageBalanceHistory({
+  classOpen: ['page--opened'],
+  titleNameTopBar: ['Счет'],
+  text: ['Ваш счет'],
+});
+const togglePageBalanceHistoryBonus = new TogglePageBalanceHistory({
+  classOpen: ['page--opened'],
+  titleNameTopBar: ['Бонусы'],
+  text: ['Ваши бонусы'],
 });
 const toggleSubPageProductCard = new ToggleSubPageProductCard({
   classOpen: ['subpage--opened--bottom-bar'],
@@ -38,16 +63,8 @@ const toggleThirdPageAddinsCard = new ToggleThirdPageAddinsCard({
 const toggleFourthPageReviewOrder = new ToggleFourthPageReviewOrder({
   classOpen: ['fourth-page--opened'],
 });
-const togglePageStoresFilter = new TogglePageStoresFilter({
-  classOpen: ['page--opened'],
-});
-const togglePageOrderCategoryAll = new TogglePageOrderCategoryAll({
-  classOpen: ['page--opened--bottom-bar'],
-});
-const togglePageOrderCategory = new TogglePageOrderCategory({
-  classOpen: ['page--opened--bottom-bar'],
-});
-const toggleCards = new ToggleCards();
+
+const toggleBalance = new ToggleBalance();
 const toggleOrder = new ToggleOrder();
 const toggleGift = new ToggleGift();
 const toggleStores = new ToggleStores({ api });
@@ -61,6 +78,9 @@ const toggleSubPage = new ToggleSubPage({
 });
 const toggleThirdPage = new ToggleThirdPage({
   classOpen: ['third-page--opened'],
+});
+const toggleFourthPage = new ToggleFourthPage({
+  classOpen: ['fourth-page--opened'],
 });
 const togglePageSignIn = new TogglePageSignIn({
   classOpen: ['page--opened'],
@@ -91,10 +111,10 @@ const mainPageFooter = new CreateFooter({
     { type: 'click', callback: toggleThirdPage.deletePage },
   ],
   eventOpenCardsPage: [
-    { type: 'click', callback: toggleCards.closePage },
-    { type: 'click', callback: toggleCards.clearPage },
-    { type: 'click', callback: toggleCards.rendering },
-    { type: 'click', callback: toggleCards.openPage },
+    { type: 'click', callback: toggleBalance.closePage },
+    { type: 'click', callback: toggleBalance.clearPage },
+    { type: 'click', callback: toggleBalance.rendering },
+    { type: 'click', callback: toggleBalance.openPage },
     { type: 'click', callback: togglePage.closePage },
     { type: 'click', callback: togglePage.deletePage },
     { type: 'click', callback: toggleSubPage.closePage },
@@ -110,7 +130,6 @@ const mainPageFooter = new CreateFooter({
     { type: 'click', callback: toggleOrderMenuContent.rendering },
     { type: 'click', callback: toggleOrderHitsContent.rendering },
     { type: 'click', callback: toggleOrderHistoryContent.rendering },
-    { type: 'click', callback: toggleOrderFavoriteContent.rendering },
     { type: 'click', callback: togglePage.closePage },
     { type: 'click', callback: togglePage.deletePage },
     { type: 'click', callback: toggleSubPage.closePage },
@@ -146,3 +165,4 @@ const mainPageFooter = new CreateFooter({
 renderMainPage.openPage();
 mainPage.append(mainPageFooter.create());
 switchActiveFooter();
+checkBasket();

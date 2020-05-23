@@ -6,7 +6,7 @@ class CreateCheckboxTextSlide extends CreateItem {
     this.template = `
         <input class="checkbox-textslide__input" id="checkbox-textslide" type="checkbox">
         <label class="checkbox-textslide__label" for="checkbox-textslide">
-          <div class="checkbox-textslide__switch" data-checked="To go" data-unchecked="For Here"></div>
+          <div class="checkbox-textslide__switch" data-checked="С собой" data-unchecked="В кафе"></div>
           <div class="checkbox-textslide__label-text"></div>
         </label>`;
   }

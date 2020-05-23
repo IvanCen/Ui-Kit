@@ -1,3 +1,17 @@
+function number_of(number, suffix) {
+  const keys = [2, 0, 1, 1, 1, 2];
+  const mod = number % 100;
+  let suffixKey;
+
+  if (mod > 4 && mod < 20) {
+    suffixKey = 2;
+  } else {
+    suffixKey = keys[Math.min((mod % 10), 5)];
+  }
+
+  return suffix[suffixKey];
+}
+
 function switchAdd() {
   const textAreaButtonAdd = document.querySelectorAll('.text-area__button--type--add');
   [...textAreaButtonAdd].forEach((item) => {
@@ -7,22 +21,24 @@ function switchAdd() {
       const iconMinus = textArea.querySelector('.text-area__icon--type--minus');
       const iconContainer = textArea.querySelector('.text-area__icon-container');
       const allCounter = document.querySelector('.text-area__all-counter-number');
-      const thisAdds = document.querySelector('.text-area__list-item--Coffee');
+      const thisAdds = document.querySelector('.text-area__list-item');
       const title = textArea.querySelector('.text-area__title');
       let counter = 1;
-      allCounter.textContent = counter;
+      allCounter.textContent = `${counter} добав${number_of(counter, ['ка', 'ки', 'ок'])}`;
       this.classList.remove('text-area__button--open');
       iconContainer.classList.add('text-area__icon-container--open');
       title.classList.add('text-area__title--theme--chocolate');
       const titleName = title.textContent;
-      title.textContent = `${counter} packet(s) ${title.textContent}`;
+      title.textContent = `${counter} добав${number_of(counter, ['ка', 'ки', 'ок'])} ${title.textContent}`;
+      thisAdds.textContent = title.textContent;
 
       iconPlus.addEventListener('click', () => {
         counter += 1;
-        allCounter.textContent = counter;
+        allCounter.textContent = `${counter} добав${number_of(counter, ['ка', 'ки', 'ок'])}`;
         title.textContent = '';
-        title.textContent = `${counter} packet(s) ${titleName}`;
+        title.textContent = `${counter} добав${number_of(counter, ['ка', 'ки', 'ок'])} ${titleName}`;
         thisAdds.textContent = title.textContent;
+        //localStorage.setItem('userData');
       });
 
       iconMinus.addEventListener('click', () => {
@@ -35,9 +51,9 @@ function switchAdd() {
         }
         if (counter >= 1) {
           counter -= 1;
-          allCounter.textContent = counter;
+          allCounter.textContent = `${counter} добав${number_of(counter, ['ка', 'ки', 'ок'])}`;
           title.textContent = '';
-          title.textContent = `${counter} packet(s) ${titleName}`;
+          title.textContent = `${counter} добав${number_of(counter, ['ка', 'ки', 'ок'])} ${titleName}`;
         }
         if (counter === 0) {
           title.textContent = '';
@@ -55,149 +71,240 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
     this.element = document.createElement(this.parameters.selector);
   }
 
-  create(productInfo) {
+  create(productInfo, modifiersObj) {
+    console.log(productInfo, modifiersObj);
     this.template = `
+      <div class="text-area text-area--theme--light">
+        <div class="text-area__container text-area__container--indentation--normal">
+          <span class="text-area__price text-area__price--size--big">${productInfo.price}</span>
+        </div>
+      </div>
       <div class="text-area text-area--theme--light text-area--type--description">
         <div class="text-area__container text-area__container--indentation--normal">
           <div class="text-area__content-container text-area__content-container--direction--column">
-            <p class="text-area__text text-area__text--theme--shadow text-area__text--indentation--big">${this.parameters.text}</p>
-            <button class="button text-area__button text-area__button--type--share">
-              <img src="[+chunkWebPath+]/img/icon-upload.svg" alt=""
-                   class="text-area__icon text-area__icon--position--center">
-            </button>
+            <p class="text-area__text text-area__text--theme--shadow text-area__text--indentation--big">${productInfo.intro}</p>
+            <div class="text-area__button-container">
+              <button class="button text-area__button text-area__button--type--like">
+                <svg class="text-area__icon text-area__icon--type--like" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1.8 9.80005C1.6 9.25005 1.5 8.67005 1.5 8.05005C1.5 5.15005 3.86 2.80005 6.75 2.80005C8.84 2.80005 10.66 4.03005 11.5 5.80005C11.7 6.22005 12.29 6.22005 12.5 5.80005C13.35 4.02005 15.16 2.80005 17.25 2.80005C20.14 2.80005 22.5 5.15005 22.5 8.05005C22.5 8.67005 22.39 9.27005 22.19 9.83005C21.93 10.56 21.51 11.21 20.97 11.76L12.02 20.66L3.4 12.09L3.39 12.08L3.38 12.07C3.17 11.89 2.98 11.7 2.8 11.49C2.35 10.99 2.02 10.42 1.8 9.80005Z"/>
+                </svg>
+              </button>
+              <button class="button text-area__button text-area__button--type--share">
+                <img src="[+chunkWebPath+]/img/icon-upload.svg" alt=""
+                     class="text-area__icon text-area__icon--position--center">
+              </button>
             </div>
+          </div>
         </div>
       </div>
-     <button class="text-area__button text-area__button--type--reset">reset recipe</button>
+     <button class="text-area__button text-area__button--type--reset">сбросить модификации</button>
        <div class="text-area text-area--theme--light text-area--direction--column text-area--indentation--normal text-area--indentation--top">
         <div class="text-area__content-container text-area__content-container--direction--row text-area__content-container--type--more">
           <div class="text-area__text-container">
-            <h2 class="text-area__title text-area__title--size--normal">Nutrition Information</h2>
+            <h2 class="text-area__title text-area__title--size--normal">Подробная информация</h2>
             <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--top">
-              ${productInfo.netWeight} fl oz</span>
+              Масса нетто г ${productInfo.netWeight || ''}</span>
             <span class="text-area__info text-area__info--text-size--normal text-area__info--text-bold">
-              Calories
+              Калорий
               <span
                   class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--left">
-              ${productInfo.energyFatValue}</span>
+              ${productInfo.energyFatValue || ''}</span>
             </span>
             <span class="text-area__info text-area__info--text-size--normal text-area__info--text-bold">
-              Total Fat
+              Жиров
               <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--left">
-                ${productInfo.fats}</span>
+                ${productInfo.fats || ''}</span>
             </span>
                 <span class="text-area__sub-info">
-                  Saturated Fat
+                  Насыщенных жиров 
                   <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--left">
-                    ${productInfo.saturatedFats}</span>
+                    ${productInfo.saturatedFats || ''}</span>
                 </span>
                 <span class="text-area__sub-info">
-                  Trans Fat
+                  Трансжиров
                   <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--left">
-                    ${productInfo.transFats}</span>
+                    ${productInfo.transFats || ''}</span>
                 </span>
             <span class="text-area__info text-area__info--text-size--normal text-area__info--text-bold">
-              Cholesterol
+              Холестерин
               <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--left">
-                ${productInfo.cholesterol}</span>
+                ${productInfo.cholesterol || ''}</span>
             </span>
             <span class="text-area__info text-area__info--text-size--normal text-area__info--text-bold">
-              Sodium
+              Натрий
               <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--left">
-                ${productInfo.sodium}</span>
+                ${productInfo.sodium || ''}</span>
             </span>
             <span class="text-area__info text-area__info--text-size--normal text-area__info--text-bold">
-              Total Carbohydrate
+              Углеводов
               <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--left">
-                ${productInfo.carbon}</span>
+                ${productInfo.carbon || ''}</span>
             </span>
                 <span class="text-area__sub-info">
-                  Fiber
+                  Клетчатка
                   <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--left">
-                    ${productInfo.fiber}</span>
+                    ${productInfo.fiber || ''}</span>
                 </span>
                 <span class="text-area__sub-info">
-                  Sugars
+                  Сахар
                 <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--left">
-                    ${productInfo.sugar}</span>
+                    ${productInfo.sugar || ''}</span>
                 </span>
             <span class="text-area__info text-area__info--text-size--normal text-area__info--text-bold">
-              Protein
+              Белок
               <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--left">
-                ${productInfo.protein}</span>
+                ${productInfo.protein || ''}</span>
             </span>
             <span class="text-area__info text-area__info--text-size--normal text-area__info--text-bold">
-              Caffeine<span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--left">
-                ${productInfo.caffeine}</span>
+              Кофеин<span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--left">
+                ${productInfo.caffeine || ''}</span>
             </span>
           </div>
           <button class="button button--theme--chocolate text-area__button text-area__button--type--more">
-            more
+              узнать больше
           </button>
         </div>
         <div class="text-area__content-container text-area__content-container--direction--column">
-          <p class="text-area__text text-area__text--theme--shadow">Notes of smoked butterscotch intermingle with our
-            signature espresso, giving your latte a
-            sophisticated new twist</p>
-          <p class="text-area__text text-area__text--theme--shadow">Notes of smoked butterscotch intermingle with our
-            signature espresso, giving your latte a
-            sophisticated new twist</p>
+          <p class="text-area__text text-area__text--theme--shadow">КБЖУ блюда рассчитывается автоматически. Модификация товара приведет к перерассчету информации на этой странице. Если модификации не выбраны - будет показана информация основного рецепта.</p>
         </div>
     </div>
     <div class="text-area text-area--theme--light">
       <div class="text-area__container text-area__container--indentation--normal">
         <div class="text-area__content-container text-area__content-container--direction--column">
-          <h2 class="text-area__title text-area__title--size--normal">Allergens</h2>
-          <span class="text-area__info-available">Not Available</span>
-          <p class="text-area__text text-area__text--theme--shadow">Contrary to popular belief, Lorem Ipsum is not simply
-            random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.
-            Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure
-            Latin words, consectetur, from a Lore</p>
+          <h2 class="text-area__title text-area__title--size--normal text-area__title--indentation--bottom">Ингредиенты</h2>
+          <span class="text-area__text text-area__text--theme--shadow text-area__text--type--ingredients">Ингридиент, Ингридиент</span>
+        </div>
+       </div>
+      <div class="text-area__container text-area__container--indentation--normal">
+        <div class="text-area__content-container text-area__content-container--direction--column">
+          <h2 class="text-area__title text-area__title--size--normal text-area__title--indentation--bottom">Аллергены</h2>
+          <p class="text-area__text text-area__text--theme--shadow">Мы не можем гарантировать отсутствие следов продуктов, которые могут вызвать аллергию в наших блюдах, так как мы используем общее оборудование для хранения.</p>
         </div>
        </div>
     </div>
+    <button class="button button--size--big button--theme--tangerin button--type--fixed-with-bottom-bar button--theme--shadow-big text-area__button--type--add">В корзину</button>
     `;
     this.element.insertAdjacentHTML('beforeend', this.template);
 
     this.buttonShare = this.element.querySelector('.text-area__button--type--share');
+    this.iconsLike = this.element.querySelector('.text-area__icon--type--like');
     this.areaAddins = this.element.querySelector('.text-area--type--add-ins');
     this.buttonMore = this.element.querySelector('.text-area__button--type--more');
+    this.buttonReset = this.element.querySelector('.text-area__button--type--reset');
+    this.buttonAdd = this.element.querySelector('.text-area__button--type--add');
     this.nutritionArea = this.element.querySelector('.text-area__content-container--type--more');
     this.buttonMore.addEventListener('click', () => {
       this.nutritionArea.classList.toggle('text-area__content-container--open');
       this.buttonMore.remove();
     });
+    itemsArray.forEach((item, index) => {
+      if (item.id === productInfo.id) {
+        this.iconsLike.classList.add('text-area__icon--liked');
+      }
+    });
+
+    this.iconsLike.addEventListener('click', () => {
+      this.iconsLike.classList.toggle('text-area__icon--liked');
+
+      if (this.iconsLike.classList.contains('text-area__icon--liked')) {
+        itemsArray.push({ id: productInfo.id });
+        localStorage.setItem('items', JSON.stringify(itemsArray));
+      } else {
+        itemsArray.forEach((item, index) => {
+          if (item.id === productInfo.id) {
+            itemsArray.splice(index, 1);
+          }
+        });
+        localStorage.setItem('items', JSON.stringify(itemsArray));
+      }
+    });
+    const basketPopupIcon = document.querySelector('.bottom-bar__icon-popup');
+    const basketPopupIconImg = document.querySelector('.bottom-bar__icon-popup-img');
+    this.buttonAdd.addEventListener('click', () => {
+      basketArray.push({ id: productInfo.id });
+      localStorage.setItem('basket', JSON.stringify(basketArray));
+      counterBasket();
+      loadImg(productInfo, basketPopupIconImg);
+      basketPopupIcon.classList.add('bottom-bar__icon-popup--open');
+      setTimeout(() => {
+        basketPopupIcon.classList.remove('bottom-bar__icon-popup--open');
+        basketPopupIconImg.style.backgroundImage = '';
+      }, 3000);
+      checkBasket();
+    });
+
+    const shareData = {
+      title: productInfo.name,
+      text: productInfo.intro,
+      url: productInfo.shareLink,
+    };
+
+    this.buttonShare.addEventListener('click', async () => {
+      try {
+        await navigator.share(shareData);
+      } catch (err) {
+        window.open(productInfo.shareLink, '_blank');
+      }
+    });
+
     if (typeof this.parameters.eventShare === 'object') {
       for (const event of this.parameters.eventShare) {
         this.buttonShare.addEventListener(event.type, event.callback);
       }
     }
-    if (typeof this.parameters.eventAddAddins === 'object') {
-      for (const event of this.parameters.eventAddAddins) {
-        const element = document.createElement('div');
-        element.classList.add('text-area', 'text-area--theme--light');
-        const template = `
+    const arrIngredientsName = [];
+    const elementIngredients = this.element.querySelector('.text-area__text--type--ingredients');
+    if (productInfo.ingredients !== null) {
+      for (const ingredientId of Object.values(productInfo.ingredients)) {
+        for (const ingredient of Object.values(dataProductApi.successData.ingredients)) {
+          if (ingredientId === ingredient.id) {
+            arrIngredientsName.push(ingredient.name);
+          }
+        }
+      }
+    }
+    elementIngredients.textContent = arrIngredientsName.join(', ');
+    const arrModifCategoryName = [];
+    const arrModif = [];
+    if (productInfo.modifiers !== null) {
+      for (const modifsItem of Object.values(productInfo.modifiers)) {
+        for (const modif of Object.values(dataProductApi.successData.modifiers)) {
+          if (modifsItem === modif.id) {
+            arrModifCategoryName.push(modif.category);
+            arrModif.push(modif);
+          }
+        }
+      }
+    }
+    console.log(arrModif);
+    const descriptionArea = this.element.querySelector('.text-area--type--description');
+    function renderModifier(modifierName) {
+      const element = document.createElement('div');
+      element.classList.add('text-area', 'text-area--theme--light');
+      const template = `
             <div class="text-area__container text-area__container--indentation--small">
               <div class="text-area__content-container text-area__content-container--direction--column">
-                <h2 class="text-area__title text-area__title--size--small text-area__title--type--bold">${event}</h2>
-                <ul class="text-area__list text-area__list--${event}">
-                  <li class="text-area__list-item text-area__list-item--${event}"></li>
+                <h2 class="text-area__title text-area__title--size--small text-area__title--type--bold">${modifierName}</h2>
+                <ul class="text-area__list">
+                  <li class="text-area__list-item"></li>
                 </ul>
               </div>
               <button class="button">
                 <img src="[+chunkWebPath+]/img/icon-expand-direction-right.svg" alt="" class="text-area__icon text-area__icon--position--center">
               </button>
             </div>`;
-        element.insertAdjacentHTML('beforeend', template);
-        element.addEventListener('click', () => {
-          toggleThirdPageAddinsCard.rendering(productInfo);
-          toggleThirdPageAddinsCard.openPage;
-        });
-        this.descriptionArea = this.element.querySelector('.text-area--type--description');
-        this.descriptionArea.after(element);
-      }
+      element.insertAdjacentHTML('beforeend', template);
+      element.addEventListener('click', () => {
+        toggleThirdPageAddinsCard.rendering(arrModif);
+      });
+      descriptionArea.after(element);
     }
-    if (typeof this.parameters.eventAddSize === 'object') {
+
+    const unicModifName = new Set(arrModifCategoryName);
+    [...unicModifName].forEach((name) => {
+      renderModifier(name);
+    });
+    /* if (typeof this.parameters.eventAddSize === 'object') {
       for (const event of this.parameters.eventAddSize) {
         const element = document.createElement('div');
         element.classList.add('size-bar', 'size-bar--main');
@@ -217,7 +324,7 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
         this.descriptionArea = this.element.querySelector('.text-area--type--description');
         this.descriptionArea.after(element);
       }
-    }
+    } */
     return super.create(this.element);
   }
 }
@@ -226,75 +333,61 @@ class CreateTextAreaAddins extends CreateItem {
   constructor(parameters) {
     super();
     this.parameters = parameters;
-    this.element = document.createElement(this.parameters.selector);
-    this.template = `
-      <div class="text-area__counter-container">
-        <span class="text-area__all-counter-title">Your drink currently has </span>
-        <span class="text-area__all-counter"><span class="text-area__all-counter-number">0</span> pump(s)</span>
-      </div>
-      <h2 class="text-area__title text-area__title--type--uppercase text-area__title--type--bold">liquid sweetener</h2>
-      <div class="text-area text-area--theme--light text-area--type--add-ins">
-        <div class="text-area__container text-area__container--indentation--small">
-          <div class="text-area__content-container text-area__content-container--direction--column">
-            <h3 class="text-area__title text-area__title--size--small text-area__title--type--bold">Equal (blue)</h3>
-            <ul class="text-area__list">
-              <li class="text-area__list-item"></li>
-            </ul>
-          </div>
-          <div class="text-area__icon-container">
-            <div class="text-area__icon-container text-area__icon-container--open">
-              <button class="button">
-                <img src="[+chunkWebPath+]/img/icon-remove-line.svg" alt=""
-                     class="text-area__icon text-area__icon--type--minus text-area__icon--position--first">
-              </button>
-              <button class="button">
-                <img src="[+chunkWebPath+]/img/icon-add-plus.svg" alt="" class="text-area__icon text-area__icon--type--plus">
-              </button>
-            </div>
-          </div>
-          <button class="button button--theme--chocolate text-area__button text-area__button--type--add text-area__button--open">
-            Add
-          </button>
-        </div>
-      </div>
-      <h2 class="text-area__title text-area__title--type--uppercase text-area__title--type--bold">liquid sweetener</h2>
-      <div class="text-area text-area--theme--light text-area--type--add-ins">
-        <div class="text-area__container text-area__container--indentation--small">
-          <div class="text-area__content-container text-area__content-container--direction--column">
-            <h3 class="text-area__title text-area__title--size--small text-area__title--type--bold">dsadasde</h3>
-            <ul class="text-area__list">
-              <li class="text-area__list-item"></li>
-            </ul>
-          </div>
-          <div class="text-area__icon-container">
-            <div class="text-area__icon-container text-area__icon-container--open">
-              <button class="button">
-                <img src="[+chunkWebPath+]/img/icon-remove-line.svg" alt=""
-                     class="text-area__icon text-area__icon--type--minus text-area__icon--position--first">
-              </button>
-              <button class="button">
-                <img src="[+chunkWebPath+]/img/icon-add-plus.svg" alt="" class="text-area__icon text-area__icon--type--plus">
-              </button>
-            </div>
-          </div>
-          <button class="button button--theme--chocolate text-area__button text-area__button--type--add text-area__button--open">
-            Add
-          </button>
-        </div>
-      </div>
-      <button class="text-area__button text-area__button--type--reset">reset add-ins</button>
-    `;
   }
 
   create() {
+    this.element = document.createElement(this.parameters.selector);
+    this.template = `
+      <div class="text-area__counter-container">
+        <span class="text-area__all-counter-title">У вашего напитка сейчас </span>
+        <span class="text-area__all-counter"><span class="text-area__all-counter-number">0 добавок</span></span>
+      </div>
+      
+      <button class="text-area__button text-area__button--type--reset">Очистить добавки</button>
+    `;
     this.element.insertAdjacentHTML('beforeend', this.template);
 
-    /* this.areaAddins = this.element.querySelector('.text-area--type--add-ins');
-    if (typeof this.parameters.openAddins === 'object') {
-      for (const event of this.parameters.openAddins) {
-        this.areaAddins.addEventListener(event.type, event.callback);
-      }
-    } */
+    return super.create(this.element);
+  }
+}
+
+class CreateTextAreaAddin extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+  }
+
+  create(modif) {
+    this.element = document.createElement(this.parameters.selector);
+    this.elementTitle = document.createElement('div');
+    this.elementTitle.classList.add('text-area');
+    this.templateTitle = `<h2 class="text-area__title text-area__title--type--uppercase text-area__title--type--bold">${modif.category}</h2>`;
+    this.template = `
+        <div class="text-area__container text-area__container--indentation--small">
+          <div class="text-area__content-container text-area__content-container--direction--column">
+            <h3 class="text-area__title text-area__title--size--small text-area__title--type--bold">${modif.name}</h3>
+            <span class="text-area__price text-area__price--size--small">${modif.price}</span>
+          </div>
+          <div class="text-area__icon-container">
+            <div class="text-area__icon-container text-area__icon-container--open">
+              <button class="button">
+                <img src="[+chunkWebPath+]/img/icon-remove-line.svg" alt=""
+                     class="text-area__icon text-area__icon--type--minus text-area__icon--position--first">
+              </button>
+              <button class="button">
+                <img src="[+chunkWebPath+]/img/icon-add-plus.svg" alt="" class="text-area__icon text-area__icon--type--plus">
+              </button>
+            </div>
+          </div>
+          <button class="button button--theme--chocolate text-area__button text-area__button--type--add text-area__button--open">
+            Добавить
+          </button>
+        </div>
+    `;
+
+    this.element.insertAdjacentHTML('beforeend', this.template);
+    this.elementTitle.insertAdjacentHTML('beforeend', this.templateTitle);
+    this.element.after(this.elementTitle);
     return super.create(this.element);
   }
 }
@@ -305,72 +398,74 @@ class CreateTextAreaAccount extends CreateItem {
     this.parameters = parameters;
     this.element = document.createElement(this.parameters.selector);
     this.template = `
-      <div class="text-area text-area--type--help">
+      <div class="text-area text-area--type--balance">
         <div class="text-area__container text-area__container--indentation--small">
-          <h2 class="text-area__title text-area__title--size--small text-area__title--type--bold">Help</h2>
+          <h2 class="text-area__title text-area__title--size--small text-area__title--type--bold">Баланс</h2>
           <button class="button">
             <img src="[+chunkWebPath+]/img/icon-expand-direction-right.svg" alt="" class="text-area__icon text-area__icon--position--center">
           </button>
         </div>
       </div>
-      <div class="text-area text-area--type--application">
+      <div class="text-area text-area--type--order">
         <div class="text-area__container text-area__container--indentation--small">
           <div class="text-area__content-container text-area__content-container--direction--column">
-            <h2 class="text-area__title text-area__title--size--small text-area__title--type--bold">Application Terms</h2>
+            <h2 class="text-area__title text-area__title--size--small text-area__title--type--bold">Заказы</h2>
           </div>
           <button class="button">
             <img src="[+chunkWebPath+]/img/icon-expand-direction-right.svg" alt="" class="text-area__icon text-area__icon--position--center">
           </button>
       </div>
-    </div>
-    <div class="text-area text-area--type--privacy">
-      <div class="text-area__container text-area__container--indentation--small">
-        <div class="text-area__content-container text-area__content-container--direction--column">
-          <h2 class="text-area__title text-area__title--size--small text-area__title--type--bold">Privacy Statement</h2>
-        </div>
-        <button class="button">
-          <img src="[+chunkWebPath+]/img/icon-expand-direction-right.svg" alt="" class="text-area__icon text-area__icon--position--center">
-        </button>
       </div>
-    </div>
-    <div class="text-area text-area--type--analytics">
-      <div class="text-area__container text-area__container--indentation--small">
-        <h2 class="text-area__title text-area__title--size--small text-area__title--type--bold">Analytics</h2>
-        <button class="button">
-          <img src="[+chunkWebPath+]/img/icon-expand-direction-right.svg" alt="" class="text-area__icon text-area__icon--position--center">
-        </button>
-       </div>
-     </div>  
+      <div class="text-area text-area--type--reward">
+        <div class="text-area__container text-area__container--indentation--small">
+          <div class="text-area__content-container text-area__content-container--direction--column">
+            <h2 class="text-area__title text-area__title--size--small text-area__title--type--bold">Достижения</h2>
+          </div>
+          <button class="button">
+            <img src="[+chunkWebPath+]/img/icon-expand-direction-right.svg" alt="" class="text-area__icon text-area__icon--position--center">
+          </button>
+      </div>
+      </div>
+      <div class="text-area text-area--type--privacy">
+        <div class="text-area__container text-area__container--indentation--small">
+          <div class="text-area__content-container text-area__content-container--direction--column">
+            <h2 class="text-area__title text-area__title--size--small text-area__title--type--bold">Политика конфиденциальности</h2>
+          </div>
+          <button class="button">
+            <img src="[+chunkWebPath+]/img/icon-expand-direction-right.svg" alt="" class="text-area__icon text-area__icon--position--center">
+          </button>
+        </div>
+      </div>
+      <div class="text-area text-area--type--terms">
+        <div class="text-area__container text-area__container--indentation--small">
+          <h2 class="text-area__title text-area__title--size--small text-area__title--type--bold">Пользовательское соглашение</h2>
+          <button class="button">
+            <img src="[+chunkWebPath+]/img/icon-expand-direction-right.svg" alt="" class="text-area__icon text-area__icon--position--center">
+          </button>
+         </div>
+       </div>  
+       <div class="text-area text-area--type--public">
+        <div class="text-area__container text-area__container--indentation--small">
+          <h2 class="text-area__title text-area__title--size--small text-area__title--type--bold">Публичная оферта</h2>
+          <button class="button">
+            <img src="[+chunkWebPath+]/img/icon-expand-direction-right.svg" alt="" class="text-area__icon text-area__icon--position--center">
+          </button>
+         </div>
+       </div>  
     `;
   }
 
   create() {
     this.element.insertAdjacentHTML('beforeend', this.template);
 
-    this.buttonHelp = this.element.querySelector('.text-area--type--help');
-    this.buttonApplication = this.element.querySelector('.text-area--type--application');
-    this.buttonPrivacy = this.element.querySelector('.text-area__button--type--privacy');
-    this.buttonAnalytics = this.element.querySelector('.text-area__button--type--analytics');
-    if (typeof this.parameters.eventHelp === 'object') {
-      for (const event of this.parameters.eventHelp) {
-        this.buttonHelp.addEventListener(event.type, event.callback);
-      }
-    }
-    if (typeof this.parameters.eventApplication === 'object') {
-      for (const event of this.parameters.eventApplication) {
-        this.buttonApplication.addEventListener(event.type, event.callback);
-      }
-    }
+    this.buttonPrivacy = this.element.querySelector('.text-area--type--privacy');
+
     if (typeof this.parameters.eventPrivacy === 'object') {
       for (const event of this.parameters.eventPrivacy) {
         this.buttonPrivacy.addEventListener(event.type, event.callback);
       }
     }
-    if (typeof this.parameters.eventAnalytics === 'object') {
-      for (const event of this.parameters.eventAnalytics) {
-        this.buttonAnalytics.addEventListener(event.type, event.callback);
-      }
-    }
+
     return super.create(this.element);
   }
 }
@@ -498,6 +593,40 @@ class CreateTextAreaStoreInfo extends CreateItem {
         this.buttonApplication.addEventListener(event.type, event.callback);
       }
     } */
+    return super.create(this.element);
+  }
+}
+
+
+class CreateTextAreaBalance extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+    this.element = document.createElement(this.parameters.selector);
+    this.template = `
+      <div class="text-area__container text-area__container--indentation--normal">
+        <div>
+          <span class="text-area__number text-area__number--type--${this.parameters.identifier}">${this.parameters.number}</span>
+          <p class="text-area__text text-area__text--theme--shadow">${this.parameters.text}</p>
+        </div>
+        <button class="button button--size--medium button${this.parameters.themeButton} text-area__button text-area__button--open text-area__button--type--${this.parameters.identifier}">${this.parameters.buttonText}</button>
+      </div>
+    `;
+  }
+
+  create() {
+    this.element.insertAdjacentHTML('beforeend', this.template);
+
+    this.button = this.element.querySelector(`.text-area__button--type--${this.parameters.identifier}`);
+
+    if (typeof this.parameters.eventButton === 'object') {
+      for (const event of this.parameters.eventButton) {
+        this.button.addEventListener(event.type, event.callback);
+      }
+    }
+    if (this.parameters.button === false) {
+      this.button.remove();
+    }
     return super.create(this.element);
   }
 }

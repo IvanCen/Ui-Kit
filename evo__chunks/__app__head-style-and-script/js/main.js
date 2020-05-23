@@ -9,10 +9,87 @@ function switchActive(nodeList, activeClass) {
   });
 }
 
-function counterOrder() {
-  const cardItem = document.querySelectorAll('.card-item--type--order');
-  const counterNumber = document.querySelector('.top-bar__all-counter-order');
-  counterNumber.textContent = cardItem.length;
+function checkBasket() {
+  const iconDot = document.querySelector('.footer__icon-dot');
+  if (basketArray.length !== 0) {
+    iconDot.classList.add('footer__icon-dot--show');
+  } else {
+    iconDot.classList.remove('footer__icon-dot--show');
+  }
+}
+
+function iOS() {
+  const iDevices = [
+    'iPad Simulator',
+    'iPhone Simulator',
+    'iPod Simulator',
+    'iPad',
+    'iPhone',
+    'iPod',
+  ];
+
+  if (navigator.platform) {
+    while (iDevices.length) {
+      if (navigator.platform === iDevices.pop()) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+
+function loadImg(productInfo, imgEl, timer) {
+  let devicePixelRatio = 0;
+  devicePixelRatio = window.devicePixelRatio;
+  const windowScreenWidth = window.screen.width * devicePixelRatio;
+
+  function countScreenRatio(windowScreen) {
+    const maxSize = 6000;
+    if (windowScreen >= maxSize) {
+      windowScreen = maxSize;
+      return windowScreen;
+    }
+    return windowScreen;
+  }
+
+  function getCache(info) {
+    if (info.success === false && info.errors[0] === 'Кеш файл еще не готов') {
+      const timerSuccess = (delay) => setTimeout(() => {
+        loadImg(productInfo, timerSuccess);
+        timerSuccess(delay * 2);
+        if (delay > 32) {
+          clearInterval(timer);
+        }
+      }, delay * 1000);
+      timerSuccess(1);
+    }
+  }
+
+  const screenRatio = countScreenRatio(Math.ceil(windowScreenWidth));
+  const urlPhoto = productInfo.mainPhoto;
+  if (urlPhoto !== null) {
+    const regExp = /(assets\/images\/docs)(\/\d*\/)([\d\D]*\.)(\D+)/g;
+    const productName = urlPhoto.name.replace(regExp, '$3');
+    const img = document.createElement('img');
+    img.src = `http://demo.xleb.ru/${urlPhoto.name}_cache/${urlPhoto.edit}/${screenRatio}x${screenRatio}/${productName}webp`;
+
+    img.onerror = () => {
+      const request = {
+        method: 'image-cache-queue',
+        originalFileUrl: urlPhoto.name,
+        fileEditDate: urlPhoto.edit,
+        extension: 'webp',
+        sizeX: `${screenRatio}`,
+        sizeY: `${screenRatio}`,
+      };
+      api.imageCacheQueueApi(request, getCache);
+    };
+    img.onload = () => {
+      clearInterval(timer);
+      imgEl.style.backgroundImage = `url(${img.src})`;
+    };
+  }
 }
 
 function counterBasket() {
@@ -20,10 +97,20 @@ function counterBasket() {
   const counterIcon = document.querySelector('.bottom-bar__counter');
   basket.classList.add('bottom-bar__icon--full');
 
-  if (counterIcon.textContent === 0) {
-    counterIcon.textContent = 1;
+  if (basketArray.length === 0) {
+    counterIcon.textContent = '0';
+    basket.classList.remove('bottom-bar__icon--full');
   } else {
-    counterIcon.textContent = Number(`${counterIcon.textContent}`) + 1;
+    counterIcon.textContent = basketArray.length;
+  }
+  if (basketArray.length === 0) {
+    counterIcon.style.right = '22px';
+  } else if (basketArray.length >= 20) {
+    counterIcon.style.right = '18px';
+  } else if (basketArray.length >= 10) {
+    counterIcon.style.right = '19px';
+  } else {
+    counterIcon.style.right = '23px';
   }
 }
 
@@ -214,6 +301,12 @@ class ToggleFourthPage {
     if (typeof this.parameters !== 'object') {
       this.parameters = {};
     }
+  }
+
+  clearPage() {
+    this.fourthPage = document.querySelector('.fourth-page');
+    this.arrHtml = Array.from(this.fourthPage.children);
+    this.arrHtml.splice(0, this.arrHtml.length).forEach((item) => item.remove());
   }
 
   deletePage() {

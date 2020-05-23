@@ -1,4 +1,4 @@
-class TogglePageStoresSearch extends TogglePage {
+class TogglePageOrderSearch extends TogglePage {
   constructor(parameters) {
     super(parameters);
     this.parameters = parameters;
@@ -10,14 +10,14 @@ class TogglePageStoresSearch extends TogglePage {
     const topBar = new CreateTopBarSearch({
       selector: ['div'],
       style: ['top-bar-search'],
-      textTitle: ['Store filters'],
       eventCloseIcon: [
         { type: 'click', callback: this.closePage },
         { type: 'click', callback: this.deletePage },
       ],
     });
-
+    const cardItemContainerSearch = new CreateCardItemContainer();
     this.page.append(topBar.create());
+    this.page.append(cardItemContainerSearch.create('search'));
     clearSearchActive();
     this.openPage();
   }

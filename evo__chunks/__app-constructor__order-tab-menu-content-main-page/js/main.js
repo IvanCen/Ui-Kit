@@ -47,7 +47,7 @@ class ToggleOrderMenuContent extends ToggleOrderTabContent {
 
     function renderProduct(data) {
       const products = data.successData;
-
+      console.log(products);
       const drinks = [];
       const food = [];
       const product = [];
@@ -122,22 +122,16 @@ class ToggleOrderMenuContent extends ToggleOrderTabContent {
       rendered(product, productsContainer);
       rendered(wraper, wraperContainer);
     }
-    (async () => {
-      try {
-        this.mainPageTabContent.append(orderTitleBarDrinks.create());
-        this.mainPageTabContent.append(orderCardItemContainerDrinks.create('drinks'));
-        this.mainPageTabContent.append(orderTitleBarFoods.create());
-        this.mainPageTabContent.append(orderCardItemContainerFoods.create('foods'));
-        this.mainPageTabContent.append(orderTitleBarProducts.create());
-        this.mainPageTabContent.append(orderCardItemContainerProducts.create('products'));
-        this.mainPageTabContent.append(orderTitleBarWraper.create());
-        this.mainPageTabContent.append(orderCardItemContainerWraper.create('wraper'));
-        await this.parameters.api.productApi(renderProduct);
-        this.mainPageTabContent.classList.add('main-page__tab-content--main', 'main-page__tab-content--open');
-        this.mainPageContent.append(this.mainPageTabContent);
-      } catch (e) {
-        console.log(e);
-      }
-    })();
+    this.mainPageTabContent.append(orderTitleBarDrinks.create());
+    this.mainPageTabContent.append(orderCardItemContainerDrinks.create('drinks'));
+    this.mainPageTabContent.append(orderTitleBarFoods.create());
+    this.mainPageTabContent.append(orderCardItemContainerFoods.create('foods'));
+    this.mainPageTabContent.append(orderTitleBarProducts.create());
+    this.mainPageTabContent.append(orderCardItemContainerProducts.create('products'));
+    this.mainPageTabContent.append(orderTitleBarWraper.create());
+    this.mainPageTabContent.append(orderCardItemContainerWraper.create('wraper'));
+    this.mainPageTabContent.classList.add('main-page__tab-content--main', 'main-page__tab-content--open');
+    this.mainPageContent.append(this.mainPageTabContent);
+    renderProduct(dataProductApi);
   }
 }

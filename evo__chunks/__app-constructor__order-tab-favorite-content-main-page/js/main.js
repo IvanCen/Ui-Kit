@@ -5,18 +5,49 @@ class ToggleOrderFavoriteContent extends ToggleOrderTabContent {
     this.rendering = this.rendering.bind(this);
   }
 
-  rendering() {
+  clearTab() {
+    this.tabContent = document.querySelector('.card-item__container--type--favorite');
+    if (this.tabContent) {
+      this.arrHtml = Array.from(this.tabContent.children);
+      this.arrHtml.splice(0, this.arrHtml.length).forEach((item) => item.remove());
+    }
+  }
 
-    const favoriteCardItem = new CreateCardItemFavAndHisOrder({
+  rendering() {
+    const favoriteCardItemContainer = new CreateCardItemContainerFavAndHisOrder({
       selector: ['div'],
       style: ['card-item__container'],
-      modifier: ['--direction--column', '--indentation-column--normal', '--indentation--top'],
+      modifier: [
+        '--direction--column',
+        '--indentation-column--normal',
+        '--indentation--top',
+        '--type--favorite',
+      ],
+    });
+    const favoriteCardItem = new CreateCardItemFavAndHisOrder({
+      selector: ['div'],
+      style: ['card-item'],
+      modifier: [
+        '--direction--row',
+        '--border--bottom',
+      ],
     });
     this.mainPageContent = document.querySelector('.main-page__content');
     this.mainPageTabContentFavorite = document.createElement('div');
     this.mainPageTabContentFavorite.classList.add('main-page__tab-content', 'main-page__tab-content--favorite');
     this.mainPageContent.append(this.mainPageTabContentFavorite);
-    this.mainPageTabContentFavorite.append(favoriteCardItem.create());
+    this.mainPageTabContentFavorite.append(favoriteCardItemContainer.create());
+    this.cardItemContainer = document.querySelector('.card-item__container--type--favorite');
+
+    const productsItems = dataProductApi.successData.items;
+    itemsArray.forEach((item) => {
+      for (const el of Object.values(productsItems)) {
+        if (item.id === el.id) {
+          this.cardItemContainer.append(favoriteCardItem.create(el));
+        }
+      }
+    });
+
     activeLike();
   }
 }

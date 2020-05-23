@@ -8,7 +8,7 @@ function clearSearchActive() {
 }
 
 
-class CreateTopBarSearchStores extends CreateItem {
+class CreateTopBarSearch extends CreateItem {
   constructor(parameters) {
     super();
     this.parameters = parameters;

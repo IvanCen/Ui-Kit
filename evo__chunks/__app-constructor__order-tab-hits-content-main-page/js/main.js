@@ -12,7 +12,7 @@ class ToggleOrderHitsContent extends ToggleOrderTabContent {
       const hits = [];
 
       for (const item of Object.values(dataItems.successData.items)) {
-        if (item.hitFlag === '1') {
+        if (item.hitFlag === true) {
           hits.push(item);
         }
       }
@@ -26,7 +26,6 @@ class ToggleOrderHitsContent extends ToggleOrderTabContent {
     this.mainPageTabContentHits.classList.add('main-page__tab-content', 'main-page__tab-content--hits');
     this.mainPageContent.append(this.mainPageTabContentHits);
     this.mainPageTabContentHits.append(cardItemContainer.create('hits', 'card-item__container--indentation--top'));
-
-    this.parameters.api.productApi(renderTabHits);
+    renderTabHits(dataProductApi);
   }
 }

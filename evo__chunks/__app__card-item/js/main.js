@@ -36,58 +36,13 @@ class CreateCardItemOrder extends CreateItem {
     this.element.insertAdjacentHTML('beforeend', this.template);
 
     const imgEl = this.element.querySelector('.card-item__image');
-
-    let devicePixelRatio = 0;
-    devicePixelRatio = window.devicePixelRatio;
-    const windowScreenWidth = window.screen.width * devicePixelRatio;
-    function countScreenRatio(windowScreen) {
-      const maxSize = 6000;
-      if (windowScreen >= maxSize) {
-        windowScreen = maxSize;
-        return windowScreen;
+    if (iOS()) {
+      if (productInfo.mainPhoto !== null) {
+        imgEl.style.backgroundImage = `url(${productInfo.mainPhoto.name})`;
       }
-      return windowScreen;
+    } else {
+      loadImg(productInfo, imgEl);
     }
-
-    function loadImg(timer) {
-      function getCache(info) {
-        if (info.success === false && info.errors[0] === 'Кеш файл еще не готов') {
-          const timerSuccess = (delay) => setTimeout(() => {
-            loadImg(timerSuccess);
-            timerSuccess(delay * 2);
-            if (delay > 32) {
-              clearInterval(timer);
-            }
-          }, delay * 1000);
-          timerSuccess(1);
-        }
-      }
-      const screenRatio = countScreenRatio(Math.ceil(windowScreenWidth));
-      const urlPhoto = productInfo.mainPhoto;
-      if (urlPhoto !== null) {
-        const regExp = /(assets\/images\/docs)(\/\d*\/)([\d\D]*\.)(\D+)/g;
-        const productName = urlPhoto.name.replace(regExp, '$3');
-        const img = document.createElement('img');
-        img.src = `http://demo.xleb.ru/${urlPhoto.name}_cache/${urlPhoto.edit}/${screenRatio}x${screenRatio}/${productName}webp`;
-
-        img.onerror = () => {
-          const request = {
-            method: 'image-cache-queue',
-            originalFileUrl: urlPhoto.name,
-            fileEditDate: urlPhoto.edit,
-            extension: 'webp',
-            sizeX: `${screenRatio}`,
-            sizeY: `${screenRatio}`,
-          };
-          api.imageCacheQueueApi(request, getCache);
-        };
-        img.onload = () => {
-          clearInterval(timer);
-          imgEl.style.backgroundImage = `url(${img.src})`;
-        };
-      }
-    }
-    loadImg();
 
     return this.element;
   }
@@ -116,58 +71,13 @@ class CreateCardItemOrderProductCard extends CreateItem {
     this.element.insertAdjacentHTML('beforeend', this.template);
 
     const imgEl = this.element.querySelector('.card-item__image');
-
-    let devicePixelRatio = 0;
-    devicePixelRatio = window.devicePixelRatio;
-    const windowScreenWidth = window.screen.width * devicePixelRatio;
-    function countScreenRatio(windowScreen) {
-      const maxSize = 6000;
-      if (windowScreen >= maxSize) {
-        windowScreen = maxSize;
-        return windowScreen;
+    if (iOS()) {
+      if (productInfo.mainPhoto !== null) {
+        imgEl.style.backgroundImage = `url(${productInfo.mainPhoto.name})`;
       }
-      return windowScreen;
+    } else {
+      loadImg(productInfo, imgEl);
     }
-
-    function loadImg(timer) {
-      function getCache(info) {
-        if (info.success === false && info.errors[0] === 'Кеш файл еще не готов') {
-          const timerSuccess = (delay) => setTimeout(() => {
-            loadImg(timerSuccess);
-            timerSuccess(delay * 2);
-            if (delay > 32) {
-              clearInterval(timer);
-            }
-          }, delay * 1000);
-          timerSuccess(1);
-        }
-      }
-      const screenRatio = countScreenRatio(Math.ceil(windowScreenWidth));
-      const urlPhoto = productInfo.mainPhoto;
-      if (urlPhoto !== null) {
-        const regExp = /(assets\/images\/docs)(\/\d*\/)([\d\D]*\.)(\D+)/g;
-        const productName = urlPhoto.name.replace(regExp, '$3');
-        const img = document.createElement('img');
-        img.src = `http://demo.xleb.ru/${urlPhoto.name}_cache/${urlPhoto.edit}/${screenRatio}x${screenRatio}/${productName}webp`;
-
-        img.onerror = () => {
-          const request = {
-            method: 'image-cache-queue',
-            originalFileUrl: urlPhoto.name,
-            fileEditDate: urlPhoto.edit,
-            extension: 'webp',
-            sizeX: `${screenRatio}`,
-            sizeY: `${screenRatio}`,
-          };
-          api.imageCacheQueueApi(request, getCache);
-        };
-        img.onload = () => {
-          clearInterval(timer);
-          imgEl.style.backgroundImage = `url(${img.src})`;
-        };
-      }
-    }
-    loadImg();
 
     return this.element;
   }
@@ -215,22 +125,44 @@ class CreateCardItemContainer extends CreateItem {
   }
 }
 
+class CreateCardItemBalance extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+  }
+
+  create() {
+    this.element = document.createElement(this.parameters.selector);
+    this.template = `
+          <div class="card-item__content-container">
+            <h3 class="card-item__title card-item__title--text--bold card-item__title--theme--${this.parameters.themeNumber}">${this.parameters.number}</h3>
+            <span class="card-item__title card-item__title--text--big">${this.parameters.state}</span>
+            <span class="card-item__info card-item__info--theme--shadow">${this.parameters.data}</span>
+          </div>`;
+    this.element.insertAdjacentHTML('beforeend', this.template);
+
+    return super.create(this.element);
+  }
+}
+
 class CreateCardItemFavAndHisOrder extends CreateItem {
   constructor(parameters) {
     super();
     this.parameters = parameters;
+  }
+
+  create(productInfo) {
+    console.log(productInfo);
     this.element = document.createElement(this.parameters.selector);
     this.template = `
-      <div class="card-item__container card-item__container--direction--column card-item__container--indentation-column--normal">
-        <div class="card-item card-item--direction--row card-item--border--bottom">
-          <img src="[+chunkWebPath+]/img/card-image.jpg" alt="" class="card-item__image card-item__image--size--small">
+          <img alt="" class="card-item__image card-item__image--size--small">
           <div class="card-item__content-container">
-            <h3 class="card-item__title card-item__title--text--bold">Lorem ipsum dolor sit amet.</h3>
-            <span class="card-item__info card-item__info--indentation--normal">Lorem ipsum dolor sit amet.</span>
-            <span class="card-item__info card-item__info--theme--shadow"> sit amet.</span>
+            <h3 class="card-item__title card-item__title--text--bold">${productInfo.name}</h3>
+            <span class="card-item__info card-item__info--indentation--normal">${productInfo.intro}</span>
+            <span class="card-item__info card-item__info--theme--shadow">Калорий ${productInfo.energy} г</span>
             <div class="card-item__icon-container">
-              <button class="card-item__button card-item__button--type--like">
-                <svg class="card-item__icon card-item__icon--type--like" viewBox="0 0 24 24"
+              <button class="card-item__button card-item__button--type--like ">
+                <svg class="card-item__icon card-item__icon--type--like card-item__icon--liked" viewBox="0 0 24 24"
                      xmlns="http://www.w3.org/2000/svg">
                   <path
                       d="M1.8 9.80005C1.6 9.25005 1.5 8.67005 1.5 8.05005C1.5 5.15005 3.86 2.80005 6.75 2.80005C8.84 2.80005 10.66 4.03005 11.5 5.80005C11.7 6.22005 12.29 6.22005 12.5 5.80005C13.35 4.02005 15.16 2.80005 17.25 2.80005C20.14 2.80005 22.5 5.15005 22.5 8.05005C22.5 8.67005 22.39 9.27005 22.19 9.83005C21.93 10.56 21.51 11.21 20.97 11.76L12.02 20.66L3.4 12.09L3.39 12.08L3.38 12.07C3.17 11.89 2.98 11.7 2.8 11.49C2.35 10.99 2.02 10.42 1.8 9.80005Z"/>
@@ -241,40 +173,50 @@ class CreateCardItemFavAndHisOrder extends CreateItem {
                      class="card-item__icon card-item__icon--type--add">
               </button>
             </div>
-          </div>
-        </div>
-        <div class="card-item card-item--direction--row card-item--border--bottom">
-          <img src="[+chunkWebPath+]/img/card-image.jpg" alt="" class="card-item__image card-item__image--size--small">
-          <div class="card-item__content-container">
-            <h3 class="card-item__title card-item__title--text--bold">Lorem ipsum dolor sit amet.</h3>
-            <span class="card-item__info card-item__info--indentation--normal">Lorem ipsum dolor sit amet</span>
-            <span class="card-item__info card-item__info--theme--shadow"> sit amet.</span>
-            <div class="card-item__icon-container">
-              <button class="card-item__button card-item__button--type--like">
-                <svg class="card-item__icon card-item__icon--type--like" viewBox="0 0 24 24"
-                     xmlns="http://www.w3.org/2000/svg">
-                  <path
-                      d="M1.8 9.80005C1.6 9.25005 1.5 8.67005 1.5 8.05005C1.5 5.15005 3.86 2.80005 6.75 2.80005C8.84 2.80005 10.66 4.03005 11.5 5.80005C11.7 6.22005 12.29 6.22005 12.5 5.80005C13.35 4.02005 15.16 2.80005 17.25 2.80005C20.14 2.80005 22.5 5.15005 22.5 8.05005C22.5 8.67005 22.39 9.27005 22.19 9.83005C21.93 10.56 21.51 11.21 20.97 11.76L12.02 20.66L3.4 12.09L3.39 12.08L3.38 12.07C3.17 11.89 2.98 11.7 2.8 11.49C2.35 10.99 2.02 10.42 1.8 9.80005Z"/>
-                </svg>
-              </button>
-              <button class="card-item__button">
-                <img src="[+chunkWebPath+]/img/icon-add-circle-plus.svg" alt=""
-                     class="card-item__icon card-item__icon--type--add">
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>`;
+          </div>`;
+    this.element.insertAdjacentHTML('beforeend', this.template);
+    this.iconsLike = this.element.querySelector('.card-item__icon--type--like');
+    this.iconsAdd = this.element.querySelector('.card-item__icon--type--add');
+    const el = this.element;
+    this.iconsLike.addEventListener('click', () => {
+      el.classList.add('card-item--animation');
+      itemsArray.forEach((item, index) => {
+        if (item.id === productInfo.id) {
+          itemsArray.splice(index, 1);
+        }
+      });
+      localStorage.setItem('items', JSON.stringify(itemsArray));
+      setTimeout(() => el.remove(), 200);
+    });
+
+    this.iconsAdd.addEventListener('click', () => {
+      basketArray.push({ id: productInfo.id });
+      localStorage.setItem('basket', JSON.stringify(basketArray));
+      counterBasket();
+      checkBasket();
+    });
+
+    const imgEl = this.element.querySelector('.card-item__image');
+    if (iOS()) {
+      if (productInfo.mainPhoto !== null) {
+        imgEl.style.backgroundImage = `url(${productInfo.mainPhoto.name})`;
+      }
+    } else {
+      loadImg(productInfo, imgEl);
+    }
+
+    return super.create(this.element);
+  }
+}
+
+class CreateCardItemContainerFavAndHisOrder extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+    this.element = document.createElement(this.parameters.selector);
   }
 
   create() {
-    this.element.insertAdjacentHTML('beforeend', this.template);
-    /* if (typeof this.parameters.events === 'object') {
-      for (const event of this.parameters.events) {
-        this.element.addEventListener(event.type, event.callback);
-      }
-    } */
-
     return super.create(this.element);
   }
 }
@@ -283,55 +225,76 @@ class CreateCardItemReviewOrder extends CreateItem {
   constructor(parameters) {
     super();
     this.parameters = parameters;
-    this.element = document.createElement(this.parameters.selector);
-    this.template = `
-      <div class="card-item__container card-item__container--direction--column card-item__container--indentation-column--normal">
-        <div class="card-item card-item--direction--row card-item--border--bottom card-item--type--order">
-          <img src="[+chunkWebPath+]/img/card-image.jpg" alt="" class="card-item__image card-item__image--size--small">
-          <div class="card-item__content-container">
-            <h3 class="card-item__title card-item__title--text--bold">Lorem ipsum dolor sit amet.</h3>
-            <span class="card-item__info card-item__info--indentation--normal">Lorem ipsum dolor sit amet.</span>
-            <span class="card-item__info card-item__info--theme--shadow"> sit amet.</span>
-            <div class="card-item__icon-container">
-              <button class="card-item__button card-item__button--type--like">
-               <img src="[+chunkWebPath+]/img/icon-remove-circle.svg" alt=""
-                     class="card-item__icon card-item__icon--type--minus">
-              </button>
-              <button class="card-item__button">
-                <img src="[+chunkWebPath+]/img/icon-add-circle-plus.svg" alt=""
-                     class="card-item__icon card-item__icon--type--plus">
-              </button>
-            </div>
-          </div>
-        </div>
-        <div class="card-item card-item--direction--row card-item--border--bottom card-item--type--order">
-          <img src="[+chunkWebPath+]/img/card-image.jpg" alt="" class="card-item__image card-item__image--size--small">
-          <div class="card-item__content-container">
-            <h3 class="card-item__title card-item__title--text--bold">Lorem ipsum dolor sit amet.</h3>
-            <span class="card-item__info card-item__info--indentation--normal">Lorem ipsum dolor sit amet</span>
-            <span class="card-item__info card-item__info--theme--shadow"> sit amet.</span>
-            <div class="card-item__icon-container">
-              <button class="card-item__button card-item__button--type--like">
-               <img src="[+chunkWebPath+]/img/icon-remove-circle.svg" alt=""
-                     class="card-item__icon card-item__icon--type--minus">
-              </button>
-              <button class="card-item__button">
-                <img src="[+chunkWebPath+]/img/icon-add-circle-plus.svg" alt=""
-                     class="card-item__icon card-item__icon--type--plus">
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>`;
+    this.create.bind(this);
   }
 
-  create() {
+  create(productInfo) {
+    console.log(productInfo);
+    this.element = document.createElement('div');
+    this.template = `
+          <img alt="" class="card-item__image card-item__image--size--small">
+          <div class="card-item__content-container">
+            <h3 class="card-item__title card-item__title--text--bold">${productInfo.name}</h3>
+            <span class="card-item__info card-item__info--theme--shadow">Калорий ${productInfo.energy} г</span>
+            <div class="card-item__icon-container">
+              <button class="card-item__button card-item__button--type--minus">
+               <img src="[+chunkWebPath+]/img/icon-remove-circle.svg" alt=""
+                     class="card-item__icon card-item__icon--type--minus">
+              </button>
+              <button class="card-item__button card-item__button--type--plus">
+                <img src="[+chunkWebPath+]/img/icon-add-circle-plus.svg" alt=""
+                     class="card-item__icon card-item__icon--type--plus">
+              </button>
+            </div>
+          </div>`;
     this.element.insertAdjacentHTML('beforeend', this.template);
-    /* if (typeof this.parameters.events === 'object') {
-      for (const event of this.parameters.events) {
-        this.element.addEventListener(event.type, event.callback);
+    this.iconsMinus = this.element.querySelector('.card-item__button--type--minus');
+    this.iconsPlus = this.element.querySelector('.card-item__button--type--plus');
+    const el = this.element;
+    const counterTopBar = document.querySelector('.top-bar__all-counter-order');
+    const counterBottomBar = document.querySelector('.bottom-bar__counter');
+    this.iconsMinus.addEventListener('click', () => {
+      counterTopBar.textContent = Number(counterTopBar.textContent) - 1;
+      counterBottomBar.textContent = Number(counterBottomBar.textContent) - 1;
+      el.classList.add('card-item--animation');
+      basketArray.forEach((item, index) => {
+        if (item.id === productInfo.id) {
+          basketArray.splice(index, 1);
+        }
+      });
+      localStorage.setItem('basket', JSON.stringify(basketArray));
+      counterBasket();
+      setTimeout(() => el.remove(), 200);
+    });
+
+    this.iconsPlus.addEventListener('click', () => {
+      counterTopBar.textContent = Number(counterTopBar.textContent) + 1;
+      basketArray.push({ id: productInfo.id });
+      checkBasket();
+      localStorage.setItem('basket', JSON.stringify(basketArray));
+      counterBasket();
+      const cardItemContainer = document.querySelector('.card-item__container--type--review');
+      this.arrHtml = Array.from(cardItemContainer.children);
+      this.arrHtml.splice(0, this.arrHtml.length).forEach((item) => item.remove());
+      const productsItems = dataProductApi.successData.items;
+      const thisProduct = productInfo;
+      basketArray.forEach((item) => {
+        for (const elem of Object.values(productsItems)) {
+          if (item.id === elem.id) {
+            cardItemContainer.append(this.create(thisProduct));
+          }
+        }
+      });
+    });
+
+    const imgEl = this.element.querySelector('.card-item__image');
+    if (iOS()) {
+      if (productInfo.mainPhoto !== null) {
+        imgEl.style.backgroundImage = `url(${productInfo.mainPhoto.name})`;
       }
-    } */
+    } else {
+      loadImg(productInfo, imgEl);
+    }
 
     return super.create(this.element);
   }

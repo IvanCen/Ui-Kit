@@ -12,16 +12,16 @@ class CreateTopBar extends CreateItem {
       <div class="top-bar__nav-container">
           <button class="top-bar__button top-bar__button--type--sign-in">
             <img src="[+chunkWebPath+]/img/icon-sign-in.svg" alt="Кнопка входа" class="top-bar__icon">
-            <span class="top-bar__icon-text">Sign in</span>
+            <span class="top-bar__icon-text">Войти</span>
           </button>
           <button class="top-bar__button top-bar__button--type--inbox">
             <img src="[+chunkWebPath+]/img/icon-inbox.svg" alt="Кнопка сообщений" class="top-bar__icon">
             <img src="[+chunkWebPath+]/img/icon-dot.svg" alt="Иконка непрочитанного сообщения" class="top-bar__icon-dot">
-            <span class="top-bar__icon-text">Inbox</span>
+            <span class="top-bar__icon-text">Сообщения</span>
           </button>
             <button class="top-bar__button">
               <img src="[+chunkWebPath+]/img/icon-history.svg" alt="Кнопка истории заказов" class="top-bar__icon">
-              <span class="top-bar__icon-text">History</span>
+              <span class="top-bar__icon-text">История</span>
              </button>
             <button class="top-bar__button top-bar__button--position--right"></button>
           <button class="top-bar__button top-bar__button--position--right top-bar__button--type--account">
@@ -225,6 +225,7 @@ class CreateTopBarOrder extends CreateItem {
     this.topBarTabHits = this.element.querySelector('.top-bar__tab--hits');
     this.topBarTabHistory = this.element.querySelector('.top-bar__tab--history');
     this.topBarTabFavorite = this.element.querySelector('.top-bar__tab--favorite');
+    this.buttonSearch = this.element.querySelector('.top-bar__search-button');
 
     if (typeof this.parameters.eventToggleMenu === 'object') {
       for (const event of this.parameters.eventToggleMenu) {
@@ -244,6 +245,11 @@ class CreateTopBarOrder extends CreateItem {
     if (typeof this.parameters.eventToggleFavorite === 'object') {
       for (const event of this.parameters.eventToggleFavorite) {
         this.topBarTabFavorite.addEventListener(event.type, event.callback);
+      }
+    }
+    if (typeof this.parameters.eventOpenSearch === 'object') {
+      for (const event of this.parameters.eventOpenSearch) {
+        this.buttonSearch.addEventListener(event.type, event.callback);
       }
     }
 
@@ -371,6 +377,10 @@ class CreateTopBarReviewOrder extends CreateItem {
   constructor(parameters) {
     super();
     this.parameters = parameters;
+  }
+
+
+  create() {
     this.element = document.createElement(this.parameters.selector);
     this.template = `
         <div class="top-bar__content-container top-bar__content-container--size--small">
@@ -380,11 +390,11 @@ class CreateTopBarReviewOrder extends CreateItem {
                    class="top-bar__icon top-bar__icon-back">
             </button>
           </div>
-          <h1 class="top-bar__title">Review order (<span class="top-bar__all-counter-order"></span>)</h1>
+          <h1 class="top-bar__title">Товаров в корзине (<span class="top-bar__all-counter-order"></span>)</h1>
           <span class="top-bar__info">Самовывоз по адресу</span>
           <div class="top-bar__select-container">
-            <button class="top-bar__select-item top-bar__select-item--theme--dark">
-              Адрес магазина
+            <button class="top-bar__select-item top-bar__select-item--theme--dark top-bar__select-item--type--stores">
+              ${localStorage.getItem('short-name-shop') || 'Адрес магазина'}
               <img src="[+chunkWebPath+]/img/icon-expand-direction-bottom-white.svg" alt="Кнопка выбора адреса магазина"
                    class="top-bar__icon top-bar__icon-arrow-down">
             </button>
@@ -395,13 +405,19 @@ class CreateTopBarReviewOrder extends CreateItem {
             </button>
           </div>
         </div>`;
-  }
-
-  create() {
     this.element.insertAdjacentHTML('beforeend', this.template);
 
+    this.counter = this.element.querySelector('.top-bar__all-counter-order');
+    this.counter.textContent = basketArray.length.toString();
     this.buttonFilter = this.element.querySelector('.top-bar__filter-button');
     this.buttonSearch = this.element.querySelector('.top-bar__search-button');
+    this.storesButton = this.element.querySelector('.top-bar__select-item--type--stores');
+
+    if (typeof this.parameters.eventStores === 'object') {
+      for (const event of this.parameters.eventStores) {
+        this.storesButton.addEventListener(event.type, event.callback);
+      }
+    }
 
     this.iconBack = this.element.querySelector('.top-bar__button--type--back');
     if (typeof this.parameters.eventBack === 'object') {

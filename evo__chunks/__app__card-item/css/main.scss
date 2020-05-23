@@ -2,6 +2,11 @@
 
 .card-item {
   justify-content: center;
+  transition: all 0.2s ease-in;
+
+  &--animation {
+    transform: translateX(-100%);
+  }
 
   &--border--bottom {
     border-bottom: 1px solid $gainsboroGray;
@@ -29,6 +34,9 @@
     padding: 0 16px;
   }
 
+  &__content-container {
+    width: 100%;
+  }
 
   &__container {
 
@@ -57,6 +65,7 @@
     &--with--border {
       padding: 0 16px 20px;
     }
+
     &--indentation--top {
       margin-top: 20px;
     }
@@ -80,8 +89,25 @@
       flex-direction: column;
     }
 
+    &--text--big {
+      @extend %style-3;
+      font-weight: normal;
+    }
+
     &--disable {
       opacity: 0.4;
+    }
+
+    &--indentation--normal {
+      padding-top: 13px;
+    }
+
+    &--theme--green {
+      color: $seaGreen;
+    }
+
+    &--theme--red {
+      color: $alizarinCrimson;
     }
   }
 
@@ -106,7 +132,7 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    background-color:  $orange;
+    background-color: $orange;
 
     &--size--small {
       width: 65px;
@@ -170,6 +196,10 @@
   &__button {
     padding: 0;
 
+    &--type--minus {
+      margin-right: 20px;
+    }
+
     &--type--like {
       margin-right: 34px;
       width: 24px;
@@ -187,4 +217,5 @@
       fill: $alizarinCrimson;
     }
   }
+
 }

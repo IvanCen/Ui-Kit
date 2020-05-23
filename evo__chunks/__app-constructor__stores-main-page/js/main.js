@@ -112,11 +112,9 @@ class ToggleStores extends ToggleMainPage {
         myMap.geoObjects.add(myCollection);
       });
     }
-
-    this.parameters.api.storesApi(renderStores);
+    renderStores(dataStoresApi);
     this.mainPageContent.append(storesButtonChoiceOrange.create());
-
-    this.parameters.api.storesApi(this.chooseShop);
+    this.chooseShop(dataStoresApi);
     activeButton();
   }
 }

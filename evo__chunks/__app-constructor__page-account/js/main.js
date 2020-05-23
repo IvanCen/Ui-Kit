@@ -10,8 +10,8 @@ class TogglePageAccount extends TogglePage {
     const accountTopBar = new CreateTopBarWithBackButton({
       selector: ['div'],
       style: ['top-bar'],
-      modifier: ['--size--medium', '--indentation--bottom-big'],
-      textTitle: ['Account'],
+      modifier: ['--size--medium', '--indentation--bottom'],
+      textTitle: ['Личный кабинет'],
       eventBack: [
         { type: 'click', callback: this.closePage },
         { type: 'click', callback: this.deletePage },
@@ -26,7 +26,7 @@ class TogglePageAccount extends TogglePage {
           '--indentation--left',
           '--indentation--top',
         ],
-        text: ['Join Now'],
+        text: ['Присоединиться'],
       },
     );
     const accountButtonJoinTangerinTransparent = new CreateButton(
@@ -38,7 +38,7 @@ class TogglePageAccount extends TogglePage {
           '--indentation--left',
           '--indentation--top',
         ],
-        text: ['Sign in'],
+        text: ['Войти'],
         events: [
           { type: 'click', callback: this.closePage },
           { type: 'click', callback: this.clearPage },
@@ -57,31 +57,30 @@ class TogglePageAccount extends TogglePage {
       style: ['title-bar'],
       modifier: ['__title', '__title--size--medium-low'],
       titleSize: ['small-big'],
-      title: ['Входящие сообщения'],
+      text: ['Входящие сообщения'],
     });
     const accountTitleBarHelp = new CreateTitleBar({
       selector: ['h2'],
       style: ['title-bar'],
       modifier: ['__title', '__title--size--medium-low'],
-      text: ['Help & policies'],
+      text: ['Помощь и политика'],
     });
     const accountTextArea = new CreateTextAreaAccount({
       selector: ['div'],
       style: ['wraper'],
-      //eventHelp: [{ type: 'click', callback: togglePageSignIn.rendering }],
-      eventApplication: [{ type: 'click', callback: toggleSubPageApplication.rendering }],
-      //eventPrivacy: [{ type: 'click', callback: togglePageSignIn.rendering }],
-      //eventAnalytics: [{ type: 'click', callback: togglePageSignIn.rendering }],
+      eventPrivacy: [{ type: 'click', callback: togglePageSignIn.rendering }],
     });
 
     this.buttonContainer = document.createElement('div');
     this.page.prepend(accountTopBar.create());
-    this.buttonContainer.append(accountButtonJoinTangerin.create());
-    this.buttonContainer.append(accountButtonJoinTangerinTransparent.create());
+    if (localStorage.getItem('user-sign-in') === null) {
+      this.buttonContainer.append(accountButtonJoinTangerin.create());
+      this.buttonContainer.append(accountButtonJoinTangerinTransparent.create());
+    }
     this.page.append(this.buttonContainer);
-    this.page.append(accountTitleBarPreference.create());
-    this.page.append(accountTitleBarWithCheckboxSlide.create());
-    this.page.append(accountTitleBarHelp.create());
+    //this.page.append(accountTitleBarPreference.create());
+    //this.page.append(accountTitleBarWithCheckboxSlide.create());
+    //this.page.append(accountTitleBarHelp.create());
     this.page.append(accountTextArea.create());
     activeButton();
     this.openPage();

@@ -7,6 +7,7 @@ class ToggleSubPageProductCard extends ToggleSubPage {
 
   rendering(productInfo) {
     super.rendering();
+
     const productCard = new CreateOrderProductMainCard({
       selector: ['div'],
       style: ['main-card'],
@@ -20,36 +21,15 @@ class ToggleSubPageProductCard extends ToggleSubPage {
       selector: ['div'],
       style: ['text-area-wraper'],
       modifier: ['--indentation--bottom'],
-      text: ['hello'],
-      eventAddSize: [{
+      /* eventAddSize: [{
         nameCategory: 'Size',
         sizeNameMain: 'Big',
-      }],
-      eventAddAddins: [
-        'Coffee',
-        'Adds',
-      ],
+      }], */
     });
-    const buttonProductCard = new CreateButton({
-      selector: ['button'],
-      style: ['button'],
-      modifier: ['--size--big',
-        '--theme--tangerin',
-        '--type--fixed-with-bottom-bar',
-        '--theme--shadow-big',
-      ],
-      text: ['В корзину'],
-      events: [
-        { type: 'click', callback: counterBasket },
-        // { type: 'click', callback: toggleModal.openPage },
-      ],
-    });
-
 
     this.subPage.append(productCard.create(productInfo));
     this.subPage.append(textAreaProductCard.create(productInfo));
-    this.subPage.append(buttonProductCard.create());
-    activeSizeBar();
+    // activeSizeBar();
     activeButton();
     this.openPage();
   }

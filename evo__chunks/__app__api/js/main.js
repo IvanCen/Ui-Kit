@@ -8,7 +8,7 @@ class Api {
     };
   }
 
-  productApi(renderProduct) {
+  productApi() {
     const request = {
       method: 'get-catalog',
       outputFormat: 'json',
@@ -26,14 +26,13 @@ class Api {
         }
         return Promise.reject(`Ошибка: ${res.status}`);
       })
-      .then((productsInfo) => productsInfo)
-      .then(renderProduct)
+      .then((productsInfo) => dataProductApi = productsInfo)
       .catch((err) => {
         console.log('Ошибка. Запрос не выполнен: ', err);
       });
   }
 
-  storesApi(renderCards) {
+  storesApi() {
     const request = {
       method: 'get-shops',
       outputFormat: 'json',
@@ -50,8 +49,7 @@ class Api {
         }
         return Promise.reject(`Ошибка: ${res.status}`);
       })
-      .then((storesInfo) => storesInfo)
-      .then(renderCards)
+      .then((storesInfo) => dataStoresApi = storesInfo)
       .catch((err) => {
         console.log('Ошибка. Запрос не выполнен: ', err);
       });

@@ -43,7 +43,7 @@ class ToggleMain extends ToggleMainPage {
           '--indentation--left',
           '--indentation--bottom',
         ],
-        text: ['Join Now'],
+        text: ['Войти'],
         events: [{ type: 'click', callback: togglePageSignIn.rendering }],
       },
     );
@@ -56,7 +56,7 @@ class ToggleMain extends ToggleMainPage {
         '--theme--shadow-big',
         '--type--fixed',
       ],
-      text: ['Join Now'],
+      text: ['Войти'],
       events: [{ type: 'click', callback: togglePageSignIn.rendering }],
     });
 
@@ -88,11 +88,11 @@ class ToggleMain extends ToggleMainPage {
       }
     }
 
-    if (localStorage.getItem('user-sign-in') === 'false') {
+    if (localStorage.getItem('user-sign-in') === null) {
       this.mainPageContent.prepend(mainPageButtonJoinOrange.create());
     }
     this.parameters.api.postsApi(renderPosts);
-    if (localStorage.getItem('user-sign-in') === 'false') {
+    if (localStorage.getItem('user-sign-in') === null) {
       this.mainPageContent.prepend(mainPageButtonJoinDark.create());
     }
     this.mainPageContent.prepend(mainPageTitleBar.create());

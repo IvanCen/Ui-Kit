@@ -22,34 +22,108 @@ class CreateFooter extends CreateItem {
             <svg class="footer__icon footer__icon--active footer__icon--type--main" viewBox="0 0 24 24"  xmlns="http://www.w3.org/2000/svg">
               <path d="M16.38 1.84009C12.36 1.84009 9.29002 5.16009 8.56002 9.19009C8.54002 9.31009 8.38002 9.33009 8.33002 9.22009C7.95002 8.33009 7.74002 7.36009 7.74002 6.34009C7.74002 4.72009 8.27002 3.22009 9.16002 2.02009C8.67002 1.90009 8.15002 1.84009 7.62002 1.84009C3.91002 1.84009 0.900024 4.85009 0.900024 8.56009C0.900024 14.4801 12 22.1601 12 22.1601C12 22.1601 23.1 14.4801 23.1 8.56009C23.1 4.85009 20.09 1.84009 16.38 1.84009ZM16.38 11.1501C14.95 11.1501 13.79 9.99009 13.79 8.56009C13.79 7.13009 14.95 5.97009 16.38 5.97009C17.81 5.97009 18.97 7.13009 18.97 8.56009C18.97 9.99009 17.81 11.1501 16.38 11.1501Z"/>
             </svg>
-        Main
+        Главная
         </button>
         <button class="footer__button footer__button--type--cards">
-            <svg class="footer__icon footer__icon--type--cards" viewBox="0 0 26 24"  xmlns="http://www.w3.org/2000/svg">
-              <path d="M26 8.46008V19.9801C26 20.7801 25.35 21.4201 24.56 21.4201H6.08C5.28 21.4201 4.64 20.7701 4.64 19.9801V18.4301H19.93C21.52 18.4301 22.82 17.1301 22.82 15.5401V7.02008H24.57C25.35 7.02008 26 7.66008 26 8.46008ZM21.37 15.4801V4.08008C21.37 3.25008 20.7 2.58008 19.87 2.58008H1.5C0.67 2.58008 0 3.25008 0 4.08008V15.4901C0 16.3201 0.67 16.9901 1.5 16.9901H19.87C20.69 16.9801 21.37 16.3101 21.37 15.4801Z"/>
-            </svg>
-        Cards
+          <svg class="footer__icon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 24" style="enable-background:new 0 0 32 24;" xml:space="preserve">
+            <style type="text/css">
+            \t.st0{fill:#FEFEFE;}
+            \t.st1{fill:none;stroke:#272425;stroke-linejoin:round;stroke-miterlimit:10;}
+            \t
+            \t\t.st2{fill-rule:evenodd;clip-rule:evenodd;fill:none;stroke:#272425;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+            \t.st3{fill:#272425;}
+            \t.st4{fill:#989898;}
+            \t.st5{fill:#E45E2F;}
+            \t.st6{fill:#E35E31;}
+            \t.st7{fill:none;stroke:#E25E32;stroke-width:1.3;stroke-miterlimit:10;}
+            \t.st8{fill:#383838;}
+            \t.st9{fill:#E25E32;}
+            \t.st10{fill:#7A7A7A;}
+            \t.st11{fill:#000100;}
+            \t.st12{fill:#787878;}
+            \t.st13{fill:#D32F31;}
+            \t.st14{fill:#1E9553;}
+            \t.st15{fill-rule:evenodd;clip-rule:evenodd;fill:#787878;}
+            \t.st16{fill-rule:evenodd;clip-rule:evenodd;fill:#6B6B6B;}
+            \t.st17{fill:#F3C322;}
+            \t.st18{fill:#E3562F;}
+            \t.st19{fill:#8F6849;}
+            \t.st20{fill-rule:evenodd;clip-rule:evenodd;fill:#8F6849;}
+            \t.st21{fill:#C3C3C2;}
+            \t.st22{fill:none;stroke:#787878;}
+            \t.st23{fill-rule:evenodd;clip-rule:evenodd;fill:#929292;}
+            \t.st24{fill-rule:evenodd;clip-rule:evenodd;fill:#E3562F;}
+            \t.st25{fill:#C89948;}
+            </style>
+            <g id="Слой_1">
+            \t<path d="M31.56,12c0,6.39-5.18,11.56-11.56,11.56c-0.55,0-1.09-0.05-1.62-0.13c4.01-2.24,6.73-6.53,6.73-11.44
+            \t\tc0-4.91-2.72-9.19-6.73-11.44c0.53-0.07,1.07-0.13,1.62-0.13C26.38,0.44,31.56,5.61,31.56,12z M12.96,7.19h-1.97v4.87h1.97
+            \t\tc0.86,0,1.52-0.22,1.98-0.66c0.43-0.42,0.65-1.02,0.65-1.78c0-0.76-0.22-1.35-0.65-1.77C14.49,7.41,13.83,7.19,12.96,7.19z
+            \t\t M23.57,12c0,6.39-5.18,11.56-11.56,11.56S0.44,18.39,0.44,12S5.62,0.44,12,0.44S23.57,5.61,23.57,12z M17.18,9.61
+            \t\tc0-1.1-0.35-2.01-1.04-2.71c-0.71-0.73-1.63-1.09-2.78-1.09H9.45v6.24H7.73v1.34h1.71v1.9H7.73v1.17h1.71v1.73h1.54v-1.73h3.56
+            \t\tv-1.17h-3.56v-1.9h2.36c1.15,0,2.08-0.36,2.79-1.07C16.83,11.62,17.18,10.72,17.18,9.61z"/>
+            </g>
+            <g id="Слой_2">
+            </g>
+            <g id="Слой_3">
+            </g>
+          </svg>
+        Баланс
         </button>
         <button class="footer__button footer__button--type--order">
             <svg class="footer__icon" viewBox="0 0 24 24"  xmlns="http://www.w3.org/2000/svg">
               <path d="M17.71 6.07004C17.35 3.24004 14.93 1.04004 12 1.04004C9.06997 1.04004 6.65997 3.24004 6.28997 6.06004H2.40997V22.47C2.40997 22.74 2.62997 22.95 2.88997 22.95H21.11C21.38 22.95 21.59 22.73 21.59 22.47V6.07004H17.71ZM12 2.29004C14.24 2.29004 16.08 3.93004 16.44 6.06004H7.55997C7.91997 3.93004 9.76997 2.29004 12 2.29004Z"/>
             </svg>
             <img src="[+chunkWebPath+]/img/icon-dot.svg" alt="" class="footer__icon-dot">
-        Order
+        Каталог
             </button>
             <button class="footer__button footer__button--type--gift">
-            <svg class="footer__icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M11.28 12.8701H2.07001V22.5201C2.07001 22.7901 2.29001 23.0001 2.55001 23.0001H11.28V12.8701Z"/>
-                <path d="M22.41 6.11006H17.82C18.4 5.73006 18.86 5.28006 19.09 4.73006C19.33 4.15006 19.43 3.21006 18.49 2.04006C17.71 1.06006 16.87 0.950064 16.31 1.03006C14.51 1.28006 12.89 3.87006 12 5.58006C11.11 3.87006 9.47999 1.28006 7.68999 1.03006C7.12999 0.950064 6.28999 1.07006 5.50999 2.04006C4.56999 3.20006 4.65999 4.14006 4.90999 4.73006C5.13999 5.28006 5.59999 5.73006 6.17999 6.11006H1.58999C1.31999 6.11006 1.10999 6.33006 1.10999 6.59006V10.9501C1.10999 11.2201 1.32999 11.4301 1.58999 11.4301H11.28V6.11006H12.72V11.4301H22.41C22.68 11.4301 22.89 11.2101 22.89 10.9501V6.59006C22.89 6.32006 22.68 6.11006 22.41 6.11006ZM10.8 6.11006H9.42999C7.86999 5.69006 6.39999 5.06006 6.05999 4.25006C5.99999 4.10006 5.80999 3.65006 6.47999 2.81006C6.85999 2.34006 7.15999 2.25006 7.38999 2.25006C7.42999 2.25006 7.47999 2.25006 7.50999 2.26006C8.59999 2.41006 9.93999 4.35006 10.86 6.11006H10.8ZM14.57 6.11006H13.2H13.13C14.05 4.35006 15.39 2.41006 16.48 2.26006C16.52 2.25006 16.56 2.25006 16.6 2.25006C16.82 2.25006 17.13 2.34006 17.51 2.81006C18.19 3.65006 18 4.10006 17.94 4.25006C17.6 5.06006 16.13 5.69006 14.57 6.11006Z"/>
-                <path d="M12.72 23.0001H21.45C21.72 23.0001 21.93 22.7801 21.93 22.5201V12.8701H12.72V23.0001Z"/>
+              <svg class="footer__icon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 26 24" style="enable-background:new 0 0 26 24;" xml:space="preserve">
+                <style type="text/css">
+                \t.st0{fill:#FEFEFE;}
+                \t.st1{fill:none;stroke:#000000;stroke-linejoin:round;stroke-miterlimit:10;}
+                \t
+                \t\t.st2{fill-rule:evenodd;clip-rule:evenodd;fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+                \t.st3{fill:#989898;}
+                \t.st4{fill:#E45E2F;}
+                \t.st5{fill:#E35E31;}
+                \t.st6{fill:none;stroke:#E25E32;stroke-width:1.3;stroke-miterlimit:10;}
+                \t.st7{fill:#383838;}
+                \t.st8{fill:#E25E32;}
+                \t.st9{fill:#7A7A7A;}
+                \t.st10{fill:#000100;}
+                \t.st11{fill:#787878;}
+                \t.st12{fill:#D32F31;}
+                \t.st13{fill:#1E9553;}
+                \t.st14{fill-rule:evenodd;clip-rule:evenodd;fill:#787878;}
+                \t.st15{fill-rule:evenodd;clip-rule:evenodd;fill:#6B6B6B;}
+                \t.st16{fill:#F3C322;}
+                \t.st17{fill:#E3562F;}
+                \t.st18{fill:#8F6849;}
+                \t.st19{fill-rule:evenodd;clip-rule:evenodd;fill:#8F6849;}
+                \t.st20{fill:#C3C3C2;}
+                \t.st21{fill:none;stroke:#787878;}
+                \t.st22{fill-rule:evenodd;clip-rule:evenodd;fill:#929292;}
+                \t.st23{fill-rule:evenodd;clip-rule:evenodd;fill:#E3562F;}
+                \t.st24{fill:#C89948;}
+                </style>
+                <g id="Слой_1">
+                \t<path d="M13.35,0.23l3.21,8.1l8.69,0.55c0.34,0.02,0.47,0.44,0.21,0.66l-6.71,5.56l2.16,8.44c0.08,0.33-0.27,0.59-0.56,0.41
+                \t\tL13,19.28l-7.36,4.66C5.36,24.12,5,23.86,5.08,23.53l2.16-8.44L0.54,9.54C0.28,9.33,0.41,8.9,0.75,8.88l8.69-0.55l3.21-8.1
+                \t\tC12.78-0.08,13.22-0.08,13.35,0.23z"/>
+                </g>
+                <g id="Слой_2">
+                </g>
+                <g id="Слой_3">
+                </g>
             </svg>
-        Gift
+        Достижения
         </button>
         <button class="footer__button footer__button--type--stores">
-            <svg class="footer__icon" viewBox="0 0 24 24"  xmlns="http://www.w3.org/2000/svg">
-              <path d="M20.53 9.6301C20.53 16.4901 12 22.9001 12 22.9001C12 22.9001 3.46997 16.4901 3.46997 9.6301C3.46997 4.9201 7.28997 1.1001 12 1.1001C16.71 1.1001 20.53 4.9201 20.53 9.6301ZM12 5.8901C10.02 5.8901 8.40997 7.5001 8.40997 9.4801C8.40997 11.4601 10.02 13.0701 12 13.0701C13.98 13.0701 15.59 11.4601 15.59 9.4801C15.59 7.5001 13.98 5.8901 12 5.8901Z"/>
-            </svg>
-        Stores
+          <svg class="footer__icon" viewBox="0 0 24 24"  xmlns="http://www.w3.org/2000/svg">
+            <path d="M20.53 9.6301C20.53 16.4901 12 22.9001 12 22.9001C12 22.9001 3.46997 16.4901 3.46997 9.6301C3.46997 4.9201 7.28997 1.1001 12 1.1001C16.71 1.1001 20.53 4.9201 20.53 9.6301ZM12 5.8901C10.02 5.8901 8.40997 7.5001 8.40997 9.4801C8.40997 11.4601 10.02 13.0701 12 13.0701C13.98 13.0701 15.59 11.4601 15.59 9.4801C15.59 7.5001 13.98 5.8901 12 5.8901Z"/>
+          </svg>
+        Магазины
         </button>`;
   }
 

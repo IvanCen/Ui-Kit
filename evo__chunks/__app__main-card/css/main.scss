@@ -47,7 +47,7 @@
   &__content-title {
     @extend %style-3;
     color: $black;
-    padding: 0 0 8px 16px;
+    padding: 0 16px 8px;
     z-index: 1;
     position: absolute;
     left: 0;

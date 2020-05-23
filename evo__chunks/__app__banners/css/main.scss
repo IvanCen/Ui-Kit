@@ -13,6 +13,7 @@
   flex-direction: row;
   flex-wrap: nowrap;
   position: relative;
+  min-height: 200px;
 
   //touch-action: none; // нужно расскомментировать когда вертикальный скролл будет сделан на js
   &--with-animation {

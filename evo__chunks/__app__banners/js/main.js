@@ -121,59 +121,14 @@ class CreateBannersOrder extends CreateItem {
     });
 
     const imgEl = this.element.querySelector('.banners__banner-filler');
-
-    let devicePixelRatio = 0;
-    devicePixelRatio = window.devicePixelRatio;
-    const windowScreenWidth = window.screen.width * devicePixelRatio;
-    function countScreenRatio(windowScreen) {
-      const maxSize = 6000;
-      if (windowScreen >= maxSize) {
-        windowScreen = maxSize;
-        return windowScreen;
+    if (iOS()) {
+      if (productInfo.mainPhoto !== null) {
+        imgEl.style.backgroundImage = `url(${productInfo.mainPhoto.name})`;
       }
-      return windowScreen;
+    } else {
+      loadImg(productInfo, imgEl);
     }
-
-    function loadImg(timer) {
-      function getCache(info) {
-        if (info.success === false && info.errors[0] === 'Кеш файл еще не готов') {
-          const timerSuccess = (delay) => setTimeout(() => {
-            loadImg(timerSuccess);
-            timerSuccess(delay * 2);
-            if (delay > 32) {
-              clearInterval(timer);
-            }
-          }, delay * 1000);
-          timerSuccess(1);
-        }
-      }
-      const screenRatio = countScreenRatio(Math.ceil(windowScreenWidth));
-      const urlPhoto = productInfo.mainPhoto;
-      if (urlPhoto !== null) {
-        const regExp = /(assets\/images\/docs)(\/\d*\/)([\d\D]*\.)(\D+)/g;
-        const productName = urlPhoto.name.replace(regExp, '$3');
-        const img = document.createElement('img');
-        img.src = `http://demo.xleb.ru/${urlPhoto.name}_cache/${urlPhoto.edit}/${screenRatio}x${screenRatio}/${productName}webp`;
-
-        img.onerror = () => {
-          const request = {
-            method: 'image-cache-queue',
-            originalFileUrl: urlPhoto.name,
-            fileEditDate: urlPhoto.edit,
-            extension: 'webp',
-            sizeX: `${screenRatio}`,
-            sizeY: `${screenRatio}`,
-          };
-          api.imageCacheQueueApi(request, getCache);
-        };
-        img.onload = () => {
-          clearInterval(timer);
-          imgEl.style.backgroundImage = `url(${img.src})`;
-        };
-      }
-    }
-    loadImg();
-
+    
     return this.element;
   }
 }
@@ -220,12 +175,6 @@ class CreateBannersTabHits extends CreateItem {
   create() {
     this.element.insertAdjacentHTML('beforeend', this.template);
 
-    this.card = this.element.querySelector('[name="Blonde Caffe Americano"]');
-    if (typeof this.parameters.eventCard === 'object') {
-      for (const event of this.parameters.eventCard) {
-        this.card.addEventListener(event.type, event.callback);
-      }
-    }
     return super.create(this.element);
   }
 }
