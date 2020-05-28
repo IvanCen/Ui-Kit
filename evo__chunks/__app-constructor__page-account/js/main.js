@@ -68,7 +68,6 @@ class TogglePageAccount extends TogglePage {
     const accountTextArea = new CreateTextAreaAccount({
       selector: ['div'],
       style: ['wraper'],
-      eventPrivacy: [{ type: 'click', callback: togglePageSignIn.rendering }],
     });
 
     this.buttonContainer = document.createElement('div');

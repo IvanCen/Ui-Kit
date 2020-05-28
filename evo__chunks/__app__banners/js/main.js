@@ -122,13 +122,11 @@ class CreateBannersOrder extends CreateItem {
 
     const imgEl = this.element.querySelector('.banners__banner-filler');
     if (iOS()) {
-      if (productInfo.mainPhoto !== null) {
-        imgEl.style.backgroundImage = `url(${productInfo.mainPhoto.name})`;
-      }
+      loadImg(productInfo, imgEl, 'jpg');
     } else {
-      loadImg(productInfo, imgEl);
+      loadImg(productInfo, imgEl, 'webp');
     }
-    
+
     return this.element;
   }
 }

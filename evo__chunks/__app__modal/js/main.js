@@ -10,19 +10,13 @@ function closeModal() {
   });
 }
 
-function createModal() {
+function createModal(text) {
   const element = document.createElement('div');
   element.classList.add('modal');
   const template = `
           <div class="modal__content-container modal__content-container--visible">
-            <h2 class="modal__title">Для этого понадобится включить общий доступ к вашему местоположению</h2>
-            <p class="modal__text">Перейдите в настройки, если хотите включить общий доступ к вашему местоположению</p>
-            <label class="checkbox modal__checkbox">Not show again
-              <input class="checkbox__input" type="checkbox">
-              <span class="checkbox__checkmark"></span>
-            </label>
+            <h2 class="modal__title">${text}</h2>
             <div class="modal__button-container">
-              <button class="button button--size--small button--theme--tangerin-transparent modal__button">Настройки</button>
               <button class="button button--size--small button--theme--tangerin modal__button modal__button-accept">Понятно</button>
             </div>
           </div>`;
@@ -52,13 +46,13 @@ function createModalEmail() {
   const element = document.createElement('div');
   element.classList.add('modal');
   const template = `
-          <div class="modal__content-container modal__content-container--visible">
-            <h2 class="modal__title">Подтвердите email</h2>
-            <p class="modal__text">На ваш email была отправлена ссылка для подтверждения, пройдите по ней, чтобы мы могли присылать вам сообщения</p>
-            <div class="modal__button-container">
-              <button class="button button--size--small button--theme--tangerin modal__button modal__button-accept">Понятно</button>
-            </div>
-          </div>`;
+    <div class="modal__content-container modal__content-container--visible">
+      <h2 class="modal__title">Подтвердите email</h2>
+      <p class="modal__text">На ваш email была отправлена ссылка для подтверждения, пройдите по ней, чтобы мы могли присылать вам сообщения</p>
+      <div class="modal__button-container">
+        <button class="button button--size--small button--theme--tangerin modal__button modal__button-accept">Понятно</button>
+      </div>
+    </div>`;
 
   element.innerHTML = template;
   const button = element.querySelector('.modal__button-accept');
@@ -66,6 +60,9 @@ function createModalEmail() {
     setTimeout(() => {
       togglePage.closePage();
       togglePage.deletePage();
+      renderMainPage.clearPage();
+      renderMainPage.rendering();
+      renderMainPage.openPage();
     }, 2500);
   });
   return element;

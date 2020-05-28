@@ -12,54 +12,96 @@ function number_of(number, suffix) {
   return suffix[suffixKey];
 }
 
-function switchAdd() {
+function switchAdd(productInfo) {
+  let allCountAdds = 0;
+  if (typeof userDataObj[productInfo.id] === 'object') {
+    for (const modifiersUserItem of Object.values(userDataObj[productInfo.id])) {
+      allCountAdds += modifiersUserItem;
+    }
+  }
   const textAreaButtonAdd = document.querySelectorAll('.text-area__button--type--add');
   [...textAreaButtonAdd].forEach((item) => {
-    item.addEventListener('click', function () {
-      const textArea = this.closest('.text-area');
-      const iconPlus = textArea.querySelector('.text-area__icon--type--plus');
-      const iconMinus = textArea.querySelector('.text-area__icon--type--minus');
-      const iconContainer = textArea.querySelector('.text-area__icon-container');
-      const allCounter = document.querySelector('.text-area__all-counter-number');
-      const thisAdds = document.querySelector('.text-area__list-item');
-      const title = textArea.querySelector('.text-area__title');
-      let counter = 1;
-      allCounter.textContent = `${counter} добав${number_of(counter, ['ка', 'ки', 'ок'])}`;
-      this.classList.remove('text-area__button--open');
+    const textArea = item.closest('.text-area');
+    const iconPlus = textArea.querySelector('.text-area__icon--type--plus');
+    const iconMinus = textArea.querySelector('.text-area__icon--type--minus');
+    const iconContainer = textArea.querySelector('.text-area__icon-container');
+    const allCounter = document.querySelector('.text-area__all-counter-number');
+    const title = textArea.querySelector('.text-area__title');
+    const regexp = /^(\d+\sдобав[\D]{2}\s)([\D]+)/g;
+    const replaceWord = title.textContent;
+    const titleName = replaceWord.trim().replace(regexp, '$2');
+
+    let counter = 0;
+
+    if (typeof userDataObj[productInfo.id] === 'object') {
+      for (const modifiersUserItem in userDataObj[productInfo.id]) {
+        if (String(textArea.id) === modifiersUserItem) {
+          counter += Number(userDataObj[productInfo.id][modifiersUserItem]);
+        }
+      }
+    }
+
+    function setUserDataObj() {
+      if (typeof userDataObj[productInfo.id] !== 'object') {
+        userDataObj[productInfo.id] = {};
+      }
+      userDataObj[productInfo.id][textArea.id] = counter;
+      localStorage.setItem('userData', JSON.stringify(userDataObj));
+    }
+    iconPlus.addEventListener('click', () => {
+      counter += 1;
+      allCountAdds += 1;
+      allCounter.textContent = `${allCountAdds} добав${number_of(allCountAdds, ['ка', 'ки', 'ок'])}`;
+      title.textContent = `${counter} добав${number_of(counter, ['ка', 'ки', 'ок'])} ${titleName}`;
+      setUserDataObj();
+      console.log(counter, allCountAdds);
+    });
+    iconMinus.addEventListener('click', () => {
+      if (counter >= 1) {
+        counter -= 1;
+        allCountAdds -= 1;
+        allCounter.textContent = `${allCountAdds} добав${number_of(allCountAdds, ['ка', 'ки', 'ок'])}`;
+        title.textContent = `${counter} добав${number_of(counter, ['ка', 'ки', 'ок'])} ${titleName}`;
+      }
+      if (counter === 0) {
+        title.textContent = titleName;
+        iconContainer.classList.remove('text-area__icon-container--open');
+        item.classList.add('text-area__button--open');
+        title.classList.remove('text-area__title--theme--chocolate');
+      }
+      setUserDataObj();
+    });
+    item.addEventListener('click', () => {
+      counter = 1;
+      allCountAdds += 1;
+      allCounter.textContent = `${allCountAdds} добав${number_of(allCountAdds, ['ка', 'ки', 'ок'])}`;
+      item.classList.remove('text-area__button--open');
       iconContainer.classList.add('text-area__icon-container--open');
       title.classList.add('text-area__title--theme--chocolate');
-      const titleName = title.textContent;
       title.textContent = `${counter} добав${number_of(counter, ['ка', 'ки', 'ок'])} ${title.textContent}`;
-      thisAdds.textContent = title.textContent;
+      setUserDataObj();
+      /* [...textAreaListItem].forEach(item=> {
+        item
+      })
+      textArea
+      if (typeof userDataObj[productInfo.id] === 'object') {
+        for (const modifier of Object.values(dataProductApi.successData.modifiers)) {
+          for (const modifiersUserItem in userDataObj[productInfo.id]) {
+            if (String(modifier.id) === modifiersUserItem && modifier.category === modifierName) {
+              const counter = userDataObj[productInfo.id][modifiersUserItem];
+              const textAreaListItem = document.querySelectorAll('.text-area__list');
 
-      iconPlus.addEventListener('click', () => {
-        counter += 1;
-        allCounter.textContent = `${counter} добав${number_of(counter, ['ка', 'ки', 'ок'])}`;
-        title.textContent = '';
-        title.textContent = `${counter} добав${number_of(counter, ['ка', 'ки', 'ок'])} ${titleName}`;
-        thisAdds.textContent = title.textContent;
-        //localStorage.setItem('userData');
-      });
+              if (counter !== 0) {
+                textAreaListItem.classList.add('text-area__list-item');
+                textAreaListItem.id = modifier.id;
+                textAreaListItem.textContent = textAreaListItem.textContent = `${counter} добав${number_of(counter, ['ка', 'ки', 'ок'])} ${modifier.name}`;
+                textAreaList.append(textAreaListItem);
+              }
+            }
+          }
+        }6+3
 
-      iconMinus.addEventListener('click', () => {
-        if (counter === 0) {
-          title.textContent = '';
-          title.textContent = titleName;
-          iconContainer.classList.remove('text-area__icon-container--open');
-          this.classList.add('text-area__button--open');
-          title.classList.remove('text-area__title--theme--chocolate');
-        }
-        if (counter >= 1) {
-          counter -= 1;
-          allCounter.textContent = `${counter} добав${number_of(counter, ['ка', 'ки', 'ок'])}`;
-          title.textContent = '';
-          title.textContent = `${counter} добав${number_of(counter, ['ка', 'ки', 'ок'])} ${titleName}`;
-        }
-        if (counter === 0) {
-          title.textContent = '';
-          title.textContent = titleName;
-        }
-      });
+      } */
     });
   });
 }
@@ -71,8 +113,8 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
     this.element = document.createElement(this.parameters.selector);
   }
 
-  create(productInfo, modifiersObj) {
-    console.log(productInfo, modifiersObj);
+  create(productInfo) {
+    console.log(productInfo);
     this.template = `
       <div class="text-area text-area--theme--light">
         <div class="text-area__container text-area__container--indentation--normal">
@@ -182,16 +224,15 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
         </div>
        </div>
     </div>
-    <button class="button button--size--big button--theme--tangerin button--type--fixed-with-bottom-bar button--theme--shadow-big text-area__button--type--add">В корзину</button>
+    <button class="button button--size--big button--theme--tangerin button--type--fixed-with-bottom-bar button--theme--shadow-big text-area__button--type--add-product">В корзину</button>
     `;
     this.element.insertAdjacentHTML('beforeend', this.template);
 
     this.buttonShare = this.element.querySelector('.text-area__button--type--share');
     this.iconsLike = this.element.querySelector('.text-area__icon--type--like');
-    this.areaAddins = this.element.querySelector('.text-area--type--add-ins');
     this.buttonMore = this.element.querySelector('.text-area__button--type--more');
     this.buttonReset = this.element.querySelector('.text-area__button--type--reset');
-    this.buttonAdd = this.element.querySelector('.text-area__button--type--add');
+    this.buttonAdd = this.element.querySelector('.text-area__button--type--add-product');
     this.nutritionArea = this.element.querySelector('.text-area__content-container--type--more');
     this.buttonMore.addEventListener('click', () => {
       this.nutritionArea.classList.toggle('text-area__content-container--open');
@@ -221,10 +262,20 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
     const basketPopupIcon = document.querySelector('.bottom-bar__icon-popup');
     const basketPopupIconImg = document.querySelector('.bottom-bar__icon-popup-img');
     this.buttonAdd.addEventListener('click', () => {
-      basketArray.push({ id: productInfo.id });
+      basketArray.push({ id: productInfo.id, modifiers: [] });
+      basketArray.forEach((el) => {
+        if (el.id === productInfo.id) {
+          for (const modifiersUserItem in userDataObj[productInfo.id]) {
+            const counter = userDataObj[productInfo.id][modifiersUserItem];
+            if (counter !== 0) {
+              el.modifiers.push({ id: Number(modifiersUserItem), count: counter });
+            }
+          }
+        }
+      });
       localStorage.setItem('basket', JSON.stringify(basketArray));
       counterBasket();
-      loadImg(productInfo, basketPopupIconImg);
+      loadImg(productInfo, basketPopupIconImg, 'webp');
       basketPopupIcon.classList.add('bottom-bar__icon-popup--open');
       setTimeout(() => {
         basketPopupIcon.classList.remove('bottom-bar__icon-popup--open');
@@ -247,11 +298,6 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
       }
     });
 
-    if (typeof this.parameters.eventShare === 'object') {
-      for (const event of this.parameters.eventShare) {
-        this.buttonShare.addEventListener(event.type, event.callback);
-      }
-    }
     const arrIngredientsName = [];
     const elementIngredients = this.element.querySelector('.text-area__text--type--ingredients');
     if (productInfo.ingredients !== null) {
@@ -276,26 +322,43 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
         }
       }
     }
-    console.log(arrModif);
     const descriptionArea = this.element.querySelector('.text-area--type--description');
+
     function renderModifier(modifierName) {
       const element = document.createElement('div');
-      element.classList.add('text-area', 'text-area--theme--light');
+      element.classList.add('text-area', 'text-area--theme--light', 'text-area--type--modifier');
       const template = `
             <div class="text-area__container text-area__container--indentation--small">
               <div class="text-area__content-container text-area__content-container--direction--column">
                 <h2 class="text-area__title text-area__title--size--small text-area__title--type--bold">${modifierName}</h2>
-                <ul class="text-area__list">
-                  <li class="text-area__list-item"></li>
-                </ul>
+                <ul class="text-area__list"></ul>
               </div>
               <button class="button">
                 <img src="[+chunkWebPath+]/img/icon-expand-direction-right.svg" alt="" class="text-area__icon text-area__icon--position--center">
               </button>
             </div>`;
       element.insertAdjacentHTML('beforeend', template);
+      const textAreaList = element.querySelector('.text-area__list');
+
+      if (typeof userDataObj[productInfo.id] === 'object') {
+        for (const modifier of Object.values(dataProductApi.successData.modifiers)) {
+          for (const modifiersUserItem in userDataObj[productInfo.id]) {
+            if (String(modifier.id) === modifiersUserItem && modifier.category === modifierName) {
+              const counter = userDataObj[productInfo.id][modifiersUserItem];
+              const textAreaListItem = document.createElement('li');
+              if (counter !== 0) {
+                textAreaListItem.classList.add('text-area__list-item');
+                textAreaListItem.id = modifier.id;
+                textAreaListItem.textContent = textAreaListItem.textContent = `${counter} добав${number_of(counter, ['ка', 'ки', 'ок'])} ${modifier.name}`;
+                textAreaList.append(textAreaListItem);
+              }
+            }
+          }
+        }
+      }
+
       element.addEventListener('click', () => {
-        toggleThirdPageAddinsCard.rendering(arrModif);
+        toggleThirdPageAddinsCard.rendering(productInfo);
       });
       descriptionArea.after(element);
     }
@@ -304,6 +367,9 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
     [...unicModifName].forEach((name) => {
       renderModifier(name);
     });
+    /*
+    * готовый сайз бар (выбор размера)
+    */
     /* if (typeof this.parameters.eventAddSize === 'object') {
       for (const event of this.parameters.eventAddSize) {
         const element = document.createElement('div');
@@ -335,18 +401,25 @@ class CreateTextAreaAddins extends CreateItem {
     this.parameters = parameters;
   }
 
-  create() {
+  create(productInfo) {
     this.element = document.createElement(this.parameters.selector);
+
+    let allCountAdds = 0;
+    if (typeof userDataObj[productInfo.id] === 'object') {
+      for (const modifiersUserItem of Object.values(userDataObj[productInfo.id])) {
+        allCountAdds += modifiersUserItem;
+      }
+    }
+
     this.template = `
       <div class="text-area__counter-container">
         <span class="text-area__all-counter-title">У вашего напитка сейчас </span>
-        <span class="text-area__all-counter"><span class="text-area__all-counter-number">0 добавок</span></span>
+        <span class="text-area__all-counter"><span class="text-area__all-counter-number">${allCountAdds} добавок</span></span>
       </div>
       
       <button class="text-area__button text-area__button--type--reset">Очистить добавки</button>
     `;
     this.element.insertAdjacentHTML('beforeend', this.template);
-
     return super.create(this.element);
   }
 }
@@ -357,38 +430,75 @@ class CreateTextAreaAddin extends CreateItem {
     this.parameters = parameters;
   }
 
-  create(modif) {
-    this.element = document.createElement(this.parameters.selector);
-    this.elementTitle = document.createElement('div');
-    this.elementTitle.classList.add('text-area');
-    this.templateTitle = `<h2 class="text-area__title text-area__title--type--uppercase text-area__title--type--bold">${modif.category}</h2>`;
-    this.template = `
-        <div class="text-area__container text-area__container--indentation--small">
-          <div class="text-area__content-container text-area__content-container--direction--column">
-            <h3 class="text-area__title text-area__title--size--small text-area__title--type--bold">${modif.name}</h3>
-            <span class="text-area__price text-area__price--size--small">${modif.price}</span>
-          </div>
-          <div class="text-area__icon-container">
-            <div class="text-area__icon-container text-area__icon-container--open">
-              <button class="button">
-                <img src="[+chunkWebPath+]/img/icon-remove-line.svg" alt=""
-                     class="text-area__icon text-area__icon--type--minus text-area__icon--position--first">
-              </button>
-              <button class="button">
-                <img src="[+chunkWebPath+]/img/icon-add-plus.svg" alt="" class="text-area__icon text-area__icon--type--plus">
-              </button>
-            </div>
-          </div>
-          <button class="button button--theme--chocolate text-area__button text-area__button--type--add text-area__button--open">
-            Добавить
-          </button>
-        </div>
-    `;
+  create(modifierWithTitle, productInfo) {
+    this.element = document.createElement('div');
+    this.element.classList.add('text-area__wraper');
+    this.templateTitle = `<h2 class="text-area__title text-area__title--type--uppercase text-area__title--type--bold">${modifierWithTitle[0]}</h2>`;
 
-    this.element.insertAdjacentHTML('beforeend', this.template);
-    this.elementTitle.insertAdjacentHTML('beforeend', this.templateTitle);
-    this.element.after(this.elementTitle);
-    return super.create(this.element);
+    this.element.insertAdjacentHTML('beforeend', this.templateTitle);
+    for (const item of Object.values(modifierWithTitle[1])) {
+      this.template = `
+        <div id="${item.id}" class="text-area text-area--theme--light text-area--type--add-ins">
+          <div class="text-area__container text-area__container--indentation--small">
+            <div class="text-area__content-container text-area__content-container--direction--column">
+              <h3 class="text-area__title text-area__title--size--small text-area__title--type--bold text-area__title--type--modifier">${item.name}</h3>
+              <span class="text-area__price text-area__price--size--small">${item.price}</span>
+            </div>
+            <div class="text-area__icon-container">
+              <div class="text-area__icon-container text-area__icon-container--open">
+                <button class="button">
+                  <img src="[+chunkWebPath+]/img/icon-remove-line.svg" alt=""
+                       class="text-area__icon text-area__icon--type--minus text-area__icon--position--first">
+                </button>
+                <button class="button">
+                  <img src="[+chunkWebPath+]/img/icon-add-plus.svg" alt="" class="text-area__icon text-area__icon--type--plus">
+                </button>
+              </div>
+            </div>
+            <button class="button button--theme--chocolate text-area__button text-area__button--type--add text-area__button--open">
+              Добавить
+            </button>
+          </div>
+        </div>
+      `;
+      if (typeof userDataObj[productInfo.id] === 'object') {
+        for (const modifiersUserItem in userDataObj[productInfo.id]) {
+          if (String(item.id) === modifiersUserItem) {
+            const counter = userDataObj[productInfo.id][modifiersUserItem];
+            if (counter !== 0) {
+              this.template = `
+                <div id="${item.id}" class="text-area text-area--theme--light text-area--type--add-ins">
+                  <div class="text-area__container text-area__container--indentation--small">
+                    <div class="text-area__content-container text-area__content-container--direction--column">
+                      <h3 class="text-area__title text-area__title--size--small text-area__title--type--bold text-area__title--theme--chocolate text-area__title--type--modifier">
+                        ${counter} добав${number_of(counter, ['ка', 'ки', 'ок'])} ${item.name}
+                      </h3>
+                      <span class="text-area__price text-area__price--size--small">${item.price}</span>
+                    </div>
+                    <div class="text-area__icon-container text-area__icon-container--open">
+                      <div class="text-area__icon-container text-area__icon-container--open">
+                        <button class="button">
+                          <img src="[+chunkWebPath+]/img/icon-remove-line.svg" alt=""
+                               class="text-area__icon text-area__icon--type--minus text-area__icon--position--first">
+                        </button>
+                        <button class="button">
+                          <img src="[+chunkWebPath+]/img/icon-add-plus.svg" alt="" class="text-area__icon text-area__icon--type--plus">
+                        </button>
+                      </div>
+                    </div>
+                    <button class="button button--theme--chocolate text-area__button text-area__button--type--add">
+                      Добавить
+                    </button>
+                  </div>
+                </div>
+              `;
+            }
+          }
+        }
+      }
+      this.element.insertAdjacentHTML('beforeend', this.template);
+    }
+    return this.element;
   }
 }
 
@@ -396,6 +506,21 @@ class CreateTextAreaAccount extends CreateItem {
   constructor(parameters) {
     super();
     this.parameters = parameters;
+  }
+
+  setData(nameData) {
+    let infoApi;
+    if (isEmptyObj(applicationDataObj)) {
+      if (isEmptyObj(applicationDataObj[nameData])) {
+        infoApi = applicationDataObj[nameData];
+      }
+    } else {
+      infoApi = applicationDataObj[nameData];
+    }
+    return infoApi;
+  }
+
+  create() {
     this.element = document.createElement(this.parameters.selector);
     this.template = `
       <div class="text-area text-area--type--balance">
@@ -453,18 +578,21 @@ class CreateTextAreaAccount extends CreateItem {
          </div>
        </div>  
     `;
-  }
-
-  create() {
     this.element.insertAdjacentHTML('beforeend', this.template);
 
     this.buttonPrivacy = this.element.querySelector('.text-area--type--privacy');
+    this.buttonTerms = this.element.querySelector('.text-area--type--terms');
+    this.buttonPublic = this.element.querySelector('.text-area--type--public');
 
-    if (typeof this.parameters.eventPrivacy === 'object') {
-      for (const event of this.parameters.eventPrivacy) {
-        this.buttonPrivacy.addEventListener(event.type, event.callback);
-      }
-    }
+    this.buttonPrivacy.addEventListener('click', () => {
+      toggleSubPageApplication.rendering(this.setData('privacy-policy'));
+    });
+    this.buttonTerms.addEventListener('click', () => {
+      toggleSubPageApplication.rendering(this.setData('user-agreement'));
+    });
+    this.buttonPublic.addEventListener('click', () => {
+      toggleSubPageApplication.rendering(this.setData('public-offer'));
+    });
 
     return super.create(this.element);
   }
@@ -474,26 +602,17 @@ class CreateTextAreaApplication extends CreateItem {
   constructor(parameters) {
     super();
     this.parameters = parameters;
+  }
+
+  create(info) {
+    console.log(info);
     this.element = document.createElement(this.parameters.selector);
     this.template = `
       <div class="text-area text-area--indentation--normal">
         <div class="text-area__content-container text-area__content-container--direction--column text-area__content-container--indentation--normal">
-          <h2 class="text-area__title text-area__title--size--normal text-area__title--indentation--bottom">Eligibility</h2>
-          <p class="text-area__text">The Application is not targeted towards, nor intended for use by, anyone under the age of 13. A USER MUST BE AT LEAST AGE 13 TO ACCESS AND USE THE APPLICATION. If the User is between the ages of 13 and 18, he or she may only use the Application under the supervision of a parent or legal guardian who agrees to be bound by these Terms. User represents and warrants that (a) he/she is not located in a country that is subject to a U.S. government embargo, or that has been designated by the U.S. government as a “terrorist supporting” country; and (b) he/she is not listed on any U.S. government list of prohibited or restricted parties. In order to use certain functions of our Application, you will need to register for an account. You agree to (a) create only one account; (b) provide accurate, truthful , current and complete information when creating your account; (c) maintain and promptly update your account information; (d) maintain the security of your account by not sharing your password with others and restricting access to your account and your computer; (e) promptly notify Starbucks if you discover or otherwise suspect any security breaches relating to the Application; and (f) take responsibility for all activities that occur under your account and accept all risks of unauthorized access.</p>
+          ${info.content}
         </div>
-        <div class="text-area__content-container text-area__content-container--direction--column text-area__content-container--indentation--normal">
-          <h2 class="text-area__title text-area__title--size--normal text-area__title--indentation--bottom">Privacy</h2>
-          <p class="text-area__text">Please read the Privacy Policy carefully to understand how Starbucks collects, uses and discloses personally identifiable information from its users. By downloading, installing, accessing or using the Application, you consent to all actions that we take with respect to your data consistent with our Privacy Policy.</p>
-        </div>
-        <div class="text-area__content-container text-area__content-container--direction--column text-area__content-container--indentation--normal">
-          <h2 class="text-area__title text-area__title--size--normal text-area__title--indentation--bottom">Apple Terms and Conditions; Starbucks Policies</h2>
-          <p class="text-area__text">These Terms supplement and incorporate (a) the Apple, Inc. (“Apple”) Terms and Conditions (located at http://www.apple.com/legal/internet-services/itunes/us/terms.html) including, without limitation, the Licensed Application End User License Agreement provided therein (“Apple Terms”); and (b) other Starbucks policies, including Starbucks® Rewards, posted at www.starbucks.com (“Starbucks Website”). If any of the provisions of the Apple Terms and Conditions conflict with these Terms, the Apple Terms and Conditions will control, solely to the extent such terms apply to the Application. Starbucks, not Apple, is solely responsible for the Application and the content thereof.</p>
-        </div>
-      </div>
     `;
-  }
-
-  create() {
     this.element.insertAdjacentHTML('beforeend', this.template);
 
     return super.create(this.element);
@@ -597,7 +716,6 @@ class CreateTextAreaStoreInfo extends CreateItem {
   }
 }
 
-
 class CreateTextAreaBalance extends CreateItem {
   constructor(parameters) {
     super();
@@ -627,6 +745,76 @@ class CreateTextAreaBalance extends CreateItem {
     if (this.parameters.button === false) {
       this.button.remove();
     }
+    return super.create(this.element);
+  }
+}
+
+class CreateTextAreaOrderPayment extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+  }
+
+  create() {
+    this.element = document.createElement(this.parameters.selector);
+    this.template = `
+      <div class="text-area__container">
+        <div class="text-area__content-container text-area__content-container--indentation--normal text-area__content-container--direction--column">
+          <p class="text-area__title text-area__title--size--normal text-area__title--indentation--bottom-big text-area__title--theme--shadow">Выберете способ отплаты</p>
+          <div class="radio">
+            <input type="radio" class="radio__input" id="creditCard" name="radio"/>
+            <label class="radio__label radio__label--default radio__label--available" for="creditCard">Банковская карта</label>
+          </div>
+          <div class="radio">
+            <input type="radio" class="radio__input" id="balance" name="radio"/>
+            <label class="radio__label radio__label--default" for="balance">Баланс</label>
+          </div>
+          <div class="radio">
+            <input type="radio" class="radio__input" id="bonus" name="radio"/>
+            <label class="radio__label radio__label--default" for="bonus">Бонусы</label>
+          </div>
+        </div>
+      </div>
+      <div class="text-area__container text-area__container--indentation--normal">
+        <div>
+          <span class="text-area__price text-area__price--size--big">${this.parameters.number}</span>
+          <p class="text-area__text text-area__text--theme--shadow">Итого</p>
+        </div>
+        <button class="button button--size--big button--theme--tangerin button--type--fixed-low button--theme--shadow-big text-area__button text-area__button--open text-area__button--type--${this.parameters.identifier}">Оплатить</button>
+      </div>
+    `;
+    this.element.insertAdjacentHTML('beforeend', this.template);
+
+    this.button = this.element.querySelector(`.text-area__button--type--${this.parameters.identifier}`);
+    this.radioInput = this.element.querySelectorAll('.radio__input');
+    [...this.radioInput].forEach((item) => {
+      for (const key in userInfoObj.successData) {
+        if (item.id === key) {
+          if (Number(userInfoObj.successData[key]) < this.parameters.number) {
+            item.disabled = true;
+            item.nextElementSibling.classList.add('radio__label--disable');
+          } else {
+            item.nextElementSibling.classList.add('radio__label--available');
+          }
+        }
+      }
+    });
+    function resPayOrder(payInfo) {
+      if (payInfo.success) {
+        document.location.href = payInfo.successData.payUrl;
+        console.log(payInfo);
+      } else {
+        toggleModal.rendering();
+      }
+    }
+    this.button.addEventListener('click', () => {
+      [...this.radioInput].forEach((item) => {
+        if (item.checked) {
+          api.payOrderApi(item.id, orderInfo.successData, resPayOrder);
+        }
+      });
+    });
+
     return super.create(this.element);
   }
 }

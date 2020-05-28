@@ -10,7 +10,10 @@ class ToggleMain extends ToggleMainPage {
     const mainPageTopBar = new CreateTopBar({
       selector: ['div'],
       style: ['top-bar'],
-      modifier: ['--size--small'],
+      modifier: [
+        '--size--small',
+        '--indentation--bottom',
+      ],
       textTitle: ['Отличный день для кофе ☕'],
       eventOpenSignInPage: [{ type: 'click', callback: togglePageSignIn.rendering }],
       eventOpenInboxPage: [{ type: 'click', callback: togglePageInbox.rendering }],
@@ -63,27 +66,27 @@ class ToggleMain extends ToggleMainPage {
 
     function renderPosts(dataPosts) {
       const buttonDark = document.querySelector('.button--theme--dark-transparent');
-      const banners = document.querySelector('.banners');
+      const topBar = document.querySelector('.top-bar');
       if (buttonDark !== null) {
         dataPosts.successData.forEach((item) => {
           buttonDark.after(mainPageMainCard.create(item));
         });
       } else {
         dataPosts.successData.forEach((item) => {
-          banners.after(mainPageMainCard.create(item));
+          topBar.after(mainPageMainCard.create(item));
         });
       }
     }
     function renderPromo(dataPromo) {
       const buttonDark = document.querySelector('.button--theme--dark-transparent');
-      const banners = document.querySelector('.banners');
+      const topBar = document.querySelector('.top-bar');
       if (buttonDark !== null) {
         dataPromo.successData.forEach((item) => {
           buttonDark.after(mainPageMainCard.create(item));
         });
       } else {
         dataPromo.successData.forEach((item) => {
-          banners.after(mainPageMainCard.create(item));
+          topBar.after(mainPageMainCard.create(item));
         });
       }
     }
@@ -95,10 +98,10 @@ class ToggleMain extends ToggleMainPage {
     if (localStorage.getItem('user-sign-in') === null) {
       this.mainPageContent.prepend(mainPageButtonJoinDark.create());
     }
-    this.mainPageContent.prepend(mainPageTitleBar.create());
-    this.mainPageContent.prepend(mainPageBanners.create());
+    // this.mainPageContent.prepend(mainPageTitleBar.create());
+    // this.mainPageContent.prepend(mainPageBanners.create());
     this.parameters.api.promoApi(renderPromo);
-    this.mainPageContent.prepend(mainPageTitleBarSmall.create());
+    // this.mainPageContent.prepend(mainPageTitleBarSmall.create());
     this.mainPageContent.prepend(mainPageTopBar.create());
 
     activeBanners();

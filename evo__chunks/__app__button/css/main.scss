@@ -118,6 +118,10 @@
     color: $alizarinCrimson;
   }
 
+  &--indentation--top {
+    margin-top: 20px;
+  }
+
   &--indentation--right {
     margin-right: 16px;
   }
@@ -127,7 +131,7 @@
   }
 
   &--indentation--bottom {
-    margin-bottom: 16px;
+    margin-bottom: 20px;
   }
 
   &--position--right {

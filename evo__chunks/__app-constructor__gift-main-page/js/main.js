@@ -55,14 +55,14 @@ class ToggleGift extends ToggleMainPage {
     });
 
 
-    this.mainPageContent.append(giftTopBar.create());
+/*    this.mainPageContent.append(giftTopBar.create());
     this.mainPageContent.append(giftTitleBarFeatured.create());
     this.mainPageContent.append(giftPageBannersFeatured.create());
     this.mainPageContent.append(giftTitleBarOther.create());
     this.mainPageContent.append(giftPageBannersOther.create());
 
     this.mainPageContent.append(giftTitleBarOther2.create());
-    this.mainPageContent.append(giftPageBannersOther2.create());
+    this.mainPageContent.append(giftPageBannersOther2.create());*/
 
     activeBanners();
     activeButton();

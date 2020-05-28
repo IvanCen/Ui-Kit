@@ -176,11 +176,9 @@ class CreateOrderProductMainCard extends CreateItem {
 
     const imgEl = this.element.querySelector('.main-card__content-img');
     if (iOS()) {
-      if (productInfo.mainPhoto !== null) {
-        imgEl.style.backgroundImage = `url(${productInfo.mainPhoto.name})`;
-      }
+      loadImg(productInfo, imgEl, 'jpg');
     } else {
-      loadImg(productInfo, imgEl);
+      loadImg(productInfo, imgEl, 'webp');
     }
 
     return super.create(this.element);

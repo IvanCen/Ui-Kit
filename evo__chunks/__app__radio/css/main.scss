@@ -3,6 +3,7 @@
 .radio {
   position: relative;
   min-height: 23px;
+  margin-bottom: 10px;
 }
 
 .radio__input {
@@ -16,6 +17,7 @@
   position: relative;
   padding: 0 0 0 35px;
   cursor: pointer;
+  @extend %style-5;
 
   &--default {
     &:before {
@@ -29,12 +31,34 @@
     }
   }
 
+  &--disable {
+    color: $dimGray;
+
+    &:before {
+      border: 1px solid $dimGray;
+    }
+
+    &:after {
+      border: 1px solid $dimGray;
+    }
+  }
+
+  &--available {
+    &:before {
+      border: 1px solid $brown;
+    }
+
+    &:after {
+      background: $brown;
+    }
+  }
+
   &:before {
     content: '';
     position: absolute;
     width: 19px;
     height: 19px;
-    border: 1px solid $brown;
+    //border: 1px solid $brown;
     border-radius: 50%;
     background: $white;
   }
@@ -45,7 +69,7 @@
     width: 13px;
     height: 13px;
     border-radius: 50%;
-    background: $brown;
+    //background: $brown;
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, .5);
     opacity: 0;
     transition: .2s;

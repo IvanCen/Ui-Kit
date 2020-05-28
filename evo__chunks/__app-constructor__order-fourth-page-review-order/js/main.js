@@ -12,7 +12,6 @@ class ToggleFourthPageReviewOrder extends ToggleFourthPage {
       selector: ['div'],
       style: ['top-bar'],
       modifier: ['--theme--dark'],
-      textTitle: ['add-ins'],
       eventBack: [
         { type: 'click', callback: this.closePage },
         { type: 'click', callback: this.deletePage },
@@ -42,10 +41,10 @@ class ToggleFourthPageReviewOrder extends ToggleFourthPage {
         '--type--review',
       ],
     });
-    const reviewCheckboxTextSlide = new CreateCheckboxTextSlide({
+    /* const reviewCheckboxTextSlide = new CreateCheckboxTextSlide({
       selector: ['div'],
       style: ['checkbox-textslide'],
-    });
+    }); */
     const reviewButton = new CreateButton({
       selector: ['button'],
       style: ['button'],
@@ -53,11 +52,9 @@ class ToggleFourthPageReviewOrder extends ToggleFourthPage {
         '--theme--tangerin',
         '--type--fixed-low',
         '--theme--shadow-big',
+        '--type--make-order',
       ],
       text: ['Продолжить'],
-      events: [
-        { type: 'click', callback: counterBasket },
-      ],
     });
     const reviewCardItem = new CreateCardItemReviewOrder({
       style: ['card-item'],
@@ -69,18 +66,42 @@ class ToggleFourthPageReviewOrder extends ToggleFourthPage {
 
     this.fourthPage.append(reviewTopBar.create());
     this.fourthPage.append(reviewCardItemContainer.create());
-    this.fourthPage.append(reviewCheckboxTextSlide.create());
+    // this.fourthPage.append(reviewCheckboxTextSlide.create());
     this.fourthPage.append(reviewButton.create());
 
     this.cardItemContainer = document.querySelector('.card-item__container--type--review');
+    this.reviewButton = document.querySelector('.button--type--make-order');
 
     const productsItems = dataProductApi.successData.items;
     basketArray.forEach((item) => {
       for (const el of Object.values(productsItems)) {
         if (item.id === el.id) {
-          this.cardItemContainer.append(reviewCardItem.create(el));
+          this.cardItemContainer.append(reviewCardItem.create(el)); //late probrosit item !!!
         }
       }
+    });
+    function render(info) {
+      toggleFifthPageReviewOrder.rendering(info);
+    }
+    function makeOrder(info) {
+      if (info.success === false) {
+        toggleFourthPage.closePage();
+        toggleFourthPage.clearPage();
+        togglePageSignIn.rendering();
+      }
+      if (info.success === true) {
+        if (!isEmptyObj(basketArray)) {
+          const { phone } = userInfoObj.successData;
+          const { id } = userStore.store;
+          api.makeOrderApi(phone, basketArray, id, render);
+        } else {
+          toggleModal.rendering('Вы ничего не положили в корзину');
+          toggleModal.openPage();
+        }
+      }
+    }
+    this.reviewButton.addEventListener('click', () => {
+      api.getClientApi(makeOrder);
     });
 
     activeLike();

@@ -109,7 +109,9 @@ class TogglePageSignIn extends TogglePage {
   showError(info) {
     const textError = document.querySelector('.form__text--error');
     textError.classList.remove('form__text--close', 'form__text--hide');
-    textError.innerHTML = info.errors[0];
+    if (info.errors[0] !== undefined) {
+      textError.innerHTML = info.errors[0];
+    }
   }
 
   askUserName() {
@@ -164,6 +166,7 @@ class TogglePageSignIn extends TogglePage {
     const textError = document.querySelector('.form__text--error');
     const inputEmailContainer = document.querySelector('.form__input-container--email');
     const inputAreaEmail = document.querySelector('.form__input-area--type--email');
+    const modal = document.querySelector('.modal');
 
     inputEmailContainer.classList.remove('form__input-container--hide');
     validation();
@@ -174,10 +177,11 @@ class TogglePageSignIn extends TogglePage {
         textError.textContent = 'Укажите email';
       }
       if (inputAreaEmail.value !== '') {
-        textError.classList.add('form__text--close', 'form__text--hide');
         this.sendData('email', inputAreaEmail.value);
         inputAreaEmail.value = '';
         inputEmailContainer.classList.add('form__input-container--hide');
+        textError.textContent = ' ';
+        textError.classList.add('form__text--close', 'form__text--hide');
         toggleModal.renderingEmail();
         toggleModal.openPage();
       }
@@ -214,6 +218,9 @@ class TogglePageSignIn extends TogglePage {
       eventSkip: [
         { type: 'click', callback: this.closePage },
         { type: 'click', callback: this.deletePage },
+        { type: 'click', callback: renderMainPage.clearPage },
+        { type: 'click', callback: renderMainPage.rendering },
+        { type: 'click', callback: renderMainPage.openPage },
       ],
     });
 

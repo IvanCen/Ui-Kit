@@ -107,15 +107,18 @@ class CreateTopBarDarkWithCloseIcon extends CreateItem {
       </div>`;
   }
 
-  create() {
+  create(productInfo) {
     this.element.insertAdjacentHTML('beforeend', this.template);
     this.iconClose = this.element.querySelector('.top-bar__icon--type--close');
     if (typeof this.parameters.eventCloseIcon === 'object') {
       for (const event of this.parameters.eventCloseIcon) {
         this.iconClose.addEventListener(event.type, event.callback);
+        this.iconClose.addEventListener('click', () => {
+          toggleSubPageProductCard.clearPage();
+          toggleSubPageProductCard.rendering(productInfo);
+        });
       }
     }
-
     return super.create(this.element);
   }
 }
@@ -398,7 +401,7 @@ class CreateTopBarReviewOrder extends CreateItem {
               <img src="[+chunkWebPath+]/img/icon-expand-direction-bottom-white.svg" alt="Кнопка выбора адреса магазина"
                    class="top-bar__icon top-bar__icon-arrow-down">
             </button>
-            <button class=" top-bar__select-item top-bar__select-item--theme--dark top-bar__select-item--size--small">
+            <button class=" top-bar__select-item top-bar__select-item--theme--dark top-bar__select-item--size--small top-bar__select-item--hide">
               <img src="[+chunkWebPath+]/img/icon-man-white.svg" alt="" class="top-bar__icon">
               <img src="[+chunkWebPath+]/img/icon-expand-direction-bottom-white.svg" alt="Кнопка выбора"
                    class="top-bar__icon top-bar__icon-arrow-down">

@@ -32,7 +32,7 @@ class CreateMapItemStores extends CreateItem {
     this.template = `
             <div class="map__content">
               <input type="radio" class="radio__input" id="${store.id}" name="radio"/>
-              <label class="map__item-title radio__label map__radio-label" for="${store.id}">${store.shortTitle} <br>
+              <label class="map__item-title radio__label map__radio-label radio__label--available" for="${store.id}">${store.shortTitle} <br>
                 <span class="map__item-text">${store.longTitle} <br>
                 <span class="map__item-dist"></span>
                 </span>
@@ -69,13 +69,6 @@ class CreateMapItemStores extends CreateItem {
         myMap.setZoom(15);
       });
     });
-    /*radioInput.addEventListener('change', function () {
-      if (this.checked) {
-        console.log(';hello');
-      } else {
-        console.log('s');
-      }
-    });*/
     return this.element;
   }
 }

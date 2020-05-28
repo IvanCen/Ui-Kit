@@ -9,6 +9,13 @@ function switchActive(nodeList, activeClass) {
   });
 }
 
+function isEmptyObj(obj) {
+  for (const key in obj) {
+    return false;
+  }
+  return true;
+}
+
 function checkBasket() {
   const iconDot = document.querySelector('.footer__icon-dot');
   if (basketArray.length !== 0) {
@@ -39,7 +46,7 @@ function iOS() {
 }
 
 
-function loadImg(productInfo, imgEl, timer) {
+function loadImg(productInfo, imgEl, expansion, timer) {
   let devicePixelRatio = 0;
   devicePixelRatio = window.devicePixelRatio;
   const windowScreenWidth = window.screen.width * devicePixelRatio;
@@ -56,8 +63,9 @@ function loadImg(productInfo, imgEl, timer) {
   function getCache(info) {
     if (info.success === false && info.errors[0] === 'Кеш файл еще не готов') {
       const timerSuccess = (delay) => setTimeout(() => {
-        loadImg(productInfo, timerSuccess);
+        loadImg(productInfo, imgEl, expansion, timerSuccess);
         timerSuccess(delay * 2);
+
         if (delay > 32) {
           clearInterval(timer);
         }
@@ -67,19 +75,20 @@ function loadImg(productInfo, imgEl, timer) {
   }
 
   const screenRatio = countScreenRatio(Math.ceil(windowScreenWidth));
+  console.log(productInfo)
   const urlPhoto = productInfo.mainPhoto;
   if (urlPhoto !== null) {
     const regExp = /(assets\/images\/docs)(\/\d*\/)([\d\D]*\.)(\D+)/g;
     const productName = urlPhoto.name.replace(regExp, '$3');
     const img = document.createElement('img');
-    img.src = `http://demo.xleb.ru/${urlPhoto.name}_cache/${urlPhoto.edit}/${screenRatio}x${screenRatio}/${productName}webp`;
+    img.src = `http://demo.xleb.ru/${urlPhoto.name}_cache/${urlPhoto.edit}/${screenRatio}x${screenRatio}/${productName}${expansion}`;
 
     img.onerror = () => {
       const request = {
         method: 'image-cache-queue',
         originalFileUrl: urlPhoto.name,
         fileEditDate: urlPhoto.edit,
-        extension: 'webp',
+        extension: expansion,
         sizeX: `${screenRatio}`,
         sizeY: `${screenRatio}`,
       };
@@ -91,6 +100,7 @@ function loadImg(productInfo, imgEl, timer) {
     };
   }
 }
+
 
 function counterBasket() {
   const basket = document.querySelector('.bottom-bar__icon--type--basket');
@@ -205,6 +215,12 @@ class ToggleSubPage {
     if (typeof this.parameters !== 'object') {
       this.parameters = {};
     }
+  }
+
+  clearPage() {
+    this.page = document.querySelector('.subpage');
+    this.arrHtml = Array.from(this.page.children);
+    this.arrHtml.forEach((item) => item.remove());
   }
 
   deletePage() {
@@ -337,6 +353,62 @@ class ToggleFourthPage {
   rendering() {
     this.body.append(createFourthPage());
     this.fourthPage = document.querySelector('.fourth-page');
+  }
+}
+
+class ToggleFifthPage {
+  constructor(parameters) {
+    this.parameters = parameters;
+    this.body = document.querySelector('body');
+    this.fifthPage = document.querySelector('.fifth-page');
+    this.fifthPageContent = document.querySelector('.fifth-page__content');
+    this.classOpen = this.parameters.classOpen;
+
+    this.closePage = this.closePage.bind(this);
+    this.deletePage = this.deletePage.bind(this);
+    this.openPage = this.openPage.bind(this);
+
+    if (typeof this.parameters !== 'object') {
+      this.parameters = {};
+    }
+  }
+
+  clearPage() {
+    this.fifthPage = document.querySelector('.fifth-page');
+    this.arrHtml = Array.from(this.fifthPage.children);
+    this.arrHtml.splice(0, this.arrHtml.length).forEach((item) => item.remove());
+  }
+
+  deletePage() {
+    if (this.fifthPage) {
+      setTimeout(() => this.fifthPage.remove(), 100);
+    }
+  }
+
+  closePage() {
+    this.fifthPage = document.querySelector('.fifth-page');
+    if (this.fifthPage) {
+      if (typeof this.parameters.classOpen === 'object') {
+        for (const style of this.parameters.classOpen) {
+          this.fifthPage.classList.remove(style);
+        }
+      }
+      setTimeout(() => this.body.classList.remove('body'), 100);
+    }
+  }
+
+  openPage() {
+    this.fifthPage = document.querySelector('.fifth-page');
+    setTimeout(() => {
+      this.fifthPage.classList.add(this.classOpen);
+      this.body.classList.add('body');
+    }, 100);
+  }
+
+  rendering() {
+    this.body = document.querySelector('body');
+    this.body.append(createFifthPage());
+    this.fifthPage = document.querySelector('.fifth-page');
   }
 }
 
@@ -473,9 +545,10 @@ class ToggleModal {
     closeModal();
   }
 
-  rendering() {
-    this.mainPage = document.querySelector('.main-page');
-    this.mainPage.append(createModal());
+  rendering(text) {
+    this.body = document.querySelector('.body');
+    this.mainPage.append(createModal(text));
+    this.openPage();
   }
 
   renderingPost(modalInfo) {

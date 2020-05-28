@@ -8,6 +8,7 @@ class ToggleOrder extends ToggleMainPage {
   rendering() {
     super.rendering();
     this.mainPageContent.classList.add('main-page__content--with--bottom-bar');
+
     function switchTabHits() {
       const elements = document.querySelectorAll('.main-page__tab-content');
       [...elements].forEach((item) => item.classList.remove('main-page__tab-content--open'));

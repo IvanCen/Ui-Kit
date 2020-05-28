@@ -2,13 +2,43 @@ const mainPage = document.querySelector('.main-page');
 const body = document.querySelector('body');
 const api = new Api();
 let dataProductApi;
-let dataStoresApi;
+let orderInfo;
+let orderPayInfo;
 const itemsArray = JSON.parse(localStorage.getItem('items')) || [];
 const basketArray = JSON.parse(localStorage.getItem('basket')) || [];
-const userDataArray = JSON.parse(localStorage.getItem('userData')) || [];
+const userDataObj = JSON.parse(localStorage.getItem('userData')) || {};
+const applicationDataObj = JSON.parse(localStorage.getItem('applicationData')) || {};
+const storesDataObj = JSON.parse(localStorage.getItem('storesData')) || {};
+const userInfoObj = JSON.parse(localStorage.getItem('userInfo')) || {};
+const userStore = JSON.parse(localStorage.getItem('userStore')) || {};
 
+if (isEmptyObj(storesDataObj)) {
+  api.storesApi();
+} else if ((Date.now() - storesDataObj.lastEditDateRequest) > (24 * 60 * 60 * 1000)) {
+  api.storesApi();
+}
+
+
+if (isEmptyObj(applicationDataObj)) {
+  api.getPrivacyPolicy('both', 'privacy-policy');
+  api.getUserAgreement('both', 'user-agreement');
+  api.getPublicOffer('both', 'public-offer');
+} else {
+  for (const document of Object.values(applicationDataObj)) {
+    if ((Date.now() - document.lastEditDateRequest) > (24 * 60 * 60 * 1000)) {
+      api.getPrivacyPolicy('editDateTime', 'privacy-policy');
+      api.getUserAgreement('editDateTime', 'user-agreement');
+      api.getPublicOffer('editDateTime', 'public-offer');
+    }
+  }
+}
+/* function getUser(info) {
+  userInfoObj.info = info.successData;
+} */
+api.getClientApi();
 api.productApi();
-api.storesApi();
+
+
 const toggleOrderMenuContent = new ToggleOrderMenuContent({ api });
 const toggleOrderHitsContent = new ToggleOrderHitsContent({ api });
 const toggleOrderHistoryContent = new ToggleOrderHistoryContent();
@@ -63,6 +93,9 @@ const toggleThirdPageAddinsCard = new ToggleThirdPageAddinsCard({
 const toggleFourthPageReviewOrder = new ToggleFourthPageReviewOrder({
   classOpen: ['fourth-page--opened'],
 });
+const toggleFifthPageReviewOrder = new ToggleFifthPageReviewOrder({
+  classOpen: ['fifth-page--opened'],
+});
 
 const toggleBalance = new ToggleBalance();
 const toggleOrder = new ToggleOrder();
@@ -81,6 +114,9 @@ const toggleThirdPage = new ToggleThirdPage({
 });
 const toggleFourthPage = new ToggleFourthPage({
   classOpen: ['fourth-page--opened'],
+});
+const toggleFifthPage = new ToggleFifthPage({
+  classOpen: ['fifth-page--opened'],
 });
 const togglePageSignIn = new TogglePageSignIn({
   classOpen: ['page--opened'],

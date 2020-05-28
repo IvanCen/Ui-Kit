@@ -135,7 +135,7 @@ function validation() {
     },
     {
       isInvalid(input) {
-        return !input.value.match(/[!@#$%^&*]/g);
+        return false;//тут была строчка
       },
       invalidityMessage: 'You need one of the required special characters',
       element: document.querySelector('.form__input-requirement--type--password:nth-child(5)'),

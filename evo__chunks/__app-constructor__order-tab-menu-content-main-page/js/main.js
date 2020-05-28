@@ -94,22 +94,18 @@ class ToggleOrderMenuContent extends ToggleOrderTabContent {
 
       drinksButtonTitle.addEventListener('click', () => {
         togglePageOrderCategoryAll.rendering(drinks, 'Напитки', drinksItemsLength, products.items);
-        togglePageOrderCategoryAll.openPage;
       });
 
       foodButtonTitle.addEventListener('click', () => {
         togglePageOrderCategoryAll.rendering(food, 'Еда', foodItemsLength, products.items);
-        togglePageOrderCategoryAll.openPage;
       });
 
       productsButtonTitle.addEventListener('click', () => {
         togglePageOrderCategoryAll.rendering(product, 'Продукты', productItemsLength, products.items);
-        togglePageOrderCategoryAll.openPage;
       });
 
       wraperButtonTitle.addEventListener('click', () => {
         togglePageOrderCategoryAll.rendering(wraper, 'Упаковка', wraperItemsLength, products.items);
-        togglePageOrderCategoryAll.openPage;
       });
 
       function rendered(arr, container) {

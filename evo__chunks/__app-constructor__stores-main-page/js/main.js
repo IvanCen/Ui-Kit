@@ -15,6 +15,8 @@ class ToggleStores extends ToggleMainPage {
           stores.successData.forEach((el) => {
             if (el.id === Number(item.id)) {
               localStorage.setItem('short-name-shop', el.shortTitle);
+              userStore.store = el;
+              localStorage.setItem('userStore', JSON.stringify(userStore));
             }
           });
         }
@@ -112,9 +114,22 @@ class ToggleStores extends ToggleMainPage {
         myMap.geoObjects.add(myCollection);
       });
     }
-    renderStores(dataStoresApi);
+    renderStores(storesDataObj);
     this.mainPageContent.append(storesButtonChoiceOrange.create());
-    this.chooseShop(dataStoresApi);
+    this.chooseShop(storesDataObj);
+    console.log(userStore);
+    setTimeout(() => {
+      if (!isEmptyObj(userStore)) {
+        const radioInputs = document.querySelectorAll('.radio__input');
+        console.log(userStore.store);
+        [...radioInputs].forEach((item) => {
+          if (userStore.store.id === Number(item.id)) {
+            item.checked = true;
+          }
+        });
+      }
+    }, 300);
+
     activeButton();
   }
 }

@@ -37,11 +37,9 @@ class CreateCardItemOrder extends CreateItem {
 
     const imgEl = this.element.querySelector('.card-item__image');
     if (iOS()) {
-      if (productInfo.mainPhoto !== null) {
-        imgEl.style.backgroundImage = `url(${productInfo.mainPhoto.name})`;
-      }
+      loadImg(productInfo, imgEl, 'jpg');
     } else {
-      loadImg(productInfo, imgEl);
+      loadImg(productInfo, imgEl, 'webp');
     }
 
     return this.element;
@@ -72,11 +70,9 @@ class CreateCardItemOrderProductCard extends CreateItem {
 
     const imgEl = this.element.querySelector('.card-item__image');
     if (iOS()) {
-      if (productInfo.mainPhoto !== null) {
-        imgEl.style.backgroundImage = `url(${productInfo.mainPhoto.name})`;
-      }
+      loadImg(productInfo, imgEl, 'jpg');
     } else {
-      loadImg(productInfo, imgEl);
+      loadImg(productInfo, imgEl, 'webp');
     }
 
     return this.element;
@@ -198,11 +194,9 @@ class CreateCardItemFavAndHisOrder extends CreateItem {
 
     const imgEl = this.element.querySelector('.card-item__image');
     if (iOS()) {
-      if (productInfo.mainPhoto !== null) {
-        imgEl.style.backgroundImage = `url(${productInfo.mainPhoto.name})`;
-      }
+      loadImg(productInfo, imgEl, 'jpg');
     } else {
-      loadImg(productInfo, imgEl);
+      loadImg(productInfo, imgEl, 'webp');
     }
 
     return super.create(this.element);
@@ -229,13 +223,14 @@ class CreateCardItemReviewOrder extends CreateItem {
   }
 
   create(productInfo) {
-    console.log(productInfo);
     this.element = document.createElement('div');
     this.template = `
           <img alt="" class="card-item__image card-item__image--size--small">
           <div class="card-item__content-container">
             <h3 class="card-item__title card-item__title--text--bold">${productInfo.name}</h3>
-            <span class="card-item__info card-item__info--theme--shadow">Калорий ${productInfo.energy} г</span>
+            <span class="card-item__info card-item__info--indentation--bottom card-item__info--theme--shadow">Калорий ${productInfo.energy} г</span>
+            <ul class="card-item__list"></ul>
+            <span class="card-item__price">${productInfo.price}</span>
             <div class="card-item__icon-container">
               <button class="card-item__button card-item__button--type--minus">
                <img src="[+chunkWebPath+]/img/icon-remove-circle.svg" alt=""
@@ -250,9 +245,11 @@ class CreateCardItemReviewOrder extends CreateItem {
     this.element.insertAdjacentHTML('beforeend', this.template);
     this.iconsMinus = this.element.querySelector('.card-item__button--type--minus');
     this.iconsPlus = this.element.querySelector('.card-item__button--type--plus');
+    this.price = this.element.querySelector('.card-item__price');
     const el = this.element;
     const counterTopBar = document.querySelector('.top-bar__all-counter-order');
     const counterBottomBar = document.querySelector('.bottom-bar__counter');
+
     this.iconsMinus.addEventListener('click', () => {
       counterTopBar.textContent = Number(counterTopBar.textContent) - 1;
       counterBottomBar.textContent = Number(counterBottomBar.textContent) - 1;
@@ -264,24 +261,22 @@ class CreateCardItemReviewOrder extends CreateItem {
       });
       localStorage.setItem('basket', JSON.stringify(basketArray));
       counterBasket();
+      checkBasket();
       setTimeout(() => el.remove(), 200);
     });
 
     this.iconsPlus.addEventListener('click', () => {
       counterTopBar.textContent = Number(counterTopBar.textContent) + 1;
       basketArray.push({ id: productInfo.id });
-      checkBasket();
       localStorage.setItem('basket', JSON.stringify(basketArray));
       counterBasket();
       const cardItemContainer = document.querySelector('.card-item__container--type--review');
       this.arrHtml = Array.from(cardItemContainer.children);
       this.arrHtml.splice(0, this.arrHtml.length).forEach((item) => item.remove());
-      const productsItems = dataProductApi.successData.items;
-      const thisProduct = productInfo;
       basketArray.forEach((item) => {
-        for (const elem of Object.values(productsItems)) {
+        for (const elem of Object.values(dataProductApi.successData.items)) {
           if (item.id === elem.id) {
-            cardItemContainer.append(this.create(thisProduct));
+            cardItemContainer.append(this.create(elem));
           }
         }
       });
@@ -289,13 +284,30 @@ class CreateCardItemReviewOrder extends CreateItem {
 
     const imgEl = this.element.querySelector('.card-item__image');
     if (iOS()) {
-      if (productInfo.mainPhoto !== null) {
-        imgEl.style.backgroundImage = `url(${productInfo.mainPhoto.name})`;
-      }
+      loadImg(productInfo, imgEl, 'jpg');
     } else {
-      loadImg(productInfo, imgEl);
+      loadImg(productInfo, imgEl, 'webp');
     }
-
+    const cardItemList = this.element.querySelector('.card-item__list');
+    let priceAllModifier = 0;
+    if (typeof userDataObj[productInfo.id] === 'object') {
+      for (const modifier of Object.values(dataProductApi.successData.modifiers)) {
+        for (const modifiersUserItem in userDataObj[productInfo.id]) {
+          if (String(modifier.id) === modifiersUserItem) {
+            const counter = userDataObj[productInfo.id][modifiersUserItem];
+            if (counter !== 0) {
+              priceAllModifier += modifier.price * userDataObj[productInfo.id][modifiersUserItem];
+              const cardItemListItem = document.createElement('li');
+              cardItemListItem.classList.add('card-item__list-item');
+              cardItemListItem.id = modifier.id;
+              cardItemListItem.textContent = cardItemListItem.textContent = `${counter} добав${number_of(counter, ['ка', 'ки', 'ок'])} ${modifier.name}`;
+              cardItemList.append(cardItemListItem);
+            }
+          }
+        }
+      }
+    }
+    this.price.textContent = priceAllModifier + productInfo.price;
     return super.create(this.element);
   }
 }
