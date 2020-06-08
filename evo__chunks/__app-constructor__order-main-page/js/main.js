@@ -56,8 +56,8 @@ class ToggleOrder extends ToggleMainPage {
         { type: 'click', callback: switchTabFavorite },
       ],
       eventOpenSearch: [
-        { type: 'click', callback: togglePageOrderSearch.rendering },
-        { type: 'click', callback: togglePageOrderSearch.openPage },
+        { type: 'click', callback: toggleFifthPageOrderSearch.rendering },
+        { type: 'click', callback: toggleFifthPageOrderSearch.openPage },
       ],
     });
 
@@ -83,6 +83,8 @@ class ToggleOrder extends ToggleMainPage {
     const footer = document.querySelector('.footer');
     footer.before(orderBottomBar.create());
     counterBasket();
+    const footerButtonOrder = document.querySelector('.footer__button--type--order');
+    activeFooter(footerButtonOrder);
     const topBarTabs = document.querySelectorAll('.top-bar__tab');
     switchActive(topBarTabs, 'top-bar__tab--active');
   }

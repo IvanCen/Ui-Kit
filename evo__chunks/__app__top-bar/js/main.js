@@ -16,10 +16,10 @@ class CreateTopBar extends CreateItem {
           </button>
           <button class="top-bar__button top-bar__button--type--inbox">
             <img src="[+chunkWebPath+]/img/icon-inbox.svg" alt="Кнопка сообщений" class="top-bar__icon">
-            <img src="[+chunkWebPath+]/img/icon-dot.svg" alt="Иконка непрочитанного сообщения" class="top-bar__icon-dot">
+            <img src="[+chunkWebPath+]/img/icon-dot.svg" alt="Иконка непрочитанного сообщения" class="top-bar__icon-dot top-bar__icon-dot--hide">
             <span class="top-bar__icon-text">Сообщения</span>
           </button>
-            <button class="top-bar__button">
+            <button class="top-bar__button top-bar__button--type--history">
               <img src="[+chunkWebPath+]/img/icon-history.svg" alt="Кнопка истории заказов" class="top-bar__icon">
               <span class="top-bar__icon-text">История</span>
              </button>
@@ -36,7 +36,13 @@ class CreateTopBar extends CreateItem {
     this.buttonSignIn = this.element.querySelector('.top-bar__button--type--sign-in');
     this.buttonInbox = this.element.querySelector('.top-bar__button--type--inbox');
     this.buttonAccount = this.element.querySelector('.top-bar__button--type--account');
+    this.buttonHistory = this.element.querySelector('.top-bar__button--type--history');
 
+    if (typeof this.parameters.eventOpenHistory === 'object') {
+      for (const event of this.parameters.eventOpenHistory) {
+        this.buttonHistory.addEventListener(event.type, event.callback);
+      }
+    }
     if (typeof this.parameters.eventOpenSignInPage === 'object') {
       for (const event of this.parameters.eventOpenSignInPage) {
         this.buttonSignIn.addEventListener(event.type, event.callback);
@@ -272,7 +278,7 @@ class CreateTopBarInbox extends CreateItem {
             <img src="[+chunkWebPath+]/img/icon-back.svg" alt="Кнопка назад" class="top-bar__icon top-bar__icon-back">
           </button>
         </div>
-        <h1 class="top-bar__title">Inbox</h1>
+        <h1 class="top-bar__title">Входящие сообщения</h1>
       </div>
       <div class="top-bar__tab-container">
         <button class="top-bar__tab top-bar__tab--messages top-bar__tab--active">Сообщения</button>
@@ -329,9 +335,15 @@ class CreateTopBarOrderCard extends CreateItem {
   create() {
     this.element.insertAdjacentHTML('beforeend', this.template);
     this.iconBack = this.element.querySelector('.top-bar__back-button');
+    this.iconSearch = this.element.querySelector('.top-bar__search-button');
     if (typeof this.parameters.eventBack === 'object') {
       for (const event of this.parameters.eventBack) {
         this.iconBack.addEventListener(event.type, event.callback);
+      }
+    }
+    if (typeof this.parameters.eventOpenSearch === 'object') {
+      for (const event of this.parameters.eventOpenSearch) {
+        this.iconSearch.addEventListener(event.type, event.callback);
       }
     }
 
@@ -344,10 +356,11 @@ class CreateTopBarStores extends CreateItem {
     super();
     this.parameters = parameters;
     this.element = document.createElement(this.parameters.selector);
+    // <button class="button button--size--small top-bar__filter-button">Фильтр</button> кнопка фильтра, добавить позже
     this.template = `
       <div class="top-bar__content-container top-bar__content-container--size--small">
         <div class="top-bar__header">
-          <button class="button button--size--small top-bar__filter-button">Фильтр</button>
+          
           <button class="button top-bar__search-button">
           <img src="[+chunkWebPath+]/img/icon-search.svg" alt="Кнопка поиска" class="top-bar__icon">
           </button>
@@ -358,14 +371,14 @@ class CreateTopBarStores extends CreateItem {
   create() {
     this.element.insertAdjacentHTML('beforeend', this.template);
 
-    this.buttonFilter = this.element.querySelector('.top-bar__filter-button');
+    // this.buttonFilter = this.element.querySelector('.top-bar__filter-button');
     this.buttonSearch = this.element.querySelector('.top-bar__search-button');
 
-    if (typeof this.parameters.eventOpenFilter === 'object') {
+    /* if (typeof this.parameters.eventOpenFilter === 'object') {
       for (const event of this.parameters.eventOpenFilter) {
         this.buttonFilter.addEventListener(event.type, event.callback);
       }
-    }
+    } */
     if (typeof this.parameters.eventOpenSearch === 'object') {
       for (const event of this.parameters.eventOpenSearch) {
         this.buttonSearch.addEventListener(event.type, event.callback);

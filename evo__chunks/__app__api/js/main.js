@@ -11,6 +11,7 @@ class Api {
   productApi() {
     const request = {
       method: 'get-catalog',
+      view: 'both',
       outputFormat: 'json',
 
     };
@@ -26,7 +27,10 @@ class Api {
         }
         return Promise.reject(`Ошибка: ${res.status}`);
       })
-      .then((productsInfo) => dataProductApi = productsInfo)
+      .then((productsInfo) => {
+        dataProductApi.successData = productsInfo.successData;
+        localStorage.setItem('productData', JSON.stringify(dataProductApi));
+      })
       .catch((err) => {
         console.log('Ошибка. Запрос не выполнен: ', err);
       });
@@ -139,6 +143,7 @@ class Api {
   }
 
   authorizeApi(func, code, phoneNumber, timerRegSuccess, refreshLink) {
+    console.log(phoneNumber, code);
     const request = {
       method: 'authorize',
       sendCodeMethod: 'callOut',
@@ -159,6 +164,7 @@ class Api {
         return Promise.reject(`Ошибка: ${res.status}`);
       })
       .then((authorizeInfo) => {
+        console.log(authorizeInfo);
         if (authorizeInfo.success === true) {
           clearInterval(timerRegSuccess);
           clearInterval(refreshLink);
@@ -190,6 +196,7 @@ class Api {
         return Promise.reject(`Ошибка: ${res.status}`);
       })
       .then((userInfo) => {
+        console.log(userInfo);
         if (userInfo.success === true) {
           userInfoObj.successData = userInfo.successData;
           localStorage.setItem('userInfo', JSON.stringify(userInfoObj));
@@ -223,9 +230,9 @@ class Api {
   }
 
   imageCacheQueueApi(request, func) {
-    fetch(this.options.baseUrl, {
+    fetch('[~30~]', {
       method: 'POST',
-      headers: this.options.headers,
+      headers: { 'Content-Type': 'text/html' },
       body: JSON.stringify(request),
 
     })
@@ -347,13 +354,22 @@ class Api {
       });
   }
 
-  makeOrderApi(phone, orderArrItems, shopId, func) {
+  makeOrderApi(phone, orderArrItems, shopId, orderComment, func) {
+    let comment;
+    if (orderComment !== '') {
+      comment = orderComment;
+    } else {
+      comment = '';
+    }
+    console.log(comment);
+    console.log(phone, orderArrItems, shopId, orderComment, func);
     const request = {
       method: 'make-order',
       user: phone,
       cart: orderArrItems,
       shopId: 476, // Тестовый магазин
       promoCode: '',
+      comment,
       outputFormat: 'json',
     };
 
@@ -370,6 +386,7 @@ class Api {
         return Promise.reject(`Ошибка: ${res.status}`);
       })
       .then((order) => {
+        console.log(order);
         if (order.success === true) {
           orderInfo = order;
         }
@@ -381,7 +398,7 @@ class Api {
       });
   }
 
-  payOrderApi(payFrom, orderInfo, resPayOrder) {
+  payOrderApi(payFrom, orderInfo, func) {
     console.log(payFrom, orderInfo);
     const request = {
       method: 'pay-order',
@@ -407,9 +424,326 @@ class Api {
         orderPayInfo = orderPay;
         return orderPay;
       })
-      .then(resPayOrder)
+      .then(func)
+      .catch((err) => {
+        console.log('Ошибка. Запрос не выполнен: ', err);
+      });
+  }
+
+  rechargeBalanceApi(userPhone, amount, func) {
+    console.log(userPhone, amount);
+    const request = {
+      method: 'recharge_the_balance',
+      user: userPhone,
+      amount,
+      from: 'app', // Доступные варианты: app, site
+      outputFormat: 'json',
+    };
+
+    fetch(this.options.baseUrl, {
+      method: 'POST',
+      headers: this.options.headers,
+      body: JSON.stringify(request),
+
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+      .then((res) => {
+        console.log(res);
+        return res;
+      })
+      .then(func)
+      .catch((err) => {
+        console.log('Ошибка. Запрос не выполнен: ', err);
+      });
+  }
+
+  getClientOrdersApi(func) {
+    const request = {
+      method: 'get-client-orders',
+      // lastOrder: '900313', // необязательное поле, позволяет указать последний номер заказа в кеше
+      lastCount: 10, // необязательное поле, позволяет указать сколько последних заказов вернуть
+      outputFormat: 'json',
+    };
+
+    fetch(this.options.baseUrl, {
+      method: 'POST',
+      headers: this.options.headers,
+      body: JSON.stringify(request),
+
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+      .then((userLastOrdersInfo) => {
+        console.log(userLastOrdersInfo);
+        if (userLastOrdersInfo.success === true) {
+          userLastOrdersObj.successData = userLastOrdersInfo.successData;
+          localStorage.setItem('userLastOrders', JSON.stringify(userLastOrdersObj));
+        }
+        return userLastOrdersInfo;
+      })
+      .then(func)
+      .catch((err) => {
+        console.log('Ошибка. Запрос не выполнен: ', err);
+      });
+  }
+
+  promoСodeСheckApi(userPhone, promoCode, func) {
+    const request = {
+      method: 'promo-code-check',
+      promoCode: promoCode.toUpperCase().trim(), // все промокоды в верхнем регистре
+      user: userPhone,
+      outputFormat: 'json',
+    };
+
+    fetch(this.options.baseUrl, {
+      method: 'POST',
+      headers: this.options.headers,
+      body: JSON.stringify(request),
+
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+      .then((res) => {
+        console.log(res);
+        return res;
+      })
+      .then(func)
+      .catch((err) => {
+        console.log('Ошибка. Запрос не выполнен: ', err);
+      });
+  }
+
+  getClientBonusLog(func) {
+    const request = {
+      method: 'get-client-bonus-log',
+      // lastLogId: '100', // необязательное поле, позволяет указать последний номер заказа в кеше
+      lastCount: 10, // необязательное поле, позволяет указать сколько последних заказов вернуть
+      outputFormat: 'json',
+    };
+
+    fetch(this.options.baseUrl, {
+      method: 'POST',
+      headers: this.options.headers,
+      body: JSON.stringify(request),
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+      .then((res) => {
+        console.log(res);
+        if (res.success === true) {
+          userBonusLog.successData = res.successData;
+          localStorage.setItem('userBonusLog', JSON.stringify(userBonusLog));
+        }
+        return res;
+      })
+      .then(func)
+      .catch((err) => {
+        console.log('Ошибка. Запрос не выполнен: ', err);
+      });
+  }
+
+  getClientBalanceLog(func) {
+    const request = {
+      method: 'get-client-balance-log',
+      // lastLogId: '100', // необязательное поле, позволяет указать последний номер заказа в кеше
+      lastCount: 10, // необязательное поле, позволяет указать сколько последних заказов вернуть
+      outputFormat: 'json',
+    };
+
+    fetch(this.options.baseUrl, {
+      method: 'POST',
+      headers: this.options.headers,
+      body: JSON.stringify(request),
+
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+      .then((res) => {
+        if (res.success === true) {
+          userBalanceLog.successData = res.successData;
+          localStorage.setItem('userBalanceLog', JSON.stringify(userBalanceLog));
+        }
+        console.log(res);
+        return res;
+      })
+      .then(func)
+      .catch((err) => {
+        console.log('Ошибка. Запрос не выполнен: ', err);
+      });
+  }
+
+  logout(func) {
+    const request = {
+      method: 'logout',
+      outputFormat: 'json',
+    };
+
+    fetch('[~30~]', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'text/html',
+      },
+      body: JSON.stringify(request),
+
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+      .then((res) => {
+        console.log(res);
+        if (res.success === true) {
+          localStorage.removeItem('user-sign-in');
+          delete userInfoObj.successData;
+        }
+        return res;
+      })
+      .then(func)
+      .catch((err) => {
+        console.log('Ошибка. Запрос не выполнен: ', err);
+      });
+  }
+
+  markMessageRead(phone, timestamp, id, func) {
+    const request = {
+      method: 'mark-message-read',
+      phone,
+      id, // идентефикатор сообщение, полученный при получении сообщений
+      timestamp, // время вставки сообщения, полученное при получении сообщений
+      outputFormat: 'json',
+    };
+
+    fetch('[~30~]', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'text/html',
+      },
+      body: JSON.stringify(request),
+
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+      .then((res) => {
+        console.log(res);
+        return res;
+      })
+      .then(func)
+      .catch((err) => {
+        console.log('Ошибка. Запрос не выполнен: ', err);
+      });
+  }
+
+  getMessages(func) {
+    const request = {
+      method: 'get-messages',
+      // lastId: '100', // необязательное поле, позволяет указать последний идентификатор сообщения в кеше
+      // lastCount: 10, // необязательное поле, позволяет указать сколько последних заказов вернуть
+      outputFormat: 'json',
+    };
+
+    fetch('[~30~]', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'text/html',
+      },
+      body: JSON.stringify(request),
+
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+      .then((res) => {
+        console.log(res);
+        userMessages = res;
+        const dotMessage = document.querySelector('.top-bar__icon-dot');
+        userMessages.successData.messages.every((message) => {
+          if (message.wasRead !== null) {
+            dotMessage.classList.add('top-bar__icon-dot--hide');
+            return false;
+          }
+          return true;
+        });
+        return res;
+      })
+      .then(func)
       .catch((err) => {
         console.log('Ошибка. Запрос не выполнен: ', err);
       });
   }
 }
+
+/*
+/!**
+ * Пометить сообщение прочитанным, ошибки не надо показывать(они только для отладки), successData всегда пустой, для переключения вида сообщений ориентируемся только на success статус
+ *!/
+(async () => {
+  const request = {
+    method: '_api__mark-message-read',
+    phone: '+79818380415',
+    id: 900506, // идентефикатор сообщение, полученный при получении сообщений
+    timestamp: '2020-06-05 11:30:00', // время вставки сообщения, полученное при получении сообщений
+    outputFormat: 'json',
+  };
+  const rawResponse = await fetch('[~30~]', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'text/html',
+    },
+    body: JSON.stringify(request),
+  });
+  console.log(JSON.parse(await rawResponse.text()));
+})();
+/!**
+ * Получение списка сообщений, требует входа(наличия активной сессии)
+ * чтобы получить сообщение - можно сделать заказ, оплатить его и чекнуть готовым в админке
+ * пароль от точки есть в общем чате, админка для точки находится тут: [501]
+ * единственная ошибка, которую стоит обработать -> 'Войдите, чтобы продолжить'
+ * В слечае успеха successData['messages'] содержит следующий список полей по каждому заказу: `id`, `client`, `promotion`, `subject`, `message`, `image`, `timestamp`, `wasRead`
+ * по `image` пока не нужно делать обработку для подключения к возврату правильных картинок
+ *!/
+(async () => {
+  const request = {
+    method: 'get-messages',
+    // lastId: '100', // необязательное поле, позволяет указать последний идентификатор сообщения в кеше
+    // lastCount: 10, // необязательное поле, позволяет указать сколько последних заказов вернуть
+    outputFormat: 'json',
+  };
+  const rawResponse = await fetch('[~30~]', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'text/html',
+    },
+    body: JSON.stringify(request),
+  });
+  console.log(JSON.parse(await rawResponse.text()));
+})(); */

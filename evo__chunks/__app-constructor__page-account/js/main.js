@@ -24,9 +24,44 @@ class TogglePageAccount extends TogglePage {
         modifier: ['--size--small',
           '--theme--tangerin',
           '--indentation--left',
-          '--indentation--top',
+          '--indentation--bottom',
         ],
         text: ['Присоединиться'],
+      },
+    );
+    const accountButtonLogoutTangerin = new CreateButton(
+      {
+        selector: ['button'],
+        style: ['button'],
+        modifier: ['--size--small',
+          '--theme--tangerin',
+          '--indentation--left',
+          '--indentation--bottom',
+        ],
+        text: ['Выйти'],
+        events: [
+          { type: 'click', callback: this.closePage },
+          { type: 'click', callback: this.clearPage },
+          { type: 'click', callback: api.logout },
+          { type: 'click', callback: renderMainPage.clearPage },
+          { type: 'click', callback: renderMainPage.rendering },
+          { type: 'click', callback: renderMainPage.openPage },
+        ],
+      },
+    );
+    const accountButtonEditUserTangerin = new CreateButton(
+      {
+        selector: ['button'],
+        style: ['button'],
+        modifier: ['--size--small',
+          '--theme--tangerin-transparent',
+          '--indentation--left',
+          '--indentation--bottom',
+        ],
+        text: ['Профиль'],
+        events: [
+          { type: 'click', callback: toggleSubPageAccountEditUser.rendering },
+        ],
       },
     );
     const accountButtonJoinTangerinTransparent = new CreateButton(
@@ -36,7 +71,7 @@ class TogglePageAccount extends TogglePage {
         modifier: ['--size--small',
           '--theme--tangerin-transparent',
           '--indentation--left',
-          '--indentation--top',
+          '--indentation--bottom',
         ],
         text: ['Войти'],
         events: [
@@ -46,25 +81,7 @@ class TogglePageAccount extends TogglePage {
         ],
       },
     );
-    const accountTitleBarPreference = new CreateTitleBar({
-      selector: ['h2'],
-      style: ['title-bar'],
-      modifier: ['__title', '__title--size--medium-low', '--indentation--top-big'],
-      text: ['Настройки уведомлений'],
-    });
-    const accountTitleBarWithCheckboxSlide = new CreateTitleBarWithCheckboxSlide({
-      selector: ['div'],
-      style: ['title-bar'],
-      modifier: ['__title', '__title--size--medium-low'],
-      titleSize: ['small-big'],
-      text: ['Входящие сообщения'],
-    });
-    const accountTitleBarHelp = new CreateTitleBar({
-      selector: ['h2'],
-      style: ['title-bar'],
-      modifier: ['__title', '__title--size--medium-low'],
-      text: ['Помощь и политика'],
-    });
+
     const accountTextArea = new CreateTextAreaAccount({
       selector: ['div'],
       style: ['wraper'],
@@ -75,11 +92,11 @@ class TogglePageAccount extends TogglePage {
     if (localStorage.getItem('user-sign-in') === null) {
       this.buttonContainer.append(accountButtonJoinTangerin.create());
       this.buttonContainer.append(accountButtonJoinTangerinTransparent.create());
+    } else {
+      this.buttonContainer.append(accountButtonLogoutTangerin.create());
+      this.buttonContainer.append(accountButtonEditUserTangerin.create());
     }
     this.page.append(this.buttonContainer);
-    //this.page.append(accountTitleBarPreference.create());
-    //this.page.append(accountTitleBarWithCheckboxSlide.create());
-    //this.page.append(accountTitleBarHelp.create());
     this.page.append(accountTextArea.create());
     activeButton();
     this.openPage();

@@ -7,37 +7,26 @@ class ToggleMain extends ToggleMainPage {
 
   rendering() {
     super.rendering();
+
     const mainPageTopBar = new CreateTopBar({
       selector: ['div'],
       style: ['top-bar'],
       modifier: [
         '--size--small',
         '--indentation--bottom',
+        '--main',
       ],
       textTitle: ['Отличный день для кофе ☕'],
       eventOpenSignInPage: [{ type: 'click', callback: togglePageSignIn.rendering }],
       eventOpenInboxPage: [{ type: 'click', callback: togglePageInbox.rendering }],
       eventOpenAccountPage: [{ type: 'click', callback: togglePageAccount.rendering }],
-    });
-    const mainPageTitleBarSmall = new CreateTitleBar({
-      selector: ['h2'],
-      style: ['title-bar'],
-      modifier: ['__title', '__title--size--small', '--indentation--top'],
-      text: ['starbucks rewards'],
-    });
-    const mainPageTitleBar = new CreateTitleBar({
-      selector: ['h2'],
-      style: ['title-bar'],
-      modifier: ['__title', '__title--size--medium-low'],
-      text: ['Let Starbucks Rewards add'],
-    });
-    const mainPageBanners = new CreateBannersRectangle({
-      selector: ['div'],
-      style: ['banners'],
-      bannerSize: ['medium'],
+      eventOpenHistory: [
+        { type: 'click', callback: openHistory },
+
+      ],
     });
     const mainPageMainCard = new CreateMainCard();
-    const mainPageButtonJoinDark = new CreateButton(
+    /* const mainPageButtonJoinDark = new CreateButton(
       {
         selector: ['button'],
         style: ['button'],
@@ -49,7 +38,7 @@ class ToggleMain extends ToggleMainPage {
         text: ['Войти'],
         events: [{ type: 'click', callback: togglePageSignIn.rendering }],
       },
-    );
+    ); */
     const mainPageButtonJoinOrange = new CreateButton({
       selector: ['button'],
       style: ['button'],
@@ -65,46 +54,59 @@ class ToggleMain extends ToggleMainPage {
 
 
     function renderPosts(dataPosts) {
-      const buttonDark = document.querySelector('.button--theme--dark-transparent');
-      const topBar = document.querySelector('.top-bar');
+      const mainPageContent = document.querySelector('.main-page__content');
+      const postContainer = document.createElement('div');
+      postContainer.classList.add('main-card__container-posts');
+      /* const buttonDark = document.querySelector('.button--theme--dark-transparent');
       if (buttonDark !== null) {
         dataPosts.successData.forEach((item) => {
           buttonDark.after(mainPageMainCard.create(item));
         });
       } else {
-        dataPosts.successData.forEach((item) => {
-          topBar.after(mainPageMainCard.create(item));
-        });
-      }
+
+      } */
+      mainPageContent.append(postContainer);
+      dataPosts.successData.forEach((item) => {
+        postContainer.prepend(mainPageMainCard.create(item));
+      });
     }
     function renderPromo(dataPromo) {
-      const buttonDark = document.querySelector('.button--theme--dark-transparent');
-      const topBar = document.querySelector('.top-bar');
+      const promoContainer = document.createElement('div');
+      promoContainer.classList.add('main-card__container-promo');
+      const topBar = document.querySelector('.top-bar--main');
+      // const buttonDark = document.querySelector('.button--theme--dark-transparent');
+      /*
       if (buttonDark !== null) {
         dataPromo.successData.forEach((item) => {
           buttonDark.after(mainPageMainCard.create(item));
         });
       } else {
-        dataPromo.successData.forEach((item) => {
-          topBar.after(mainPageMainCard.create(item));
-        });
-      }
+
+      } */
+      topBar.after(promoContainer);
+      dataPromo.successData.forEach((item) => {
+        promoContainer.prepend(mainPageMainCard.create(item));
+      });
     }
 
-    if (localStorage.getItem('user-sign-in') === null) {
-      this.mainPageContent.prepend(mainPageButtonJoinOrange.create());
-    }
-    this.parameters.api.postsApi(renderPosts);
-    if (localStorage.getItem('user-sign-in') === null) {
-      this.mainPageContent.prepend(mainPageButtonJoinDark.create());
-    }
-    // this.mainPageContent.prepend(mainPageTitleBar.create());
-    // this.mainPageContent.prepend(mainPageBanners.create());
     this.parameters.api.promoApi(renderPromo);
-    // this.mainPageContent.prepend(mainPageTitleBarSmall.create());
-    this.mainPageContent.prepend(mainPageTopBar.create());
 
-    activeBanners();
+    /* if (localStorage.getItem('user-sign-in') === null) {
+      this.mainPageContent.prepend(mainPageButtonJoinDark.create());
+    } */
+
+    setTimeout(() => this.parameters.api.postsApi(renderPosts), 1000);
+
+    this.mainPageContent.prepend(mainPageTopBar.create());
+    if (localStorage.getItem('user-sign-in') === null) {
+      this.mainPageContent.append(mainPageButtonJoinOrange.create());
+    }
+    setTimeout(() => {
+      const footerButtonMain = document.querySelector('.footer__button--type--main');
+      activeFooter(footerButtonMain);
+    }, 300);
+
+
     activeButton();
   }
 }

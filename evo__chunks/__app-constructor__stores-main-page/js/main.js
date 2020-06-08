@@ -21,6 +21,27 @@ class ToggleStores extends ToggleMainPage {
           });
         }
       });
+      toggleOrder.closePage();
+      toggleOrder.clearPage();
+      toggleOrder.rendering();
+      toggleOrder.openPage();
+      toggleOrderMenuContent.rendering();
+      toggleOrderHitsContent.rendering();
+      toggleOrderHistoryContent.rendering();
+      togglePage.closePage();
+      togglePage.deletePage();
+      toggleSubPage.closePage();
+      toggleSubPage.deletePage();
+      toggleThirdPage.closePage();
+      toggleThirdPage.deletePage();
+      const footerButton = document.querySelectorAll('.footer__button');
+      const footerButtonOrder = document.querySelector('.footer__button--type--order');
+      [...footerButton].forEach((item) => {
+        item.classList.remove('footer__button--active');
+        item.firstElementChild.classList.remove('footer__icon--active');
+      });
+      footerButtonOrder.classList.add('footer__button--active');
+      footerButtonOrder.firstElementChild.classList.add('footer__icon--active');
     });
   }
 
@@ -32,14 +53,12 @@ class ToggleStores extends ToggleMainPage {
     const storesTopBar = new CreateTopBarStores({
       selector: ['div'],
       style: ['top-bar'],
-      // modifier: ['--size--medium'],
-      eventOpenFilter: [
+      /* eventOpenFilter: [
         { type: 'click', callback: togglePageStoresFilter.rendering },
         { type: 'click', callback: togglePageStoresFilter.openPage },
-      ],
+      ], */
       eventOpenSearch: [
         { type: 'click', callback: togglePageStoresSearch.rendering },
-        { type: 'click', callback: togglePageStoresSearch.openPage },
       ],
     });
     const storesMap = new CreateMapStores({
@@ -65,6 +84,7 @@ class ToggleStores extends ToggleMainPage {
     const storesMapItemWraper = new CreateMapItemStoresWraper({
       selector: ['div'],
       style: ['map'],
+      modifier: ['--default'],
     });
     const storesMapItem = new CreateMapItemStores({
       selector: ['div'],
@@ -129,7 +149,8 @@ class ToggleStores extends ToggleMainPage {
         });
       }
     }, 300);
-
+    const footerButtonStores = document.querySelector('.footer__button--type--stores');
+    activeFooter(footerButtonStores);
     activeButton();
   }
 }

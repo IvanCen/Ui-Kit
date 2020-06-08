@@ -42,9 +42,13 @@ class ToggleFifthPageReviewOrder extends ToggleFifthPage {
     const textArea = new CreateTextAreaOrderPayment({
       selector: ['div'],
       style: ['text-area'],
-      modifier: ['--indentation--top'],
+      modifier: [
+        '--indentation--top',
+        '--type--balance',
+      ],
       identifier: ['pay'],
       number: [info.successData.orderTotal],
+      comment: [info.successData.orderComment],
     });
 
     this.fifthPage.append(topBar.create());

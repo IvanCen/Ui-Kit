@@ -35,19 +35,18 @@ class CreateSelectItem extends CreateItem {
     this.element = document.createElement(this.parameters.selector);
     this.template = `
       <div class="select-item__overlay overlay"></div>
-        <img class="select-item__img" src="[+chunkWebPath+]/img/main-card-noimg.jpg" alt="">
         <div class="select-item__choice-content">
-          <span class="select-item__info">Сумма подарка</span>
+          <span class="select-item__info">Сумма пополнения</span>
           <div class="select-item__button-container">
-            <button class="select-item__button">1000</button>
+            <button class="select-item__button">500</button>
             <img src="[+chunkWebPath+]/img/icon-expand-direction-bottom.svg" alt="" class="select-item__icon">
           </div>
           <div class="popup-bar">
-            <button class="popup-bar__button"><span class="popup-bar__number">500</span></button>
-            <button class="popup-bar__button popup-bar__button--active"><span class="popup-bar__number">1000</span></button>
-            <button class="popup-bar__button"><span class="popup-bar__number">2500</span></button>
+            <button class="popup-bar__button"><span class="popup-bar__number">100</span></button>
+            <button class="popup-bar__button popup-bar__button--active"><span class="popup-bar__number">500</span></button>
+            <button class="popup-bar__button"><span class="popup-bar__number">1000</span></button>
+            <button class="popup-bar__button"><span class="popup-bar__number">2000</span></button>
             <button class="popup-bar__button"><span class="popup-bar__number">5000</span></button>
-            <button class="popup-bar__button"><span class="popup-bar__number">10000</span></button>
           </div>
         </div>`;
   }

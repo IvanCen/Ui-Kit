@@ -19,6 +19,10 @@
     padding-top: 20px;
   }
 
+  &--hide {
+    display: none;
+  }
+
   &__container {
     border-bottom: 1px solid $gainsboroGray;
 
@@ -89,6 +93,10 @@
       @extend %style-4;
     }
 
+    &--size--big {
+      @extend %style-2;
+    }
+
     &--type--bold {
       font-weight: bold;
     }
@@ -124,6 +132,11 @@
       padding: 20px 0 10px 16px;
       background-color: $pattensBlue;
     }
+
+    &--position--center {
+      justify-content: center;
+      text-align: center;
+    }
   }
 
   &__counter-container {
@@ -154,6 +167,10 @@
 
     &--indentation--big {
       margin-bottom: 32px;
+    }
+
+    &--indentation--small {
+      padding: 12px 16px 12px 0;
     }
   }
 
@@ -220,6 +237,7 @@
   }
 
   &__icon {
+
     &--position--top {
       align-self: flex-start;
     }
@@ -277,7 +295,7 @@
     }
 
     &--type--reset {
-      display: none;
+      display: block;
       width: 100%;
       font-weight: bold;
       text-transform: uppercase;
@@ -289,6 +307,10 @@
 
   &__price {
     position: relative;
+
+    &--hide {
+      display: none;
+    }
 
     &--size--big {
       @extend %style-2;

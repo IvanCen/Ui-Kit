@@ -15,7 +15,7 @@ class TogglePageOrderCategory extends TogglePage {
     this.mainPage.classList.remove('main-page--fixed');
   }
 
-  rendering(categoryName, category) {
+  rendering(categoryName, category, categoryId) {
     super.rendering();
 
     const orderCardTopBar = new CreateTopBarOrderCard({
@@ -27,6 +27,14 @@ class TogglePageOrderCategory extends TogglePage {
       eventBack: [
         { type: 'click', callback: this.closePage },
         { type: 'click', callback: this.deletePage },
+      ],
+      eventOpenSearch: [
+        {
+          type: 'click',
+          callback: () => {
+            toggleFifthPageOrderSearch.rendering(true, categoryId);
+          },
+        },
       ],
     });
     const cardItemContainer = new CreateCardItemContainerProductCard();
@@ -62,7 +70,7 @@ class TogglePageOrderCategoryAll extends TogglePage {
     this.mainPage.classList.remove('main-page--fixed');
   }
 
-  rendering(productsCategory, categoryName, drinksItemsLength, productsItems) {
+  rendering(productsCategory, categoryName, drinksItemsLength, productsItems, categoryId) {
     super.rendering();
     const orderCardTopBar = new CreateTopBarOrderCard({
       selector: ['div'],
@@ -72,6 +80,14 @@ class TogglePageOrderCategoryAll extends TogglePage {
       eventBack: [
         { type: 'click', callback: this.closePage },
         { type: 'click', callback: this.deletePage },
+      ],
+      eventOpenSearch: [
+        {
+          type: 'click',
+          callback: () => {
+            toggleFifthPageOrderSearch.rendering(true, categoryId);
+          },
+        },
       ],
     });
     const orderCardTitle = new CreateTitleBar({
@@ -84,6 +100,7 @@ class TogglePageOrderCategoryAll extends TogglePage {
     const orderCardBanners = new CreateBannersOrder();
 
     this.page.append(orderCardTopBar.create());
+
     function rendered(arr, container) {
       arr.forEach((item) => {
         container.append(orderCardTitle.create(item.name));
@@ -96,12 +113,13 @@ class TogglePageOrderCategoryAll extends TogglePage {
             containerBanners.append(orderCardBanners.create(el));
           }
         }
+        activeBanners(containerBanners);
       });
     }
 
     rendered(productsCategory, this.page);
 
-    activeBanners();
+
     this.openPage();
   }
 }

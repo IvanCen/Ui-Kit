@@ -16,7 +16,7 @@ function inputVisibleTogglePass() {
 }
 
 function inputFlyLabel() {
-  const inputAreaTypeFlyLabel = document.querySelectorAll('.input__area--type--fly-label');
+  const inputAreaTypeFlyLabel = document.querySelectorAll('.form__input-area--type--fly-label');
 
   function focused(el) {
     el.nextElementSibling.classList.add('input--focused');
@@ -36,11 +36,11 @@ function inputFlyLabel() {
 }
 
 function validation() {
-  const usernameInput = document.querySelector('.input__area__name');
-  const passwordInput = document.querySelector('.input__area--type--password');
-  const passwordRepeatInput = document.querySelector('.input__area--type--password-repeat');
-  const emailInput = document.querySelector('.input__area--type--email');
-  const inputs = document.querySelectorAll('.input__area');
+  const usernameInput = document.querySelector('.form__input-area--type--name');
+  const passwordInput = document.querySelector('.form__input-area--type--password');
+  const passwordRepeatInput = document.querySelector('.form__input-area--type--password-repeat');
+  const emailInput = document.querySelector('.form__input-area--type--email');
+  const inputs = document.querySelectorAll('.form__input-area');
   const formButtonSubmit = document.querySelector('.form__button');
 
   function CustomValidation() {
@@ -65,11 +65,11 @@ function validation() {
         const requirementElement = this.validityChecks[i].element;
         if (requirementElement) {
           if (isInvalid) {
-            requirementElement.classList.add('input__requirement--invalid');
-            requirementElement.classList.remove('input__requirement--valid');
+            requirementElement.classList.add('form__input-requirement--invalid');
+            requirementElement.classList.remove('form__input-requirement--valid');
           } else {
-            requirementElement.classList.remove('input__requirement--invalid');
-            requirementElement.classList.add('input__requirement--valid');
+            requirementElement.classList.remove('form__input-requirement--invalid');
+            requirementElement.classList.add('form__input-requirement--valid');
           }
         }
       }
@@ -82,14 +82,14 @@ function validation() {
         return input.value.length < 2;
       },
       invalidityMessage: 'This input needs to be at least 2 characters',
-      element: document.querySelector('.input__requirement--type--name:nth-child(1)'),
+      element: document.querySelector('.form__input-requirement--type--name:nth-child(1)'),
     },
     {
       isInvalid(input) {
         return !input.value.match(/^[А-ЯЁ][а-яё]*(-?[А-ЯЁ][а-яё]+)?/gi);
       },
       invalidityMessage: 'Only letters are allowed',
-      element: document.querySelector('.input__requirement--type--name:nth-child(2)'),
+      element: document.querySelector('.form__input-requirement--type--name:nth-child(2)'),
     },
   ];
 
@@ -99,7 +99,7 @@ function validation() {
         return !input.value.match(/^([a-zA-Z0-9][_.-]?)+@([a-zA-Z0-9][_.-]?)+(\.[a-zA-Z-]{2,})+$/g);
       },
       invalidityMessage: 'Please enter a valid email address',
-      element: document.querySelector('.input__requirement--type--email:nth-child(1)'),
+      element: document.querySelector('.form__input-requirement--type--email:nth-child(1)'),
     },
   ];
   const passwordValidityChecks = [
@@ -108,35 +108,35 @@ function validation() {
         return input.value.length < 8 | input.value.length > 100;
       },
       invalidityMessage: 'This input needs to be between 8 and 100 characters',
-      element: document.querySelector('.input__requirement--type--password:nth-child(1)'),
+      element: document.querySelector('.form__input-requirement--type--password:nth-child(1)'),
     },
     {
       isInvalid(input) {
         return !input.value.match(/[0-9]/g);
       },
       invalidityMessage: 'At least 1 number is required',
-      element: document.querySelector('.input__requirement--type--password:nth-child(2)'),
+      element: document.querySelector('.form__input-requirement--type--password:nth-child(2)'),
     },
     {
       isInvalid(input) {
         return !input.value.match(/[a-z]/g);
       },
       invalidityMessage: 'At least 1 lowercase letter is required',
-      element: document.querySelector('.input__requirement--type--password:nth-child(3)'),
+      element: document.querySelector('.form__input-requirement--type--password:nth-child(3)'),
     },
     {
       isInvalid(input) {
         return !input.value.match(/[A-Z]/g);
       },
       invalidityMessage: 'At least 1 uppercase letter is required',
-      element: document.querySelector('.input__requirement--type--password:nth-child(4)'),
+      element: document.querySelector('.form__input-requirement--type--password:nth-child(4)'),
     },
     {
       isInvalid(input) {
         return !input.value.match(/[\!\@\#\$\%\^\&\*]/g);
       },
       invalidityMessage: 'You need one of the required special characters',
-      element: document.querySelector('.input__requirement--type--password:nth-child(5)'),
+      element: document.querySelector('.form__input-requirement--type--password:nth-child(5)'),
     },
   ];
 
@@ -146,7 +146,7 @@ function validation() {
         return passwordRepeatInput.value != passwordInput.value;
       },
       invalidityMessage: 'This password needs to match the first one',
-      element: document.querySelector('.input__requirement--type--password-repeat:nth-child(1)'),
+      element: document.querySelector('.form__input-requirement--type--password-repeat:nth-child(1)'),
     },
   ];
 
@@ -156,11 +156,11 @@ function validation() {
 
     if (input.CustomValidation.invalidities.length == 0 && input.value != '') {
       input.setCustomValidity('');
-      input.classList.remove('input__area--invalid');
+      input.classList.remove('form__input-area--invalid');
     } else {
       const message = input.CustomValidation.getInvalidities();
       input.setCustomValidity(message);
-      input.classList.add('input__area--invalid');
+      input.classList.add('form__input-area--invalid');
     }
   }
 

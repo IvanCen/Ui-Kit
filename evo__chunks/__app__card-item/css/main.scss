@@ -34,6 +34,10 @@
     padding: 0 16px;
   }
 
+  &--indentation--normal {
+    padding: 20px 16px;
+  }
+
   &__content-container {
     width: 100%;
   }
@@ -127,12 +131,23 @@
     margin-right: 5px;
   }
 
+  &__image-reward {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: lightgray;
+    padding-bottom: 100%;
+    width: 100%;
+    height: 100%;
+    margin-bottom: 20px;
+  }
+
   &__image {
     border-radius: 50%;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    background-color: $orange;
+    background-color: lightgray;
 
     &--size--small {
       width: 65px;
@@ -215,6 +230,7 @@
   &__icon {
     padding: 0;
     stroke: $gray;
+    fill: none;
 
     &--liked {
       stroke: none;
@@ -248,3 +264,4 @@
   }
 
 }
+

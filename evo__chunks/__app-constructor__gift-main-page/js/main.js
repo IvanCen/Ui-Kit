@@ -7,64 +7,43 @@ class ToggleGift extends ToggleMainPage {
 
   rendering() {
     super.rendering();
-    const giftTopBar = new CreateTopBarDefault({
+    const topBar = new CreateTopBarDefault({
       selector: ['div'],
       style: ['top-bar'],
       modifier: ['--size--medium', '--indentation--bottom'],
-      textTitle: ['Gift cards'],
+      textTitle: ['Достижения'],
     });
-    const giftTitleBarFeatured = new CreateTitleBarWithButton({
+    /*const giftTitleBarOther = new CreateTitleBarWithButton({
       selector: ['div'],
       style: ['title-bar'],
-      title: ['Featured'],
-      titleSize: ['medium'],
-      buttonText: ['Посмотреть все 16'],
+      title: ['Ваши достижения'],
+      titleSize: ['small'],
+      buttonText: ['Посмотреть все'],
       eventButton: [
         { type: 'click', callback: togglePageSeeAll.rendering },
         { type: 'click', callback: togglePageSeeAll.openPage },
       ],
     });
-    const giftPageBannersFeatured = new CreateBannersRectangle({
-      selector: ['div'],
-      style: ['banners'],
-      bannerSize: ['big'],
-    });
-    const giftTitleBarOther = new CreateTitleBarWithButton({
-      selector: ['div'],
-      style: ['title-bar'],
-      title: ['Other'],
-      titleSize: ['small'],
-      buttonText: ['Посмотреть 8'],
-    });
-    const giftPageBannersOther = new CreateBannersRectangle({
-      selector: ['div'],
-      style: ['banners'],
+    const cardBannersContainer = new CreateBannersContainerOrder();
+    const bannersReward = new CreateBannerRectangle({
       bannerSize: ['small'],
-    });
-    const giftTitleBarOther2 = new CreateTitleBarWithButton({
-      selector: ['div'],
-      style: ['title-bar'],
-      title: ['Other2'],
-      titleSize: ['small'],
-      buttonText: ['Посмотреть 18'],
-    });
-    const giftPageBannersOther2 = new CreateBannersRectangle({
-      selector: ['div'],
-      style: ['banners'],
-      bannerSize: ['small'],
-    });
+    });*/
 
 
-/*    this.mainPageContent.append(giftTopBar.create());
-    this.mainPageContent.append(giftTitleBarFeatured.create());
-    this.mainPageContent.append(giftPageBannersFeatured.create());
-    this.mainPageContent.append(giftTitleBarOther.create());
-    this.mainPageContent.append(giftPageBannersOther.create());
+    const cardItemContainer = new CreateCardItemContainerProductCard();
+    const cardItem = new CreateCardItemRewardCard();
 
-    this.mainPageContent.append(giftTitleBarOther2.create());
-    this.mainPageContent.append(giftPageBannersOther2.create());*/
+    this.mainPageContent.append(topBar.create());
+    this.mainPageContent = document.querySelector('.main-page__content');
+    this.mainPageContent.append(cardItemContainer.create('reward', 'card-item__container--indentation--top'));
 
-    activeBanners();
+    this.cardItemContainerEl = this.mainPageContent.querySelector('.card-item__container');
+    for (let i = 1; i < 7; i++) {
+      this.cardItemContainerEl.append(cardItem.create());
+    }
+
+    const footerButtonGIft = document.querySelector('.footer__button--type--gift');
+    activeFooter(footerButtonGIft);
     activeButton();
   }
 }

@@ -7,6 +7,7 @@ class TogglePageInbox extends TogglePage {
 
   rendering() {
     super.rendering();
+
     const inboxTopBar = new CreateTopBarInbox({
       selector: ['div'],
       style: ['top-bar'],
@@ -14,6 +15,19 @@ class TogglePageInbox extends TogglePage {
       eventBack: [
         { type: 'click', callback: this.closePage },
         { type: 'click', callback: this.deletePage },
+        {
+          type: 'click',
+          callback: () => {
+            const dotMessage = document.querySelector('.top-bar__icon-dot');
+            userMessages.successData.messages.every((message) => {
+              if (message.wasRead === null) {
+                dotMessage.classList.remove('top-bar__icon-dot--hide');
+                return false;
+              }
+              return true;
+            });
+          },
+        },
       ],
       eventToggleMessages: [
         { type: 'click', callback: toggleInboxTabMessagesContent.clearPage },
@@ -26,7 +40,12 @@ class TogglePageInbox extends TogglePage {
     });
 
     this.page.prepend(inboxTopBar.create());
-    toggleInboxTabMessagesContent.rendering();
+
+    function render() {
+      toggleInboxTabMessagesContent.rendering();
+    }
+    api.getMessages(render);
+
     this.openPage();
     const topBarTabs = document.querySelectorAll('.top-bar__tab');
     switchActive(topBarTabs, 'top-bar__tab--active');

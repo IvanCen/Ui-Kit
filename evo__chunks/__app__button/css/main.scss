@@ -146,6 +146,7 @@
     position: fixed;
     bottom: 95px;
     right: 16px;
+    z-index: 1;
   }
 
   &--type--fixed-low {

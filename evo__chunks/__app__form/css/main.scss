@@ -77,6 +77,10 @@
     display: none;
   }
 
+  &--indentation--bottom {
+    margin-bottom: 20px;
+  }
+
 }
 
 .form__input-area {
@@ -132,6 +136,12 @@
 
   &--disabled {
     color: $lightGrey;
+  }
+
+  &--focused {
+    top: 10px;
+    color: $gray;
+    @extend %style-6;
   }
 
   &:focus {
@@ -220,6 +230,10 @@
       margin-right: 10px;
       content: url("[+chunkWebPath+]/img/icon-yes.svg");
     }
+  }
+
+  &--hide {
+    display: none;
   }
 }
 

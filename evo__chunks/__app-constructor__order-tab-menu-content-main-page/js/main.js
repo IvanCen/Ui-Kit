@@ -67,11 +67,11 @@ class ToggleOrderMenuContent extends ToggleOrderTabContent {
           food.push(item);
           foodItemsLength += item.items.length;
         }
-        if (item.parent === 'Продукты') {
+        if (item.name === 'Продукты') {
           product.push(item);
           productItemsLength += item.items.length;
         }
-        if (item.parent === 'Упаковка') {
+        if (item.name === 'Упаковка') {
           wraper.push(item);
           wraperItemsLength += item.items.length;
         }
@@ -93,19 +93,19 @@ class ToggleOrderMenuContent extends ToggleOrderTabContent {
       wraperButtonTitle.textContent = `Посмотреть ${wraperItemsLength}`;
 
       drinksButtonTitle.addEventListener('click', () => {
-        togglePageOrderCategoryAll.rendering(drinks, 'Напитки', drinksItemsLength, products.items);
+        togglePageOrderCategoryAll.rendering(drinks, 'Напитки', drinksItemsLength, products.items, 33);
       });
 
       foodButtonTitle.addEventListener('click', () => {
-        togglePageOrderCategoryAll.rendering(food, 'Еда', foodItemsLength, products.items);
+        togglePageOrderCategoryAll.rendering(food, 'Еда', foodItemsLength, products.items, 34);
       });
 
       productsButtonTitle.addEventListener('click', () => {
-        togglePageOrderCategoryAll.rendering(product, 'Продукты', productItemsLength, products.items);
+        togglePageOrderCategoryAll.rendering(product, 'Продукты', productItemsLength, products.items, 221);
       });
 
       wraperButtonTitle.addEventListener('click', () => {
-        togglePageOrderCategoryAll.rendering(wraper, 'Упаковка', wraperItemsLength, products.items);
+        togglePageOrderCategoryAll.rendering(wraper, 'Упаковка', wraperItemsLength, products.items, 272);
       });
 
       function rendered(arr, container) {

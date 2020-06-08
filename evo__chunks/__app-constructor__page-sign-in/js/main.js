@@ -12,6 +12,7 @@ class TogglePageSignIn extends TogglePage {
 
   registrationNumber() {
     this.inputArea = document.querySelector('.form__input-area--type--phone');
+    this.inputArea.classList.add('form__input--focused');
     this.phoneNumber = this.inputArea.value;
     this.parameters.api.signInApi(this.phoneNumber, this.regCall);
   }
@@ -74,6 +75,7 @@ class TogglePageSignIn extends TogglePage {
   }
 
   askUserInfo(userInfo) {
+    console.log(userInfo);
     if (userInfo.success === true) {
       localStorage.setItem('user-sign-in', 'true');
       const { birthday, email, name } = userInfo.successData;
@@ -91,15 +93,21 @@ class TogglePageSignIn extends TogglePage {
       } else if (email === '') {
         this.askUserEmail();
       } else {
-        setTimeout(() => {
+        api.getMessages();
+        renderMainPage.clearPage();
+        renderMainPage.rendering();
+        renderMainPage.openPage();
+        togglePage.closePage();
+        togglePage.deletePage();
+        /* setTimeout(() => {
+
           buttonAgree.classList.add('form__button--hide');
           textSuccess.textContent = 'Добро пожаловать в Хлебник!';
           textSuccess.classList.remove('form__text--close', 'form__text--hide');
           textSuccess.classList.add('form__text--indentation');
-          togglePage.closePage();
-          togglePage.deletePage();
+
           inputsContainer.classList.remove('form__inputs-container--hide');
-        }, 2500);
+        }, 2500); */
       }
     } else {
       this.showError(userInfo);
@@ -110,7 +118,7 @@ class TogglePageSignIn extends TogglePage {
     const textError = document.querySelector('.form__text--error');
     textError.classList.remove('form__text--close', 'form__text--hide');
     if (info.errors[0] !== undefined) {
-      textError.innerHTML = info.errors[0];
+      textError.textContent = info.errors[0];
     }
   }
 
@@ -180,7 +188,7 @@ class TogglePageSignIn extends TogglePage {
         this.sendData('email', inputAreaEmail.value);
         inputAreaEmail.value = '';
         inputEmailContainer.classList.add('form__input-container--hide');
-        textError.textContent = ' ';
+        textError.textContent = '';
         textError.classList.add('form__text--close', 'form__text--hide');
         toggleModal.renderingEmail();
         toggleModal.openPage();
@@ -213,7 +221,6 @@ class TogglePageSignIn extends TogglePage {
       ],
       events: [
         { type: 'click', callback: () => { this.registrationNumber(this); } },
-        { type: 'keydown', callback: () => { this.registrationNumber(this); } },
       ],
       eventSkip: [
         { type: 'click', callback: this.closePage },
@@ -226,6 +233,25 @@ class TogglePageSignIn extends TogglePage {
 
     this.page.append(signInTopBar.create());
     this.page.append(formInputSignIn.create());
+    const inputArea = document.querySelector('.form__input-area--type--phone');
+    inputArea.addEventListener('focusout', () => {
+      this.registrationNumber(this);
+    });
+    inputArea.addEventListener('keydown', (event) => {
+      if (event.code === 'Enter' || event.code === 'Go' || event.code === 13) {
+        this.registrationNumber(this);
+      }
+    });
+
+    const phoneMask = IMask(
+      document.querySelector('.form__input-area--type--phone'), {
+        mask: '+{7}(000)000-00-00',
+        lazy: false,
+        placeholderChar: '_',
+        autoUnmask: true,
+      },
+    );
+
     inputFlyLabel();
     activeButton();
     this.openPage();

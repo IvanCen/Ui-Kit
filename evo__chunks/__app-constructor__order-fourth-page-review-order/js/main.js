@@ -31,6 +31,14 @@ class ToggleFourthPageReviewOrder extends ToggleFourthPage {
         { type: 'click', callback: toggleFourthPage.deletePage },
       ],
     });
+    const formPromoCode = new CreateFormPromoCode({
+      selector: ['div'],
+      style: ['accordion__container'],
+    });
+    const formComment = new CreateFormComment({
+      selector: ['div'],
+      style: ['accordion__container'],
+    });
     const reviewCardItemContainer = new CreateCardItemContainerFavAndHisOrder({
       selector: ['div'],
       style: ['card-item__container'],
@@ -64,7 +72,10 @@ class ToggleFourthPageReviewOrder extends ToggleFourthPage {
       ],
     });
 
+
     this.fourthPage.append(reviewTopBar.create());
+    this.fourthPage.append(formPromoCode.create());
+    this.fourthPage.append(formComment.create());
     this.fourthPage.append(reviewCardItemContainer.create());
     // this.fourthPage.append(reviewCheckboxTextSlide.create());
     this.fourthPage.append(reviewButton.create());
@@ -76,7 +87,7 @@ class ToggleFourthPageReviewOrder extends ToggleFourthPage {
     basketArray.forEach((item) => {
       for (const el of Object.values(productsItems)) {
         if (item.id === el.id) {
-          this.cardItemContainer.append(reviewCardItem.create(el)); //late probrosit item !!!
+          this.cardItemContainer.append(reviewCardItem.create(item));
         }
       }
     });
@@ -85,6 +96,11 @@ class ToggleFourthPageReviewOrder extends ToggleFourthPage {
     }
     function makeOrder(info) {
       if (info.success === false) {
+        togglePage.clearPage();
+        toggleSubPage.closePage();
+        toggleSubPage.clearPage();
+        toggleThirdPage.closePage();
+        toggleThirdPage.clearPage();
         toggleFourthPage.closePage();
         toggleFourthPage.clearPage();
         togglePageSignIn.rendering();
@@ -93,7 +109,8 @@ class ToggleFourthPageReviewOrder extends ToggleFourthPage {
         if (!isEmptyObj(basketArray)) {
           const { phone } = userInfoObj.successData;
           const { id } = userStore.store;
-          api.makeOrderApi(phone, basketArray, id, render);
+
+          api.makeOrderApi(phone, basketArray, id, orderComment, render);
         } else {
           toggleModal.rendering('Вы ничего не положили в корзину');
           toggleModal.openPage();
@@ -106,6 +123,8 @@ class ToggleFourthPageReviewOrder extends ToggleFourthPage {
 
     activeLike();
     activeButton();
+    activeAccordion();
+    inputFlyLabel();
     this.openPage();
   }
 }

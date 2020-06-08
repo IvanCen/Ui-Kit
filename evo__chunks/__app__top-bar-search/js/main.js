@@ -18,12 +18,12 @@ class CreateTopBarSearch extends CreateItem {
         <div class="form">
         <div class="form__input top-bar-search__input">
           <label class="form__input-underlined">
-            <input class="form__input-area form__input-area--valid top-bar-search__input-area" type="text" placeholder="Location">
+            <input class="form__input-area form__input-area--valid top-bar-search__input-area" type="text" placeholder="Поиск">
             <img src="[+chunkWebPath+]/img/icon-delete.svg" alt="Кнопка удаления введенных данных" class="top-bar-search__icon top-bar-search__icon--type--delete">
           </label>
         </div>
         </div>
-        <span class="top-bar-search__info">find</span>`;
+        <span class="top-bar-search__info">Найдено</span>`;
   }
 
   create() {

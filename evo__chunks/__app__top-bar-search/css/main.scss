@@ -6,6 +6,10 @@
   border-top: 1px solid $gainsboroGray;
   padding: 16px 16px 7px;
 
+  &--indentation--bottom {
+    margin-bottom: 20px;
+  }
+
   &__input-area {
     @extend %style-1;
     padding: 15px 0 0;

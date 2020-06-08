@@ -7,32 +7,42 @@ class ToggleInboxTabLastOffersContent extends ToggleInboxTabContent {
 
   rendering() {
     super.rendering();
-    const inboxMainCard = new CreateInboxMainCardNews({
+    const inboxMainCards = new CreateInboxMainCard({
       selector: ['div'],
       style: ['main-card'],
-      modifier: ['--type--border', '--theme--shadow', '--indentation--top'],
-      title: ['Buy one, get one free'],
-      text: ['Есть много вариантов Lorem Ipsum, но большинство из них имеет не всегда приемлемые модификации, например, юмористические вставки или слова, которые даже отдалённо не напоминают латынь.'],
-     /* eventOpenDetails: [
-        { type: 'click', callback: },
-        { type: 'click', callback:  },
-      ],*/
+      title: ['Сейчас сообщений нет'],
+      text: [''],
     });
-    const inboxMainCard2 = new CreateInboxMainCardNews({
+    const inboxMainCardsNoUser = new CreateInboxMainCard({
       selector: ['div'],
       style: ['main-card'],
-      modifier: ['--type--border', '--theme--shadow', '--indentation--top'],
-      title: ['Buy one, get one free'],
-      text: ['Есть много вариантов Lorem Ipsum, но большинство из них имеет не всегда приемлемые модификации, например, юмористические вставки или слова, которые даже отдалённо не напоминают латынь.'],
-      /* eventOpenDetails: [
-         { type: 'click', callback: },
-         { type: 'click', callback:  },
-       ],*/
+      title: ['Войдите, что бы видеть сообщения'],
+      text: [''],
+    });
+    const inboxMainCardsNews = new CreateInboxMainCardNews({
+      selector: ['div'],
+      style: ['main-card'],
+      modifier: ['--border--bottom'],
     });
 
-    this.pageTabContent.append(inboxMainCard.create());
-    this.pageTabContent.append(inboxMainCard2.create());
     this.pageContent.append(this.pageTabContent);
+
+
+    if (userMessages.success === false) {
+      this.pageTabContent.append(inboxMainCardsNoUser.create());
+    } else if (userMessages.successData.length === 0) {
+      this.pageTabContent.append(inboxMainCards.create());
+    } else {
+      userMessages.successData.messages.forEach((item) => {
+        if (item.promotion === 1) {
+          this.pageTabContent.append(inboxMainCardsNews.create(item));
+          if (item.wasRead === null) {
+            api.markMessageRead(item.client, item.timestamp, item.id);
+          }
+        }
+      });
+    }
+
     activeButton();
   }
 }

@@ -1,6 +1,15 @@
 @import "../../__app__head-style-and-script/css/main.scss";
 
 .main-card {
+  transition: all 0.2s ease-out;
+
+  &--border--bottom {
+    border-bottom: 1px solid $lightGrey;
+  }
+
+  &--hide {
+    opacity: 0;
+  }
 
   &--type--border {
     margin: 0 16px 20px;
@@ -62,12 +71,31 @@
     z-index: 1;
   }
 
+  &__img-container {
+    position: relative;
+    overflow: hidden;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-color: lightgray;
+  }
+
   &__img {
+    display: block;
+    max-width: 6000px;
+    width: 100%;
+    height: auto;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    width: 100%;
-    margin-bottom: 20px;
+    background-color: lightgray;
+    padding-top: 85%;
+    /*position: absolute;
+    top: 0;
+    left: 0;*/
+
+    &--size--small {
+      padding-top: 55%;
+    }
 
     &--theme--shadow {
       box-shadow: 0 5px 5px rgba(0, 0, 0, 0.22);
@@ -78,12 +106,20 @@
   &__text-area {
     display: flex;
     flex-direction: column;
-    padding: 0 16px 20px;
+    padding: 20px 16px 20px;
   }
 
   &__title {
     @extend %style-4;
     margin-bottom: 10px;
+
+    &--indentation--top {
+      margin-top: 20px;
+    }
+
+    &--font-weight--normal {
+      font-weight: normal;
+    }
 
   }
 
@@ -102,6 +138,15 @@
       padding-bottom: 20px;
     }
 
+
+  }
+
+  &__info {
+    @extend %style-8;
+
+    &--theme--shadow {
+      color: $dimGray;
+    }
   }
 
   &__button {

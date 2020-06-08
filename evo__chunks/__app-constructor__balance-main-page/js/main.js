@@ -12,6 +12,7 @@ class ToggleBalance extends ToggleMainPage {
 
   rendering() {
     super.rendering();
+    api.getClientApi();
     this.mainPageContent.classList.add('main-page__content--size--small');
     const topBar = new CreateTopBarDefault({
       selector: ['div'],
@@ -33,8 +34,13 @@ class ToggleBalance extends ToggleMainPage {
       buttonText: ['История'],
       themeButton: ['--theme--tangerin'],
       identifier: ['score'],
-      text: ['Ваш счет'],
-      number: ['0'],
+      text: ['Ваш баланс'],
+      number() {
+        if (!isEmptyObj(userInfoObj)) {
+          return userInfoObj.successData.balance;
+        }
+        return '0';
+      },
       eventButton: [
         { type: 'click', callback: togglePageBalanceHistoryScore.rendering },
         { type: 'click', callback: togglePageBalanceHistoryScore.openPage },
@@ -47,7 +53,12 @@ class ToggleBalance extends ToggleMainPage {
       themeButton: ['--theme--tangerin-transparent'],
       identifier: ['score'],
       text: ['Ваши бонусы'],
-      number: ['0'],
+      number() {
+        if (!isEmptyObj(userInfoObj)) {
+          return userInfoObj.successData.bonus;
+        }
+        return '0';
+      },
       eventButton: [
         { type: 'click', callback: togglePageBalanceHistoryBonus.rendering },
         { type: 'click', callback: togglePageBalanceHistoryBonus.openPage },
@@ -67,6 +78,20 @@ class ToggleBalance extends ToggleMainPage {
         { type: 'click', callback: togglePageSignIn.rendering },
       ],
     });
+    const buttonFill = new CreateButton({
+      selector: ['button'],
+      style: ['button'],
+      modifier: [
+        '--size--big',
+        '--theme--tangerin',
+        '--theme--shadow-big',
+        '--type--fixed',
+      ],
+      text: ['Пополнить'],
+      eventsOpen: [
+        { type: 'click', callback: togglePageBalanceFill.rendering },
+      ],
+    });
     this.mainPageContent.append(topBar.create());
     if (localStorage.getItem('user-sign-in') === null) {
       this.mainPageContent.append(card.create());
@@ -74,6 +99,9 @@ class ToggleBalance extends ToggleMainPage {
     } else {
       this.mainPageContent.append(textAreaScore.create());
       this.mainPageContent.append(textAreaBonus.create());
+      this.mainPageContent.append(buttonFill.create());
     }
+    const footerButtonBalance = document.querySelector('.footer__button--type--cards');
+    activeFooter(footerButtonBalance);
   }
 }

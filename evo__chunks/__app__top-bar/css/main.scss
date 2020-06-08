@@ -230,6 +230,11 @@
     left: 19px;
     width: 8px;
     height: 8px;
+
+    &--hide {
+      visibility: hidden;
+      opacity: 0;
+    }
   }
 
   &__icon-arrow-down {

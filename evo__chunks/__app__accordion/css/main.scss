@@ -7,17 +7,18 @@
   width: 100%;
   text-align: left;
   color: $orange;
-  margin-bottom: 20px;
   border: none;
   outline: none;
   transition: 0.4s;
+  justify-content: space-between;
 
   &__container {
-    padding: 30px 16px;
+    padding: 15px 16px;
   }
 
   &__content {
     max-height: 0;
+    height: fit-content;
     overflow: hidden;
     opacity: 0;
     transition: max-height 0.2s ease-out, opacity 0.2s;

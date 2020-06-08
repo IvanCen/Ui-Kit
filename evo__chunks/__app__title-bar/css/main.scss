@@ -9,13 +9,27 @@
   margin-bottom: 20px;
   min-height: fit-content;
 
+  &--theme--dark {
+    background-color: $bokaraGrey;
+  }
+
   &--indentation--top {
     padding-top: 20px;
   }
 
+
   &--indentation--top-big {
     padding-top: 30px;
   }
+
+  &--indentation--bottom {
+    margin-top: 20px;
+  }
+
+  &--indentation--bottom-small {
+    padding-bottom: 10px;
+  }
+
 
   &__title {
 
@@ -40,6 +54,19 @@
       color: $gray;
     }
 
+  }
+
+  &__text {
+    @extend %style-5;
+
+    &--theme--shadow {
+      color: $lightGrey;
+    }
+  }
+
+  &__text-container {
+    display: flex;
+    flex-direction: column;
   }
 
   &__button {

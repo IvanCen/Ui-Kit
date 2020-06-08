@@ -8,7 +8,7 @@ class ToggleSubPageProductCard extends ToggleSubPage {
   rendering(productInfo) {
     super.rendering();
     const infoProduct = productInfo;
-    console.log(infoProduct)
+    console.log(infoProduct);
     const productCard = new CreateOrderProductMainCard({
       selector: ['div'],
       style: ['main-card'],
@@ -26,6 +26,18 @@ class ToggleSubPageProductCard extends ToggleSubPage {
 
     this.subPage.append(productCard.create(infoProduct));
     this.subPage.append(textAreaProductCard.create(infoProduct));
+
+    const buttonReset = this.subPage.querySelector('.text-area__button--type--reset');
+    if (buttonReset) {
+      buttonReset.addEventListener('click', () => {
+        userDataObj[productInfo.id] = {};
+        localStorage.setItem('userData', userDataObj);
+        toggleSubPage.clearPage();
+        this.rendering(productInfo);
+      });
+    }
+
+
     activeButton();
     this.openPage();
   }

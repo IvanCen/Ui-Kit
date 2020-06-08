@@ -31,6 +31,7 @@ class ToggleOrderFavoriteContent extends ToggleOrderTabContent {
         '--direction--row',
         '--border--bottom',
       ],
+      iconLiked: true,
     });
     this.mainPageContent = document.querySelector('.main-page__content');
     this.mainPageTabContentFavorite = document.createElement('div');
@@ -41,10 +42,8 @@ class ToggleOrderFavoriteContent extends ToggleOrderTabContent {
 
     const productsItems = dataProductApi.successData.items;
     itemsArray.forEach((item) => {
-      for (const el of Object.values(productsItems)) {
-        if (item.id === el.id) {
-          this.cardItemContainer.append(favoriteCardItem.create(el));
-        }
+      if (item.id === productsItems[item.id].id) {
+        this.cardItemContainer.append(favoriteCardItem.create(item));
       }
     });
 

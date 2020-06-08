@@ -13,6 +13,127 @@
 //     console.log(JSON.parse(await rawResponse.text()));
 // })();
 /**
+ * Пометить сообщение прочитанным, ошибки не надо показывать(они только для отладки), successData всегда пустой, для переключения вида сообщений ориентируемся только на success статус
+ */
+(async () => {
+    let request={
+        method: '_api__mark-message-read',
+        phone: '+79522655566',
+        id: 100, // идентефикатор сообщение, полученный при получении сообщений
+        timestamp: '2020-06-05 11:30:00', // время вставки сообщения, полученное при получении сообщений
+        outputFormat: 'json'
+    };
+    let rawResponse = await fetch('[~30~]', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'text/html'
+        },
+        body: JSON.stringify(request)
+    });
+    console.log(JSON.parse(await rawResponse.text()));
+})();
+/**
+ * Получение списка сообщений, требует входа(наличия активной сессии)
+ * чтобы получить сообщение - можно сделать заказ, оплатить его и чекнуть готовым в админке
+ * пароль от точки есть в общем чате, админка для точки находится тут: [501]
+ * единственная ошибка, которую стоит обработать -> 'Войдите, чтобы продолжить'
+ * В слечае успеха successData['messages'] содержит следующий список полей по каждому заказу: `id`, `client`, `promotion`, `subject`, `message`, `image`, `timestamp`, `wasRead`
+ * по `image` пока не нужно делать обработку для подключения к возврату правильных картинок
+ */
+(async () => {
+    let request={
+        method: 'get-messages',
+        // lastId: '100', // необязательное поле, позволяет указать последний идентификатор сообщения в кеше
+        // lastCount: 10, // необязательное поле, позволяет указать сколько последних заказов вернуть
+        outputFormat: 'json'
+    };
+    let rawResponse = await fetch('[~30~]', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'text/html'
+        },
+        body: JSON.stringify(request)
+    });
+    console.log(JSON.parse(await rawResponse.text()));
+})();
+/**
+ * Полноценный выход на сервере с уничтожением сессии
+ */
+(async () => {
+    let request={
+        method: 'logout',
+        outputFormat: 'json'
+    };
+    let rawResponse = await fetch('[~30~]', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'text/html'
+        },
+        body: JSON.stringify(request)
+    });
+    console.log(JSON.parse(await rawResponse.text()));
+})();
+/**
+ * Получение истории бонусов клиента, требует входа(наличия активной сессии)
+ * единственная ошибка, которую стоит обработать -> 'Войдите, чтобы продолжить'
+ */
+(async () => {
+    let request={
+        method: 'get-client-bonus-log',
+        // lastLogId: '100', // необязательное поле, позволяет указать последний номер заказа в кеше
+        // lastCount: 10, // необязательное поле, позволяет указать сколько последних заказов вернуть
+        outputFormat: 'json'
+    };
+    let rawResponse = await fetch('[~30~]', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'text/html'
+        },
+        body: JSON.stringify(request)
+    });
+    console.log(JSON.parse(await rawResponse.text()));
+})();
+/**
+ * Получение истории баланса клиента, требует входа(наличия активной сессии)
+ * единственная ошибка, которую стоит обработать -> 'Войдите, чтобы продолжить'
+ */
+(async () => {
+    let request={
+        method: 'get-client-balance-log',
+        // lastLogId: '100', // необязательное поле, позволяет указать последний номер заказа в кеше
+        // lastCount: 10, // необязательное поле, позволяет указать сколько последних заказов вернуть
+        outputFormat: 'json'
+    };
+    let rawResponse = await fetch('[~30~]', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'text/html'
+        },
+        body: JSON.stringify(request)
+    });
+    console.log(JSON.parse(await rawResponse.text()));
+})();
+/**
+ * Получение заказов клиента, требует входа(наличия активной сессии)
+ * единственная ошибка, которую стоит обработать -> 'Войдите, чтобы продолжить'
+ */
+(async () => {
+    let request={
+        method: 'get-client-orders',
+        // lastOrder: '900313', // необязательное поле, позволяет указать последний номер заказа в кеше
+        // lastCount: 10, // необязательное поле, позволяет указать сколько последних заказов вернуть
+        outputFormat: 'json'
+    };
+    let rawResponse = await fetch('[~30~]', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'text/html'
+        },
+        body: JSON.stringify(request)
+    });
+    console.log(JSON.parse(await rawResponse.text()));
+})();
+/**
  * Пополнение баланса
  */
 (async () => {
@@ -142,7 +263,7 @@
         method: 'pay-order',
         from: 'app',// Доступные варианты: app, site, обязательный для атрибута payForm: creditCard
         payFrom: 'creditCard', // Доступные варианты: balance, creditCard, bonus
-        orderId: 900004, // Номер заказа полученный при его создании
+        orderId: 900313, // Номер заказа полученный при его создании
         outputFormat: 'json'
     };
     let rawResponse = await fetch('[~30~]', {
@@ -257,6 +378,24 @@
         body: JSON.stringify(request)
     });
     // console.log(JSON.parse(await rawResponse.text()));
+})();
+/**
+ * Каталог
+ */
+(async () => {
+    let request={
+        method: 'get-catalog',
+        view: 'tree',
+        outputFormat: 'json'
+    };
+    let rawResponse = await fetch('[~30~]', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'text/html'
+        },
+        body: JSON.stringify(request)
+    });
+    console.log(JSON.parse(await rawResponse.text()));
 })();
 
 
@@ -420,3 +559,96 @@
 //     });
 //     console.log(JSON.parse(await rawResponse.text()));
 // })();
+
+
+/**
+ * Код для сравнения товаров в истории и избранного
+ */
+(async () => {
+    let request={
+        method: 'get-client-orders',
+        // lastOrder: '900313', // необязательное поле, позволяет указать последний номер заказа в кеше
+        // lastCount: 10, // необязательное поле, позволяет указать сколько последних заказов вернуть
+        outputFormat: 'json'
+    };
+    let rawResponse = await fetch('[~30~]', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'text/html'
+        },
+        body: JSON.stringify(request)
+    });
+    let orders = JSON.parse(await rawResponse.text());
+    orders = successData.orders;
+
+    let favourites = JSON.parse('[{"id":"64","modifiers":[{"id":"423","count":"1"},{"id":"440","count":"4"}]},{"id":"64","modifiers":[{"id":"423","count":"1"},{"id":"440","count":"4"}]},{"id":"64","modifiers":[{"id":"423","count":"1"},{"id":"440","count":"4"}]},{"id":"64","modifiers":[{"id":"423","count":"1"},{"id":"440","count":"4"}]},{"id":"64","modifiers":[{"id":"423","count":"1"},{"id":"440","count":"4"}]},{"id":"64","modifiers":[{"id":"423","count":"1"},{"id":"440","count":"4"}]}]');
+    if(typeof orders === 'object') {
+        for (let order of Object.values(orders)) {
+            if (typeof order === 'object') {
+                for (let item of Object.values(order)) {
+                    /**
+                     * Код для определения находится ли товар в избранном
+                     */
+
+                    /**
+                     * Делаем переменную для товара, которую мы заполним аналогично товару в избранном, чтобы их можно было сравнить
+                     */
+                    let itemForCompare = {
+                        'id': item.id,
+                        //'modifiers': []// нужно раскомментировать, если модификаторы, хотя бы пустые обязательны в избранном
+                    };
+                    /**
+                     * Заполняем данные о модификаторах, если они есть
+                     */
+                    if(typeof item.modifiers==='object'){
+
+                        let modifierArray = [];
+                        for( let modifier of Object.values(item.modifiers)){
+                            modifierArray.push({
+                                'id':modifier.id,
+                                'count':modifier.count,
+                            });
+                        }
+                        itemForCompare['modifiers'] = modifierArray;
+                    }
+
+                    /**
+                     * Ставим флаг нахождения комбинации товара и модификаторов в false
+                     */
+                    let favouriteItemFlag = false;
+
+                    /**
+                     * Преобразуем объект товара из заказа в строку, чтобы можно было легко сравнить
+                     */
+                    itemForCompare = JSON.stringify(itemForCompare);
+                    /**
+                     * Проходим массив избранного
+                     * to do: стоит вытащить преобразование массива избранного в строки(в отдельный массив) чуть выше начала перебора заказов в истории, тогда нам не придется каждый раз преобразовывать объекты избранного в строки, достаточно будет пройтись по новому мессиву сравнить с их с товаром
+                     */
+                    for( let itemOfFavourites of Object.values(favourites)){
+
+                        /**
+                         * Преобразуем объекты комбинаций товара и модификаторов избранного в строку, чтобы можно было сравнивать
+                         */
+                        itemOfFavourites = JSON.stringify(itemOfFavourites);
+                        /**
+                         * Сравниваем строки,
+                         * если совпадение найдено меняем статус в флаг
+                         * и перестаем перебирать комбинации избранного
+                         */
+                        if(itemForCompare===itemOfFavourites){
+                            favouriteItemFlag = true;
+                            break;
+                        }
+                    }
+
+
+                }
+            }
+        }
+    }
+
+
+
+
+})();

@@ -1,16 +1,21 @@
 const mainPage = document.querySelector('.main-page');
 const body = document.querySelector('body');
 const api = new Api();
-let dataProductApi;
 let orderInfo;
 let orderPayInfo;
+let orderComment;
+let userMessages;
 const itemsArray = JSON.parse(localStorage.getItem('items')) || [];
 const basketArray = JSON.parse(localStorage.getItem('basket')) || [];
 const userDataObj = JSON.parse(localStorage.getItem('userData')) || {};
 const applicationDataObj = JSON.parse(localStorage.getItem('applicationData')) || {};
 const storesDataObj = JSON.parse(localStorage.getItem('storesData')) || {};
 const userInfoObj = JSON.parse(localStorage.getItem('userInfo')) || {};
+const userLastOrdersObj = JSON.parse(localStorage.getItem('userLastOrders')) || {};
 const userStore = JSON.parse(localStorage.getItem('userStore')) || {};
+const userBalanceLog = JSON.parse(localStorage.getItem('userBalanceLog')) || {};
+const userBonusLog = JSON.parse(localStorage.getItem('userBonusLog')) || {};
+const dataProductApi = JSON.parse(localStorage.getItem('productData')) || {};
 
 if (isEmptyObj(storesDataObj)) {
   api.storesApi();
@@ -32,12 +37,13 @@ if (isEmptyObj(applicationDataObj)) {
     }
   }
 }
-/* function getUser(info) {
-  userInfoObj.info = info.successData;
-} */
+
 api.getClientApi();
 api.productApi();
-
+api.getClientOrdersApi();
+api.getClientBalanceLog();
+api.getClientBonusLog();
+api.getMessages();
 
 const toggleOrderMenuContent = new ToggleOrderMenuContent({ api });
 const toggleOrderHitsContent = new ToggleOrderHitsContent({ api });
@@ -53,11 +59,14 @@ const togglePageSeeAll = new TogglePageSeeAll({
 const togglePageStoresSearch = new TogglePageStoresSearch({
   classOpen: ['page--opened'],
 });
-const togglePageOrderSearch = new TogglePageOrderSearch({
-  classOpen: ['page--opened'],
+const toggleFifthPageOrderSearch = new ToggleFifthPageOrderSearch({
+  classOpen: ['fifth-page--opened'],
 });
-const togglePageStoresDetails = new TogglePageStoresDetails({
-  classOpen: ['page--opened'],
+const toggleSubPageStoresDetails = new ToggleSubPageStoresDetails({
+  classOpen: ['subpage--opened'],
+});
+const toggleSubPageAccountEditUser = new ToggleSubPageAccountEditUser({
+  classOpen: ['subpage--opened'],
 });
 const togglePageStoresFilter = new TogglePageStoresFilter({
   classOpen: ['page--opened'],
@@ -70,13 +79,27 @@ const togglePageOrderCategory = new TogglePageOrderCategory({
 });
 const togglePageBalanceHistoryScore = new TogglePageBalanceHistory({
   classOpen: ['page--opened'],
-  titleNameTopBar: ['Счет'],
-  text: ['Ваш счет'],
+  titleNameTopBar: ['Баланс'],
+  text: ['Ваш баланс'],
+  number() {
+    if (!isEmptyObj(userInfoObj)) {
+      return userInfoObj.successData.balance;
+    }
+    return '0';
+  },
+  userLog: userBalanceLog,
 });
 const togglePageBalanceHistoryBonus = new TogglePageBalanceHistory({
   classOpen: ['page--opened'],
   titleNameTopBar: ['Бонусы'],
   text: ['Ваши бонусы'],
+  number() {
+    if (!isEmptyObj(userInfoObj)) {
+      return userInfoObj.successData.bonus;
+    }
+    return '0';
+  },
+  userLog: userBonusLog,
 });
 const toggleSubPageProductCard = new ToggleSubPageProductCard({
   classOpen: ['subpage--opened--bottom-bar'],
@@ -87,6 +110,9 @@ const toggleSubPageGiftCard = new ToggleSubPageGiftCard({
 const toggleSubPageApplication = new ToggleSubPageApplication({
   classOpen: ['subpage--opened'],
 });
+const toggleThirdPageEditUser = new ToggleThirdPageEditUser({
+  classOpen: ['third-page--opened'],
+});
 const toggleThirdPageAddinsCard = new ToggleThirdPageAddinsCard({
   classOpen: ['third-page--opened'],
 });
@@ -96,7 +122,11 @@ const toggleFourthPageReviewOrder = new ToggleFourthPageReviewOrder({
 const toggleFifthPageReviewOrder = new ToggleFifthPageReviewOrder({
   classOpen: ['fifth-page--opened'],
 });
+const toggleSixthPageReviewOrder = new ToggleSixthPageReviewOrder({
+  classOpen: ['sixth-page--opened'],
+});
 
+const searchClassMethod = new Search();
 const toggleBalance = new ToggleBalance();
 const toggleOrder = new ToggleOrder();
 const toggleGift = new ToggleGift();
@@ -118,9 +148,15 @@ const toggleFourthPage = new ToggleFourthPage({
 const toggleFifthPage = new ToggleFifthPage({
   classOpen: ['fifth-page--opened'],
 });
+const toggleSixthPage = new ToggleSixthPage({
+  classOpen: ['sixth-page--opened'],
+});
 const togglePageSignIn = new TogglePageSignIn({
   classOpen: ['page--opened'],
   api,
+});
+const togglePageBalanceFill = new TogglePageBalanceFill({
+  classOpen: ['page--opened'],
 });
 const togglePageInbox = new TogglePageInbox({
   classOpen: ['page--opened'],
@@ -202,3 +238,7 @@ renderMainPage.openPage();
 mainPage.append(mainPageFooter.create());
 switchActiveFooter();
 checkBasket();
+
+if (/\?refer=alfa.*/.test(window.location.search)) {
+  toggleSixthPageReviewOrder.rendering();
+}

@@ -83,6 +83,14 @@ class ToggleThirdPageAddinsCard extends ToggleThirdPage {
     });
 
     const buttonAdd = document.querySelector('.button--type--add-adds');
+    const buttonReset = this.thirdPage.querySelector('.text-area__button--type--reset');
+    console.log(productInfo);
+    buttonReset.addEventListener('click', () => {
+      userDataObj[productInfo.id] = {};
+      localStorage.setItem('userData', userDataObj);
+      toggleThirdPage.clearPage();
+      this.rendering(productInfo);
+    });
 
     buttonAdd.addEventListener('click', () => {
       const basketPopupIcon = document.querySelector('.bottom-bar__icon-popup');

@@ -17,13 +17,11 @@ class TogglePageBalanceHistory extends TogglePage {
         { type: 'click', callback: this.deletePage },
       ],
     });
-    const textAreaBonus = new CreateTextAreaBalance({
+    const textAreaBonus = new CreateTextAreaBalanceHistory({
       selector: ['div'],
       style: ['text-area'],
-      button: false,
-      identifier: ['score'],
       text: [this.parameters.text],
-      number: ['0'],
+      number: [this.parameters.number()],
     });
     const сardItemsContainer = new CreateCardItemContainerFavAndHisOrder({
       selector: ['div'],
@@ -35,35 +33,23 @@ class TogglePageBalanceHistory extends TogglePage {
         '--type--balance',
       ],
     });
-    const сardItemPlus = new CreateCardItemBalance({
+    const сardItem = new CreateCardItemBalance({
       selector: ['div'],
       style: ['card-item'],
       modifier: [
         '--border--bottom',
       ],
-      themeNumber: ['green'],
-      number: ['+100'],
-      state: ['Начислено'],
-      data: ['19.10.2002'],
-    });
-    const сardItemMinus = new CreateCardItemBalance({
-      selector: ['div'],
-      style: ['card-item'],
-      modifier: [
-        '--border--bottom',
-      ],
-      themeNumber: ['red'],
-      number: ['-100'],
-      state: ['Списано'],
-      data: ['19.10.2202'],
     });
 
     this.page.append(topBar.create());
     this.page.append(textAreaBonus.create());
     this.page.append(сardItemsContainer.create());
     this.сardItemsContainer = this.page.querySelector('.card-item__container');
-    this.сardItemsContainer.append(сardItemPlus.create());
-    this.сardItemsContainer.append(сardItemMinus.create());
+    console.log(this.parameters.userLog);
+    this.parameters.userLog.successData.forEach((item) => {
+      this.сardItemsContainer.append(сardItem.create(item));
+    });
+
     this.openPage();
   }
 }

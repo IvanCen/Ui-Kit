@@ -86,13 +86,13 @@ function validation() {
       invalidityMessage: 'This input needs to be at least 2 characters',
       element: document.querySelector('.form__input-requirement--type--name:nth-child(1)'),
     },
-    {
+    /* {
       isInvalid(input) {
         return !input.value.match(/^[А-ЯЁ][а-яё]*(-?[А-ЯЁ][а-яё]+)?/gi);
       },
       invalidityMessage: 'Only letters are allowed',
       element: document.querySelector('.form__input-requirement--type--name:nth-child(2)'),
-    },
+    }, */
   ];
 
   const emailValidityChecks = [
@@ -135,7 +135,7 @@ function validation() {
     },
     {
       isInvalid(input) {
-        return false;//тут была строчка
+        return false;// тут была строчка
       },
       invalidityMessage: 'You need one of the required special characters',
       element: document.querySelector('.form__input-requirement--type--password:nth-child(5)'),
@@ -220,7 +220,7 @@ class CreateFormInputSignIn extends CreateItem {
       <div class="form__input">
         <label class="form__input-underlined">
           <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--phone" type="tel" required>
-          <span class="form__input-label">Введите номер телефона</span>
+          <span class="form__input-label form__input--focused">Введите номер телефона</span>
           <ul class="form__input-requirements">
             <li class="form__input-requirement form__input-requirement--type--phone"></li>
           </ul>
@@ -235,6 +235,7 @@ class CreateFormInputSignIn extends CreateItem {
            <p class="form__text">Авторизация осуществляется по бесплатному звонку, как только соединение будет установлено - мы вас авторизуем.</p>
         </div>
         <p class="form__text form__text--success form__text--hide">Вы авторизованны!</p>
+        <p class="form__text form__text--error form__text--hide"></p>
         <div class="form__inputs-container form__inputs-container--hide">
           <div class="form__input-container form__input-container--name form__input-container--hide">
             <h2 class="form__title">Давайте знакомиться, меня зовут Хлебник, а вас?</h2>
@@ -274,7 +275,7 @@ class CreateFormInputSignIn extends CreateItem {
               </label>
             </div>
           </div>
-          <p class="form__text form__text--error form__text--hide"></p>
+          
         <button class="button button--size--medium button--theme--light button--theme--shadow-medium form__button--type--skip">Пропустить</button>
         <button class="button button--theme--tangerin button--size--big button--theme--shadow-big form__button form__button--type--agree">Подтвердить</button>
        </div>
@@ -304,11 +305,40 @@ class CreateFormInputSignIn extends CreateItem {
         this.buttonAgree.addEventListener(event.type, event.callback);
       }
     }
-    if (typeof this.parameters.eventAgree === 'object') {
-      for (const event of this.parameters.eventAgree) {
-        this.buttonAgree.addEventListener(event.type, event.callback);
-      }
+
+    return super.create(this.element);
+  }
+}
+
+class CreateFormInput extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+  }
+
+  create(textAlert) {
+    if (textAlert !== '') {
+      const text = textAlert;
     }
+    this.element = document.createElement(this.parameters.selector);
+    this.template = `
+      <div class="form__input">
+        <label class="form__input-underlined">
+          <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--${this.parameters.identifier}" type="${this.parameters.inputType}" required>
+          <span class="form__input-label">${this.parameters.inputLabelName}</span>
+          <ul class="form__input-requirements">
+            <li class="form__input-requirement form__input-requirement--type--${this.parameters.identifier}">Введите корректные данные</li>
+          </ul>
+          <div class="form__input-icon-container">
+            <img src="[+chunkWebPath+]/img/icon-attention-triangle.svg" alt="" class="form__input-icon form__input-icon-error">
+          </div>
+        </label>
+        <p class="form__text form__text--error form__text--hide"></p>
+        <p class="form__text">${textAlert || ''}</p>
+        <p class="form__text form__text--success form__text--hide">Данные изменены</p>
+        </div>
+   `;
+    this.element.insertAdjacentHTML('beforeend', this.template);
 
     return super.create(this.element);
   }
@@ -374,4 +404,179 @@ class CreateFormGiftCard extends CreateItem {
     return super.create(this.element);
   }
 }
-validation();
+
+class CreateFormPromoCode extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+    this.element = document.createElement(this.parameters.selector);
+    this.template = `
+          <button class="accordion">Есть промокод?
+            <img src="[+chunkWebPath+]/img/icon-expand-direction-bottom.svg" alt="" class="accordion__icon-arrow">
+          </button>
+          <div class="accordion__content">
+          <div class="form">
+            <div class="form__input form__input--indentation--bottom">
+              <label class="form__input-underlined">
+                <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--text" type="text" required>
+                <span class="form__input-label accordion__input-label">Введите промокод</span>
+                
+                <div class="form__input-icon-container">
+                  <img src="[+chunkWebPath+]/img/icon-barcode.svg" alt="" class="form__input-icon">
+                </div>
+              </label>
+            </div>
+            <ul class="form__input-requirements">
+                  <li class="form__input-requirement form__input-requirement--type--promo-code"></li>
+                </ul>
+            <button class="button button--indentation--top button--theme--tangerin button--size--small button--type--promo-code" type="submit">Подтвердить</button>
+            </div>
+          </div>
+   `;
+  }
+
+  create() {
+    this.element.insertAdjacentHTML('beforeend', this.template);
+
+    this.buttonPromoCode = this.element.querySelector('.button--type--promo-code');
+
+    function checkPromoCode(info) {
+      const error = document.querySelector('.form__input-requirement--type--promo-code');
+
+      if (info.success) {
+        const cardItemContainer = document.querySelector('.card-item__container--type--review');
+        const accordionButton = document.querySelector('.accordion');
+
+        error.textContent = '';
+        error.classList.add('form__input-requirement--hide');
+
+
+        toggleModal.rendering(info.successData.promoCode.description);
+        const reviewCardItem = new CreateCardItemReviewOrder({
+          style: ['card-item'],
+          modifier: [
+            '--direction--row',
+            '--border--bottom',
+          ],
+        });
+        info.successData.promoCode.presentItems.forEach((item) => {
+          for (const el of Object.values(dataProductApi.successData.items)) {
+            if (item.id === el.id) {
+              cardItemContainer.append(reviewCardItem.create(item));
+            }
+          }
+        });
+        accordionButton.click();
+      } else {
+        error.textContent = info.errors[0];
+        error.classList.add('form__input-requirement--invalid');
+        error.classList.remove('form__input-requirement--hide');
+      }
+    }
+
+    this.buttonPromoCode.addEventListener('click', () => {
+      if (!isEmptyObj(userInfoObj)) {
+        const inputArea = this.element.querySelector('.form__input-area');
+        api.promoСodeСheckApi(userInfoObj.successData.phone, inputArea.value, checkPromoCode);
+      } else {
+        togglePage.clearPage();
+        toggleSubPage.closePage();
+        toggleSubPage.clearPage();
+        toggleThirdPage.closePage();
+        toggleThirdPage.clearPage();
+        toggleFourthPage.closePage();
+        toggleFourthPage.clearPage();
+        togglePageSignIn.rendering();
+      }
+    });
+
+
+    return super.create(this.element);
+  }
+}
+
+class CreateFormComment extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+    this.element = document.createElement(this.parameters.selector);
+    this.template = `
+          <button class="accordion">Хотите оставить комментарий к заказу?
+            <img src="[+chunkWebPath+]/img/icon-expand-direction-bottom.svg" alt="" class="accordion__icon-arrow">
+          </button>
+          <div class="accordion__content">
+          <div class="form">
+            <div class="form__input form__input--indentation--bottom">
+              <label class="form__input-underlined">
+                <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--text" type="text" required>
+                <span class="form__input-label accordion__input-label">Введите комментарий</span>
+              </label>
+            </div>
+            <ul class="form__input-requirements">
+              <li class="form__input-requirement form__input-requirement--type--comment"></li>
+            </ul>
+            <button class="button button--indentation--top button--theme--tangerin button--size--small button--type--comment" type="submit">Подтвердить</button>
+            </div>
+          </div>
+   `;
+  }
+
+  create() {
+    this.element.insertAdjacentHTML('beforeend', this.template);
+
+    this.buttonComment = this.element.querySelector('.button--type--comment');
+    this.inputArea = this.element.querySelector('.form__input-area');
+    /* function checkPromoCode(info) {
+      const error = document.querySelector('.form__input-requirement--type--comment');
+
+      if (info.success) {
+        const cardItemContainer = document.querySelector('.card-item__container--type--review');
+        const accordionContent = document.querySelector('.accordion__content');
+        const accordionButton = document.querySelector('.accordion');
+
+        error.textContent = '';
+        error.classList.add('form__input-requirement--hide');
+
+
+        toggleModal.rendering(info.successData.promoCode.description);
+        const reviewCardItem = new CreateCardItemReviewOrder({
+          style: ['card-item'],
+          modifier: [
+            '--direction--row',
+            '--border--bottom',
+          ],
+        });
+        info.successData.promoCode.presentItems.forEach((item) => {
+          for (const el of Object.values(dataProductApi.successData.items)) {
+            if (item.id === el.id) {
+              cardItemContainer.append(reviewCardItem.create(item));
+            }
+          }
+        });
+        accordionButton.click();
+      } else {
+        error.textContent = info.errors[0];
+        error.classList.add('form__input-requirement--invalid');
+        error.classList.remove('form__input-requirement--hide');
+      }
+    } */
+    this.error = this.element.querySelector('.form__input-requirement--type--comment');
+    this.buttonComment.addEventListener('click', () => {
+      if (this.inputArea.value !== '') {
+        const accordionButton = this.element.querySelector('.accordion');
+        this.error.textContent = `Ваш комментарий: ${this.inputArea.value}`;
+        this.error.classList.add('form__input-requirement--valid');
+        this.error.classList.remove('form__input-requirement--hide');
+        setTimeout(() => accordionButton.click(), 2000);
+        orderComment = this.inputArea.value;
+      } else {
+        this.error.textContent = 'Вы не ввели комментарий';
+        this.error.classList.add('form__input-requirement--invalid');
+        this.error.classList.remove('form__input-requirement--hide');
+      }
+    });
+
+
+    return super.create(this.element);
+  }
+}
