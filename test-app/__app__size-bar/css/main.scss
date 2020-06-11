@@ -1,0 +1,62 @@
+@import "../../__app__head-style-and-script/css/main.scss";
+
+.size-bar {
+  transition: all 0.1s ease-in;
+  background-color: $white;
+  padding-left: 16px;
+
+  &--open {
+    color: $white;
+    background: $nero;
+    flex-direction: column;
+  }
+
+  &__content-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 16px 12px 0;
+    align-items: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  &__title {
+    margin: 0;
+    @extend %style-5;
+
+    &--theme--dark {
+      color: $white;
+      align-self: flex-start;
+    }
+  }
+
+  &__info {
+    @extend %style-5;
+    color: $brown;
+  }
+
+  &__button-container {
+    width: 100%;
+    display: none;
+    justify-content: space-around;
+  }
+
+  &--open .size-bar__button-container {
+    display: flex;
+    padding-bottom: 10px;
+  }
+
+  &__button {
+    border: 0;
+    width: 71px;
+    height: 45px;
+    border-radius: 4px;
+    background: transparent;
+    color: $SuvaGrey;
+    padding: 0;
+
+    &--active {
+      background: $gray;
+      color: $white;
+    }
+  }
+}

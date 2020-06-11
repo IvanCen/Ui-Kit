@@ -1,0 +1,39 @@
+@import "../../__app__head-style-and-script/css/main.scss";
+
+.accordion {
+  @extend %style-5;
+  font-weight: bold;
+  display: flex;
+  width: 100%;
+  text-align: left;
+  color: $orange;
+  border: none;
+  outline: none;
+  transition: 0.4s;
+  justify-content: space-between;
+
+  &__container {
+    padding: 15px 16px;
+  }
+
+  &__content {
+    max-height: 0;
+    height: fit-content;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.2s ease-out, opacity 0.2s;
+
+    &--show {
+      opacity: 1;
+    }
+  }
+
+  &__icon-arrow {
+    margin-left: 20px;
+    transition: all 0.2s;
+
+    &--active {
+      transform: rotate(180deg);
+    }
+  }
+}
