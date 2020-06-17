@@ -1,38 +1,63 @@
-@import "../../../index";
+@import "../../__app__head-style-and-script/css/main.scss";
 
 .button {
-  border-radius: 50px;
   border: 0;
+  box-sizing: border-box;
+  //width: fit-content;
 
   &--size--big {
     @extend %style-4;
-    padding: 15px 27px;
+    font-weight: bold;
+    //padding: 15px 27px;
+    border-radius: 50px;
+    max-height: 50px;
+    height: 100%;
+    padding: 15px 27px 35px;
   }
 
   &--size--medium {
     @extend %style-4;
-    padding: 8px 18px;
+    font-weight: bold;
+    padding: 6px 18px;
+    border-radius: 50px;
+    max-height: 35px;
+    height: 100%;
+    width: auto;
   }
 
   &--size--small {
     @extend %style-5;
-    padding: 4px 15px;
+    font-weight: bold;
+    padding: 6px 15px 23px;
+    border-radius: 50px;
+    max-height: 29px;
+    height: 100%;
+    width: fit-content;
+  }
+
+  &--size--large {
+    max-width: 343px;
+    width: 100%;
+    height: 44px;
+    border-radius: 9px;
+
+    @media (max-width: 375px) {
+      margin: 0 16px;
+      width: calc(100% - 32px);
+    }
   }
 
   &--theme--tangerin {
     background: $orange;
     color: $white;
-
-    border: 0;
-
-    &:active {
-      background-color: $orange-dim;
-    }
+  }
+  &--theme--tangerin.button--active {
+    background-color: $orange-dim;
   }
 
-   &--theme--shadow-big {
-     box-shadow: 0 8px 10px rgba(0, 0, 0, 0.25);
-   }
+  &--theme--shadow-big {
+    box-shadow: 0 8px 10px rgba(0, 0, 0, 0.25);
+  }
 
   &--theme--shadow-medium {
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
@@ -41,44 +66,37 @@
   &--theme--tangerin-transparent {
     border: 1px solid $orange;
     color: $orange;
-
-    &:active {
-      background-color: $cinderella;
-    }
+  }
+  &--theme--tangerin-transparent.button--active {
+    background-color: $cinderella;
   }
 
   &--theme--light {
     background: $white;
     color: $black;
-
-    border: 0;
-
-    &:active {
-      background-color: $gray-dim;
-    }
+  }
+  &--theme--light.button--active {
+    background-color: $lightGrey;
   }
 
   &--theme--dark-transparent {
     border: 1px solid $black;
     color: $black;
-
-    &:active {
-      background-color: $gray-dim;
-    }
+  }
+  &--theme--dark-transparent.button--active {
+    background-color: $lightGrey;
   }
 
   &--theme--oranges-transparent {
     color: $orange;
-    border: 0;
-
-    &:active {
-      background-color: $cinderella;
-    }
+    font-weight: bold;
+  }
+  &--theme--oranges-transparent.button--active {
+    background-color: $cinderella;
   }
 
   &--theme--chocolate {
     color: $brown;
-    border: 0;
   }
 
   &--theme--light-transparent {
@@ -86,5 +104,63 @@
     color: $white;
     border: 1px solid $white;
   }
+
+  &--type--cancel {
+    @extend %style-3;
+    background: $white;
+    color: $dodgerBlue;
+  }
+
+  &--type--discard {
+    @extend %style-3;
+    font-weight: normal;
+    background: $ghostWhite;
+    color: $alizarinCrimson;
+  }
+
+  &--indentation--top {
+    margin-top: 20px;
+  }
+
+  &--indentation--right {
+    margin-right: 16px;
+  }
+
+  &--indentation--left {
+    margin-left: 16px;
+  }
+
+  &--indentation--bottom {
+    margin-bottom: 20px;
+  }
+
+  &--position--right {
+    align-self: flex-end;
+  }
+
+  &--position--left {
+    align-self: flex-start;
+  }
+
+  &--type--fixed {
+    position: fixed;
+    bottom: 95px;
+    right: 16px;
+    z-index: 1;
+  }
+
+  &--type--fixed-low {
+    position: fixed;
+    bottom: 20px;
+    right: 16px;
+    z-index: 1;
+  }
+
+  &--type--fixed-with-bottom-bar {
+    position: fixed;
+    bottom: 160px;
+    right: 16px;
+  }
+
 }
 

@@ -1,17 +1,1 @@
-/* Error: Undefined variable.
- *    ,
- * 25 |       background: $gray-dim;
- *    |                   ^^^^^^^^^
- *    '
- *   main.scss 25:19  root stylesheet */
-
-body::before {
-  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
-      "Droid Sans Mono", monospace, monospace;
-  white-space: pre;
-  display: block;
-  padding: 1em;
-  margin-bottom: 1em;
-  border-bottom: 2px solid black;
-  content: "Error: Undefined variable.\a    \2577 \a 25 \2502        background: $gray-dim;\a    \2502                    ^^^^^^^^^\a    \2575 \a   main.scss 25:19  root stylesheet";
-}
+.checkbox-slide{position:relative}.checkbox-slide--type--text{max-width:85px}.checkbox-slide--type--single{max-width:45px}.checkbox-slide__container{padding:20px 0;display:flex;flex-direction:column;height:100px;justify-content:space-between}.checkbox-slide__input{position:absolute;z-index:-1;opacity:0;margin:10px 0 0 20px}.checkbox-slide__text{position:relative;padding:0 0 0 35px;margin-right:15px;min-height:28px}.checkbox-slide__text:before{content:"";position:absolute;top:-6px;left:0;width:46px;height:28px;border-radius:50px;background:#d1d1d1;box-shadow:inset 0 2px 3px rgba(0,0,0,.2);transition:.2s}.checkbox-slide__text:after{content:"";position:absolute;top:-4px;left:2px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 2px 5px rgba(0,0,0,.3);transition:.2s}.checkbox-slide__input:checked+.checkbox-slide__text:before{background:#906848}.checkbox-slide__input:checked+.checkbox-slide__text:after{left:20px}

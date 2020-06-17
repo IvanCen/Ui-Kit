@@ -1,41 +1,226 @@
-@import "../../../index";
+@import "../../__app__head-style-and-script/css/main.scss";
+
+.text-area-wraper {
+  &--indentation--bottom {
+    margin-bottom: 100px;
+  }
+}
 
 .text-area {
-  //max-width: 320px;
-  //width: 100%;
-  //height: 500px;
-  //box-shadow: 0 5px 6px rgba(0, 0, 0, 0.1);
-  padding: 12px 16px 0 16px;
-  display: flex;
-  justify-content: space-between;
+  padding-left: 16px;
+
+  //border-bottom: 1px solid $gainsboroGray;
+
+  &--theme--light {
+    background-color: $white;
+  }
+
+  &--indentation--top {
+    padding-top: 20px;
+  }
+
+  &--indentation--bottom {
+    padding-bottom: 80px;
+  }
+
+  &--hide {
+    display: none;
+  }
+
+  &__container {
+    border-bottom: 1px solid $gainsboroGray;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &--indentation--small {
+      padding: 12px 16px 12px 0;
+    }
+
+    &--indentation--normal {
+      padding: 20px 16px 20px 0;
+    }
+
+    &--direction--column {
+      flex-direction: column;
+    }
+
+  }
 
   &__content-container {
+    display: flex;
+    width: 100%;
+
+    &--direction--row {
+      justify-content: space-between;
+      margin-bottom: 10px;
+      padding-right: 16px;
+    }
+
+    &--indentation--normal {
+      padding: 0 16px 20px 0;
+    }
+
+    &--direction--column {
+      flex-direction: column;
+    }
+
+    &--indentation--right {
+      margin-right: 20px;
+    }
+
+    &--type--more {
+      max-height: 110px;
+      overflow: hidden;
+      transition: all 0.1s ease-in;
+    }
+
+    &--open {
+      overflow: visible;
+      max-height: 100%;
+    }
+
+  }
+
+  &__checkbox-slide {
+    width: 90%;
   }
 
   &__title {
-    @extend %style-4;
-    margin: 0 0 5px;
+
+    &--size--small {
+      @extend %style-5;
+    }
+
+    &--size--normal {
+      @extend %style-4;
+    }
+
+    &--size--big {
+      @extend %style-2;
+    }
+
+    &--type--bold {
+      font-weight: bold;
+    }
+
+    &--indentation--bottom {
+      margin-bottom: 10px;
+    }
+
+    &--indentation--bottom-big {
+      margin-bottom: 20px;
+    }
+
+    &--theme--shadow {
+      color: $gray;
+    }
+
+    &--theme--smoke {
+      color: $gray;
+    }
+
+    &--indentation--big {
+      margin: 30px 0 18px;
+    }
+
+    &--theme--chocolate {
+      color: $brown;
+    }
+
+    &--type--uppercase {
+      text-transform: uppercase;
+      @extend %style-3;
+      color: $dimGray;
+      padding: 20px 0 10px 16px;
+      background-color: $pattensBlue;
+    }
+
+    &--position--center {
+      justify-content: center;
+      text-align: center;
+    }
+  }
+
+  &__counter-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 10px;
+  }
+
+  &__all-counter-title {
+    color: $dimGray;
+    @extend %style-5;
+    margin-right: 3px;
+  }
+
+  &__all-counter {
+    color: $brown;
+    @extend %style-5;
   }
 
   &__text {
     @extend %style-6;
     margin: 0 0 7px;
 
-    &--theme--gray {
+    &--theme--shadow {
       color: $gray;
+    }
+
+    &--indentation--big {
+      margin-bottom: 32px;
+    }
+
+    &--indentation--small {
+      padding: 12px 16px 12px 0;
     }
   }
 
   &__info {
-    display: block;
+    display: flex;
     @extend %style-5;
+    color: $gray;
+    padding-top: 11px;
 
-    margin: 0 0 7px;
-
-    &--text--normal {
+    &--text-size--normal {
       font-weight: normal;
       color: $gray;
     }
+
+    &--text-bold {
+      font-weight: bold;
+      margin: 0;
+      color: $black;
+    }
+  }
+
+  &__sub-info {
+    display: flex;
+    @extend %style-5;
+    color: $gray;
+    padding-left: 10px;
+    padding-top: 5px;
+  }
+
+  &__info-number {
+    display: block;
+
+    &--indentation--left {
+      margin-left: 5px;
+    }
+
+    &--indentation--top {
+      padding-top: 5px;
+    }
+  }
+
+  &__info-available {
+    display: block;
+    @extend %style-5;
+    color: $gray;
+    padding: 7px 0;
   }
 
   &__list {
@@ -43,26 +228,131 @@
     color: $brown;
     list-style: none;
     padding: 0;
-    margin: 0 0 12px;
-  }
-
-  &__list-item {
-
   }
 
   &__icon-container {
+    display: none;
+    justify-content: center;
+    align-items: center;
 
+    &--open {
+      display: flex;
+    }
   }
 
   &__icon {
+
     &--position--top {
       align-self: flex-start;
     }
+
     &--position--center {
       align-self: center;
     }
+
     &--position--first {
       margin-right: 32px;
     }
+
+    &--type--like {
+      width: 100%;
+      height: 100%;
+      stroke: gray;
+      fill: transparent;
+    }
+
+    &--liked {
+      stroke: none;
+      fill: $alizarinCrimson;
+    }
+  }
+
+  &__button-container {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  &__button {
+    @extend %style-5;
+    display: none;
+
+    &--open {
+      display: block;
+    }
+
+    &--type--share {
+      display: block;
+      align-self: flex-end;
+    }
+
+    &--type--like {
+      display: block;
+      align-self: flex-end;
+      width: 25px;
+      height: 25px;
+      margin-right: 20px;
+    }
+
+    &--type--more {
+      display: block;
+      align-self: flex-end;
+    }
+
+    &--type--reset {
+      display: block;
+      width: 100%;
+      font-weight: bold;
+      text-transform: uppercase;
+      height: 45px;
+      background-color: $white;
+      margin: 20px 0;
+    }
+  }
+
+  &__price {
+    position: relative;
+
+    &--hide {
+      display: none;
+    }
+
+    &--size--big {
+      @extend %style-2;
+
+      &:after {
+        content: '';
+        background: url("[+chunkWebPath+]/img/icon-rubles.svg") no-repeat;
+        background-size: cover;
+        position: absolute;
+        right: -17px;
+        top: 6px;
+        width: 15px;
+        height: 16px;
+      }
+    }
+
+    &--size--small {
+      @extend %style-5;
+      font-weight: bold;
+      width: fit-content;
+
+      &:after {
+        content: '';
+        background: url("[+chunkWebPath+]/img/icon-rubles.svg") no-repeat;
+        background-size: cover;
+        position: absolute;
+        right: -13px;
+        top: 4px;
+        width: 11px;
+        height: 11px;
+      }
+    }
+
+  }
+
+  &__number {
+    @extend %style-1;
+    position: relative;
+
   }
 }
