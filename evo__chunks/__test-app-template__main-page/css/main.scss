@@ -1,9 +1,17 @@
-.body {
-  overflow: hidden;
+.main-page::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
 }
 
 .main-page {
-  //max-height: calc(100vh - 78px);
+  overflow-y: scroll;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+
+  &--loaded {
+    display: none;
+  }
 
   &--size--small {
     display: flex;

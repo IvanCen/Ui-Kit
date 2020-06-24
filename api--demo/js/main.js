@@ -13,11 +13,102 @@
 //     console.log(JSON.parse(await rawResponse.text()));
 // })();
 /**
+ * Проверка статуса работы точки
+ *
+ * Вернет success если рассчет удалось осуществить или ошибку, если не удалось(ошибки нужны больше для отладки)
+ * Ориентироваться стоит на поле timeStateBool в successData
+ *
+ * successData(в случае успешного рассчета) Примеры возвращаемых данных:
+ * dayOfWeek: "thursday" # ближайший доступный день недели
+ * tempTimeTable: "" # временный текст расписания
+ * timeState: "Закрыто, откроется завтра в 01:00" # текстовый статус
+ * timeStateBool: false # флаг
+ * timeStateDelivery: "Доставка недоступна. Ближайшая доставка доступна на следующий день в 01:00" # текст для доставки
+ * timeStatePickUp: "Самовывоз недоступен. Ближайшее время самовывоза доступно на следующий день в 01:00" # текст для самовывоза
+ * timetable: "ежедневно с 10:00 до 20:00" # расписание текстом
+ *
+ */
+(async () => {
+    let request={
+        method: 'check-work-time',
+        outputFormat: 'json',
+        timezone : 3, // передаем пока 3 везде, так как все наши точки находятся в этой зоне
+        mondayMode : '10:00-20:00',
+        tuesdayMode : '10:00-20:00',
+        wednesdayMode : '0:00-1:00',
+        thursdayMode : '01:00-4:00, 10:00-20:00',
+        fridayMode : '10:00-20:00',
+        saturdayMode : '10:00-20:00',
+        sundayMode : '10:00-20:00',
+    };
+    let rawResponse = await fetch('[~30~]', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'text/html'
+        },
+        body: JSON.stringify(request)
+    });
+    console.log(JSON.parse(await rawResponse.text()));
+})();
+
+/**
+ * Отправка оценки заказа
+ *
+ * Доступные оценки: от 1 до 5
+ * единственная ошибка, которую есть смысл обрабатывать -> 'Войдите, чтобы продолжить'
+ * Вернет success если отправка выполнена успешно
+ */
+(async () => {
+    let request={
+        method: 'set-order-feedback',
+        orderId: 1000,
+        client: '+79522655566',
+        mark: 5,
+        comment: 'Все очень понравилось', // необязательное поле
+        outputFormat: 'json'
+    };
+    let rawResponse = await fetch('[~30~]', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'text/html'
+        },
+        body: JSON.stringify(request)
+    });
+    console.log(JSON.parse(await rawResponse.text()));
+})();
+/**
+ * Отправка сообщений через форму
+ *
+ * Доступные получатели: 'dukinm@gmail.com', 'dev@xleb.ru', 'marketing@xleb.ru'(тема 'Новый тайный покупатель'), 'rabota@xleb.ru'(тема 'Новый отклик на вакансию')
+ * Доступные темы писем: 'Новый отклик на вакансию', 'Новый тайный покупатель'
+ * Вернет success если отправка выполнена успешно
+ */
+(async () => {
+    let request={
+        method: 'send-form',
+        to: 'dukinm@gmail.com',
+        subject: 'Новый отклик на вакансию',
+        fields: { // любые поля ассоциативным массивом
+            'Имя' : 'Вася',
+            'Вакансия' : 'Повар',
+        },
+        outputFormat: 'json'
+    };
+    let rawResponse = await fetch('[~30~]', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'text/html'
+        },
+        body: JSON.stringify(request)
+    });
+    console.log(JSON.parse(await rawResponse.text()));
+})();
+/**
  * Пометить сообщение прочитанным, ошибки не надо показывать(они только для отладки), successData всегда пустой, для переключения вида сообщений ориентируемся только на success статус
  */
 (async () => {
     let request={
-        method: '_api__mark-message-read',
+        method: 'mark-message-read',
         phone: '+79522655566',
         id: 100, // идентефикатор сообщение, полученный при получении сообщений
         timestamp: '2020-06-05 11:30:00', // время вставки сообщения, полученное при получении сообщений

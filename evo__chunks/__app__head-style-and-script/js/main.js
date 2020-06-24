@@ -7,6 +7,10 @@ if ('serviceWorker' in navigator) {
   }
 }
 
+/*if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+  document.addEventListener('touchmove', function(e) {e.preventDefault();}, true);
+}*/
+
 function createTopBarIos() {
   const el = document.createElement('div');
   if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {

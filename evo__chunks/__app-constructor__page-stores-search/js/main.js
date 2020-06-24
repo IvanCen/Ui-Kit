@@ -118,7 +118,19 @@ class TogglePageStoresSearch extends TogglePage {
     const inputSearch = document.querySelector('.top-bar-search__input-area');
     const mapItemsContainer = document.querySelector('.map__container--type--search');
 
-    inputSearch.addEventListener('keyup', () => {
+    inputSearch.addEventListener('focus', () => {
+      this.page.classList.add('page--focus-input');
+    });
+
+    inputSearch.addEventListener('blur', () => {
+      this.page.classList.remove('page--focus-input');
+    });
+
+    inputSearch.addEventListener('keyup', (event) => {
+      if (event.code === 'Enter' || event.code === 'Go' || event.code === 13) {
+        this.page.classList.remove('page--focus-input');
+        inputSearch.blur();
+      }
       if (inputSearch.value.length < 1) {
         const arrHtml = Array.from(mapItemsContainer.children);
         arrHtml.splice(0, arrHtml.length).forEach((item) => item.remove());

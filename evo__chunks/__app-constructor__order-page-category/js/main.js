@@ -70,13 +70,13 @@ class TogglePageOrderCategoryAll extends TogglePage {
     this.mainPage.classList.remove('main-page--fixed');
   }
 
-  rendering(productsCategory, categoryName, drinksItemsLength, productsItems, categoryId) {
+  rendering(productsCategory, categoryName, itemsLength, productsItems, categoryId) {
     super.rendering();
     const orderCardTopBar = new CreateTopBarOrderCard({
       selector: ['div'],
       style: ['top-bar'],
       modifier: ['--size--medium', '--indentation--bottom'],
-      title: [`${categoryName} (${drinksItemsLength})`],
+      title: [`${categoryName} (${itemsLength})`],
       eventBack: [
         { type: 'click', callback: this.closePage },
         { type: 'click', callback: this.deletePage },

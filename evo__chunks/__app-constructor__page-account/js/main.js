@@ -32,7 +32,10 @@ class TogglePageAccount extends TogglePage {
             type: 'click',
             callback: () => {
               this.closePage();
-              togglePageSignIn.rendering();
+              this.deletePage();
+              setTimeout(() => {
+                togglePageSignIn.rendering();
+              }, 300);
             },
           },
         ],
@@ -83,7 +86,10 @@ class TogglePageAccount extends TogglePage {
             type: 'click',
             callback: () => {
               this.closePage();
-              togglePageSignIn.rendering();
+              this.deletePage();
+              setTimeout(() => {
+                togglePageSignIn.rendering();
+              }, 300);
             },
           },
         ],

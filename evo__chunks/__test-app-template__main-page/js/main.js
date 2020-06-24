@@ -1,4 +1,5 @@
 const mainPage = document.querySelector('.main-page');
+mainPage.classList.add('main-page--loaded');
 const body = document.querySelector('body');
 const api = new Api();
 let orderInfo;
@@ -16,13 +17,13 @@ const userStore = JSON.parse(localStorage.getItem('userStore')) || {};
 const userBalanceLog = JSON.parse(localStorage.getItem('userBalanceLog')) || {};
 const userBonusLog = JSON.parse(localStorage.getItem('userBonusLog')) || {};
 const dataProductApi = JSON.parse(localStorage.getItem('productData')) || {};
+const userFavoriteStore = JSON.parse(localStorage.getItem('userFavoriteStore')) || {};
 
 if (isEmptyObj(storesDataObj)) {
   api.storesApi();
 } else if ((Date.now() - storesDataObj.lastEditDateRequest) > (24 * 60 * 60 * 1000)) {
   api.storesApi();
 }
-
 
 if (isEmptyObj(applicationDataObj)) {
   api.getPrivacyPolicy('both', 'privacy-policy');
@@ -72,10 +73,16 @@ const togglePageStoresFilter = new TogglePageStoresFilter({
   classOpen: ['page--opened'],
 });
 const togglePageOrderCategoryAll = new TogglePageOrderCategoryAll({
-  classOpen: ['page--opened--bottom-bar'],
+  classOpen: ['page-order--opened--bottom-bar'],
 });
 const togglePageOrderCategory = new TogglePageOrderCategory({
-  classOpen: ['page--opened--bottom-bar'],
+  classOpen: ['page-order--opened--bottom-bar'],
+});
+const togglePageOrderCategory2 = new TogglePageOrderCategory({
+  classOpen: ['page-order--opened--bottom-bar'],
+});
+const togglePageOrderCategory3 = new TogglePageOrderCategory({
+  classOpen: ['page-order--opened--bottom-bar'],
 });
 const togglePageBalanceHistoryScore = new TogglePageBalanceHistory({
   classOpen: ['page--opened'],
@@ -137,6 +144,9 @@ const renderMainPage = new ToggleMain({ api });
 const togglePage = new TogglePage({
   classOpen: ['page--opened--bottom-bar', 'page--opened'],
 });
+const togglePageOrderCard = new TogglePageOrderCard({
+  classOpen: ['page-order--opened--bottom-bar', 'page-order--opened'],
+});
 const toggleSubPage = new ToggleSubPage({
   classOpen: ['subpage--opened--bottom-bar', 'subpage--opened'],
 });
@@ -168,6 +178,13 @@ const togglePageAccount = new TogglePageAccount({
 
 renderMainPage.rendering();
 
+function closeOrderPage() {
+  const pagesOrder = document.querySelectorAll('.page-order');
+  [...pagesOrder].forEach((item) => {
+    item.classList.remove('page-order--opened--bottom-bar');
+  });
+}
+
 const mainPageFooter = new CreateFooter({
   selector: ['div'],
   style: ['footer'],
@@ -178,6 +195,7 @@ const mainPageFooter = new CreateFooter({
     { type: 'click', callback: renderMainPage.openPage },
     { type: 'click', callback: togglePage.closePage },
     { type: 'click', callback: togglePage.deletePage },
+    { type: 'click', callback: closeOrderPage },
     { type: 'click', callback: toggleSubPage.closePage },
     { type: 'click', callback: toggleSubPage.deletePage },
     { type: 'click', callback: toggleThirdPage.closePage },
@@ -190,6 +208,7 @@ const mainPageFooter = new CreateFooter({
     { type: 'click', callback: toggleBalance.openPage },
     { type: 'click', callback: togglePage.closePage },
     { type: 'click', callback: togglePage.deletePage },
+    { type: 'click', callback: closeOrderPage },
     { type: 'click', callback: toggleSubPage.closePage },
     { type: 'click', callback: toggleSubPage.deletePage },
     { type: 'click', callback: toggleThirdPage.closePage },
@@ -205,6 +224,7 @@ const mainPageFooter = new CreateFooter({
     { type: 'click', callback: toggleOrderHistoryContent.rendering },
     { type: 'click', callback: togglePage.closePage },
     { type: 'click', callback: togglePage.deletePage },
+    { type: 'click', callback: closeOrderPage },
     { type: 'click', callback: toggleSubPage.closePage },
     { type: 'click', callback: toggleSubPage.deletePage },
     { type: 'click', callback: toggleThirdPage.closePage },
@@ -217,6 +237,7 @@ const mainPageFooter = new CreateFooter({
     { type: 'click', callback: toggleGift.openPage },
     { type: 'click', callback: togglePage.closePage },
     { type: 'click', callback: togglePage.deletePage },
+    { type: 'click', callback: closeOrderPage },
     { type: 'click', callback: toggleSubPage.closePage },
     { type: 'click', callback: toggleSubPage.deletePage },
     { type: 'click', callback: toggleThirdPage.closePage },
@@ -229,6 +250,7 @@ const mainPageFooter = new CreateFooter({
     { type: 'click', callback: toggleStores.openPage },
     { type: 'click', callback: togglePage.closePage },
     { type: 'click', callback: togglePage.deletePage },
+    { type: 'click', callback: closeOrderPage },
     { type: 'click', callback: toggleSubPage.closePage },
     { type: 'click', callback: toggleSubPage.deletePage },
     { type: 'click', callback: toggleThirdPage.closePage },
@@ -244,3 +266,25 @@ if (/\?refer=alfa.*/.test(window.location.search)) {
   const win = window.open('about:blank', '_self');
   win.close();
 }
+
+(function renderHashOrderCategoryPage() {
+  const buttonMain = document.querySelector('.footer__button--type--main');
+  const buttonOrder = document.querySelector('.footer__button--type--order');
+  buttonOrder.dispatchEvent(new Event('click'));
+  Array.from(document.querySelectorAll('.card-item--direction--row')).forEach((item) => {
+    item.dispatchEvent(new Event('click'));
+
+    document.querySelectorAll('.page-order').forEach((el) => {
+      el.classList.add('page-order--hide');
+    });
+  });
+  setTimeout(() => {
+    buttonMain.dispatchEvent(new Event('click'));
+  }, 1000);
+
+  setTimeout(() => {
+    document.querySelectorAll('.page-order').forEach((el) => {
+      el.classList.remove('page-order--hide');
+    });
+  }, 3000);
+}());

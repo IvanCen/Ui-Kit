@@ -27,6 +27,10 @@
     height: calc(100vh - 133px);
   }
 
+  &--focus-input{
+    padding-bottom: calc(50vh);
+  }
+
   &__content {
 
     &--page--cards {

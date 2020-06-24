@@ -18,6 +18,9 @@
   top: 0;
   height: 100vh;
 
+  &--focus-input{
+    padding-bottom: calc(50vh);
+  }
 
   &--opened {
     left: 0;
