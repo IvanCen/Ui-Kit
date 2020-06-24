@@ -1,0 +1,55 @@
+@import "../../__app__head-style-and-script/css/main.scss";
+
+
+.main-page__content {
+  position: fixed;
+  left: 100%;
+  width: 100%;
+  bottom: 0;
+  z-index: 3;
+  background-color: $white;
+  flex-grow: 1;
+  transition: all .3s ease-out;
+  display: flex;
+  align-items: stretch;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  flex-direction: column;
+  justify-content: flex-start;
+  top: 0;
+   //убрать потом, сделанно для отображение с панелькой телефонов
+
+  &--opened {
+    height: calc(100vh - 78px);
+    left: 0;
+  }
+
+  &--opened--bottom-bar {
+    left: 0;
+    height: calc(100vh - 133px);
+  }
+
+  &--size--small {
+    max-height: calc(100vh - 78px);
+    overflow-x: hidden;
+    overflow-y: scroll;
+  }
+
+  &--type--noscroll {
+    overflow-y: hidden;
+  }
+
+  &--with--bottom-bar {
+    overflow-x: hidden;
+    overflow-y: scroll;
+    max-height: calc(100vh - 133px);
+  }
+}
+
+.main-page__tab-content {
+  display: none;
+
+  &--open {
+    display: block;
+  }
+}

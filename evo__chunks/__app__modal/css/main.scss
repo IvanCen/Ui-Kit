@@ -1,17 +1,41 @@
 @import "../../__app__head-style-and-script/css/main.scss";
 
-
 .modal {
-  background: $white;
-  max-height: calc(100vh - 160px);
-  width: calc(100% - 32px);
-  padding: 30px 28px;
-  font-size: 14px;
-  box-sizing: border-box;
-  overflow: auto;
-  box-shadow: 0 10px 60px rgba(0, 0, 0, 0.2);
-  border-radius: 6px;
-  z-index: 110;
+  display: flex;
+  position: fixed;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, .4);
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .2s, visibility .2s;
+
+
+  &--open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  &__content-container {
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    background: $white;
+    max-height: 92%;
+    width: calc(100% - 32px);
+    padding: 28px 28px;
+    font-size: 14px;
+    box-sizing: border-box;
+    box-shadow: 0 10px 60px rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    z-index: 1;
+  }
 
   &__title {
     @extend %style-2;
@@ -19,18 +43,52 @@
   }
 
   &__text {
-    @extend %style-6;
-    margin: 0 0 23px;
+
+
+    &--theme--shadow {
+      color: $dimGray;
+    }
+
+    &--size--big {
+      @extend %style-5;
+    }
+
+    &--size--small {
+      @extend %style-8;
+    }
+
+    &--size--normal {
+      @extend %style-6;
+    }
+
+    &--indentation--small {
+      margin-bottom: 5px;
+    }
+
+    &--indentation--normal {
+      margin-bottom: 10px;
+    }
+    &--indentation--big {
+      margin-bottom: 20px;
+    }
+
   }
 
-  &--open {
-    display: flex;
-    flex-direction: column;
+  &__img {
+    margin-bottom: 10px;
+    padding-bottom: 75%;
+    background-repeat: no-repeat;
+    background-size: cover;
   }
 
   &__button {
+
     &:first-child {
       margin-right: 16px;
+    }
+
+    &--indentation--top {
+      margin-top: 20px;
     }
   }
 
@@ -45,10 +103,13 @@
 
   &__button-container {
     display: flex;
+    flex-shrink: 0;
     justify-content: flex-end;
+    margin-bottom: 2px;
   }
 
   &__checkbox {
+    max-width: 130px;
     margin-bottom: 30px;
   }
 }

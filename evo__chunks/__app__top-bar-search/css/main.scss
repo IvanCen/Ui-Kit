@@ -3,13 +3,20 @@
 .top-bar-search {
   width: 100%;
   border-bottom: 1px solid $gainsboroGray;
-  padding: 16px 16px 7px;
-  border-radius: 9px 9px 0 0;
+  border-top: 1px solid $gainsboroGray;
+  padding: 50px 16px 7px;
 
-  &__input-area.input__area {
+   &--size--small {
+     padding: 10px 16px 7px;
+   }
+
+  &--indentation--bottom {
+    margin-bottom: 20px;
+  }
+
+  &__input-area {
     @extend %style-1;
-    padding-bottom: 0;
-    padding-top: 15px;
+    padding: 15px 0 0;
   }
 
   &__info {
@@ -18,17 +25,18 @@
   }
 
   &__input {
+    position: relative;
     margin-bottom: 34px;
   }
 
   &__icon {
 
     &--type--delete {
-
-    }
-
-    &--type--close {
-
+      display: flex;
+      position: absolute;
+      right: 0;
+      top: 20px;
+      padding: 20px 0 20px 40px;
     }
   }
 }

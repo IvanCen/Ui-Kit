@@ -1,0 +1,118 @@
+<!--
+<div class="container">
+  <form class="form" name="register" action="http://httpbin.org/post" method="POST">
+    <h4 class="title title&#45;&#45;size&#45;&#45;medium">Inputs</h4>
+    <fieldset class="form__fieldset">
+      <div class="form__input">
+        <label class="form__input-underlined">
+          <input class="form__input-area form__input-area&#45;&#45;font&#45;&#45;normal form__input-area__name form__input-area&#45;&#45;type&#45;&#45;fly-label" minlength="2">
+          <span class="form__input-label">Name</span>
+          <ul class="form__input-requirements">
+            <li class="form__input-requirement form__input-requirement&#45;&#45;type&#45;&#45;name">This input needs to be at least 2 characters
+            </li>
+            <li class="form__input-requirement form__input-requirement&#45;&#45;type&#45;&#45;name">Only russian letters are allowed</li>
+          </ul>
+        </label>
+      </div>
+
+      <div class="form__input">
+        <label class="form__input-underlined">
+          <input class="form__input-area form__input-area&#45;&#45;font&#45;&#45;normal form__input-area&#45;&#45;type&#45;&#45;fly-label form__input-area&#45;&#45;disabled" required disabled>
+          <span class="form__input-label form__input-label&#45;&#45;disabled">DISABLED</span>
+        </label>
+      </div>
+
+      <div class="form__input">
+        <label class="form__input-underlined">
+          <input class="form__input-area form__input-area&#45;&#45;font&#45;&#45;normal form__input-area&#45;&#45;type&#45;&#45;fly-label form__input-area&#45;&#45;type&#45;&#45;email" type="email" required>
+          <span class="form__input-label">Email</span>
+          <ul class="form__input-requirements">
+            <li class="form__input-requirement form__input-requirement&#45;&#45;type&#45;&#45;email">Please enter a valid email address</li>
+          </ul>
+        </label>
+      </div>
+
+      <div class="form__input">
+        <label class="form__input-underlined">
+          <input class="form__input-area form__input-area&#45;&#45;font&#45;&#45;normal form__input-area&#45;&#45;type&#45;&#45;fly-label form__input-area&#45;&#45;type&#45;&#45;password"
+                 type="password" maxlength="100" minlength="8" required>
+          <span class="form__input-label">Password</span>
+          <ul class="form__input-requirements">
+            <li class="form__input-requirement form__input-requirement&#45;&#45;type&#45;&#45;password">At least 8 characters long (and less than
+              100 characters)
+            </li>
+            <li class="form__input-requirement form__input-requirement&#45;&#45;type&#45;&#45;password">Contains at least 1 number</li>
+            <li class="form__input-requirement form__input-requirement&#45;&#45;type&#45;&#45;password">Contains at least 1 lowercase letter</li>
+            <li class="form__input-requirement form__input-requirement&#45;&#45;type&#45;&#45;password">Contains at least 1 uppercase letter</li>
+            <li class="form__input-requirement form__input-requirement&#45;&#45;type&#45;&#45;password">Contains a special character (e.g. @ !)
+            </li>
+          </ul>
+          <div class="form__input-icon-container">
+            <img src="[+chunkWebPath+]/img/icon-eye-noVisible.svg" alt="" class="form__input-icon form__input-icon-eye">
+            <img src="[+chunkWebPath+]/img/icon-attention-triangle.svg" alt="" class="form__input-icon">
+          </div>
+        </label>
+      </div>
+
+      <div class="form__input">
+        <label class="form__input-underlined">
+          <input
+              class="form__input-area form__input-area&#45;&#45;font&#45;&#45;normal form__input-area&#45;&#45;type&#45;&#45;password-repeat form__input-area&#45;&#45;type&#45;&#45;fly-label form__input-area&#45;&#45;error form__input-area&#45;&#45;type&#45;&#45;password"
+              type="password" maxlength="100" minlength="2"
+              required>
+          <span class="form__input-label form__input-label&#45;&#45;error">Password repeat</span>
+          <ul class="form__input-requirements">
+            <li class="form__input-requirement form__input-requirement&#45;&#45;type&#45;&#45;password-repeat">This password needs to match the
+              first one
+              <div class="form__input-icon-container">
+                <img src="[+chunkWebPath+]/img/icon-eye-noVisible.svg" alt="" class="form__input-icon form__input-icon-eye">
+                <img src="[+chunkWebPath+]/img/icon-attention-triangle.svg" alt="" class="form__input-icon">
+              </div>
+        </label>
+      </div>
+
+      <div class="form__input">
+        <label class="form__input-underlined">
+          <input pattern="^\+?\d\s?(\(\d{3}\))?(\s?\d{3})([\s-]?\d{3})?(-?[\s0-9]{2}){2}(?![0-9])$"
+                 class="form__input-area form__input-area&#45;&#45;font&#45;&#45;normal form__input-area&#45;&#45;type&#45;&#45;fly-label" type="tel" required>
+          <span class="form__input-label">Telephone</span>
+          <div class="form__input-icon-container">
+            <img src="[+chunkWebPath+]/img/icon-phone.svg" alt="" class="form__input-icon">
+          </div>
+        </label>
+      </div>
+
+      <div class="form__input">
+        <label class="form__input-underlined">
+          <input class="form__input-area form__input-area&#45;&#45;font&#45;&#45;normal form__input-area&#45;&#45;type&#45;&#45;fly-label" type="text" required>
+          <span class="form__input-label">Address</span>
+          <div class="form__input-icon-container">
+            <img src="[+chunkWebPath+]/img/icon-on-map.svg" alt="" class="form__input-icon">
+          </div>
+        </label>
+      </div>
+
+      <div class="form__input">
+        <label class="form__input-underlined">
+          <input class="form__input-area form__input-area&#45;&#45;font&#45;&#45;normal form__input-area&#45;&#45;type&#45;&#45;fly-label form__input-area-password" type="text" required>
+          <span class="form__input-label accordion__input-label">Card number</span>
+          <div class="form__input-icon-container">
+            <img src="[+chunkWebPath+]/img/icon-barcode.svg" alt="" class="form__input-icon form__input-icon-eye">
+          </div>
+        </label>
+      </div>
+
+      <div class="form__input">
+        <label class="form__input-underlined">
+          <input class="form__input-area form__input-area&#45;&#45;font&#45;&#45;normal form__input-area&#45;&#45;type&#45;&#45;fly-label form__input-area-password" type="password" required>
+          <span class="form__input-label accordion__input-label">Security code</span>
+          <div class="form__input-icon-container">
+            <img src="[+chunkWebPath+]/img/icon-eye-noVisible.svg" alt="" class="form__input-icon form__input-icon-eye">
+          </div>
+        </label>
+      </div>
+      <button class="button button&#45;&#45;theme&#45;&#45;tangerin button&#45;&#45;size&#45;&#45;big form__button" type="submit">Отправить</button>
+    </fieldset>
+  </form>
+</div>
+-->

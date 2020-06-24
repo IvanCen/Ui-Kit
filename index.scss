@@ -1,5 +1,3 @@
-@import 'raw/__app__fonts/SanFrancisco/main.css';
-
 
 $orange: #E6551E;
 $brown: #906848;
@@ -13,15 +11,17 @@ $black: #000000;
 $white: #FFFFFF;
 $cinderella: #F4D7CC;
 $orange-dim: #EC8660;
-$gray-dim: #D1D1D1;
+$lightGrey: #D1D1D1;
 $whitelight: #EEEEEF;
 $birch: #3E3B34;
 $nero: #141414;
+$SuvaGrey: #939393;
 $dimGray: #6B6B6B;
-
+$ghostWhite: #F1F1F2;
+$dodgerBlue: #2F80ED;
 
 %style-1 {
-  font-family: 'SF UI Display';
+
   font-style: normal;
   font-weight: 600;
   font-size: 27px;
@@ -29,14 +29,12 @@ $dimGray: #6B6B6B;
   letter-spacing: 0.02em;
 }
 %style-2 {
-  font-family: 'SF UI Display';
   font-style: normal;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 22px;
   line-height: 28px;
 }
 %style-3 {
-  font-family: 'SF UI Text';
   font-style: normal;
   font-weight: 600;
   font-size: 17px;
@@ -44,35 +42,30 @@ $dimGray: #6B6B6B;
   letter-spacing: 0.02em;
 }
 %style-4 {
-  font-family: 'SF UI Text';
   font-style: normal;
   font-weight: bold;
   font-size: 15px;
   line-height: 20px;
 }
 %style-5 {
-  font-family: 'SF UI Text';
   font-style: normal;
-  font-weight: 600;
+  font-weight: 500;
   font-size: 13px;
   line-height: 19px;
 }
 %style-6 {
-  font-family: 'SF UI Text';
   font-style: normal;
   font-weight: 500;
   font-size: 12px;
   line-height: 18px;
 }
 %style-7 {
-  font-family: 'SF UI Text';
   font-style: normal;
   font-weight: normal;
   font-size: 11px;
   line-height: 16px;
 }
 %style-8 {
-  font-family: 'SF UI Text';
   font-style: normal;
   font-weight: bold;
   font-size: 10px;

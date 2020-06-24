@@ -7,7 +7,13 @@
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>
-          <option name="port" value="21" />
+        </fileTransfer>
+      </webServer>
+      <webServer id="26d2b2a2-4628-4743-a938-8c670e9dce5c" name="demo.xleb.ru" url="http://5.53.124.91">
+        <fileTransfer accessType="SFTP" host="5.53.124.91" port="22" sshConfigId="97664716-988f-4c44-ad0e-5d9c45086027" sshConfig="admin@5.53.124.91:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
         </fileTransfer>
       </webServer>
     </option>

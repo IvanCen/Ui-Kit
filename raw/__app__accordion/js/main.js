@@ -1,18 +1,17 @@
-var acc = document.getElementsByClassName("accordion");
-var i;
+function activeAccordion() {
+  const accordion = document.querySelectorAll('.accordion');
 
-for (i = 0; i < acc.length; i++) {
-    acc[i].addEventListener("click", function() {
-        /* Toggle between adding and removing the "active" class,
-        to highlight the button that controls the panel */
-        this.classList.toggle("active");
-
-        /* Toggle between hiding and showing the active panel */
-        var panel = this.nextElementSibling;
-        if (panel.style.display === "block") {
-            panel.style.display = "none";
-        } else {
-            panel.style.display = "block";
-        }
+  [...accordion].forEach((item) => {
+    item.addEventListener('click', function () {
+      this.classList.toggle('accordion--active');
+      this.firstElementChild.classList.toggle('accordion__icon-arrow--active');
+      this.nextElementSibling.classList.toggle('accordion__content--show');
+      const accordionContent = this.nextElementSibling;
+      if (accordionContent.style.maxHeight) {
+        accordionContent.style.maxHeight = null;
+      } else {
+        accordionContent.style.maxHeight = `${accordionContent.scrollHeight + 30}px`;
+      }
     });
+  });
 }

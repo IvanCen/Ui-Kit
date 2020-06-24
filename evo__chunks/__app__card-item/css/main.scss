@@ -1,14 +1,12 @@
 @import "../../__app__head-style-and-script/css/main.scss";
 
-
-%background-noimage {
-  background: url("[+chunkWebPath+]/../__app__images/no-image.jpg") no-repeat $gray;
-  background-size: cover;
-  border-radius: 50%;
-}
-
 .card-item {
   justify-content: center;
+  transition: all 0.2s ease-in;
+
+  &--animation {
+    transform: translateX(-100%);
+  }
 
   &--border--bottom {
     border-bottom: 1px solid $gainsboroGray;
@@ -20,7 +18,7 @@
     display: grid;
     grid-template-columns: 65px 1fr;
     justify-items: flex-start;
-    grid-gap: 0 13px;
+    grid-gap: 10px 13px;
   }
 
   &--direction--column {
@@ -31,6 +29,18 @@
     grid-template-rows: max-content;
   }
 
+  &--indentation--bottom {
+    margin-bottom: 10px;
+    padding: 0 16px;
+  }
+
+  &--indentation--normal {
+    padding: 20px 16px;
+  }
+
+  &__content-container {
+    width: 100%;
+  }
 
   &__container {
 
@@ -57,8 +67,17 @@
     }
 
     &--with--border {
-      padding: 20px 16px;
+      padding: 0 16px 20px;
     }
+
+    &--indentation--top {
+      margin-top: 20px;
+    }
+
+    &--indentation--bottom {
+      padding-bottom: 80px;
+    }
+
   }
 
   &__title {
@@ -69,7 +88,7 @@
 
     &--text--bold {
       @extend %style-3;
-      padding-top: 20px;
+      margin: auto 0;
     }
 
     &--text--normal {
@@ -78,8 +97,25 @@
       flex-direction: column;
     }
 
+    &--text--big {
+      @extend %style-3;
+      font-weight: normal;
+    }
+
     &--disable {
       opacity: 0.4;
+    }
+
+    &--indentation--normal {
+      padding-top: 13px;
+    }
+
+    &--theme--green {
+      color: $seaGreen;
+    }
+
+    &--theme--red {
+      color: $alizarinCrimson;
     }
   }
 
@@ -99,27 +135,46 @@
     margin-right: 5px;
   }
 
+  &__image-reward {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: lightgray;
+    padding-bottom: 100%;
+    width: 100%;
+    height: 100%;
+    margin-bottom: 20px;
+  }
+
   &__image {
     border-radius: 50%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: lightgray;
 
     &--size--small {
       width: 65px;
       height: 65px;
-      @extend %background-noimage;
     }
 
     &--size--medium {
       width: 136px;
       height: 136px;
-      @extend %background-noimage;
+
+      @media (max-width: 375px) {
+        width: 125px;
+        height: 125px;
+      }
     }
 
     &--size--big {
       width: 165px;
       height: 165px;
-      @extend %background-noimage;
-      @media screen and (max-width: 375px) {
-        width: 100%;
+
+      @media (max-width: 375px) {
+        width: 125px;
+        height: 125px;
       }
     }
 
@@ -147,6 +202,10 @@
     &--indentation--normal {
       padding-top: 13px;
     }
+
+    &--indentation--bottom {
+      margin-bottom: 10px;
+    }
   }
 
   &__icon-container {
@@ -160,18 +219,53 @@
   &__button {
     padding: 0;
 
+    &--type--minus {
+      margin-right: 20px;
+    }
+
     &--type--like {
       margin-right: 34px;
+      width: 24px;
+      height: 24px;
+      fill: transparent;
     }
   }
 
   &__icon {
     padding: 0;
     stroke: $gray;
+    fill: none;
 
     &--liked {
       stroke: none;
       fill: $alizarinCrimson;
     }
   }
+
+  &__list {
+    @extend %style-5;
+    color: $brown;
+    list-style: none;
+    padding: 0;
+    margin-bottom: 10px;
+  }
+
+  &__price {
+    position: relative;
+    @extend %style-3;
+    width: fit-content;
+
+    &:after {
+      content: '';
+      background: url("[+chunkWebPath+]/img/icon-rubles.svg") no-repeat;
+      background-size: cover;
+      position: absolute;
+      right: -13px;
+      top: 4px;
+      width: 11px;
+      height: 11px;
+    }
+  }
+
 }
+

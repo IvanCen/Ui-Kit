@@ -1,0 +1,87 @@
+@import "../../__app__head-style-and-script/css/main.scss";
+
+.banners {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 20px;
+  min-height: max-content;
+}
+
+.banner__container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  position: relative;
+  min-height: 200px;
+
+  //touch-action: none; // нужно расскомментировать когда вертикальный скролл будет сделан на js
+  &--with-animation {
+    transition: transform .3s ease;
+  }
+
+}
+
+.banners__text {
+  @extend %style-6;
+  font-weight: bold;
+  display: block;
+  text-align: center;
+}
+
+.banners__banner {
+
+  position: relative;
+  flex-shrink: 0;
+
+  &---type--circle {
+    width: 136px;
+    padding-left: 13px;;
+  }
+
+  &--type--rectangle {
+    padding-left: 16px;
+  }
+
+  &--size--big {
+    width: 93vw;
+  }
+
+  &--size--medium {
+    width: 75vw;
+  }
+
+  &--size--small {
+    width: 46vw;
+  }
+
+}
+
+.banners__banner-filler {
+  background-color: lightgrey;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.22);
+
+  &---type--circle {
+    border-radius: 50%;
+    padding-bottom: 100%;
+    margin-bottom: 10px;
+  }
+
+  &--size--big {
+    padding-bottom: 64%;
+    border-radius: 12px;
+  }
+
+  &--size--medium {
+    padding-bottom: 57%;
+    border-radius: 6px;
+  }
+
+  &--size--small {
+    padding-bottom: 64%;
+    border-radius: 6px;
+  }
+}
