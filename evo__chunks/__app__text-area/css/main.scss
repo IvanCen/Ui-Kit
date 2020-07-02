@@ -255,8 +255,8 @@
     }
 
     &--type--like {
-      width: 100%;
-      height: 100%;
+      width: 24px;
+      height: 24px;
       stroke: gray;
       fill: transparent;
     }
@@ -265,6 +265,12 @@
       stroke: none;
       fill: $alizarinCrimson;
     }
+
+    &--size--small {
+      width: 20px;
+      height: 20px;
+    }
+
   }
 
   &__button-container {

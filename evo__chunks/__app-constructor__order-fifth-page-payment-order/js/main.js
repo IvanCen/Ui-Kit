@@ -23,6 +23,7 @@ class ToggleFifthPageReviewOrder extends ToggleFifthPage {
         { type: 'click', callback: toggleStores.openPage },
         { type: 'click', callback: togglePage.closePage },
         { type: 'click', callback: togglePage.deletePage },
+        { type: 'click', callback: closeOrderPage },
         { type: 'click', callback: toggleSubPage.closePage },
         { type: 'click', callback: toggleSubPage.deletePage },
         { type: 'click', callback: toggleThirdPage.closePage },

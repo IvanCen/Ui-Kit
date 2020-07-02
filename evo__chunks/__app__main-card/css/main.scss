@@ -26,6 +26,14 @@
     border-radius: 6px;
   }
 
+  &__container-promo {
+
+    &--indentation--top {
+      padding-top: 250px;
+    }
+
+  }
+
   &__content {
     position: relative;
     display: flex;
@@ -108,9 +116,9 @@
     flex-direction: column;
     padding: 20px 16px 20px;
 
-     &--border--bottom {
-       border-bottom: 1px solid $gainsboroGray;
-     }
+    &--border--bottom {
+      border-bottom: 1px solid $gainsboroGray;
+    }
   }
 
   &__title {

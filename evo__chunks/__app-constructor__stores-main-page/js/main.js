@@ -12,7 +12,6 @@ class ToggleStores extends ToggleMainPage {
       const radioInputs = document.querySelectorAll('.radio__input');
       [...radioInputs].forEach((item) => {
         if (item.checked) {
-          console.log(item.checked)
           stores.successData.forEach((el) => {
             if (el.id === Number(item.id)) {
               localStorage.setItem('short-name-shop', el.shortTitle);
@@ -143,11 +142,9 @@ class ToggleStores extends ToggleMainPage {
     renderStores(storesDataObj);
     this.mainPageContent.append(storesButtonChoiceOrange.create());
     this.chooseShop(storesDataObj, returnPage);
-    console.log(userStore);
     setTimeout(() => {
       if (!isEmptyObj(userStore)) {
         const radioInputs = document.querySelectorAll('.radio__input');
-        console.log(userStore.store);
         [...radioInputs].forEach((item) => {
           if (userStore.store.id === Number(item.id)) {
             item.checked = true;

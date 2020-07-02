@@ -35,6 +35,7 @@ class ToggleBalance extends ToggleMainPage {
       themeButton: ['--theme--tangerin'],
       identifier: ['score'],
       text: ['Ваш баланс'],
+      heart: false,
       number() {
         if (!isEmptyObj(userInfoObj)) {
           return userInfoObj.successData.balance;
@@ -42,8 +43,17 @@ class ToggleBalance extends ToggleMainPage {
         return '0';
       },
       eventButton: [
-        { type: 'click', callback: togglePageBalanceHistoryScore.rendering },
+        {
+          type: 'click',
+          callback: () => {
+            const option = {
+              heart: false,
+            };
+            togglePageBalanceHistoryBonus.rendering(option);
+          },
+        },
         { type: 'click', callback: togglePageBalanceHistoryScore.openPage },
+
       ],
     });
     const textAreaBonus = new CreateTextAreaBalance({

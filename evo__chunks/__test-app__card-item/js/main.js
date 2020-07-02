@@ -7,7 +7,6 @@ function activeLike() {
   });
 }
 
-
 class CreateCardItemOrder extends CreateItem {
   constructor(parameters) {
     super();
@@ -203,14 +202,14 @@ class CreateCardItemFavAndHisOrder extends CreateItem {
            
             <ul class="card-item__list"></ul>
             <div class="card-item__icon-container">
-              <button class="card-item__button card-item__button--type--like">
+              <button class="card-item__button card-item__button--type--like card-item__button--size--big">
                 <svg class="card-item__icon card-item__icon--type--like card-item__icon--liked" viewBox="0 0 24 24"
                      xmlns="http://www.w3.org/2000/svg">
                   <path
                       d="M1.8 9.80005C1.6 9.25005 1.5 8.67005 1.5 8.05005C1.5 5.15005 3.86 2.80005 6.75 2.80005C8.84 2.80005 10.66 4.03005 11.5 5.80005C11.7 6.22005 12.29 6.22005 12.5 5.80005C13.35 4.02005 15.16 2.80005 17.25 2.80005C20.14 2.80005 22.5 5.15005 22.5 8.05005C22.5 8.67005 22.39 9.27005 22.19 9.83005C21.93 10.56 21.51 11.21 20.97 11.76L12.02 20.66L3.4 12.09L3.39 12.08L3.38 12.07C3.17 11.89 2.98 11.7 2.8 11.49C2.35 10.99 2.02 10.42 1.8 9.80005Z"/>
                 </svg>
               </button>
-              <button class="card-item__button">
+              <button class="card-item__button card-item__button--size--big">
                 <img src="[+chunkWebPath+]/img/icon-add-circle-plus.svg" alt=""
                      class="card-item__icon card-item__icon--type--add">
               </button>
@@ -221,6 +220,12 @@ class CreateCardItemFavAndHisOrder extends CreateItem {
     this.img = this.element.querySelector('.card-item__image');
     this.iconsAdd = this.element.querySelector('.card-item__icon--type--add');
     const el = this.element;
+    console.log(productInfo);
+    this.element.addEventListener('click', () => {
+      toggleFifthPage.closePage();
+      toggleSubPageProductCard.rendering(dataProductApi.successData.items[productInfo.id]);
+      toggleFifthPage.deletePage();
+    });
 
     if (typeof dataProductApi.successData.items[productInfo.id] === 'object' && typeof productInfo.modifiers === 'object') {
       const cardItemList = this.element.querySelector('.card-item__list');
@@ -313,6 +318,7 @@ class CreateCardItemContainerFavAndHisOrder extends CreateItem {
   }
 }
 
+
 class CreateCardItemReviewOrder extends CreateItem {
   constructor(parameters) {
     super();
@@ -320,14 +326,82 @@ class CreateCardItemReviewOrder extends CreateItem {
     this.create.bind(this);
   }
 
+  swipeDelete(container, elements, productInfo) {
+    let dragStart = 0;
+    let dragEnd = 0;
+    let offsetX = 0;
+    let offsetXOnStart = 0;
+
+    function animation(action) {
+      if (offsetX > 0) {
+        // тут действия, если тянется влево дальше минимума
+        if (action === 'end') {
+          offsetX = 0;
+          dragStart = 0;
+          dragEnd = 0;
+          offsetXOnStart = 0;
+        } else if (action === 'move') {
+          offsetX /= 1; // уменьшапем скорость смещения в 2 раза
+        }
+      }
+      const maxOffsetWidth = -100;
+      if (offsetX < maxOffsetWidth) {
+        // тут действия, если тянется вправо дальше максимума
+        if (action === 'end') {
+          offsetX = maxOffsetWidth;
+          dragStart = 0;
+          dragEnd = 0;
+          offsetXOnStart = 0;
+          setTimeout(() => {
+            elements.counterTopBar.textContent = Number(elements.counterTopBar.textContent) - 1;
+            elements.counterBottomBar.textContent = Number(elements.counterBottomBar.textContent) - 1;
+            elements.el.classList.add('card-item--animation');
+
+            for (const [index, item] of Object.entries(basketArray)) {
+              /**
+               * Удаляем первое полное совпадение и обязательно выходим из цикла
+               */
+              if (item === productInfo) {
+                basketArray.splice(index, 1);
+                break;
+              }
+            }
+            localStorage.setItem('basket', JSON.stringify(basketArray));
+            counterBasket();
+            checkBasket();
+            container.remove();
+          }, 300);
+        } else if (action === 'move') {
+          offsetX += maxOffsetWidth; // уменьшапем скорость смещения в 2 раза
+        }
+      } else {
+        offsetX = 0;
+      }
+      container.style.transform = `translate3d(${offsetX}px,0,0)`;
+    }
+
+    container.addEventListener('touchstart', (event) => {
+      dragStart = event.touches[0].clientX;
+      container.classList.remove('banner__container--with-animation');
+    }, { passive: false });
+
+    container.addEventListener('touchmove', (event) => {
+      dragEnd = event.touches[0].clientX;
+      offsetX = offsetXOnStart + dragEnd - dragStart;
+      animation('move');
+    }, { passive: false });
+
+    container.addEventListener('touchend', (event) => {
+      // event.preventDefault();
+      // event.stopPropagation();
+      dragEnd = 0;
+      offsetXOnStart = 0;
+      container.classList.add('banner__container--with-animation');
+      animation('end');
+    }, { passive: false });
+  }
+
   create(productInfo) {
-    /**
-     * Создаем и заполняем HTML блок с товаром для корзины
-     * @type {HTMLDivElement}
-     */
-
-    // if()
-
     this.element = document.createElement('div');
     this.template = `
           <img alt="" class="card-item__image card-item__image--size--small">
@@ -335,7 +409,7 @@ class CreateCardItemReviewOrder extends CreateItem {
             <h3 class="card-item__title card-item__title--text--bold">${dataProductApi.successData.items[productInfo.id].name}</h3>
             <span class="card-item__info card-item__info--indentation--bottom card-item__info--theme--shadow">Калорий ${dataProductApi.successData.items[productInfo.id].energy || ''} г</span>
             <ul class="card-item__list"></ul>
-            <span class="card-item__price">${dataProductApi.successData.items[productInfo.id].price}</span>
+            <span class="card-item__price"></span>
             <div class="card-item__icon-container">
               <button class="card-item__button card-item__button--type--minus">
                <img src="[+chunkWebPath+]/img/icon-remove-circle.svg" alt=""
@@ -355,7 +429,6 @@ class CreateCardItemReviewOrder extends CreateItem {
     const counterTopBar = document.querySelector('.top-bar__all-counter-order');
     const counterBottomBar = document.querySelector('.bottom-bar__counter');
 
-
     const imgEl = this.element.querySelector('.card-item__image');
     if (!canUseWebP()) {
       loadImg(dataProductApi.successData.items[productInfo.id], imgEl, 'jpg');
@@ -365,27 +438,6 @@ class CreateCardItemReviewOrder extends CreateItem {
 
     let priceAllModifier = 0;
 
-
-    // if (typeof userDataObj[productInfo.id] === 'object') {
-    //   for (const modifier of Object.values(dataProductApi.successData.modifiers)) {
-    //     for (const modifiersUserItem in userDataObj[productInfo.id]) {
-    //       if (String(modifier.id) === modifiersUserItem) {
-    //         const counter = userDataObj[productInfo.id][modifiersUserItem];
-    //         if (counter !== 0) {
-    //           priceAllModifier += modifier.price * userDataObj[productInfo.id][modifiersUserItem];
-    //           const cardItemListItem = document.createElement('li');
-    //           cardItemListItem.classList.add('card-item__list-item');
-    //           cardItemListItem.id = modifier.id;
-    //           cardItemListItem.textContent = cardItemListItem.textContent = `${counter} добав${number_of(counter, ['ка', 'ки', 'ок'])} ${modifier.name}`;
-    //           cardItemList.append(cardItemListItem);
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
-    /**
-     * Если есть модификаторы
-     */
     if (typeof dataProductApi.successData.items[productInfo.id] === 'object' && typeof productInfo.modifiers === 'object') {
       const cardItemList = this.element.querySelector('.card-item__list');
       /**
@@ -405,11 +457,19 @@ class CreateCardItemReviewOrder extends CreateItem {
         }
       }
     }
-    this.price.textContent = priceAllModifier + dataProductApi.successData.items[productInfo.id].price;
-
+    if (!isEmptyObj(userStore)) {
+      if (userStore.store.priceGroup === null) {
+        this.price.textContent = priceAllModifier + dataProductApi.successData.items[productInfo.id].price;
+      } else {
+        this.price.textContent = priceAllModifier + dataProductApi.successData.items[productInfo.id][`price${userStore.store.priceGroup}`];
+      }
+    }
     /**
      * Добавляем события
      */
+
+    this.swipeDelete(this.element, { el, counterTopBar, counterBottomBar }, productInfo);
+
     this.iconsMinus.addEventListener('click', () => {
       counterTopBar.textContent = Number(counterTopBar.textContent) - 1;
       counterBottomBar.textContent = Number(counterBottomBar.textContent) - 1;
@@ -431,37 +491,7 @@ class CreateCardItemReviewOrder extends CreateItem {
       checkBasket();
       setTimeout(() => el.remove(), 200);
     });
-    // this.iconsMinus.addEventListener('click', () => {
-    //   counterTopBar.textContent = Number(counterTopBar.textContent) - 1;
-    //   counterBottomBar.textContent = Number(counterBottomBar.textContent) - 1;
-    //   el.classList.add('card-item--animation');
-    //   basketArray.forEach((item, index) => {
-    //     if (item.id === productInfo.id) {
-    //       basketArray.splice(index, 1);
-    //     }
-    //   });
-    //   localStorage.setItem('basket', JSON.stringify(basketArray));
-    //   counterBasket();
-    //   checkBasket();
-    //   setTimeout(() => el.remove(), 200);
-    // });
 
-    // this.iconsPlus.addEventListener('click', () => {
-    //   counterTopBar.textContent = Number(counterTopBar.textContent) + 1;
-    //   basketArray.push({ id: productInfo.id });
-    //   localStorage.setItem('basket', JSON.stringify(basketArray));
-    //   counterBasket();
-    //   const cardItemContainer = document.querySelector('.card-item__container--type--review');
-    //   this.arrHtml = Array.from(cardItemContainer.children);
-    //   this.arrHtml.splice(0, this.arrHtml.length).forEach((item) => item.remove());
-    //   basketArray.forEach((item) => {
-    //     for (const elem of Object.values(dataProductApi.successData.items)) {
-    //       if (item.id === elem.id) {
-    //         cardItemContainer.append(this.create(elem));
-    //       }
-    //     }
-    //   });
-    // });
     this.iconsPlus.addEventListener('click', () => {
       counterTopBar.textContent = Number(counterTopBar.textContent) + 1;
       basketArray.push(productInfo);

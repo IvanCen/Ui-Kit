@@ -52,6 +52,8 @@ class CreateMapItemStores extends CreateItem {
     }
     this.element = document.createElement('div');
     this.element.classList.add('map__item');
+    this.element.setAttribute('data-id', store.id);
+
     this.template = `
             <div class="map__content">
               <input type="radio" class="radio__input" id="${identity()}${store.id}" name="radio"/>
@@ -61,15 +63,68 @@ class CreateMapItemStores extends CreateItem {
                 </span>
               </label>
             </div>
-            <button class="map__button">
-              <img src="[+chunkWebPath+]/img/icon-info.svg" alt="" class="map__icon map__icon--position--top">
-            </button>`;
+            <div class="map__button-container">
+            <svg class="map__button map__button--type--like"  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path class="map__icon map__icon--type--like" d="M23 8.28003C23 5.10003 20.41 2.53003 17.25 2.53003C14.96 2.53003 12.98 3.87003 12.05 5.82003C12.03 5.86003 11.97 5.86003 11.96 5.82003C11.04 3.88003 9.05 2.53003 6.76 2.53003C3.58 2.53003 1 5.10003 1 8.28003C1 8.95003 1.11 9.59003 1.33 10.19C1.57 10.87 1.94 11.5 2.4 12.03C2.6 12.26 2.81 12.47 3.04 12.67L11.82 21.39C11.87 21.44 11.94 21.47 12.02 21.47C12.1 21.47 12.16 21.45 12.22 21.39L21.33 12.34C21.92 11.75 22.39 11.03 22.67 10.23C22.88 9.62003 23 8.96003 23 8.28003Z"/>
+            </svg>
+              <button class="map__button map__button--type--details">
+                <img src="[+chunkWebPath+]/img/icon-info.svg" alt="" class="map__icon map__icon--position--top">
+              </button>
+            </div>
+            `;
     this.element.insertAdjacentHTML('beforeend', this.template);
-    this.buttonDetails = this.element.querySelector('.map__button');
+    this.buttonDetails = this.element.querySelector('.map__button--type--details');
+    this.buttonLike = this.element.querySelector('.map__button--type--like');
+    this.iconLike = this.element.querySelector('.map__icon--type--like');
+
+    if (!isEmptyObj(userFavoriteStore)) {
+      for (const shop of Object.values(userFavoriteStore)) {
+        if (shop.id === store.id) {
+          this.iconLike.classList.add('map__icon--liked');
+          this.element.classList.add('map__item--position--top');
+        }
+      }
+    }
+
     const radioInput = this.element.querySelector('.radio__input');
+
+    function renderDetailStorePage(info) {
+      if (info.success === true) {
+        toggleSubPageStoresDetails.rendering(store, info);
+        toggleSubPageStoresDetails.openPage();
+      } else {
+        toggleModal.rendering('Что то пошло не так');
+        toggleModal.openPage();
+      }
+    }
     this.buttonDetails.addEventListener('click', () => {
-      toggleSubPageStoresDetails.rendering(store);
-      toggleSubPageStoresDetails.openPage();
+      for (const day in store) {
+        if (Array.isArray(store[day])) {
+          store[day] = store[day].join(', ');
+        }
+      }
+      api.checkWorkTimeStore(store, renderDetailStorePage);
+    });
+    this.buttonLike.addEventListener('click', function () {
+      const icon = this.firstElementChild;
+      if (icon.classList.contains('map__icon--liked')) {
+        icon.classList.remove('map__icon--liked');
+        for (const shop of Object.values(userFavoriteStore)) {
+          if (shop.id === store.id) {
+            delete userFavoriteStore[shop.id];
+            localStorage.setItem('userFavoriteStore', JSON.stringify(userFavoriteStore));
+          }
+        }
+      } else {
+        icon.closest('.map__item').style.order = -1;
+        icon.classList.add('map__icon--liked');
+        storesDataObj.successData.forEach((item) => {
+          if (item.id === store.id) {
+            userFavoriteStore[store.id] = item;
+            localStorage.setItem('userFavoriteStore', JSON.stringify(userFavoriteStore));
+          }
+        });
+      }
     });
     if (placemark !== undefined && myMap !== undefined) {
       placemark.events

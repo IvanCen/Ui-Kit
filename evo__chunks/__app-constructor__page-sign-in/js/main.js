@@ -81,7 +81,7 @@ class TogglePageSignIn extends TogglePage {
     }
   }
 
-  askUserInfo(userInfo) {
+  askUserInfo(userInfo, returnPage) {
     console.log(userInfo);
     if (userInfo.success === true) {
       localStorage.setItem('user-sign-in', 'true');
@@ -104,15 +104,20 @@ class TogglePageSignIn extends TogglePage {
         renderMainPage.clearPage();
         renderMainPage.rendering();
         renderMainPage.openPage();
+        closeOrderPage();
         togglePage.closePage();
         togglePage.deletePage();
+        if (returnPage) {
+          toggleFourthPageReviewOrder.rendering();
+        }
+        (async () => {
+          await rateLastOrder();
+        })();
         /* setTimeout(() => {
-
           buttonAgree.classList.add('form__button--hide');
           textSuccess.textContent = 'Добро пожаловать в Хлебник!';
           textSuccess.classList.remove('form__text--close', 'form__text--hide');
           textSuccess.classList.add('form__text--indentation');
-
           inputsContainer.classList.remove('form__inputs-container--hide');
         }, 2500); */
       }

@@ -1,8 +1,10 @@
-class TogglePageOrderCategory extends TogglePage {
+class TogglePageOrderCategory extends TogglePageOrderCard {
   constructor(parameters) {
     super(parameters);
     this.parameters = parameters;
     this.rendering = this.rendering.bind(this);
+    this.openPage = this.openPage.bind(this);
+    this.closePage = this.closePage.bind(this);
   }
 
   openPage() {
@@ -17,7 +19,6 @@ class TogglePageOrderCategory extends TogglePage {
 
   rendering(categoryName, category, categoryId) {
     super.rendering();
-
     const orderCardTopBar = new CreateTopBarOrderCard({
       selector: ['div'],
       style: ['top-bar'],
@@ -44,11 +45,26 @@ class TogglePageOrderCategory extends TogglePage {
     this.page.append(orderCardTopBar.create());
     this.page.append(cardItemContainer.create());
     const cardItemContainerSelector = this.page.querySelector('.card-item__container');
+    console.log(category, categoryId, categoryName);
+    /*for (const key of Object.values(dataProductApi.successData.categoriesTree[4].children)) {
+      console.log(key.children[categoryId]);
+      if (key.children[categoryId] !== undefined) {
+        category.forEach((item) => {
+          if (item.hitFlag === true) {
+            cardItemContainerSelector.prepend(cardItemProductCard.create(item));
+          } else {
+            cardItemContainerSelector.append(cardItemProductCard.create(item));
+          }
+        });
+      }
+    }*/
     category.forEach((item) => {
-      cardItemContainerSelector.append(cardItemProductCard.create(item));
+      if (item.hitFlag === true) {
+        cardItemContainerSelector.prepend(cardItemProductCard.create(item));
+      } else {
+        cardItemContainerSelector.append(cardItemProductCard.create(item));
+      }
     });
-
-    this.openPage();
   }
 }
 

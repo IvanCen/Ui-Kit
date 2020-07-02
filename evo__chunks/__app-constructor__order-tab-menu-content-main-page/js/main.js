@@ -55,8 +55,8 @@ class ToggleOrderMenuContent extends ToggleOrderTabContent {
 
       let drinksItemsLength = 0;
       let foodItemsLength = 0;
-      let productItemsLength = 0;
-      let wraperItemsLength = 0;
+      const productItemsLength = 0;
+      const wraperItemsLength = 0;
 
       for (const item of Object.values(products.categories)) {
         if (item.parent === 33) {
@@ -67,14 +67,14 @@ class ToggleOrderMenuContent extends ToggleOrderTabContent {
           food.push(item);
           foodItemsLength += item.items.length;
         }
-        /*if (item.name === 'Продукты') {
+        /* if (item.name === 'Продукты') {
           product.push(item);
           productItemsLength += item.items.length;
         }
         if (item.name === 'Упаковка') {
           wraper.push(item);
           wraperItemsLength += item.items.length;
-        }*/
+        } */
       }
 
       const drinkContainer = document.querySelector('.card-item__container--drinks');
@@ -84,29 +84,31 @@ class ToggleOrderMenuContent extends ToggleOrderTabContent {
 
       const drinksButtonTitle = document.querySelector('.title-bar__button--type--drinks');
       const foodButtonTitle = document.querySelector('.title-bar__button--type--foods');
-      /*const productsButtonTitle = document.querySelector('.title-bar__button--type--products');
-      const wraperButtonTitle = document.querySelector('.title-bar__button--type--wraper');*/
+      /* const productsButtonTitle = document.querySelector('.title-bar__button--type--products');
+      const wraperButtonTitle = document.querySelector('.title-bar__button--type--wraper'); */
 
       drinksButtonTitle.textContent = `Посмотреть ${drinksItemsLength}`;
       foodButtonTitle.textContent = `Посмотреть ${foodItemsLength}`;
-      /*productsButtonTitle.textContent = `Посмотреть ${productItemsLength}`;
-      wraperButtonTitle.textContent = `Посмотреть ${wraperItemsLength}`;*/
+      /* productsButtonTitle.textContent = `Посмотреть ${productItemsLength}`;
+      wraperButtonTitle.textContent = `Посмотреть ${wraperItemsLength}`; */
 
       drinksButtonTitle.addEventListener('click', () => {
         togglePageOrderCategoryAll.rendering(drinks, 'Напитки', drinksItemsLength, products.items, 33);
+        togglePageOrderCategoryAll.openPage();
       });
 
       foodButtonTitle.addEventListener('click', () => {
         togglePageOrderCategoryAll.rendering(food, 'Еда', foodItemsLength, products.items, 34);
+        togglePageOrderCategoryAll.openPage();
       });
 
-      /*productsButtonTitle.addEventListener('click', () => {
+      /* productsButtonTitle.addEventListener('click', () => {
         togglePageOrderCategoryAll.rendering(product, 'Продукты', productItemsLength, products.items, 221);
       });
 
       wraperButtonTitle.addEventListener('click', () => {
         togglePageOrderCategoryAll.rendering(wraper, 'Упаковка', wraperItemsLength, products.items, 272);
-      });*/
+      }); */
 
       function rendered(arr, container) {
         arr.forEach((item) => {
@@ -115,17 +117,17 @@ class ToggleOrderMenuContent extends ToggleOrderTabContent {
       }
       rendered(drinks, drinkContainer);
       rendered(food, foodContainer);
-      //rendered(product, productsContainer);
-      //rendered(wraper, wraperContainer);
+      // rendered(product, productsContainer);
+      // rendered(wraper, wraperContainer);
     }
     this.mainPageTabContent.append(orderTitleBarDrinks.create());
     this.mainPageTabContent.append(orderCardItemContainerDrinks.create('drinks'));
     this.mainPageTabContent.append(orderTitleBarFoods.create());
     this.mainPageTabContent.append(orderCardItemContainerFoods.create('foods'));
-    /*this.mainPageTabContent.append(orderTitleBarProducts.create());
+    /* this.mainPageTabContent.append(orderTitleBarProducts.create());
     this.mainPageTabContent.append(orderCardItemContainerProducts.create('products'));
     this.mainPageTabContent.append(orderTitleBarWraper.create());
-    this.mainPageTabContent.append(orderCardItemContainerWraper.create('wraper'));*/
+    this.mainPageTabContent.append(orderCardItemContainerWraper.create('wraper')); */
     this.mainPageTabContent.classList.add('main-page__tab-content--main', 'main-page__tab-content--open');
     this.mainPageContent.append(this.mainPageTabContent);
     renderProduct(dataProductApi);

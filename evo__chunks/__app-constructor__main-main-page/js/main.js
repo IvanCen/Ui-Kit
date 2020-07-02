@@ -26,19 +26,7 @@ class ToggleMain extends ToggleMainPage {
       ],
     });
     const mainPageMainCard = new CreateMainCard();
-    /* const mainPageButtonJoinDark = new CreateButton(
-      {
-        selector: ['button'],
-        style: ['button'],
-        modifier: ['--size--small',
-          '--theme--dark-transparent',
-          '--indentation--left',
-          '--indentation--bottom',
-        ],
-        text: ['Войти'],
-        events: [{ type: 'click', callback: togglePageSignIn.rendering }],
-      },
-    ); */
+
     const mainPageButtonJoinOrange = new CreateButton({
       selector: ['button'],
       style: ['button'],
@@ -57,45 +45,35 @@ class ToggleMain extends ToggleMainPage {
       const mainPageContent = document.querySelector('.main-page__content-main');
       const postContainer = document.createElement('div');
       postContainer.classList.add('main-card__container-posts');
-      /* const buttonDark = document.querySelector('.button--theme--dark-transparent');
-      if (buttonDark !== null) {
-        dataPosts.successData.forEach((item) => {
-          buttonDark.after(mainPageMainCard.create(item));
-        });
-      } else {
 
-      } */
       mainPageContent.append(postContainer);
       dataPosts.successData.forEach((item) => {
         postContainer.prepend(mainPageMainCard.create(item));
       });
     }
+
     function renderPromo(dataPromo) {
       const promoContainer = document.createElement('div');
       promoContainer.classList.add('main-card__container-promo');
       const topBar = document.querySelector('.top-bar--main');
-      // const buttonDark = document.querySelector('.button--theme--dark-transparent');
-      /*
-      if (buttonDark !== null) {
-        dataPromo.successData.forEach((item) => {
-          buttonDark.after(mainPageMainCard.create(item));
-        });
-      } else {
-
-      } */
       topBar.after(promoContainer);
       dataPromo.successData.forEach((item) => {
         promoContainer.prepend(mainPageMainCard.create(item));
+        setTimeout(() => {
+          const mainPage = document.querySelector('.main-page');
+          const loader = document.querySelector('.loader');
+          mainPage.classList.remove('main-page--loaded');
+          loader.classList.add('loader--hide');
+
+          if (!isEmptyObj(userDataObj)) {
+            rateLastOrder();
+          }
+        }, 1000);
       });
     }
 
     this.parameters.api.promoApi(renderPromo);
-
-    /* if (localStorage.getItem('user-sign-in') === null) {
-      this.mainPageContent.prepend(mainPageButtonJoinDark.create());
-    } */
-
-    setTimeout(() => this.parameters.api.postsApi(renderPosts), 1000);
+    this.parameters.api.postsApi(renderPosts);
 
     this.mainPageContent.prepend(mainPageTopBar.create());
     this.mainPageContent.prepend(createTopBarIos());
@@ -107,6 +85,26 @@ class ToggleMain extends ToggleMainPage {
       activeFooter(footerButtonMain);
     }, 300);
 
+    const topBarTitle = document.querySelector('.top-bar__title--type--single');
+    const topBar = document.querySelector('.top-bar');
+
+    this.mainPageContent.addEventListener('scroll', () => {
+      if (this.mainPageContent.scrollTop < 140) {
+        if (topBarTitle.classList.contains('top-bar__title--hide')) {
+          const containerPromo = document.querySelector('.main-card__container-promo');
+          topBarTitle.classList.remove('top-bar__title--hide');
+          topBar.classList.remove('top-bar--sticky');
+          containerPromo.classList.remove('main-card__container-promo--indentation--top');
+        }
+      } if (this.mainPageContent.scrollTop > 140) {
+        if (!topBarTitle.classList.contains('top-bar__title--hide')) {
+          const containerPromo = document.querySelector('.main-card__container-promo');
+          topBarTitle.classList.add('top-bar__title--hide');
+          topBar.classList.add('top-bar--sticky');
+          containerPromo.classList.add('main-card__container-promo--indentation--top');
+        }
+      }
+    });
 
     activeButton();
   }

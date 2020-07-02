@@ -49,9 +49,6 @@ function activeBanners(containerBanners) {
   containerBanners.addEventListener('touchmove', (event) => {
     // event.preventDefault();
     // event.stopPropagation();
-    // нужно добавить проверку, которая будет проверять
-    // направление смещения и если смещают вниз или вверх, то делать прокрутку,
-    // после реализации надо будет включить отключение touch-action в css
     dragEnd = event.touches[0].clientX;
     offsetX = offsetXOnStart + dragEnd - dragStart;
     bannersAnimation('move');

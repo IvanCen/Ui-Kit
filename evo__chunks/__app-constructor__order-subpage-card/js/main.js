@@ -7,12 +7,11 @@ class ToggleSubPageProductCard extends ToggleSubPage {
 
   rendering(productInfo) {
     super.rendering();
-    const infoProduct = productInfo;
-    console.log(infoProduct);
+
     const productCard = new CreateOrderProductMainCard({
       selector: ['div'],
       style: ['main-card'],
-      title: [infoProduct.name],
+      title: [productInfo.name],
       eventCloseIcon: [
         { type: 'click', callback: this.closePage },
         { type: 'click', callback: this.deletePage },
@@ -24,8 +23,8 @@ class ToggleSubPageProductCard extends ToggleSubPage {
       modifier: ['--indentation--bottom'],
     });
 
-    this.subPage.append(productCard.create(infoProduct));
-    this.subPage.append(textAreaProductCard.create(infoProduct));
+    this.subPage.append(productCard.create(productInfo));
+    this.subPage.append(textAreaProductCard.create(productInfo));
 
     const buttonReset = this.subPage.querySelector('.text-area__button--type--reset');
     if (buttonReset) {

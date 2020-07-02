@@ -5,7 +5,7 @@ class TogglePageBalanceHistory extends TogglePage {
     this.rendering = this.rendering.bind(this);
   }
 
-  rendering() {
+  rendering(option) {
     super.rendering();
     const topBar = new CreateTopBarWithBackButton({
       selector: ['div'],
@@ -22,6 +22,7 @@ class TogglePageBalanceHistory extends TogglePage {
       style: ['text-area'],
       text: [this.parameters.text],
       number: [this.parameters.number()],
+      heart: option.heart,
     });
     const сardItemsContainer = new CreateCardItemContainerFavAndHisOrder({
       selector: ['div'],

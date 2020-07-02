@@ -41,6 +41,39 @@ class CreateMainCard extends CreateItem {
   }
 }
 
+class CreateOurHistoryMainCard extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+    this.element = document.createElement(this.parameters.selector);
+    this.template = `
+        <div class="main-card__img-container">
+          <div style="background-image: url('/assets/images/docs/381/love.jpg')" class="main-card__img"></div>
+        </div>
+        <div class="main-card__text-area">
+          <h2 class="main-card__title">${this.parameters.title}</h2>
+          <p class="main-card__text">${this.parameters.text}</p>
+        </div>
+        <div class="main-card__button-container main-card__button-container--indentation--left main-card__button-container--indentation--bottom">
+          <button class="button button--size--small button--theme--tangerin main-card__button">${this.parameters.buttonText}</button>
+        </div>`;
+  }
+
+  create() {
+    this.element.insertAdjacentHTML('beforeend', this.template);
+
+    this.button = this.element.querySelector('.main-card__button');
+    this.imgContainer = this.element.querySelector('.main-card__img-container');
+    this.button.addEventListener('click', () => {
+      togglePageOurHistory.rendering();
+    });
+    this.imgContainer.addEventListener('click', () => {
+      togglePageOurHistory.rendering();
+    });
+    return super.create(this.element);
+  }
+}
+
 class CreateCardsMainCard extends CreateItem {
   constructor(parameters) {
     super();
@@ -59,6 +92,7 @@ class CreateCardsMainCard extends CreateItem {
     return super.create(this.element);
   }
 }
+
 
 class CreateCardsBalanceMainCard extends CreateItem {
   constructor(parameters) {

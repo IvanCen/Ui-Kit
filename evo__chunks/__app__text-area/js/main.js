@@ -153,10 +153,21 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
 
   create(productInfo) {
     console.log(productInfo);
+    let price;
+    if (!isEmptyObj(userStore)) {
+      if (userStore.store.priceGroup === null) {
+        price = productInfo.price;
+      } else {
+        price = productInfo[`price${userStore.store.priceGroup}`];
+      }
+    } else {
+      price = 0;
+    }
+
     this.template = `
       <div class="text-area text-area--theme--light">
         <div class="text-area__container text-area__container--indentation--normal">
-          <span class="text-area__price text-area__price--size--big">${productInfo.price}</span>
+          <span class="text-area__price text-area__price--size--big">${price}</span>
         </div>
       </div>
       <div class="text-area text-area--theme--light text-area--type--description">
@@ -182,64 +193,70 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
         <div class="text-area__content-container text-area__content-container--direction--row text-area__content-container--type--more">
           <div class="text-area__text-container">
             <h2 class="text-area__title text-area__title--size--normal">Подробная информация</h2>
-            <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--top">
-              Масса нетто г 
+            <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--top text-area__info--netWeight">
+              Масса нетто
               <span class="text-area__info--text-size--normal text-area__info-number--indentation--left text-area__info-number--netWeight">
-              ${productInfo.netWeight || ''}</span>
+              ${productInfo.netWeight || ''} г</span>
+              
+            </span>
+            <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--top text-area__info--volume">
+              Объём
+              <span class="text-area__info--text-size--normal text-area__info-number--indentation--left text-area__info-number--volume">
+              ${productInfo.volume || ''} мл</span>
             </span>
             <span class="text-area__info text-area__info--text-size--normal text-area__info--text-bold">
               Калорий
-              <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--left text-area__info-number--energyFatValue">
-              ${productInfo.energyFatValue || ''}</span>
+              <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--left text-area__info-number--energy">
+              ${productInfo.energy || ''} г</span>
             </span>
             <span class="text-area__info text-area__info--text-size--normal text-area__info--text-bold">
               Жиров
               <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--left text-area__info-number--fats">
-                ${productInfo.fats || ''}</span>
+                ${productInfo.fats || ''} г</span>
             </span>
                 <span class="text-area__sub-info">
                   Насыщенных жиров 
                   <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--left text-area__info-number--saturatedFats">
-                    ${productInfo.saturatedFats || ''}</span>
+                    ${productInfo.saturatedFats || ''} г</span>
                 </span>
                 <span class="text-area__sub-info">
                   Трансжиров
                   <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--left text-area__info-number--transFats">
-                    ${productInfo.transFats || ''}</span>
+                    ${productInfo.transFats || ''} г</span>
                 </span>
             <span class="text-area__info text-area__info--text-size--normal text-area__info--text-bold">
               Холестерин
               <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--left text-area__info-number--cholesterol">
-                ${productInfo.cholesterol || ''}</span>
+                ${productInfo.cholesterol || ''} г</span>
             </span>
             <span class="text-area__info text-area__info--text-size--normal text-area__info--text-bold">
               Натрий
               <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--left text-area__info-number--sodium">
-                ${productInfo.sodium || ''}</span>
+                ${productInfo.sodium || ''} г</span>
             </span>
             <span class="text-area__info text-area__info--text-size--normal text-area__info--text-bold">
               Углеводов
               <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--left text-area__info-number--carbon">
-                ${productInfo.carbon || ''}</span>
+                ${productInfo.carbon || ''} г</span>
             </span>
                 <span class="text-area__sub-info">
                   Клетчатка
                   <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--left text-area__info-number--fiber">
-                    ${productInfo.fiber || ''}</span>
+                    ${productInfo.fiber || ''} г</span>
                 </span>
                 <span class="text-area__sub-info">
                   Сахар
                 <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--left text-area__info-number--sugar">
-                    ${productInfo.sugar || ''}</span>
+                    ${productInfo.sugar || ''} г</span>
                 </span>
             <span class="text-area__info text-area__info--text-size--normal text-area__info--text-bold">
               Белок
               <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--left text-area__info-number--protein">
-                ${productInfo.protein || ''}</span>
+                ${productInfo.protein || ''} г</span>
             </span>
             <span class="text-area__info text-area__info--text-size--normal text-area__info--text-bold">
               Кофеин<span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--left text-area__info-number--caffeine">
-                ${productInfo.caffeine || ''}</span>
+                ${productInfo.caffeine || ''} г</span>
             </span>
           </div>
           <button class="button button--theme--chocolate text-area__button text-area__button--type--more">
@@ -257,7 +274,7 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
           <span class="text-area__text text-area__text--theme--shadow text-area__text--type--ingredients"></span>
         </div>
        </div>
-      <div class="text-area__container text-area__container--indentation--normal">
+      <div class="text-area__container--indentation--normal">
         <div class="text-area__content-container text-area__content-container--direction--column">
           <h2 class="text-area__title text-area__title--size--normal text-area__title--indentation--bottom">Аллергены</h2>
           <span class="text-area__text text-area__text--theme--shadow text-area__text--type--allergens"></span>
@@ -269,6 +286,14 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
     `;
     this.element.insertAdjacentHTML('beforeend', this.template);
 
+    for (const value in productInfo) {
+      if (productInfo[value] === null) {
+        if (this.element.querySelector(`.text-area__info-number--${value}`)) {
+          this.element.querySelector(`.text-area__info-number--${value}`).parentElement.remove();
+        }
+      }
+    }
+
     this.buttonShare = this.element.querySelector('.text-area__button--type--share');
     this.iconsLike = this.element.querySelector('.text-area__icon--type--like');
     this.buttonMore = this.element.querySelector('.text-area__button--type--more');
@@ -276,7 +301,7 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
     this.nutritionArea = this.element.querySelector('.text-area__content-container--type--more');
     this.price = this.element.querySelector('.text-area__price');
 
-    if (localStorage.getItem('user-sign-in') === null) {
+    if (localStorage.getItem('user-sign-in') === null || isEmptyObj(userStore)) {
       this.price.classList.add('text-area__price--hide');
     } else {
       this.price.classList.remove('text-area__price--hide');
@@ -696,8 +721,8 @@ class CreateTextAreaStoreInfo extends CreateItem {
      <div class="text-area">
         <h2 class="text-area__title text-area__title--size--normal text-area__title--indentation--big text-area__title--theme--shadow">Режим работы:</h2>
         <div class="text-area__content-container text-area__content-container--direction--row">
-          <h3 class="text-area__title text-area__title--size--small text-area__title--type--bold">Понедельник</h3>
-         <span class="text-area__title text-area__title--size--small">${this.parameters.monday}</span>
+          <h3 class="text-area__title text-area__title--size--small">Понедельник</h3>
+         <span class="text-area__title text-area__title--size--small text-area__title--theme--shadow">${this.parameters.monday}</span>
         </div>
         <div class="text-area__content-container text-area__content-container--direction--row">
           <h3 class="text-area__title text-area__title--size--small">Вторник</h3>
@@ -775,6 +800,9 @@ class CreateTextAreaBalance extends CreateItem {
       <div class="text-area__container text-area__container--indentation--normal">
         <div>
           <span class="text-area__number text-area__number--type--${this.parameters.identifier}">${this.parameters.number()}</span>
+          <svg class="text-area__icon text-area__icon--size--small" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M23 8.28003C23 5.10003 20.41 2.53003 17.25 2.53003C14.96 2.53003 12.98 3.87003 12.05 5.82003C12.03 5.86003 11.97 5.86003 11.96 5.82003C11.04 3.88003 9.05 2.53003 6.76 2.53003C3.58 2.53003 1 5.10003 1 8.28003C1 8.95003 1.11 9.59003 1.33 10.19C1.57 10.87 1.94 11.5 2.4 12.03C2.6 12.26 2.81 12.47 3.04 12.67L11.82 21.39C11.87 21.44 11.94 21.47 12.02 21.47C12.1 21.47 12.16 21.45 12.22 21.39L21.33 12.34C21.92 11.75 22.39 11.03 22.67 10.23C22.88 9.62003 23 8.96003 23 8.28003Z" fill="#E3562F"/>
+          </svg>
           <p class="text-area__text text-area__text--theme--shadow">${this.parameters.text}</p>
         </div>
         <button class="button button--size--medium button${this.parameters.themeButton} text-area__button text-area__button--open text-area__button--type--${this.parameters.identifier}">${this.parameters.buttonText}</button>
@@ -792,8 +820,17 @@ class CreateTextAreaBalance extends CreateItem {
         this.button.addEventListener(event.type, event.callback);
       }
     }
-    if (this.parameters.button === false) {
-      this.button.remove();
+
+    if (typeof this.parameters.heart === 'boolean') {
+      if (this.parameters.heart === false) {
+        this.heart = this.element.querySelector('.text-area__icon');
+        this.heart.remove();
+      }
+    }
+    if (typeof this.parameters.button === 'boolean') {
+      if (this.parameters.button === false) {
+        this.button.remove();
+      }
     }
     return super.create(this.element);
   }
@@ -808,6 +845,9 @@ class CreateTextAreaBalanceHistory extends CreateItem {
       <div class="text-area__container text-area__container--indentation--normal">
         <div>
           <span class="text-area__number">${this.parameters.number}</span>
+          <svg class="text-area__icon text-area__icon--size--small" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M23 8.28003C23 5.10003 20.41 2.53003 17.25 2.53003C14.96 2.53003 12.98 3.87003 12.05 5.82003C12.03 5.86003 11.97 5.86003 11.96 5.82003C11.04 3.88003 9.05 2.53003 6.76 2.53003C3.58 2.53003 1 5.10003 1 8.28003C1 8.95003 1.11 9.59003 1.33 10.19C1.57 10.87 1.94 11.5 2.4 12.03C2.6 12.26 2.81 12.47 3.04 12.67L11.82 21.39C11.87 21.44 11.94 21.47 12.02 21.47C12.1 21.47 12.16 21.45 12.22 21.39L21.33 12.34C21.92 11.75 22.39 11.03 22.67 10.23C22.88 9.62003 23 8.96003 23 8.28003Z" fill="#E3562F"/>
+          </svg>
           <p class="text-area__text text-area__text--theme--shadow">${this.parameters.text}</p>
         </div>
       </div>
@@ -816,6 +856,13 @@ class CreateTextAreaBalanceHistory extends CreateItem {
 
   create() {
     this.element.insertAdjacentHTML('beforeend', this.template);
+
+    if (typeof this.parameters.heart === 'boolean') {
+      if (this.parameters.heart === false) {
+        this.heart = this.element.querySelector('.text-area__icon');
+        this.heart.remove();
+      }
+    }
 
     return super.create(this.element);
   }
