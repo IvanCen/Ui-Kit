@@ -15,15 +15,51 @@
   }
 
   &__container {
+    display: flex;
+    flex-direction: column;
     padding: 12px 16px 70px 16px;
     width: 100%;
     overflow-y: scroll;
+  }
+
+  &__button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__button {
+
+    &--type--like {
+      width: 20px;
+      height: 20px;
+      margin-right: 20px;
+    }
+  }
+
+  &__icon {
+
+
+    &--type--like {
+      stroke: $gray;
+      fill: none;
+    }
+
+    &--liked {
+      stroke: none;
+      fill: $alizarinCrimson;
+    }
   }
 
   &__item {
     display: flex;
     justify-content: space-between;
     padding: 10px 0;
+    min-height: fit-content;
+
+    &--position--top {
+      order: -1;
+    }
   }
 
   &__content {

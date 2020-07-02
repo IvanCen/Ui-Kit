@@ -200,8 +200,7 @@ class CreateCardItemFavAndHisOrder extends CreateItem {
           <img alt="" class="card-item__image card-item__image--size--small">
           <div class="card-item__content-container">
             <h3 class="card-item__title card-item__title--text--bold">${dataProductApi.successData.items[productInfo.id].name}</h3>
-            <span class="card-item__info card-item__info--indentation--normal">${dataProductApi.successData.items[productInfo.id].intro}</span>
-            <span class="card-item__info card-item__info--theme--shadow">Калорий ${dataProductApi.successData.items[productInfo.id].energy || ''} г</span>
+           
             <ul class="card-item__list"></ul>
             <div class="card-item__icon-container">
               <button class="card-item__button card-item__button--type--like">
@@ -329,6 +328,7 @@ class CreateCardItemReviewOrder extends CreateItem {
 
     // if()
 
+
     this.element = document.createElement('div');
     this.template = `
           <img alt="" class="card-item__image card-item__image--size--small">
@@ -336,7 +336,7 @@ class CreateCardItemReviewOrder extends CreateItem {
             <h3 class="card-item__title card-item__title--text--bold">${dataProductApi.successData.items[productInfo.id].name}</h3>
             <span class="card-item__info card-item__info--indentation--bottom card-item__info--theme--shadow">Калорий ${dataProductApi.successData.items[productInfo.id].energy || ''} г</span>
             <ul class="card-item__list"></ul>
-            <span class="card-item__price">${dataProductApi.successData.items[productInfo.id].price}</span>
+            <span class="card-item__price"></span>
             <div class="card-item__icon-container">
               <button class="card-item__button card-item__button--type--minus">
                <img src="[+chunkWebPath+]/img/icon-remove-circle.svg" alt=""
@@ -406,7 +406,14 @@ class CreateCardItemReviewOrder extends CreateItem {
         }
       }
     }
-    this.price.textContent = priceAllModifier + dataProductApi.successData.items[productInfo.id].price;
+    if (!isEmptyObj(userStore)) {
+      if (userStore.store.priceGroup === null) {
+        this.price.textContent = priceAllModifier + dataProductApi.successData.items[productInfo.id].price;
+      } else {
+        this.price.textContent = priceAllModifier + dataProductApi.successData.items[productInfo.id][`price${userStore.store.priceGroup}`];
+      }
+    }
+
 
     /**
      * Добавляем события
@@ -487,7 +494,17 @@ class CreateCardItemHistory extends CreateItem {
   create(productInfo) {
     this.elementWraper = document.createElement('div');
     this.elementWraper.classList.add('history-order');
-    let { orderStateName } = productInfo;
+    let { orderStateName, orderDate } = productInfo;
+    const regExp = /\d+-(\d+)-(\d+)\s(\d+:\d+):\d+/g;
+    const monthNumber = orderDate.replace(regExp, '$1');
+    let monthName;
+    const monthArr = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентяря', 'Октабря', 'Ноября', 'Декбаря'];
+    monthArr.forEach((item, index) => {
+      if (index + 1 === Number(monthNumber)) {
+        monthName = item;
+      }
+    });
+    const date = orderDate.replace(regExp, `$2 ${monthName} $3`);
     if (productInfo.orderStateName === 'Создан' && productInfo.paid !== 0) {
       orderStateName = 'Оплачен';
     }
@@ -497,7 +514,7 @@ class CreateCardItemHistory extends CreateItem {
                               <span class="title-bar__text title-bar__text--theme--shadow">№${productInfo.orderId}</span>
                               <span class="title-bar__text title-bar__text--theme--shadow">${orderStateName}</span>
                             </div>
-                            <span class="title-bar__title title-bar__title--size--small title-bar__title--theme--shadow">${productInfo.orderDate}</span>
+                            <span class="title-bar__title title-bar__title--size--small title-bar__title--theme--shadow">${date}</span>
                             </div>
                             <button class="title-bar__button">Добавить все</button>
                           </div>`;
@@ -505,14 +522,14 @@ class CreateCardItemHistory extends CreateItem {
 
     for (const item of Object.values(productInfo.items)) {
       this.element = document.createElement('div');
-      this.element.classList.add('card-item--direction--row', 'card-item--border--bottom', 'card-item--indentation--normal');
+      this.element.classList.add('card-item', 'card-item--direction--row', 'card-item--border--bottom', 'card-item--indentation--bottom-big');
       this.template = `
           <img alt="" class="card-item__image card-item__image--size--small">
           <div class="card-item__content-container">
             <h3 class="card-item__title card-item__title--text--bold">${item.itemName}</h3>
             <ul class="card-item__list"></ul>
             <span class="card-item__price">${item.itemPrice}</span>
-            <div class="card-item__icon-container">
+            <div class="card-item__icon-container card-item__icon-container--size--small">
               <button class="button card-item__button card-item__button--type--like">
                 <svg class="card-item__icon card-item__icon--type--like" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path d="M1.8 9.80005C1.6 9.25005 1.5 8.67005 1.5 8.05005C1.5 5.15005 3.86 2.80005 6.75 2.80005C8.84 2.80005 10.66 4.03005 11.5 5.80005C11.7 6.22005 12.29 6.22005 12.5 5.80005C13.35 4.02005 15.16 2.80005 17.25 2.80005C20.14 2.80005 22.5 5.15005 22.5 8.05005C22.5 8.67005 22.39 9.27005 22.19 9.83005C21.93 10.56 21.51 11.21 20.97 11.76L12.02 20.66L3.4 12.09L3.39 12.08L3.38 12.07C3.17 11.89 2.98 11.7 2.8 11.49C2.35 10.99 2.02 10.42 1.8 9.80005Z"/>

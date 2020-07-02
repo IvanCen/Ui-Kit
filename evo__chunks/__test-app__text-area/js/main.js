@@ -153,10 +153,21 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
 
   create(productInfo) {
     console.log(productInfo);
+    let price;
+    if (!isEmptyObj(userStore)) {
+      if (userStore.store.priceGroup === null) {
+        price = productInfo.price;
+      } else {
+        price = productInfo[`price${userStore.store.priceGroup}`];
+      }
+    } else {
+      price = 0;
+    }
+
     this.template = `
       <div class="text-area text-area--theme--light">
         <div class="text-area__container text-area__container--indentation--normal">
-          <span class="text-area__price text-area__price--size--big">${productInfo.price}</span>
+          <span class="text-area__price text-area__price--size--big">${price}</span>
         </div>
       </div>
       <div class="text-area text-area--theme--light text-area--type--description">
@@ -164,7 +175,7 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
           <div class="text-area__content-container text-area__content-container--direction--column">
             <p class="text-area__text text-area__text--theme--shadow text-area__text--indentation--big">${productInfo.intro}</p>
             <div class="text-area__button-container">
-              <button class="button text-area__button text-area__button--type--like">
+              <button class="button text-area__button text-area__button--type--like text-area__button--position--absolute">
                 <svg class="text-area__icon text-area__icon--type--like" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path d="M1.8 9.80005C1.6 9.25005 1.5 8.67005 1.5 8.05005C1.5 5.15005 3.86 2.80005 6.75 2.80005C8.84 2.80005 10.66 4.03005 11.5 5.80005C11.7 6.22005 12.29 6.22005 12.5 5.80005C13.35 4.02005 15.16 2.80005 17.25 2.80005C20.14 2.80005 22.5 5.15005 22.5 8.05005C22.5 8.67005 22.39 9.27005 22.19 9.83005C21.93 10.56 21.51 11.21 20.97 11.76L12.02 20.66L3.4 12.09L3.39 12.08L3.38 12.07C3.17 11.89 2.98 11.7 2.8 11.49C2.35 10.99 2.02 10.42 1.8 9.80005Z"/>
                 </svg>
@@ -263,7 +274,7 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
           <span class="text-area__text text-area__text--theme--shadow text-area__text--type--ingredients"></span>
         </div>
        </div>
-      <div class="text-area__container text-area__container--indentation--normal">
+      <div class="text-area__container--indentation--normal">
         <div class="text-area__content-container text-area__content-container--direction--column">
           <h2 class="text-area__title text-area__title--size--normal text-area__title--indentation--bottom">Аллергены</h2>
           <span class="text-area__text text-area__text--theme--shadow text-area__text--type--allergens"></span>
@@ -285,12 +296,13 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
 
     this.buttonShare = this.element.querySelector('.text-area__button--type--share');
     this.iconsLike = this.element.querySelector('.text-area__icon--type--like');
+    this.blockLike = document.querySelector('.main-card__content-img');
     this.buttonMore = this.element.querySelector('.text-area__button--type--more');
     this.buttonAdd = this.element.querySelector('.text-area__button--type--add-product');
     this.nutritionArea = this.element.querySelector('.text-area__content-container--type--more');
     this.price = this.element.querySelector('.text-area__price');
 
-    if (localStorage.getItem('user-sign-in') === null) {
+    if (isEmptyObj(userInfoObj) || isEmptyObj(userStore)) {
       this.price.classList.add('text-area__price--hide');
     } else {
       this.price.classList.remove('text-area__price--hide');
@@ -305,11 +317,12 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
         this.iconsLike.classList.add('text-area__icon--liked');
       }
     });
-
-    this.iconsLike.addEventListener('click', function () {
-      this.classList.toggle('text-area__icon--liked');
-
-      if (this.classList.contains('text-area__icon--liked')) {
+    this.iconsLike.addEventListener('click', () => {
+      this.blockLike.click();
+    });
+    this.blockLike.addEventListener('click', () => {
+      this.iconsLike.classList.toggle('text-area__icon--liked');
+      if (this.iconsLike.classList.contains('text-area__icon--liked')) {
         console.log(productInfo);
         if (productInfo.modifiers !== null) {
           const modifiersArr = [];
@@ -710,8 +723,8 @@ class CreateTextAreaStoreInfo extends CreateItem {
      <div class="text-area">
         <h2 class="text-area__title text-area__title--size--normal text-area__title--indentation--big text-area__title--theme--shadow">Режим работы:</h2>
         <div class="text-area__content-container text-area__content-container--direction--row">
-          <h3 class="text-area__title text-area__title--size--small text-area__title--type--bold">Понедельник</h3>
-         <span class="text-area__title text-area__title--size--small">${this.parameters.monday}</span>
+          <h3 class="text-area__title text-area__title--size--small">Понедельник</h3>
+         <span class="text-area__title text-area__title--size--small text-area__title--theme--shadow">${this.parameters.monday}</span>
         </div>
         <div class="text-area__content-container text-area__content-container--direction--row">
           <h3 class="text-area__title text-area__title--size--small">Вторник</h3>

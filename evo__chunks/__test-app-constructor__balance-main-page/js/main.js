@@ -104,7 +104,7 @@ class ToggleBalance extends ToggleMainPage {
     });
     this.mainPageContent.append(createTopBarIos());
     this.mainPageContent.append(topBar.create());
-    if (localStorage.getItem('user-sign-in') === null) {
+    if (isEmptyObj(userInfoObj)) {
       this.mainPageContent.append(card.create());
       this.mainPageContent.append(buttonJoinOrange.create());
     } else {

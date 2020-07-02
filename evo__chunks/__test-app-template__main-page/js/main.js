@@ -2,6 +2,7 @@ const mainPage = document.querySelector('.main-page');
 mainPage.classList.add('main-page--loaded');
 const body = document.querySelector('body');
 const api = new Api();
+let returnPage;
 let orderInfo;
 let orderPayInfo;
 let orderComment;
@@ -19,27 +20,30 @@ const userBonusLog = JSON.parse(localStorage.getItem('userBonusLog')) || {};
 const dataProductApi = JSON.parse(localStorage.getItem('productData')) || {};
 const userFavoriteStore = JSON.parse(localStorage.getItem('userFavoriteStore')) || {};
 
-if (isEmptyObj(storesDataObj)) {
+/* if (isEmptyObj(storesDataObj)) {
   api.storesApi();
 } else if ((Date.now() - storesDataObj.lastEditDateRequest) > (24 * 60 * 60 * 1000)) {
   api.storesApi();
-}
+} */
+api.storesApi(); // пока каждый раз вызываем при старте
 
 if (isEmptyObj(applicationDataObj)) {
   api.getPrivacyPolicy('both', 'privacy-policy');
   api.getUserAgreement('both', 'user-agreement');
   api.getPublicOffer('both', 'public-offer');
+  api.getOurHistory('both', 'our-history');
 } else {
   for (const document of Object.values(applicationDataObj)) {
     if ((Date.now() - document.lastEditDateRequest) > (24 * 60 * 60 * 1000)) {
       api.getPrivacyPolicy('editDateTime', 'privacy-policy');
       api.getUserAgreement('editDateTime', 'user-agreement');
       api.getPublicOffer('editDateTime', 'public-offer');
+      api.getOurHistory('editDateTime', 'our-history');
     }
   }
 }
 
-api.getClientApi();
+api.getClientApi(renderingMainPage);
 api.productApi();
 api.getClientOrdersApi();
 api.getClientBalanceLog();
@@ -72,8 +76,11 @@ const toggleSubPageAccountEditUser = new ToggleSubPageAccountEditUser({
 const togglePageStoresFilter = new TogglePageStoresFilter({
   classOpen: ['page--opened'],
 });
+const togglePageOurHistory = new TogglePageOurHistory({
+  classOpen: ['page--opened'],
+});
 const togglePageOrderCategoryAll = new TogglePageOrderCategoryAll({
-  classOpen: ['page-order--opened--bottom-bar'],
+  classOpen: ['page--opened--bottom-bar'],
 });
 const togglePageOrderCategory = new TogglePageOrderCategory({
   classOpen: ['page-order--opened--bottom-bar'],
@@ -176,7 +183,9 @@ const togglePageAccount = new TogglePageAccount({
   classOpen: ['page--opened'],
 });
 
-renderMainPage.rendering();
+function renderingMainPage() {
+  renderMainPage.rendering();
+}
 
 function closeOrderPage() {
   const pagesOrder = document.querySelectorAll('.page-order');

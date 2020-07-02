@@ -1,4 +1,3 @@
-
 class ToggleFourthPageReviewOrder extends ToggleFourthPage {
   constructor(parameters) {
     super(parameters);
@@ -26,6 +25,7 @@ class ToggleFourthPageReviewOrder extends ToggleFourthPage {
         { type: 'click', callback: toggleStores.openPage },
         { type: 'click', callback: togglePage.closePage },
         { type: 'click', callback: togglePage.deletePage },
+        { type: 'click', callback: closeOrderPage },
         { type: 'click', callback: toggleSubPage.closePage },
         { type: 'click', callback: toggleSubPage.deletePage },
         { type: 'click', callback: toggleThirdPage.closePage },
@@ -96,7 +96,7 @@ class ToggleFourthPageReviewOrder extends ToggleFourthPage {
         }
       }
     });
-    function render(info) {
+    function renderPayOrderPage(info) {
       console.log(info);
       if (info.success) {
         toggleFifthPageReviewOrder.rendering(info);
@@ -106,25 +106,44 @@ class ToggleFourthPageReviewOrder extends ToggleFourthPage {
     }
     function makeOrder(info) {
       if (info.success === false) {
-        toggleSubPage.closePage();
-        toggleThirdPage.closePage();
-        toggleFourthPage.closePage();
-        togglePageSignIn.rendering();
-      }
-      if (info.success === true) {
+        toggleModal.rendering('Что то пошло не так');
+        toggleModal.openPage();
+      } else if (info.success === true) {
         if (!isEmptyObj(basketArray)) {
-          const { phone } = userInfoObj.successData;
-          const { id } = userStore.store;
+          if (info.successData.timeStateBool === true) {
+            const { phone } = userInfoObj.successData;
+            const { id } = userStore.store;
 
-          api.makeOrderApi(phone, basketArray, id, orderComment, render);
+            api.makeOrderApi(phone, basketArray, id, orderComment, renderPayOrderPage);
+          } else {
+            toggleModal.rendering(info.successData.timeStatePickUp);
+          }
         } else {
           toggleModal.rendering('Вы ничего не положили в корзину');
           toggleModal.openPage();
         }
       }
     }
+    function checkStoreWorkTime(info) {
+      if (info.success === false) {
+        toggleSubPage.closePage();
+        toggleThirdPage.closePage();
+        toggleFourthPage.closePage();
+        returnPage = true;
+        togglePageSignIn.rendering();
+      }
+      if (info.success === true) {
+        for (const day in userStore.store) {
+          if (Array.isArray(userStore.store[day])) {
+            userStore.store[day] = userStore.store[day].join(', ');
+          }
+        }
+        api.checkWorkTimeStore(userStore.store, makeOrder);
+      }
+    }
+
     this.reviewButton.addEventListener('click', () => {
-      api.getClientApi(makeOrder);
+      api.getClientApi(checkStoreWorkTime);
     });
 
     activeLike();

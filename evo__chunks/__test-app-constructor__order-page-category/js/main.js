@@ -19,7 +19,6 @@ class TogglePageOrderCategory extends TogglePageOrderCard {
 
   rendering(categoryName, category, categoryId) {
     super.rendering();
-
     const orderCardTopBar = new CreateTopBarOrderCard({
       selector: ['div'],
       style: ['top-bar'],
@@ -46,17 +45,22 @@ class TogglePageOrderCategory extends TogglePageOrderCard {
     this.page.append(orderCardTopBar.create());
     this.page.append(cardItemContainer.create());
     const cardItemContainerSelector = this.page.querySelector('.card-item__container');
-    category.forEach((item) => {
-      if (item.hitFlag === true) {
-        cardItemContainerSelector.prepend(cardItemProductCard.create(item));
+    for (const key of Object.values(dataProductApi.successData.categoriesTree[4].children)) {
+      if (key.children[categoryId] !== undefined) {
+        key.children[categoryId].items.forEach((item) => {
+          if (item.hitFlag === true) {
+            cardItemContainerSelector.prepend(cardItemProductCard.create(dataProductApi.successData.items[item]));
+          } else {
+            cardItemContainerSelector.append(cardItemProductCard.create(dataProductApi.successData.items[item]));
+          }
+        });
       }
-      cardItemContainerSelector.append(cardItemProductCard.create(item));
-    });
+    }
   }
 }
 
 
-class TogglePageOrderCategoryAll extends TogglePageOrderCard {
+class TogglePageOrderCategoryAll extends TogglePage {
   constructor(parameters) {
     super(parameters);
     this.parameters = parameters;
@@ -73,13 +77,13 @@ class TogglePageOrderCategoryAll extends TogglePageOrderCard {
     this.mainPage.classList.remove('main-page--fixed');
   }
 
-  rendering(productsCategory, categoryName, drinksItemsLength, productsItems, categoryId) {
+  rendering(productsCategory, categoryName, itemsLength, productsItems, categoryId) {
     super.rendering();
     const orderCardTopBar = new CreateTopBarOrderCard({
       selector: ['div'],
       style: ['top-bar'],
       modifier: ['--size--medium', '--indentation--bottom'],
-      title: [`${categoryName} (${drinksItemsLength})`],
+      title: [`${categoryName} (${itemsLength})`],
       eventBack: [
         { type: 'click', callback: this.closePage },
         { type: 'click', callback: this.deletePage },

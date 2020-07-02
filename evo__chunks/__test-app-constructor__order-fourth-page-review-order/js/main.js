@@ -25,6 +25,7 @@ class ToggleFourthPageReviewOrder extends ToggleFourthPage {
         { type: 'click', callback: toggleStores.openPage },
         { type: 'click', callback: togglePage.closePage },
         { type: 'click', callback: togglePage.deletePage },
+        { type: 'click', callback: closeOrderPage },
         { type: 'click', callback: toggleSubPage.closePage },
         { type: 'click', callback: toggleSubPage.deletePage },
         { type: 'click', callback: toggleThirdPage.closePage },
@@ -115,7 +116,7 @@ class ToggleFourthPageReviewOrder extends ToggleFourthPage {
 
             api.makeOrderApi(phone, basketArray, id, orderComment, renderPayOrderPage);
           } else {
-            toggleModal.rendering(info.timeStatePickUp);
+            toggleModal.rendering(info.successData.timeStatePickUp);
           }
         } else {
           toggleModal.rendering('Вы ничего не положили в корзину');
@@ -128,6 +129,7 @@ class ToggleFourthPageReviewOrder extends ToggleFourthPage {
         toggleSubPage.closePage();
         toggleThirdPage.closePage();
         toggleFourthPage.closePage();
+        returnPage = true;
         togglePageSignIn.rendering();
       }
       if (info.success === true) {

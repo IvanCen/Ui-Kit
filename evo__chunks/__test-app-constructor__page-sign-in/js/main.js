@@ -48,7 +48,6 @@ class TogglePageSignIn extends TogglePage {
       input.classList.add('form__input--close');
       accessButton.classList.add('form__button--hide');
       callLink.href = `tel:${phone}`;
-      // alert(phoneNumber);
       if (phoneNumber === '+70000000000' || phoneNumber === '+7(000)000-00-00') {
         callLink.style.visibility = 'hidden';
 
@@ -104,15 +103,22 @@ class TogglePageSignIn extends TogglePage {
         renderMainPage.clearPage();
         renderMainPage.rendering();
         renderMainPage.openPage();
+        closeOrderPage();
         togglePage.closePage();
         togglePage.deletePage();
-        /*setTimeout(() => {
+        if (returnPage) {
+          toggleFourthPageReviewOrder.rendering();
+        }
+        (async () => {
+          await rateLastOrder();
+        })();
+        /* setTimeout(() => {
           buttonAgree.classList.add('form__button--hide');
           textSuccess.textContent = 'Добро пожаловать в Хлебник!';
           textSuccess.classList.remove('form__text--close', 'form__text--hide');
           textSuccess.classList.add('form__text--indentation');
           inputsContainer.classList.remove('form__inputs-container--hide');
-        }, 2500);*/
+        }, 2500); */
       }
     } else {
       this.showError(userInfo);

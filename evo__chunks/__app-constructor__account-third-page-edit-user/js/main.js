@@ -24,6 +24,7 @@ class ToggleThirdPageEditUser extends ToggleThirdPage {
         if (setName === 'email') {
           toggleModal.renderingEmail();
           toggleModal.openPage();
+          const modal = document.querySelector('.modal');
           if (!modal) {
             api.getClientApi();
             setTimeout(() => {

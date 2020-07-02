@@ -30,6 +30,7 @@ class Api {
       .then((productsInfo) => {
         dataProductApi.successData = productsInfo.successData;
         localStorage.setItem('productData', JSON.stringify(dataProductApi));
+        return productsInfo;
       })
       .catch((err) => {
         console.log('Ошибка. Запрос не выполнен: ', err);
@@ -199,6 +200,9 @@ class Api {
         console.log(userInfo);
         if (userInfo.success === true) {
           userInfoObj.successData = userInfo.successData;
+          localStorage.setItem('userInfo', JSON.stringify(userInfoObj));
+        } else {
+          delete userInfoObj.successData;
           localStorage.setItem('userInfo', JSON.stringify(userInfoObj));
         }
         return userInfo;
@@ -699,6 +703,42 @@ class Api {
           }
           return true;
         });
+        return res;
+      })
+      .then(func)
+      .catch((err) => {
+        console.log('Ошибка. Запрос не выполнен: ', err);
+      });
+  }
+
+  checkWorkTimeStore(store, func) {
+    const request = {
+      method: 'check-work-time',
+      outputFormat: 'json',
+      timezone: 3, // передаем пока 3 везде, так как все наши точки находятся в этой зоне
+      mondayMode: store.monday,
+      tuesdayMode: store.tuesday,
+      wednesdayMode: store.wednesday,
+      thursdayMode: store.thursday,
+      fridayMode: store.friday,
+      saturdayMode: store.saturday,
+      sundayMode: store.sunday,
+    };
+
+    fetch(this.options.baseUrl, {
+      method: 'POST',
+      headers: this.options.headers,
+      body: JSON.stringify(request),
+
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+      .then((res) => {
+        console.log(res);
         return res;
       })
       .then(func)

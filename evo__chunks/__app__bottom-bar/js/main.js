@@ -45,6 +45,7 @@ class CreateBottomBarOrder extends CreateItem {
         toggleStores.openPage();
         togglePage.closePage();
         togglePage.deletePage();
+        closeOrderPage();
         toggleSubPage.closePage();
         toggleSubPage.deletePage();
         toggleThirdPage.closePage();

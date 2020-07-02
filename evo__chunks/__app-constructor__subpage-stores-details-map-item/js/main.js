@@ -20,8 +20,9 @@ class ToggleSubPageStoresDetails extends ToggleSubPage {
     });
   }
 
-  rendering(store) {
+  rendering(store, info) {
     super.rendering();
+    console.log(store)
     const regExp = /(\+\d)(\d{3})(\d{3})(\d{2})(\d{2})/g;
     const phone = store.phone.replace(regExp, '$1 ($2) $3-$4-$5');
     const topBar = new CreateTopBarStoresInfo({
@@ -29,7 +30,7 @@ class ToggleSubPageStoresDetails extends ToggleSubPage {
       style: ['top-bar'],
       modifier: ['--size--small'],
       textTitle: [store.shortTitle],
-      textSubTitle: ['Открыт до 21:00'],
+      textSubTitle: [info.successData.timeState],
       eventBack: [
         { type: 'click', callback: this.closePage },
         { type: 'click', callback: this.deletePage },
@@ -38,6 +39,7 @@ class ToggleSubPageStoresDetails extends ToggleSubPage {
     const textArea = new CreateTextAreaStoreInfo({
       selector: ['div'],
       style: ['text-area-wraper'],
+      modifier: ['--indentation--bottom'],
       address: [store.longTitle],
       distance: [''],
       phone: [phone],
@@ -70,6 +72,7 @@ class ToggleSubPageStoresDetails extends ToggleSubPage {
             this.closePage();
             this.deletePage();
             this.chooseShop(storesDataObj);
+            toggleModal.rendering(`Вы выбрали магазин ${store.shortTitle}`);
           },
         },
       ],
