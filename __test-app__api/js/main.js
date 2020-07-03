@@ -253,10 +253,10 @@ class Api {
       });
   }
 
-  getPublicDocument(mode, documentName) {
+  getPrivacyPolicy(mode, documentName) {
     const request = {
       method: 'get-public-document',
-      document: documentName,
+      document: 'privacy-policy',
       mode,
       outputFormat: 'json',
     };
@@ -279,9 +279,115 @@ class Api {
           applicationDataObj[documentName].lastEditDateRequest = Date.now();
         } else if (info.successData.editDate !== applicationDataObj[documentName].editDate) {
           applicationDataObj[documentName].editDate = info.successData.editDate;
-          this.getPublicDocument('both', documentName);
+          api.getPrivacyPolicy('both');
         }
         localStorage.setItem('applicationData', JSON.stringify(applicationDataObj));
+      })
+      .catch((err) => {
+        console.log('Ошибка. Запрос не выполнен: ', err);
+      });
+  }
+
+  getUserAgreement(mode, documentName) {
+    const request = {
+      method: 'get-public-document',
+      document: 'user-agreement',
+      mode,
+      outputFormat: 'json',
+    };
+
+    fetch(this.options.baseUrl, {
+      method: 'POST',
+      headers: this.options.headers,
+      body: JSON.stringify(request),
+
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+      .then((info) => {
+        if (isEmptyObj(applicationDataObj[documentName]) || info.successData.content !== undefined) {
+          applicationDataObj[documentName] = info.successData;
+          applicationDataObj[documentName].lastEditDateRequest = Date.now();
+        } else if (info.successData.editDate !== applicationDataObj[documentName].editDate) {
+          applicationDataObj[documentName].editDate = info.successData.editDate;
+          api.getUserAgreement('both');
+        }
+        localStorage.setItem('applicationData', JSON.stringify(applicationDataObj));
+      })
+      .catch((err) => {
+        console.log('Ошибка. Запрос не выполнен: ', err);
+      });
+  }
+
+  getPublicOffer(mode, documentName) {
+    const request = {
+      method: 'get-public-document',
+      document: 'public-offer',
+      mode,
+      outputFormat: 'json',
+    };
+
+    fetch(this.options.baseUrl, {
+      method: 'POST',
+      headers: this.options.headers,
+      body: JSON.stringify(request),
+
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+      .then((info) => {
+        if (isEmptyObj(applicationDataObj[documentName]) || info.successData.content !== undefined) {
+          applicationDataObj[documentName] = info.successData;
+          applicationDataObj[documentName].lastEditDateRequest = Date.now();
+        } else if (info.successData.editDate !== applicationDataObj[documentName].editDate) {
+          applicationDataObj[documentName].editDate = info.successData.editDate;
+          api.getPublicOffer('both');
+        }
+        localStorage.setItem('applicationData', JSON.stringify(applicationDataObj));
+      })
+      .catch((err) => {
+        console.log('Ошибка. Запрос не выполнен: ', err);
+      });
+  }
+
+  getOurHistory(mode, documentName) {
+    const request = {
+      method: 'get-public-document',
+      document: 'our-history',
+      mode,
+      outputFormat: 'json',
+    };
+
+    fetch(this.options.baseUrl, {
+      method: 'POST',
+      headers: this.options.headers,
+      body: JSON.stringify(request),
+
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+      .then((info) => {
+        if (isEmptyObj(applicationDataObj[documentName]) || info.successData.content !== undefined) {
+          applicationDataObj[documentName] = info.successData;
+          applicationDataObj[documentName].lastEditDateRequest = Date.now();
+        } else if (info.successData.editDate !== applicationDataObj[documentName].editDate) {
+          applicationDataObj[documentName].editDate = info.successData.editDate;
+          api.getOurHistory('both');
+        }
+        localStorage.setItem('applicationData', JSON.stringify(applicationDataObj));
+        console.log(info)
       })
       .catch((err) => {
         console.log('Ошибка. Запрос не выполнен: ', err);

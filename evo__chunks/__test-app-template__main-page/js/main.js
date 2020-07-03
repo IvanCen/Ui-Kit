@@ -28,17 +28,14 @@ const userFavoriteStore = JSON.parse(localStorage.getItem('userFavoriteStore')) 
 api.storesApi(); // пока каждый раз вызываем при старте
 
 if (isEmptyObj(applicationDataObj)) {
-  api.getPrivacyPolicy('both', 'privacy-policy');
-  api.getUserAgreement('both', 'user-agreement');
-  api.getPublicOffer('both', 'public-offer');
-  api.getOurHistory('both', 'our-history');
+  api.getPublicDocument('both', 'privacy-policy');
+  api.getPublicDocument('both', 'user-agreement');
+  api.getPublicDocument('both', 'public-offer');
+  api.getPublicDocument('both', 'our-history');
 } else {
-  for (const document of Object.values(applicationDataObj)) {
-    if ((Date.now() - document.lastEditDateRequest) > (24 * 60 * 60 * 1000)) {
-      api.getPrivacyPolicy('editDateTime', 'privacy-policy');
-      api.getUserAgreement('editDateTime', 'user-agreement');
-      api.getPublicOffer('editDateTime', 'public-offer');
-      api.getOurHistory('editDateTime', 'our-history');
+  for (const document in applicationDataObj) {
+    if ((Date.now() - applicationDataObj[document].lastEditDateRequest) > (24 * 60 * 60 * 1000)) {
+      api.getPublicDocument('editDateTime', document);
     }
   }
 }
