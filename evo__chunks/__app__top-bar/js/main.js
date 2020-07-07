@@ -12,21 +12,21 @@ class CreateTopBar extends CreateItem {
       <h1 class="top-bar__title top-bar__title--type--single">${this.parameters.textTitle}</h1>
       <div class="top-bar__nav-container">
           <button class="top-bar__button top-bar__button--type--sign-in">
-            <img src="[+chunkWebPath+]/img/icon-sign-in.svg" alt="Кнопка входа" class="top-bar__icon">
+            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-sign-in.svg]]" alt="Кнопка входа" class="top-bar__icon">
             <span class="top-bar__icon-text">Войти</span>
           </button>
           <button class="top-bar__button top-bar__button--type--inbox">
-            <img src="[+chunkWebPath+]/img/icon-inbox.svg" alt="Кнопка сообщений" class="top-bar__icon">
-            <img src="[+chunkWebPath+]/img/icon-dot.svg" alt="Иконка непрочитанного сообщения" class="top-bar__icon-dot top-bar__icon-dot--hide">
+            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-inbox.svg]]" alt="Кнопка сообщений" class="top-bar__icon">
+            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-dot.svg]]" alt="Иконка непрочитанного сообщения" class="top-bar__icon-dot top-bar__icon-dot--hide">
             <span class="top-bar__icon-text">Сообщения</span>
           </button>
             <button class="top-bar__button top-bar__button--type--history">
-              <img src="[+chunkWebPath+]/img/icon-history.svg" alt="Кнопка истории заказов" class="top-bar__icon">
+              <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-history.svg]]" alt="Кнопка истории заказов" class="top-bar__icon">
               <span class="top-bar__icon-text">История</span>
              </button>
             <button class="top-bar__button top-bar__button--position--right"></button>
           <button class="top-bar__button top-bar__button--position--right top-bar__button--type--account">
-            <img src="[+chunkWebPath+]/img/icon-accaunt.svg" alt="Кнопка входа в личный кабинет" class="top-bar__icon">
+            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-accaunt.svg]]" alt="Кнопка входа в личный кабинет" class="top-bar__icon">
           </button>
       </div>`;
   }
@@ -77,7 +77,7 @@ class CreateTopBarWithCloseIcon extends CreateItem {
       <div class="top-bar__content-container">
         <div class="top-bar__header">
           <button class="top-bar__button">
-            <img src="[+chunkWebPath+]/img/icon-close-white.svg" alt="Кнопка закрытия" class="top-bar__icon top-bar__icon--type--close">
+            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-close-white.svg]]" alt="Кнопка закрытия" class="top-bar__icon top-bar__icon--type--close">
           </button>
         </div>
         <h1 class="top-bar__title">${this.parameters.textTitle}</h1>
@@ -106,7 +106,7 @@ class CreateTopBarDarkWithCloseIcon extends CreateItem {
       <div class="top-bar__content-container">
         <div class="top-bar__header top-bar__header--indentation--top">
           <button class="top-bar__button">
-            <img src="[+chunkWebPath+]/img/icon-close-white.svg" alt="Кнопка закрытия" class="top-bar__icon top-bar__icon--type--close">
+            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-close-white.svg]]" alt="Кнопка закрытия" class="top-bar__icon top-bar__icon--type--close">
           </button>
           <h1 class="top-bar__header-title top-bar__header-title--type--uppercase">${this.parameters.textTitle}</h1>
         </div>
@@ -156,7 +156,7 @@ class CreateTopBarWithBackButton extends CreateItem {
       <div class="top-bar__content-container">
        <div class="top-bar__header">
           <button class="button top-bar__back-button">
-            <img src="[+chunkWebPath+]/img/icon-back.svg" alt="Кнопка назад" class="top-bar__icon top-bar__icon-back">
+            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-back.svg]]" alt="Кнопка назад" class="top-bar__icon top-bar__icon-back">
           </button>
         </div>
         <h1 class="top-bar__title">${this.parameters.textTitle}</h1>
@@ -185,7 +185,7 @@ class CreateTopBarStoresInfo extends CreateItem {
       <div class="top-bar__content-container">
        <div class="top-bar__header">
           <button class="button top-bar__back-button">
-            <img src="[+chunkWebPath+]/img/icon-back.svg" alt="Кнопка назад" class="top-bar__icon top-bar__icon-back">
+            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-back.svg]]" alt="Кнопка назад" class="top-bar__icon top-bar__icon-back">
           </button>
         </div>
         <h1 class="top-bar__title">${this.parameters.textTitle}</h1>
@@ -215,7 +215,7 @@ class CreateTopBarOrder extends CreateItem {
       <div class="top-bar__content-container top-bar__content-container--size--small">
         <div class="top-bar__header">
           <button class="button top-bar__search-button">
-            <img src="[+chunkWebPath+]/img/icon-search.svg" alt="Кнопка поиска" class="top-bar__icon">
+            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-search.svg]]" alt="Кнопка поиска" class="top-bar__icon">
           </button>
         </div>
         <h1 class="top-bar__title">Заказать</h1>
@@ -276,7 +276,7 @@ class CreateTopBarInbox extends CreateItem {
       <div class="top-bar__content-container top-bar__content-container--size--small">
         <div class="top-bar__header">
          <button class="button top-bar__back-button">
-            <img src="[+chunkWebPath+]/img/icon-back.svg" alt="Кнопка назад" class="top-bar__icon top-bar__icon-back">
+            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-back.svg]]" alt="Кнопка назад" class="top-bar__icon top-bar__icon-back">
           </button>
         </div>
         <h1 class="top-bar__title">Входящие сообщения</h1>
@@ -323,10 +323,10 @@ class CreateTopBarOrderCard extends CreateItem {
       <div class="top-bar__content-container">
         <div class="top-bar__header">
           <button class="button top-bar__back-button">
-            <img src="[+chunkWebPath+]/img/icon-back.svg" alt="Кнопка назад" class="top-bar__icon top-bar__icon-back">
+            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-back.svg]]" alt="Кнопка назад" class="top-bar__icon top-bar__icon-back">
           </button>
           <button class="button top-bar__search-button">
-            <img src="[+chunkWebPath+]/img/icon-search.svg" alt="Кнопка поиска" class="top-bar__icon">
+            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-search.svg]]" alt="Кнопка поиска" class="top-bar__icon">
           </button>
           </div>
         <h1 class="top-bar__title">${this.parameters.title}</h1>
@@ -363,7 +363,7 @@ class CreateTopBarStores extends CreateItem {
         <div class="top-bar__header">
           
           <button class="button top-bar__search-button top-bar__search-button--store">
-          <img src="[+chunkWebPath+]/img/icon-search.svg" alt="Кнопка поиска" class="top-bar__icon">
+          <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-search.svg]]" alt="Кнопка поиска" class="top-bar__icon">
           </button>
         </div>
       </div>`;
@@ -403,7 +403,7 @@ class CreateTopBarReviewOrder extends CreateItem {
         <div class="top-bar__content-container">
           <div class="top-bar__header">
             <button class="button top-bar__button top-bar__button--theme--dark top-bar__button--type--back">
-              <img src="[+chunkWebPath+]/img/icon-back.svg" alt="Кнопка назад"
+              <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-back.svg]]" alt="Кнопка назад"
                    class="top-bar__icon top-bar__icon-back">
             </button>
           </div>
@@ -412,12 +412,12 @@ class CreateTopBarReviewOrder extends CreateItem {
           <div class="top-bar__select-container">
             <button class="top-bar__select-item top-bar__select-item--theme--dark top-bar__select-item--type--stores">
               ${localStorage.getItem('short-name-shop') || 'Адрес магазина'}
-              <img src="[+chunkWebPath+]/img/icon-expand-direction-bottom-white.svg" alt="Кнопка выбора адреса магазина"
+              <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-bottom-white.svg]]" alt="Кнопка выбора адреса магазина"
                    class="top-bar__icon top-bar__icon-arrow-down">
             </button>
             <button class=" top-bar__select-item top-bar__select-item--theme--dark top-bar__select-item--size--small top-bar__select-item--hide">
-              <img src="[+chunkWebPath+]/img/icon-man-white.svg" alt="" class="top-bar__icon">
-              <img src="[+chunkWebPath+]/img/icon-expand-direction-bottom-white.svg" alt="Кнопка выбора"
+              <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-man-white.svg]]" alt="" class="top-bar__icon">
+              <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-bottom-white.svg]]" alt="Кнопка выбора"
                    class="top-bar__icon top-bar__icon-arrow-down">
             </button>
           </div>

@@ -71,7 +71,7 @@ class ToggleFourthPageReviewOrder extends ToggleFourthPage {
     const reviewCardItem = new CreateCardItemReviewOrder({
       style: ['card-item'],
       modifier: [
-        '--direction--row',
+        '--type--swipe',
         '--border--bottom',
       ],
     });

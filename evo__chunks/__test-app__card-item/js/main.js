@@ -60,12 +60,23 @@ class CreateCardItemOrderProductCard extends CreateItem {
       toggleSubPageProductCard.openPage();
     });
     this.template = `
-      <div class="card-item__image card-item__image--size--big"></div>
+      <div class="card-item__image card-item__image--size--big">
+        <div class="card-item__stickers-container"></div>
+      </div>
       <div class="card-item__info-container">
         <h3 class="card-item__title card-item__title--text--normal card-item__title--position--center">${productInfo.name}</h3>
         <span class="card-item__available-info card-item__available-info--show">
       </div>`;
     this.element.insertAdjacentHTML('beforeend', this.template);
+    this.stickersContainer = this.element.querySelector('.card-item__stickers-container');
+
+    if (productInfo.stickers.length !== 0) {
+      productInfo.stickers.forEach((stickerName) => {
+        const stickerEl = document.createElement('div');
+        stickerEl.classList.add('text-area__icon', 'text-area__icon--size--big', `text-area__icon--type--${stickerName}`);
+        this.stickersContainer.prepend(stickerEl);
+      });
+    }
 
     const imgEl = this.element.querySelector('.card-item__image');
     if (!canUseWebP()) {
@@ -210,7 +221,7 @@ class CreateCardItemFavAndHisOrder extends CreateItem {
                 </svg>
               </button>
               <button class="card-item__button card-item__button--size--big">
-                <img src="[+chunkWebPath+]/img/icon-add-circle-plus.svg" alt=""
+                <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-add-circle-plus.svg]]" alt=""
                      class="card-item__icon card-item__icon--type--add">
               </button>
             </div>
@@ -352,15 +363,13 @@ class CreateCardItemReviewOrder extends CreateItem {
           dragStart = 0;
           dragEnd = 0;
           offsetXOnStart = 0;
-          setTimeout(() => {
+           setTimeout(() => {
             elements.counterTopBar.textContent = Number(elements.counterTopBar.textContent) - 1;
             elements.counterBottomBar.textContent = Number(elements.counterBottomBar.textContent) - 1;
             elements.el.classList.add('card-item--animation');
 
             for (const [index, item] of Object.entries(basketArray)) {
-              /**
-               * Удаляем первое полное совпадение и обязательно выходим из цикла
-               */
+
               if (item === productInfo) {
                 basketArray.splice(index, 1);
                 break;
@@ -412,15 +421,19 @@ class CreateCardItemReviewOrder extends CreateItem {
             <span class="card-item__price"></span>
             <div class="card-item__icon-container">
               <button class="card-item__button card-item__button--type--minus">
-               <img src="[+chunkWebPath+]/img/icon-remove-circle.svg" alt=""
+               <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-remove-circle.svg]]" alt=""
                      class="card-item__icon card-item__icon--type--minus">
               </button>
               <button class="card-item__button card-item__button--type--plus">
-                <img src="[+chunkWebPath+]/img/icon-add-circle-plus.svg" alt=""
+                <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-add-circle-plus.svg]]" alt=""
                      class="card-item__icon card-item__icon--type--plus">
               </button>
             </div>
-          </div>`;
+          </div>
+          <div class="card-item__zone card-item__zone--type--delete">
+            <img class="card-item__icon card-item__icon--size--big" src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-delete-basket.svg]]" alt="">
+          </div>  
+        `;
     this.element.insertAdjacentHTML('beforeend', this.template);
     this.iconsMinus = this.element.querySelector('.card-item__button--type--minus');
     this.iconsPlus = this.element.querySelector('.card-item__button--type--plus');
@@ -558,7 +571,7 @@ class CreateCardItemHistory extends CreateItem {
                 </svg>
               </button>
               <button class="card-item__button card-item__button--type--plus">
-                <img src="[+chunkWebPath+]/img/icon-add-circle-plus.svg" alt=""
+                <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-add-circle-plus.svg]]" alt=""
                      class="card-item__icon card-item__icon--type--plus">
               </button>
             </div>

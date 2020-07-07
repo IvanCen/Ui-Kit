@@ -7,7 +7,7 @@ class CreateBottomBarOrder extends CreateItem {
         <div class="bottom-bar__select-container">
           <span class="bottom-bar__info">Самовывоз по адресу</span>
           <button class="bottom-bar__select-item">${localStorage.getItem('short-name-shop') || 'Адрес магазина'}
-            <img src="[+chunkWebPath+]/img/icon-expand-direction-bottom-white.svg" alt="" class="bottom-bar__icon">
+            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-bottom-white.svg]]" alt="" class="bottom-bar__icon">
           </button>
         </div>
         <button class="bottom-bar__select-item bottom-bar__select-item--size--small bottom-bar__select-item--type--basket">

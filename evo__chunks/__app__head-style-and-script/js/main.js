@@ -502,8 +502,9 @@ class ToggleSubPage {
   }
 
   deletePage() {
-    if (this.subPage) {
-      setTimeout(() => this.subPage.remove(), 300);
+    this.page = document.querySelector('.subpage');
+    if (this.page) {
+      setTimeout(() => this.page.remove(), 300);
     }
   }
 

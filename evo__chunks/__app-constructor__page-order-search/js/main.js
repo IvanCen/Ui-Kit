@@ -6,6 +6,7 @@ class ToggleFifthPageOrderSearch extends ToggleFifthPage {
   }
 
   searchItem() {
+    console.log('dsada');
     const cardItem = new CreateCardItemFavAndHisOrder({
       selector: ['div'],
       style: ['card-item'],
@@ -35,7 +36,6 @@ class ToggleFifthPageOrderSearch extends ToggleFifthPage {
         searchItems[numberOfHits].push(dataProductApi.successData.items[item]);
       }
     }
-    // console.log(searchItems);
 
     if (cardItemContainerSearchEl !== null) {
       if (cardItemContainerSearchEl.childNodes.length !== 0) {
@@ -49,6 +49,7 @@ class ToggleFifthPageOrderSearch extends ToggleFifthPage {
   }
 
   searchItemCategory(categoryId) {
+    console.log('dsada');
     const cardItem = new CreateCardItemFavAndHisOrder({
       selector: ['div'],
       style: ['card-item'],
@@ -105,7 +106,7 @@ class ToggleFifthPageOrderSearch extends ToggleFifthPage {
         searchItems[numberOfHits].push(dataProductApi.successData.items[item]);
       }
     }
-    // console.log(searchItems);
+    console.log(searchItems);
 
     if (cardItemContainerSearchEl !== null) {
       if (cardItemContainerSearchEl.childNodes.length !== 0) {
@@ -149,6 +150,7 @@ class ToggleFifthPageOrderSearch extends ToggleFifthPage {
         this.fifthPage.classList.remove('fifth-page--focus-input');
         inputSearch.blur();
       }
+      console.log(isCategory);
       if (inputSearch.value.length === 0) {
         const cardItemContainerSearchEl = document.querySelector('.card-item__container--search');
         const arrHtml = Array.from(cardItemContainerSearchEl.children);

@@ -14,12 +14,12 @@ class CreateTopBarSearch extends CreateItem {
     this.parameters = parameters;
     this.element = document.createElement(this.parameters.selector);
     this.template = `
-        <img src="[+chunkWebPath+]/img/icon-close.svg" alt="Кнопка закрытия панели" class="top-bar-search__icon top-bar-search__icon--type--close">
+        <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-close.svg]]" alt="Кнопка закрытия панели" class="top-bar-search__icon top-bar-search__icon--type--close">
         <div class="form">
         <div class="form__input top-bar-search__input">
           <label class="form__input-underlined">
             <input class="form__input-area form__input-area--theme--orange top-bar-search__input-area" type="text" placeholder="Поиск">
-            <img src="[+chunkWebPath+]/img/icon-delete.svg" alt="Кнопка удаления введенных данных" class="top-bar-search__icon top-bar-search__icon--type--delete">
+            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-delete.svg]]" alt="Кнопка удаления введенных данных" class="top-bar-search__icon top-bar-search__icon--type--delete">
           </label>
         </div>
         </div>

@@ -101,7 +101,7 @@ class TogglePageOrderCategoryAll extends TogglePage {
         {
           type: 'click',
           callback: () => {
-            toggleFifthPageOrderSearch.rendering(true, categoryId);
+            toggleFifthPageOrderSearch.rendering(false, categoryId);
           },
         },
       ],

@@ -68,7 +68,7 @@ class CreateMapItemStores extends CreateItem {
               <path class="map__icon map__icon--type--like" d="M23 8.28003C23 5.10003 20.41 2.53003 17.25 2.53003C14.96 2.53003 12.98 3.87003 12.05 5.82003C12.03 5.86003 11.97 5.86003 11.96 5.82003C11.04 3.88003 9.05 2.53003 6.76 2.53003C3.58 2.53003 1 5.10003 1 8.28003C1 8.95003 1.11 9.59003 1.33 10.19C1.57 10.87 1.94 11.5 2.4 12.03C2.6 12.26 2.81 12.47 3.04 12.67L11.82 21.39C11.87 21.44 11.94 21.47 12.02 21.47C12.1 21.47 12.16 21.45 12.22 21.39L21.33 12.34C21.92 11.75 22.39 11.03 22.67 10.23C22.88 9.62003 23 8.96003 23 8.28003Z"/>
             </svg>
               <button class="map__button map__button--type--details">
-                <img src="[+chunkWebPath+]/img/icon-info.svg" alt="" class="map__icon map__icon--position--top">
+                <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-info.svg]]" alt="" class="map__icon map__icon--position--top">
               </button>
             </div>
             `;
@@ -129,19 +129,19 @@ class CreateMapItemStores extends CreateItem {
     if (placemark !== undefined && myMap !== undefined) {
       placemark.events
         .add('click', (e) => {
-          e.get('target').options.set('iconImageHref', '[+chunkWebPath+]/img/icon-map-point-select.svg');
+          e.get('target').options.set('iconImageHref', 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-point-select.svg]]');
           const radioInputId = document.getElementById(store.id);
           radioInputId.checked = 'checked';
         })
         .add('click', (e) => {
           if (e.get('target') == false) {
-            e.get('target').options.set('iconImageHref', '[+chunkWebPath+]/img/icon-map-point.svg');
+            e.get('target').options.set('iconImageHref', 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-point.svg]]');
           }
         });
       this.element.addEventListener('click', (e) => {
         e.preventDefault();
         radioInput.checked = 'checked';
-        placemark.options.set('iconImageHref', '[+chunkWebPath+]/img/icon-map-point-select.svg');
+        placemark.options.set('iconImageHref', 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-point-select.svg]]');
         myMap.panTo([Number(store.latitude), Number(store.longitude)], {
           delay: 1000,
         }).then(() => {

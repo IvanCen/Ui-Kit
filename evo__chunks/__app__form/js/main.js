@@ -225,7 +225,7 @@ class CreateFormInputSignIn extends CreateItem {
             <li class="form__input-requirement form__input-requirement--type--phone"></li>
           </ul>
           <div class="form__input-icon-container">
-            <img src="[+chunkWebPath+]/img/icon-attention-triangle.svg" alt="" class="form__input-icon form__input-icon-error">
+            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-attention-triangle.svg]]" alt="" class="form__input-icon form__input-icon-error">
           </div>
         </label>
         </div>
@@ -270,7 +270,7 @@ class CreateFormInputSignIn extends CreateItem {
                   <li class="form__input-requirement form__input-requirement--type--email">Пожалуйста введите правильный email адрес</li>
                 </ul>
                 <div class="form__input-icon-container">
-                  <img src="[+chunkWebPath+]/img/icon-attention-triangle.svg" alt="" class="form__input-icon form__input-icon-error">
+                  <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-attention-triangle.svg]]" alt="" class="form__input-icon form__input-icon-error">
                 </div>
               </label>
             </div>
@@ -330,7 +330,7 @@ class CreateFormInput extends CreateItem {
             <li class="form__input-requirement form__input-requirement--type--${this.parameters.identifier}">Введите корректные данные</li>
           </ul>
           <div class="form__input-icon-container">
-            <img src="[+chunkWebPath+]/img/icon-attention-triangle.svg" alt="" class="form__input-icon form__input-icon-error">
+            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-attention-triangle.svg]]" alt="" class="form__input-icon form__input-icon-error">
           </div>
         </label>
         <p class="form__text form__text--error form__text--hide"></p>
@@ -358,7 +358,7 @@ class CreateFormGiftCard extends CreateItem {
             <li class="form__input-requirement form__input-requirement--type--text"></li>
           </ul>
           <div class="form__input-icon-container">
-            <img src="[+chunkWebPath+]/img/icon-attention-triangle.svg" alt="" class="form__input-icon form__input-icon-error">
+            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-attention-triangle.svg]]" alt="" class="form__input-icon form__input-icon-error">
           </div>
         </label>
       </div>
@@ -381,7 +381,7 @@ class CreateFormGiftCard extends CreateItem {
             <li class="form__input-requirement form__input-requirement--type--email">Please enter a valid email address</li>
           </ul>
           <div class="form__input-icon-container">
-            <img src="[+chunkWebPath+]/img/icon-attention-triangle.svg" alt="" class="form__input-icon form__input-icon-error">
+            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-attention-triangle.svg]]" alt="" class="form__input-icon form__input-icon-error">
           </div>
         </label>
        </div>
@@ -412,7 +412,7 @@ class CreateFormPromoCode extends CreateItem {
     this.element = document.createElement(this.parameters.selector);
     this.template = `
           <button class="accordion">Есть промокод?
-            <img src="[+chunkWebPath+]/img/icon-expand-direction-bottom.svg" alt="" class="accordion__icon-arrow">
+            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-bottom.svg]]" alt="" class="accordion__icon-arrow">
           </button>
           <div class="accordion__content">
           <div class="form">
@@ -422,7 +422,7 @@ class CreateFormPromoCode extends CreateItem {
                 <span class="form__input-label accordion__input-label">Введите промокод</span>
                 
                 <div class="form__input-icon-container">
-                  <img src="[+chunkWebPath+]/img/icon-barcode.svg" alt="" class="form__input-icon">
+                  <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-barcode.svg]]" alt="" class="form__input-icon">
                 </div>
               </label>
             </div>
@@ -498,7 +498,7 @@ class CreateFormComment extends CreateItem {
     this.element = document.createElement(this.parameters.selector);
     this.template = `
           <button class="accordion">Хотите оставить комментарий к заказу?
-            <img src="[+chunkWebPath+]/img/icon-expand-direction-bottom.svg" alt="" class="accordion__icon-arrow">
+            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-bottom.svg]]" alt="" class="accordion__icon-arrow">
           </button>
           <div class="accordion__content">
           <div class="form">

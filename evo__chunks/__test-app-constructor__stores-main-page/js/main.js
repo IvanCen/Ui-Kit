@@ -106,7 +106,7 @@ class ToggleStores extends ToggleMainPage {
           controls: ['geolocationControl'],
         });
 
-        //const myCollectionBreadRiot = new ymaps.GeoObjectCollection();
+        // const myCollectionBreadRiot = new ymaps.GeoObjectCollection();
         const myCollection = new ymaps.GeoObjectCollection();
         const userLocation = new ymaps.GeoObjectCollection(null, {
           preset: 'user',
@@ -141,15 +141,27 @@ class ToggleStores extends ToggleMainPage {
             const storesElems = document.querySelectorAll('.map__item');
             let order;
             myCollection.each((item, index) => {
-              order = Math.round((Math.abs(item.geometry._coordinates[0] - crd.latitude) + Math.abs(item.geometry._coordinates[1] - crd.longitude)) * 10000);
-              storesElems[index].style.order = order;
-              console.log(storesElems[index], index, item);
+              /* if (storesElems[index]) {
+                order = Math.round((Math.abs(item.geometry._coordinates[0] - crd.latitude) + Math.abs(item.geometry._coordinates[1] - crd.longitude)) * 10000);
+                storesElems[index].style.order = order;
+                console.log(Math.abs(item.geometry._coordinates[0] - crd.latitude) + Math.abs(item.geometry._coordinates[1] - crd.longitude));
+              } */
+              const distance = ymaps.coordSystem.geo.getDistance([item.geometry._coordinates[0], item.geometry._coordinates[1]], [crd.latitude, crd.longitude]);
+              if (storesElems[index]) {
+                order = Math.round(distance / 100);
+                // order = Math.round((Math.abs(item.geometry._coordinates[0] - crd.latitude) + Math.abs(item.geometry._coordinates[1] - crd.longitude)) * 10000);
+                storesElems[index].style.order = order;
+                // console.log(Math.abs(item.geometry._coordinates[0] - crd.latitude) + Math.abs(item.geometry._coordinates[1] - crd.longitude));
+              }
+
+              console.log(storesElems[index], index, item, order);
             });
-            /*myCollectionBreadRiot.each((item, index) => {
+
+            /* myCollectionBreadRiot.each((item, index) => {
               order = Math.round((Math.abs(item.geometry._coordinates[0] - crd.latitude) + Math.abs(item.geometry._coordinates[1] - crd.longitude)) * 10000);
 
               storesElems[index].style.order = order;
-            });*/
+            }); */
 
             console.log('Ваше текущее метоположение:');
             console.log(`Широта: ${crd.latitude}`);
@@ -187,20 +199,21 @@ class ToggleStores extends ToggleMainPage {
             placemark = new ymaps.Placemark([store.latitude, store.longitude], {
             }, {
               iconLayout: 'default#image',
-              iconImageHref: '[+chunkWebPath+]/img/icon-map-xleb-point-select.svg',
+              iconImageHref: 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-xleb-point-select.svg]]',
               iconImageSize: [35, 35],
             });
-            placemark.events.add('click', () => {
+            /* placemark.events.add('click', () => {
               activePlacemark.options.set('iconImageHref', '[+chunkWebPath+]/img/icon-map-xleb-point.svg');
+            }); */
+          } else {
+            placemark = new ymaps.Placemark([store.latitude, store.longitude], {
+            }, {
+              iconLayout: 'default#image',
+              iconImageHref: 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-point.svg]]',
+              iconImageSize: [25, 25],
             });
-            myCollection.add(placemark);
           }
-          placemark = new ymaps.Placemark([store.latitude, store.longitude], {
-          }, {
-            iconLayout: 'default#image',
-            iconImageHref: '[+chunkWebPath+]/img/icon-map-point.svg',
-            iconImageSize: [25, 25],
-          });
+
           myCollection.add(placemark);
 
           placemark.events.add('click', () => {
@@ -217,22 +230,22 @@ class ToggleStores extends ToggleMainPage {
 
         myCollection.events.add('click', (e) => {
           if (activePlacemark) {
-            activePlacemark.options.set('iconImageHref', '[+chunkWebPath+]/img/icon-map-point.svg');
+            activePlacemark.options.set('iconImageHref', 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-point.svg]]');
           }
           console.log(e);
           activePlacemark = e.get('target');
-          activePlacemark.options.set('iconImageHref', '[+chunkWebPath+]/img/icon-map-point-select.svg');
+          activePlacemark.options.set('iconImageHref', 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-point-select.svg]]');
         });
-        /*myCollectionBreadRiot.events.add('click', (e) => {
+        /* myCollectionBreadRiot.events.add('click', (e) => {
           if (activePlacemark) {
             activePlacemark.options.set('iconImageHref', '[+chunkWebPath+]/img/icon-map-xleb-point-select.svg');
           }
           console.log(e);
           activePlacemark = e.get('target');
           activePlacemark.options.set('iconImageHref', '[+chunkWebPath+]/img/icon-map-xleb-point.svg');
-        });*/
+        }); */
         myMap.geoObjects.add(myCollection);
-        //myMap.geoObjects.add(myCollectionBreadRiot);
+        // myMap.geoObjects.add(myCollectionBreadRiot);
         myMap.geoObjects.add(userLocation);
       });
     }

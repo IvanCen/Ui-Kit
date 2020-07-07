@@ -14,6 +14,14 @@
     padding: 0 16px;
   }
 
+  &--type--swipe {
+    width: 120%;
+    display: grid;
+    grid-template-columns: 1fr 5fr 65px;
+    justify-items: flex-start;
+    grid-gap: 10px 13px;
+  }
+
   &--direction--row {
     display: grid;
     grid-template-columns: 65px 1fr;
@@ -155,6 +163,7 @@
   }
 
   &__image {
+    position: relative;
     border-radius: 50%;
     background-size: cover;
     background-repeat: no-repeat;
@@ -188,6 +197,21 @@
 
     &--disable {
       opacity: 0.4;
+    }
+
+
+  }
+
+  &__zone {
+    width: 200%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 20px;
+
+    &--type--delete {
+      background: no-repeat $alizarinCrimson;
     }
   }
 
@@ -223,9 +247,22 @@
     margin: 20px 0;
     max-width: 200px;
 
-     &--size--small {
-       margin: 16px 0;
-     }
+    &--position--absolute {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+    }
+
+    &--size--small {
+      margin: 16px 0;
+    }
+  }
+
+  &__stickers-container {
+    display: flex;
+    position: absolute;
+    bottom: 0;
+    left: 0;
   }
 
   &__button {
@@ -258,6 +295,19 @@
       stroke: none;
       fill: $alizarinCrimson;
     }
+
+    &--type--hit {
+      background: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-hit.svg]]") no-repeat;
+    }
+
+    &--type--summer {
+      background: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-summer.svg]]") no-repeat;
+    }
+
+    &--size--big {
+      width: 30px;
+      height: 30px;
+    }
   }
 
   &__list {
@@ -275,7 +325,7 @@
 
     &:after {
       content: '';
-      background: url("[+chunkWebPath+]/img/icon-rubles.svg") no-repeat;
+      background: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-rubles.svg]]") no-repeat;
       background-size: cover;
       position: absolute;
       right: -13px;

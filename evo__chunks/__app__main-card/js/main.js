@@ -218,7 +218,7 @@ class CreateOrderProductMainCard extends CreateItem {
   create(productInfo) {
     this.template = `
       <div class="main-card__content">
-        <img src="[+chunkWebPath+]/img/icon-close.svg" alt="" class="main-card__icon main-card__icon-close">
+        <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-close.svg]]" alt="" class="main-card__icon main-card__icon-close">
         <div class="main-card__content-img"></div>
         <h2 class="main-card__content-title main-card__content-title">${this.parameters.title}</h2>
       </div>`;

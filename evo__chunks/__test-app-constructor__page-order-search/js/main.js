@@ -35,7 +35,7 @@ class ToggleFifthPageOrderSearch extends ToggleFifthPage {
         searchItems[numberOfHits].push(dataProductApi.successData.items[item]);
       }
     }
-    // console.log(searchItems);
+    console.log(searchItems);
 
     if (cardItemContainerSearchEl !== null) {
       if (cardItemContainerSearchEl.childNodes.length !== 0) {
@@ -43,9 +43,13 @@ class ToggleFifthPageOrderSearch extends ToggleFifthPage {
         arrHtml.splice(0, arrHtml.length).forEach((item) => item.remove());
       }
     }
+    const arr = [];
     for (const el of Object.values(searchItems)) {
-      cardItemContainerSearchEl.prepend(cardItem.create({ id: el[0].id }));
+      arr.push(el);
     }
+    arr.flat().forEach((item) => {
+      cardItemContainerSearchEl.prepend(cardItem.create({ id: item.id }));
+    });
   }
 
   searchItemCategory(categoryId) {
@@ -113,9 +117,13 @@ class ToggleFifthPageOrderSearch extends ToggleFifthPage {
         arrHtml.splice(0, arrHtml.length).forEach((item) => item.remove());
       }
     }
+    const arr = [];
     for (const el of Object.values(searchItems)) {
-      cardItemContainerSearchEl.prepend(cardItem.create({ id: el[0].id }));
+      arr.push(el);
     }
+    arr.flat().forEach((item) => {
+      cardItemContainerSearchEl.prepend(cardItem.create({ id: item.id }));
+    });
   }
 
   rendering(isCategory, categoryId) {
@@ -156,6 +164,7 @@ class ToggleFifthPageOrderSearch extends ToggleFifthPage {
       } else if (isCategory) {
         toggleFifthPageOrderSearch.searchItemCategory(categoryId);
       } else {
+        console.log(isCategory);
         toggleFifthPageOrderSearch.searchItem();
       }
     });

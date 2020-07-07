@@ -221,7 +221,7 @@
       display: inline-block;
       transform: translateY(1px);
       margin-right: 10px;
-      content: url("[+chunkWebPath+]/img/icon-no.svg");
+      content: url("data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-no.svg]]");
     }
   }
 
@@ -232,7 +232,7 @@
       display: inline-block;
       transform: translateY(1px);
       margin-right: 10px;
-      content: url("[+chunkWebPath+]/img/icon-yes.svg");
+      content: url("data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-yes.svg]]");
     }
   }
 

@@ -56,7 +56,12 @@ class ToggleOrder extends ToggleMainPage {
         { type: 'click', callback: switchTabFavorite },
       ],
       eventOpenSearch: [
-        { type: 'click', callback: toggleFifthPageOrderSearch.rendering },
+        {
+          type: 'click',
+          callback: () => {
+            toggleFifthPageOrderSearch.rendering(false);
+          },
+        },
       ],
     });
 
