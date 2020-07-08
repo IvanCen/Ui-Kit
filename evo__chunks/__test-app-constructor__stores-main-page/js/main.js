@@ -106,7 +106,6 @@ class ToggleStores extends ToggleMainPage {
           controls: ['geolocationControl'],
         });
 
-        // const myCollectionBreadRiot = new ymaps.GeoObjectCollection();
         const myCollection = new ymaps.GeoObjectCollection();
         const userLocation = new ymaps.GeoObjectCollection(null, {
           preset: 'user',
@@ -141,27 +140,21 @@ class ToggleStores extends ToggleMainPage {
             const storesElems = document.querySelectorAll('.map__item');
             let order;
             myCollection.each((item, index) => {
-              /* if (storesElems[index]) {
-                order = Math.round((Math.abs(item.geometry._coordinates[0] - crd.latitude) + Math.abs(item.geometry._coordinates[1] - crd.longitude)) * 10000);
-                storesElems[index].style.order = order;
-                console.log(Math.abs(item.geometry._coordinates[0] - crd.latitude) + Math.abs(item.geometry._coordinates[1] - crd.longitude));
-              } */
               const distance = ymaps.coordSystem.geo.getDistance([item.geometry._coordinates[0], item.geometry._coordinates[1]], [crd.latitude, crd.longitude]);
               if (storesElems[index]) {
                 order = Math.round(distance / 100);
                 // order = Math.round((Math.abs(item.geometry._coordinates[0] - crd.latitude) + Math.abs(item.geometry._coordinates[1] - crd.longitude)) * 10000);
                 storesElems[index].style.order = order;
                 // console.log(Math.abs(item.geometry._coordinates[0] - crd.latitude) + Math.abs(item.geometry._coordinates[1] - crd.longitude));
+                const distEl = storesElems[index].querySelector('.map__item-dist');
+                const regExp = /(\d+\.?\d)\D+\d+\D+/gi;
+                distEl.textContent = ymaps.formatter.distance(distance).replace(regExp, '$1 км');
               }
 
-              console.log(storesElems[index], index, item, order);
+              // console.log(storesElems[index], index, item, order);
+              /* console.log(ymaps.formatter.distance(distance));
+              console.log(distance); */
             });
-
-            /* myCollectionBreadRiot.each((item, index) => {
-              order = Math.round((Math.abs(item.geometry._coordinates[0] - crd.latitude) + Math.abs(item.geometry._coordinates[1] - crd.longitude)) * 10000);
-
-              storesElems[index].style.order = order;
-            }); */
 
             console.log('Ваше текущее метоположение:');
             console.log(`Широта: ${crd.latitude}`);
@@ -199,12 +192,11 @@ class ToggleStores extends ToggleMainPage {
             placemark = new ymaps.Placemark([store.latitude, store.longitude], {
             }, {
               iconLayout: 'default#image',
-              iconImageHref: 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-xleb-point-select.svg]]',
+              iconImageHref: 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-xleb-point.svg]]',
               iconImageSize: [35, 35],
             });
-            /* placemark.events.add('click', () => {
-              activePlacemark.options.set('iconImageHref', '[+chunkWebPath+]/img/icon-map-xleb-point.svg');
-            }); */
+            placemark.properties.set('priceGroup', 'BreadRiots');
+            console.log(placemark.properties.get('priceGroup', 'BreadRiots'));
           } else {
             placemark = new ymaps.Placemark([store.latitude, store.longitude], {
             }, {
@@ -229,23 +221,22 @@ class ToggleStores extends ToggleMainPage {
         });
 
         myCollection.events.add('click', (e) => {
-          if (activePlacemark) {
-            activePlacemark.options.set('iconImageHref', 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-point.svg]]');
-          }
-          console.log(e);
           activePlacemark = e.get('target');
-          activePlacemark.options.set('iconImageHref', 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-point-select.svg]]');
+          myCollection.each((item) => {
+            if (item.properties.get('priceGroup') === 'BreadRiots') {
+              item.options.set('iconImageHref', 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-xleb-point.svg]]');
+            } else {
+              item.options.set('iconImageHref', 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-point.svg]]');
+            }
+          });
+          if (activePlacemark.properties.get('priceGroup') === 'BreadRiots') {
+            activePlacemark.options.set('iconImageHref', 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-xleb-point-select.svg]]');
+          } else {
+            activePlacemark.options.set('iconImageHref', 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-point-select.svg]]');
+          }
         });
-        /* myCollectionBreadRiot.events.add('click', (e) => {
-          if (activePlacemark) {
-            activePlacemark.options.set('iconImageHref', '[+chunkWebPath+]/img/icon-map-xleb-point-select.svg');
-          }
-          console.log(e);
-          activePlacemark = e.get('target');
-          activePlacemark.options.set('iconImageHref', '[+chunkWebPath+]/img/icon-map-xleb-point.svg');
-        }); */
+
         myMap.geoObjects.add(myCollection);
-        // myMap.geoObjects.add(myCollectionBreadRiot);
         myMap.geoObjects.add(userLocation);
       });
     }

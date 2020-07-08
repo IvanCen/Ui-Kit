@@ -76,12 +76,11 @@ class ToggleMain extends ToggleMainPage {
           const loader = document.querySelector('.loader');
           mainPage.classList.remove('main-page--loaded');
           loader.classList.add('loader--hide');
-
-          if (!isEmptyObj(userDataObj)) {
-            rateLastOrder();
-          }
         }, 1000);
       });
+      if (!isEmptyObj(userDataObj)) {
+        rateLastOrder();
+      }
     }
 
     this.parameters.api.promoApi(renderPromo);

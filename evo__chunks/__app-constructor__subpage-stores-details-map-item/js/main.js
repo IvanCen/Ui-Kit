@@ -22,9 +22,13 @@ class ToggleSubPageStoresDetails extends ToggleSubPage {
 
   rendering(store, info) {
     super.rendering();
-    console.log(store)
-    const regExp = /(\+\d)(\d{3})(\d{3})(\d{2})(\d{2})/g;
-    const phone = store.phone.replace(regExp, '$1 ($2) $3-$4-$5');
+    console.log(store);
+    let phone;
+    if (store.phone !== null) {
+      const regExp = /(\+\d)(\d{3})(\d{3})(\d{2})(\d{2})/g;
+      phone = store.phone.replace(regExp, '$1 ($2) $3-$4-$5');
+    }
+
     const topBar = new CreateTopBarStoresInfo({
       selector: ['div'],
       style: ['top-bar'],
@@ -42,7 +46,7 @@ class ToggleSubPageStoresDetails extends ToggleSubPage {
       modifier: ['--indentation--bottom'],
       address: [store.longTitle],
       distance: [''],
-      phone: [phone],
+      phone: [phone || ''],
       monday: [store.monday],
       tuesday: [store.tuesday],
       wednesday: [store.wednesday],
