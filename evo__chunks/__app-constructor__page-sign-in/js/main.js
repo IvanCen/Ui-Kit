@@ -48,7 +48,6 @@ class TogglePageSignIn extends TogglePage {
       input.classList.add('form__input--close');
       accessButton.classList.add('form__button--hide');
       callLink.href = `tel:${phone}`;
-      // alert(phoneNumber);
       if (phoneNumber === '+70000000000' || phoneNumber === '+7(000)000-00-00') {
         callLink.style.visibility = 'hidden';
 
@@ -81,7 +80,7 @@ class TogglePageSignIn extends TogglePage {
     }
   }
 
-  askUserInfo(userInfo, returnPage) {
+  askUserInfo(userInfo) {
     console.log(userInfo);
     if (userInfo.success === true) {
       localStorage.setItem('user-sign-in', 'true');

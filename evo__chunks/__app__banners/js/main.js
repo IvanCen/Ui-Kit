@@ -1,8 +1,10 @@
-function activeBanners(containerBanners) {
+function activeBanners(containerBanners, isSwipe) {
   let dragStart = 0;
   let dragEnd = 0;
   let offsetX = 0;
   let offsetXOnStart = 0;
+  const counterTopBar = document.querySelector('.top-bar__all-counter-order');
+  const counterBottomBar = document.querySelector('.bottom-bar__counter');
 
   function bannersAnimation(action) {
     if (offsetX > 0) {
@@ -27,6 +29,21 @@ function activeBanners(containerBanners) {
       } else if (action === 'move') {
         offsetX = (offsetX + maxOffsetWidth) / 2; // уменьшапем скорость смещения в 2 раза
       }
+    } else if (maxOffsetWidth / 2 > offsetX && action === 'end' && isSwipe) {
+      setTimeout(() => {
+        counterTopBar.textContent = Number(counterTopBar.textContent) - 1;
+        counterBottomBar.textContent = Number(counterBottomBar.textContent) - 1;
+        for (const [index, item] of Object.entries(basketArray)) {
+          if (item.id === Number(containerBanners.getAttribute('id'))) {
+            basketArray.splice(index, 1);
+            break;
+          }
+        }
+        localStorage.setItem('basket', JSON.stringify(basketArray));
+        counterBasket();
+        checkBasket();
+        containerBanners.remove();
+      }, 300);
     }
     containerBanners.style.transform = `translate3d(${offsetX}px,0,0)`;
   }

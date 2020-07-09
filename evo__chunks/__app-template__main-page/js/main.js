@@ -2,6 +2,7 @@ const mainPage = document.querySelector('.main-page');
 mainPage.classList.add('main-page--loaded');
 const body = document.querySelector('body');
 const api = new Api();
+let returnPage;
 let orderInfo;
 let orderPayInfo;
 let orderComment;
@@ -27,15 +28,14 @@ const userFavoriteStore = JSON.parse(localStorage.getItem('userFavoriteStore')) 
 api.storesApi(); // пока каждый раз вызываем при старте
 
 if (isEmptyObj(applicationDataObj)) {
-  api.getPrivacyPolicy('both', 'privacy-policy');
-  api.getUserAgreement('both', 'user-agreement');
-  api.getPublicOffer('both', 'public-offer');
+  api.getPublicDocument('both', 'privacy-policy');
+  api.getPublicDocument('both', 'user-agreement');
+  api.getPublicDocument('both', 'public-offer');
+  api.getPublicDocument('both', 'our-history');
 } else {
-  for (const document of Object.values(applicationDataObj)) {
-    if ((Date.now() - document.lastEditDateRequest) > (24 * 60 * 60 * 1000)) {
-      api.getPrivacyPolicy('editDateTime', 'privacy-policy');
-      api.getUserAgreement('editDateTime', 'user-agreement');
-      api.getPublicOffer('editDateTime', 'public-offer');
+  for (const document in applicationDataObj) {
+    if ((Date.now() - applicationDataObj[document].lastEditDateRequest) > (24 * 60 * 60 * 1000)) {
+      api.getPublicDocument('editDateTime', document);
     }
   }
 }
@@ -73,10 +73,19 @@ const toggleSubPageAccountEditUser = new ToggleSubPageAccountEditUser({
 const togglePageStoresFilter = new TogglePageStoresFilter({
   classOpen: ['page--opened'],
 });
+const togglePageOurHistory = new TogglePageOurHistory({
+  classOpen: ['page--opened'],
+});
 const togglePageOrderCategoryAll = new TogglePageOrderCategoryAll({
   classOpen: ['page--opened--bottom-bar'],
 });
 const togglePageOrderCategory = new TogglePageOrderCategory({
+  classOpen: ['page-order--opened--bottom-bar'],
+});
+const togglePageOrderCategory2 = new TogglePageOrderCategory({
+  classOpen: ['page-order--opened--bottom-bar'],
+});
+const togglePageOrderCategory3 = new TogglePageOrderCategory({
   classOpen: ['page-order--opened--bottom-bar'],
 });
 const togglePageBalanceHistoryScore = new TogglePageBalanceHistory({

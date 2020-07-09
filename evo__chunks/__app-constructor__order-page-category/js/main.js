@@ -45,26 +45,17 @@ class TogglePageOrderCategory extends TogglePageOrderCard {
     this.page.append(orderCardTopBar.create());
     this.page.append(cardItemContainer.create());
     const cardItemContainerSelector = this.page.querySelector('.card-item__container');
-    console.log(category, categoryId, categoryName);
-    /*for (const key of Object.values(dataProductApi.successData.categoriesTree[4].children)) {
-      console.log(key.children[categoryId]);
+    for (const key of Object.values(dataProductApi.successData.categoriesTree[4].children)) {
       if (key.children[categoryId] !== undefined) {
-        category.forEach((item) => {
+        key.children[categoryId].items.forEach((item) => {
           if (item.hitFlag === true) {
-            cardItemContainerSelector.prepend(cardItemProductCard.create(item));
+            cardItemContainerSelector.prepend(cardItemProductCard.create(dataProductApi.successData.items[item]));
           } else {
-            cardItemContainerSelector.append(cardItemProductCard.create(item));
+            cardItemContainerSelector.append(cardItemProductCard.create(dataProductApi.successData.items[item]));
           }
         });
       }
-    }*/
-    category.forEach((item) => {
-      if (item.hitFlag === true) {
-        cardItemContainerSelector.prepend(cardItemProductCard.create(item));
-      } else {
-        cardItemContainerSelector.append(cardItemProductCard.create(item));
-      }
-    });
+    }
   }
 }
 
@@ -101,7 +92,7 @@ class TogglePageOrderCategoryAll extends TogglePage {
         {
           type: 'click',
           callback: () => {
-            toggleFifthPageOrderSearch.rendering(false, categoryId);
+            toggleFifthPageOrderSearch.rendering(true, categoryId);
           },
         },
       ],

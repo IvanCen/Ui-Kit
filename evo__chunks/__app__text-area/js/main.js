@@ -56,7 +56,6 @@ function switchAdd(productInfo) {
       allCounter.textContent = `${allCountAdds} добав${number_of(allCountAdds, ['ка', 'ки', 'ок'])}`;
       title.textContent = `${counter} добав${number_of(counter, ['ка', 'ки', 'ок'])} ${titleName}`;
       setUserDataObj();
-      console.log(counter, allCountAdds);
     });
     iconMinus.addEventListener('click', () => {
       if (counter >= 1) {
@@ -98,7 +97,9 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
       if (obj[nutritionItem] !== null) {
         const nutritionEl = el.querySelector(`.text-area__info-number--${nutritionItem}`);
         if (nutritionEl) {
-          nutritionEl.textContent = (Number(nutritionEl.textContent).toFixed(2) || 0 + obj[nutritionItem]) * counter;
+          const regExp = /(\d*\.\d*).*/gm;
+          const number = Number(nutritionEl.textContent.replace(regExp, '$1'));
+          nutritionEl.textContent = `${number + (obj[nutritionItem] * counter)} г`;
         }
       }
     }
@@ -115,7 +116,7 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
                 <ul class="text-area__list"></ul>
               </div>
               <button class="button">
-                <img src="[+chunkWebPath+]/img/icon-expand-direction-right.svg" alt="" class="text-area__icon text-area__icon--position--center">
+                <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-right.svg]]" alt="" class="text-area__icon text-area__icon--position--center">
               </button>
             </div>`;
     element.insertAdjacentHTML('beforeend', template);
@@ -134,11 +135,11 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
             textAreaListItem.textContent = `${counter} добав${number_of(counter, ['ка', 'ки', 'ок'])} ${productItemModif.name}`;
             textAreaList.append(textAreaListItem);
             const {
-              caffeine, carbon, cholesterol, energy, energyFatValue, fats, fiber, netWeight, protein, saturatedFats, sodium, sugar, transFats,
+              caffeine, carbon, cholesterol, energy, energyFatValue, fats, fiber, netWeight, protein, saturatedFats, sodium, sugar, transFats, volume,
             } = productItemModif;
 
             this.countNutrition({
-              caffeine, carbon, cholesterol, energy, energyFatValue, fats, fiber, netWeight, protein, saturatedFats, sodium, sugar, transFats,
+              caffeine, carbon, cholesterol, energy, energyFatValue, fats, fiber, netWeight, protein, saturatedFats, sodium, sugar, transFats, volume,
             }, el, counter);
           }
         }
@@ -166,8 +167,9 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
 
     this.template = `
       <div class="text-area text-area--theme--light">
-        <div class="text-area__container text-area__container--indentation--normal">
+        <div class="text-area__container text-area__container--indentation--normal text-area__container--indentation--normal">
           <span class="text-area__price text-area__price--size--big">${price}</span>
+          <div class="text-area__icon-container text-area__icon-container--open"></div>
         </div>
       </div>
       <div class="text-area text-area--theme--light text-area--type--description">
@@ -175,20 +177,19 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
           <div class="text-area__content-container text-area__content-container--direction--column">
             <p class="text-area__text text-area__text--theme--shadow text-area__text--indentation--big">${productInfo.intro}</p>
             <div class="text-area__button-container">
-              <button class="button text-area__button text-area__button--type--like">
+              <button class="button text-area__button text-area__button--type--like text-area__button--position--absolute">
                 <svg class="text-area__icon text-area__icon--type--like" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path d="M1.8 9.80005C1.6 9.25005 1.5 8.67005 1.5 8.05005C1.5 5.15005 3.86 2.80005 6.75 2.80005C8.84 2.80005 10.66 4.03005 11.5 5.80005C11.7 6.22005 12.29 6.22005 12.5 5.80005C13.35 4.02005 15.16 2.80005 17.25 2.80005C20.14 2.80005 22.5 5.15005 22.5 8.05005C22.5 8.67005 22.39 9.27005 22.19 9.83005C21.93 10.56 21.51 11.21 20.97 11.76L12.02 20.66L3.4 12.09L3.39 12.08L3.38 12.07C3.17 11.89 2.98 11.7 2.8 11.49C2.35 10.99 2.02 10.42 1.8 9.80005Z"/>
                 </svg>
               </button>
               <button class="button text-area__button text-area__button--type--share">
-                <img src="[+chunkWebPath+]/img/icon-upload.svg" alt=""
+                <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-upload.svg]]" alt=""
                      class="text-area__icon text-area__icon--position--center">
               </button>
             </div>
           </div>
         </div>
       </div>
-     <!--<button class="text-area__button text-area__button&#45;&#45;type&#45;&#45;reset">сбросить модификации</button>-->
        <div class="text-area text-area--theme--light text-area--direction--column text-area--indentation--normal text-area--indentation--top text-area--description-wraper">
         <div class="text-area__content-container text-area__content-container--direction--row text-area__content-container--type--more">
           <div class="text-area__text-container">
@@ -296,15 +297,24 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
 
     this.buttonShare = this.element.querySelector('.text-area__button--type--share');
     this.iconsLike = this.element.querySelector('.text-area__icon--type--like');
+    this.blockLike = document.querySelector('.main-card__content-img');
     this.buttonMore = this.element.querySelector('.text-area__button--type--more');
     this.buttonAdd = this.element.querySelector('.text-area__button--type--add-product');
     this.nutritionArea = this.element.querySelector('.text-area__content-container--type--more');
     this.price = this.element.querySelector('.text-area__price');
+    this.stickersContainer = this.element.querySelector('.text-area__icon-container');
 
-    if (localStorage.getItem('user-sign-in') === null || isEmptyObj(userStore)) {
+    if (isEmptyObj(userInfoObj) || isEmptyObj(userStore)) {
       this.price.classList.add('text-area__price--hide');
     } else {
       this.price.classList.remove('text-area__price--hide');
+    }
+    if (productInfo.stickers.length !== 0) {
+      productInfo.stickers.forEach((stickerName) => {
+        const stickerEl = document.createElement('div');
+        stickerEl.classList.add('text-area__icon', 'text-area__icon--size--big', `text-area__icon--type--${stickerName}`);
+        this.stickersContainer.prepend(stickerEl);
+      });
     }
 
     this.buttonMore.addEventListener('click', () => {
@@ -316,11 +326,12 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
         this.iconsLike.classList.add('text-area__icon--liked');
       }
     });
-
-    this.iconsLike.addEventListener('click', function () {
-      this.classList.toggle('text-area__icon--liked');
-
-      if (this.classList.contains('text-area__icon--liked')) {
+    this.iconsLike.addEventListener('click', () => {
+      this.blockLike.click();
+    });
+    this.blockLike.addEventListener('click', () => {
+      this.iconsLike.classList.toggle('text-area__icon--liked');
+      if (this.iconsLike.classList.contains('text-area__icon--liked')) {
         console.log(productInfo);
         if (productInfo.modifiers !== null) {
           const modifiersArr = [];
@@ -410,7 +421,7 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
       });
     }
 
-    [...arrIngredientsProduct, ...arrModifIngredients].forEach((ingredient) => {
+    arrIngredientsProduct.forEach((ingredient) => {
       if (ingredient) {
         arrAllIngredientsProductName.push(ingredient.name);
         if (ingredient.allergenFlag) {
@@ -418,8 +429,6 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
         }
       }
     });
-
-    console.log(arrModifProduct);
 
     const elementIngredients = this.element.querySelector('.text-area__text--type--ingredients');
     const elementAllergens = this.element.querySelector('.text-area__text--type--allergens');
@@ -495,11 +504,11 @@ class CreateTextAreaAddin extends CreateItem {
             <div class="text-area__icon-container">
               <div class="text-area__icon-container text-area__icon-container--open">
                 <button class="button">
-                  <img src="[+chunkWebPath+]/img/icon-remove-line.svg" alt=""
+                  <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-remove-line.svg]]" alt=""
                        class="text-area__icon text-area__icon--type--minus text-area__icon--position--first">
                 </button>
                 <button class="button">
-                  <img src="[+chunkWebPath+]/img/icon-add-plus.svg" alt="" class="text-area__icon text-area__icon--type--plus">
+                  <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-add-plus.svg]]" alt="" class="text-area__icon text-area__icon--type--plus">
                 </button>
               </div>
             </div>
@@ -526,11 +535,11 @@ class CreateTextAreaAddin extends CreateItem {
                     <div class="text-area__icon-container text-area__icon-container--open">
                       <div class="text-area__icon-container text-area__icon-container--open">
                         <button class="button">
-                          <img src="[+chunkWebPath+]/img/icon-remove-line.svg" alt=""
+                          <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-remove-line.svg]]" alt=""
                                class="text-area__icon text-area__icon--type--minus text-area__icon--position--first">
                         </button>
                         <button class="button">
-                          <img src="[+chunkWebPath+]/img/icon-add-plus.svg" alt="" class="text-area__icon text-area__icon--type--plus">
+                          <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-add-plus.svg]]" alt="" class="text-area__icon text-area__icon--type--plus">
                         </button>
                       </div>
                     </div>
@@ -576,7 +585,7 @@ class CreateTextAreaAccount extends CreateItem {
         <div class="text-area__container text-area__container--indentation--small">
           <h2 class="text-area__title text-area__title--size--small text-area__title--type--bold">Баланс</h2>
           <button class="button">
-            <img src="[+chunkWebPath+]/img/icon-expand-direction-right.svg" alt="" class="text-area__icon text-area__icon--position--center">
+            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-right.svg]]" alt="" class="text-area__icon text-area__icon--position--center">
           </button>
         </div>
       </div>
@@ -586,7 +595,7 @@ class CreateTextAreaAccount extends CreateItem {
             <h2 class="text-area__title text-area__title--size--small text-area__title--type--bold">Заказы</h2>
           </div>
           <button class="button">
-            <img src="[+chunkWebPath+]/img/icon-expand-direction-right.svg" alt="" class="text-area__icon text-area__icon--position--center">
+            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-right.svg]]" alt="" class="text-area__icon text-area__icon--position--center">
           </button>
       </div>
       </div>
@@ -596,7 +605,7 @@ class CreateTextAreaAccount extends CreateItem {
             <h2 class="text-area__title text-area__title--size--small text-area__title--type--bold">Достижения</h2>
           </div>
           <button class="button">
-            <img src="[+chunkWebPath+]/img/icon-expand-direction-right.svg" alt="" class="text-area__icon text-area__icon--position--center">
+            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-right.svg]]" alt="" class="text-area__icon text-area__icon--position--center">
           </button>
       </div>
       </div>
@@ -606,7 +615,7 @@ class CreateTextAreaAccount extends CreateItem {
             <h2 class="text-area__title text-area__title--size--small text-area__title--type--bold">Политика конфиденциальности</h2>
           </div>
           <button class="button">
-            <img src="[+chunkWebPath+]/img/icon-expand-direction-right.svg" alt="" class="text-area__icon text-area__icon--position--center">
+            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-right.svg]]" alt="" class="text-area__icon text-area__icon--position--center">
           </button>
         </div>
       </div>
@@ -614,7 +623,7 @@ class CreateTextAreaAccount extends CreateItem {
         <div class="text-area__container text-area__container--indentation--small">
           <h2 class="text-area__title text-area__title--size--small text-area__title--type--bold">Пользовательское соглашение</h2>
           <button class="button">
-            <img src="[+chunkWebPath+]/img/icon-expand-direction-right.svg" alt="" class="text-area__icon text-area__icon--position--center">
+            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-right.svg]]" alt="" class="text-area__icon text-area__icon--position--center">
           </button>
          </div>
        </div>  
@@ -622,7 +631,7 @@ class CreateTextAreaAccount extends CreateItem {
         <div class="text-area__container text-area__container--indentation--small">
           <h2 class="text-area__title text-area__title--size--small text-area__title--type--bold">Публичная оферта</h2>
           <button class="button">
-            <img src="[+chunkWebPath+]/img/icon-expand-direction-right.svg" alt="" class="text-area__icon text-area__icon--position--center">
+            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-right.svg]]" alt="" class="text-area__icon text-area__icon--position--center">
           </button>
          </div>
        </div>  
@@ -682,7 +691,7 @@ class CreateTextAreaApplication extends CreateItem {
     this.element = document.createElement(this.parameters.selector);
     this.template = `
       <div class="text-area text-area--indentation--normal">
-        <div class="text-area__content-container text-area__content-container--direction--column text-area__content-container--indentation--normal">
+        <div class="text-area__content-container text-area__application text-area__content-container--direction--column text-area__content-container--indentation--normal">
           ${info.content}
         </div>
     `;
@@ -706,7 +715,7 @@ class CreateTextAreaStoreInfo extends CreateItem {
            <span class="text-area__title text-area__title--size--small text-area__title--theme--shadow">${this.parameters.distance}</span>
           </div>
           <a href="https://www.google.ru/maps/place/${this.parameters.address}/@${this.parameters.latitude},${this.parameters.longitude}z?hl=ru" target="_blank" class="shop-info__direction">
-            <img src="[+chunkWebPath+]/img/icon-on-map.svg" alt="" class="text-area__icon text-area__icon--position--center">
+            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-on-map.svg]]" alt="" class="text-area__icon text-area__icon--position--center">
           </a>
         </div>
       </div>
@@ -714,7 +723,7 @@ class CreateTextAreaStoreInfo extends CreateItem {
         <div class="text-area__container text-area__container--indentation--normal">
           <a href="tel:${this.parameters.phone}" class="text-area__title text-area__title--size--small text-area__title--type--bold">${this.parameters.phone}</a>
           <a href="tel:${this.parameters.phone}">
-           <img src="[+chunkWebPath+]/img/icon-phone.svg" alt="" class="text-area__icon text-area__icon--position--center text-area__icon--phone">
+           <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-phone.svg]]" alt="" class="text-area__icon text-area__icon--position--center text-area__icon--phone">
           </a>
         </div>
      </div>  
@@ -892,7 +901,7 @@ class CreateTextArea extends CreateItem {
       this.button = document.createElement('button');
       this.button.classList.add('button');
       this.buttonTemplate = `
-        <img src="[+chunkWebPath+]/img/icon-expand-direction-right.svg" alt="" class="text-area__icon text-area__icon--position--center">`;
+        <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-right.svg]]" alt="" class="text-area__icon text-area__icon--position--center">`;
       this.button.insertAdjacentHTML('beforeend', this.buttonTemplate);
       this.textAreaContainer.append(this.button);
       if (typeof this.parameters.eventButton === 'object') {
@@ -937,7 +946,7 @@ class CreateTextAreaOrderPayment extends CreateItem {
       setTimeout(() => {
         toggleModal.rendering('Спасибо за оплату. Если платеж был успешным, то скоро мы получим его и обновим статус вашего заказа или доставим средства на счет');
       }, 2000);
-    } else if (isEmptyObj(payInfo.successData)) {
+    } else if (isEmptyObj(payInfo.successData) && payInfo.success) {
       const textArea = document.querySelector('.text-area--type--balance');
       const fifthPage = document.querySelector('.fifth-page');
       textArea.classList.add('text-area--hide');
@@ -945,7 +954,6 @@ class CreateTextAreaOrderPayment extends CreateItem {
       access.classList.add('text-area__title', 'text-area__title--position--center', 'text-area__title--indentation--big', 'text-area__title--size--big');
       access.textContent = 'Оплата прошла успешно';
       fifthPage.append(access);
-
       basketArray.splice(0, basketArray.length);
       localStorage.setItem('basket', JSON.stringify(basketArray));
       counterBasket();

@@ -47,7 +47,6 @@ class ToggleFourthPageReviewOrder extends ToggleFourthPage {
       style: ['card-item__container'],
       modifier: [
         '--direction--column',
-        '--indentation-column--normal',
         '--indentation--top',
         '--indentation--bottom',
         '--type--review',
@@ -69,7 +68,7 @@ class ToggleFourthPageReviewOrder extends ToggleFourthPage {
       text: ['Продолжить'],
     });
     const reviewCardItem = new CreateCardItemReviewOrder({
-      style: ['card-item'],
+      style: ['banner__container'],
       modifier: [
         '--type--swipe',
         '--border--bottom',
@@ -95,6 +94,10 @@ class ToggleFourthPageReviewOrder extends ToggleFourthPage {
           this.cardItemContainer.append(reviewCardItem.create(item));
         }
       }
+    });
+    const banners = document.querySelectorAll('.banner__container');
+    banners.forEach((banner) => {
+      activeBanners(banner, true);
     });
     function renderPayOrderPage(info) {
       console.log(info);

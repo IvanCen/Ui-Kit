@@ -24,9 +24,9 @@ class ToggleFifthPageOrderSearch extends ToggleFifthPage {
       let numberOfHits = 0;
       for (const searchItemTextPart of searchItemTextArray) {
         numberOfHits += (dataProductApi.successData.items[item].name.toLowerCase().split(searchItemTextPart).length - 1);
-        if (typeof dataProductApi.successData.items[item].intro !== 'undefined') {
+        /*if (typeof dataProductApi.successData.items[item].intro !== 'undefined') {
           numberOfHits += (dataProductApi.successData.items[item].intro.toLowerCase().split(searchItemTextPart).length - 1);
-        }
+        }*/
       }
       if (numberOfHits > 0) {
         if (typeof searchItems[numberOfHits] !== 'object') {
@@ -48,7 +48,7 @@ class ToggleFifthPageOrderSearch extends ToggleFifthPage {
       arr.push(el);
     }
     arr.flat().forEach((item) => {
-      cardItemContainerSearchEl.prepend(cardItem.create({ id: item.id }));
+      cardItemContainerSearchEl.append(cardItem.create({ id: item.id }));
     });
   }
 
@@ -98,9 +98,9 @@ class ToggleFifthPageOrderSearch extends ToggleFifthPage {
       let numberOfHits = 0;
       for (const searchItemTextPart of searchItemTextArray) {
         numberOfHits += (dataProductApi.successData.items[item].name.toLowerCase().split(searchItemTextPart).length - 1);
-        if (typeof dataProductApi.successData.items[item].intro !== 'undefined') {
+        /*if (typeof dataProductApi.successData.items[item].intro !== 'undefined') {
           numberOfHits += (dataProductApi.successData.items[item].intro.toLowerCase().split(searchItemTextPart).length - 1);
-        }
+        }*/
       }
       if (numberOfHits > 0) {
         if (typeof searchItems[numberOfHits] !== 'object') {
@@ -122,7 +122,7 @@ class ToggleFifthPageOrderSearch extends ToggleFifthPage {
       arr.push(el);
     }
     arr.flat().forEach((item) => {
-      cardItemContainerSearchEl.prepend(cardItem.create({ id: item.id }));
+      cardItemContainerSearchEl.append(cardItem.create({ id: item.id }));
     });
   }
 
@@ -167,6 +167,9 @@ class ToggleFifthPageOrderSearch extends ToggleFifthPage {
         console.log(isCategory);
         toggleFifthPageOrderSearch.searchItem();
       }
+    });
+    this.fifthPage.addEventListener('scroll', () => {
+      inputSearch.blur();
     });
 
     clearSearchActive();

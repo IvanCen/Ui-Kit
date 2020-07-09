@@ -64,7 +64,7 @@ class Api {
       });
   }
 
-  promoApi(renderPromo) {
+  promoApi(func) {
     const request = {
       method: 'get-promo',
       offset: 0,
@@ -84,13 +84,13 @@ class Api {
         return Promise.reject(`Ошибка: ${res.status}`);
       })
       .then((promoInfo) => promoInfo)
-      .then(renderPromo)
+      .then(func)
       .catch((err) => {
         console.log('Ошибка. Запрос не выполнен: ', err);
       });
   }
 
-  postsApi(renderPosts) {
+  postsApi(func) {
     const request = {
       method: 'get-posts',
       offset: 0,
@@ -110,7 +110,7 @@ class Api {
         return Promise.reject(`Ошибка: ${res.status}`);
       })
       .then((postsInfo) => postsInfo)
-      .then(renderPosts)
+      .then(func)
       .catch((err) => {
         console.log('Ошибка. Запрос не выполнен: ', err);
       });
@@ -253,10 +253,10 @@ class Api {
       });
   }
 
-  getPrivacyPolicy(mode, documentName) {
+  getPublicDocument(mode, documentName) {
     const request = {
       method: 'get-public-document',
-      document: 'privacy-policy',
+      document: documentName,
       mode,
       outputFormat: 'json',
     };
@@ -279,77 +279,7 @@ class Api {
           applicationDataObj[documentName].lastEditDateRequest = Date.now();
         } else if (info.successData.editDate !== applicationDataObj[documentName].editDate) {
           applicationDataObj[documentName].editDate = info.successData.editDate;
-          api.getPrivacyPolicy('both');
-        }
-        localStorage.setItem('applicationData', JSON.stringify(applicationDataObj));
-      })
-      .catch((err) => {
-        console.log('Ошибка. Запрос не выполнен: ', err);
-      });
-  }
-
-  getUserAgreement(mode, documentName) {
-    const request = {
-      method: 'get-public-document',
-      document: 'user-agreement',
-      mode,
-      outputFormat: 'json',
-    };
-
-    fetch(this.options.baseUrl, {
-      method: 'POST',
-      headers: this.options.headers,
-      body: JSON.stringify(request),
-
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Ошибка: ${res.status}`);
-      })
-      .then((info) => {
-        if (isEmptyObj(applicationDataObj[documentName]) || info.successData.content !== undefined) {
-          applicationDataObj[documentName] = info.successData;
-          applicationDataObj[documentName].lastEditDateRequest = Date.now();
-        } else if (info.successData.editDate !== applicationDataObj[documentName].editDate) {
-          applicationDataObj[documentName].editDate = info.successData.editDate;
-          api.getUserAgreement('both');
-        }
-        localStorage.setItem('applicationData', JSON.stringify(applicationDataObj));
-      })
-      .catch((err) => {
-        console.log('Ошибка. Запрос не выполнен: ', err);
-      });
-  }
-
-  getPublicOffer(mode, documentName) {
-    const request = {
-      method: 'get-public-document',
-      document: 'public-offer',
-      mode,
-      outputFormat: 'json',
-    };
-
-    fetch(this.options.baseUrl, {
-      method: 'POST',
-      headers: this.options.headers,
-      body: JSON.stringify(request),
-
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Ошибка: ${res.status}`);
-      })
-      .then((info) => {
-        if (isEmptyObj(applicationDataObj[documentName]) || info.successData.content !== undefined) {
-          applicationDataObj[documentName] = info.successData;
-          applicationDataObj[documentName].lastEditDateRequest = Date.now();
-        } else if (info.successData.editDate !== applicationDataObj[documentName].editDate) {
-          applicationDataObj[documentName].editDate = info.successData.editDate;
-          api.getPublicOffer('both');
+          this.getPublicDocument('both', documentName);
         }
         localStorage.setItem('applicationData', JSON.stringify(applicationDataObj));
       })

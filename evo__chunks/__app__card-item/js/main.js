@@ -7,7 +7,6 @@ function activeLike() {
   });
 }
 
-
 class CreateCardItemOrder extends CreateItem {
   constructor(parameters) {
     super();
@@ -61,12 +60,23 @@ class CreateCardItemOrderProductCard extends CreateItem {
       toggleSubPageProductCard.openPage();
     });
     this.template = `
-      <div class="card-item__image card-item__image--size--big"></div>
+      <div class="card-item__image card-item__image--size--big">
+        <div class="card-item__stickers-container"></div>
+      </div>
       <div class="card-item__info-container">
         <h3 class="card-item__title card-item__title--text--normal card-item__title--position--center">${productInfo.name}</h3>
         <span class="card-item__available-info card-item__available-info--show">
       </div>`;
     this.element.insertAdjacentHTML('beforeend', this.template);
+    this.stickersContainer = this.element.querySelector('.card-item__stickers-container');
+
+    if (productInfo.stickers.length !== 0) {
+      productInfo.stickers.forEach((stickerName) => {
+        const stickerEl = document.createElement('div');
+        stickerEl.classList.add('text-area__icon', 'text-area__icon--size--big', `text-area__icon--type--${stickerName}`);
+        this.stickersContainer.prepend(stickerEl);
+      });
+    }
 
     const imgEl = this.element.querySelector('.card-item__image');
     if (!canUseWebP()) {
@@ -203,15 +213,15 @@ class CreateCardItemFavAndHisOrder extends CreateItem {
            
             <ul class="card-item__list"></ul>
             <div class="card-item__icon-container">
-              <button class="card-item__button card-item__button--type--like">
+              <button class="card-item__button card-item__button--type--like card-item__button--size--big">
                 <svg class="card-item__icon card-item__icon--type--like card-item__icon--liked" viewBox="0 0 24 24"
                      xmlns="http://www.w3.org/2000/svg">
                   <path
                       d="M1.8 9.80005C1.6 9.25005 1.5 8.67005 1.5 8.05005C1.5 5.15005 3.86 2.80005 6.75 2.80005C8.84 2.80005 10.66 4.03005 11.5 5.80005C11.7 6.22005 12.29 6.22005 12.5 5.80005C13.35 4.02005 15.16 2.80005 17.25 2.80005C20.14 2.80005 22.5 5.15005 22.5 8.05005C22.5 8.67005 22.39 9.27005 22.19 9.83005C21.93 10.56 21.51 11.21 20.97 11.76L12.02 20.66L3.4 12.09L3.39 12.08L3.38 12.07C3.17 11.89 2.98 11.7 2.8 11.49C2.35 10.99 2.02 10.42 1.8 9.80005Z"/>
                 </svg>
               </button>
-              <button class="card-item__button">
-                <img src="[+chunkWebPath+]/img/icon-add-circle-plus.svg" alt=""
+              <button class="card-item__button card-item__button--size--big">
+                <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-add-circle-plus.svg]]" alt=""
                      class="card-item__icon card-item__icon--type--add">
               </button>
             </div>
@@ -221,6 +231,12 @@ class CreateCardItemFavAndHisOrder extends CreateItem {
     this.img = this.element.querySelector('.card-item__image');
     this.iconsAdd = this.element.querySelector('.card-item__icon--type--add');
     const el = this.element;
+    console.log(productInfo);
+    this.element.addEventListener('click', () => {
+      toggleFifthPage.closePage();
+      toggleSubPageProductCard.rendering(dataProductApi.successData.items[productInfo.id]);
+      toggleFifthPage.deletePage();
+    });
 
     if (typeof dataProductApi.successData.items[productInfo.id] === 'object' && typeof productInfo.modifiers === 'object') {
       const cardItemList = this.element.querySelector('.card-item__list');
@@ -313,6 +329,7 @@ class CreateCardItemContainerFavAndHisOrder extends CreateItem {
   }
 }
 
+
 class CreateCardItemReviewOrder extends CreateItem {
   constructor(parameters) {
     super();
@@ -321,41 +338,40 @@ class CreateCardItemReviewOrder extends CreateItem {
   }
 
   create(productInfo) {
-    /**
-     * Создаем и заполняем HTML блок с товаром для корзины
-     * @type {HTMLDivElement}
-     */
-
-    // if()
-
-
     this.element = document.createElement('div');
+
     this.template = `
-          <img alt="" class="card-item__image card-item__image--size--small">
-          <div class="card-item__content-container">
-            <h3 class="card-item__title card-item__title--text--bold">${dataProductApi.successData.items[productInfo.id].name}</h3>
-            <span class="card-item__info card-item__info--indentation--bottom card-item__info--theme--shadow">Калорий ${dataProductApi.successData.items[productInfo.id].energy || ''} г</span>
-            <ul class="card-item__list"></ul>
-            <span class="card-item__price"></span>
-            <div class="card-item__icon-container">
-              <button class="card-item__button card-item__button--type--minus">
-               <img src="[+chunkWebPath+]/img/icon-remove-circle.svg" alt=""
-                     class="card-item__icon card-item__icon--type--minus">
-              </button>
-              <button class="card-item__button card-item__button--type--plus">
-                <img src="[+chunkWebPath+]/img/icon-add-circle-plus.svg" alt=""
-                     class="card-item__icon card-item__icon--type--plus">
-              </button>
+          <div class="card-item__container--direction--row-small banners__banner">
+            <div class="card-item__image card-item__image--size--small"></div>
+            <div class="card-item__content-container">
+              <h3 class="card-item__title card-item__title--text--bold">${dataProductApi.successData.items[productInfo.id].name}</h3>
+              <span class="card-item__info card-item__info--indentation--bottom card-item__info--theme--shadow">Калорий ${dataProductApi.successData.items[productInfo.id].energy || ''} г</span>
+              <ul class="card-item__list"></ul>
+              <span class="card-item__price"></span>
+              <div class="card-item__icon-container">
+                <button class="card-item__button card-item__button--type--minus">
+                 <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-remove-circle.svg]]" alt=""
+                       class="card-item__icon card-item__icon--type--minus">
+                </button>
+                <button class="card-item__button card-item__button--type--plus">
+                  <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-add-circle-plus.svg]]" alt=""
+                       class="card-item__icon card-item__icon--type--plus">
+                </button>
+              </div>
             </div>
-          </div>`;
+          </div>
+          <div class="card-item__zone card-item__zone--type--delete banners__banner">
+            <img class="card-item__icon card-item__icon--size--big" src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-delete-basket.svg]]" alt="">
+          </div>  
+        `;
     this.element.insertAdjacentHTML('beforeend', this.template);
     this.iconsMinus = this.element.querySelector('.card-item__button--type--minus');
     this.iconsPlus = this.element.querySelector('.card-item__button--type--plus');
     this.price = this.element.querySelector('.card-item__price');
+    this.element.setAttribute('id', productInfo.id);
     const el = this.element;
     const counterTopBar = document.querySelector('.top-bar__all-counter-order');
     const counterBottomBar = document.querySelector('.bottom-bar__counter');
-
 
     const imgEl = this.element.querySelector('.card-item__image');
     if (!canUseWebP()) {
@@ -366,27 +382,6 @@ class CreateCardItemReviewOrder extends CreateItem {
 
     let priceAllModifier = 0;
 
-
-    // if (typeof userDataObj[productInfo.id] === 'object') {
-    //   for (const modifier of Object.values(dataProductApi.successData.modifiers)) {
-    //     for (const modifiersUserItem in userDataObj[productInfo.id]) {
-    //       if (String(modifier.id) === modifiersUserItem) {
-    //         const counter = userDataObj[productInfo.id][modifiersUserItem];
-    //         if (counter !== 0) {
-    //           priceAllModifier += modifier.price * userDataObj[productInfo.id][modifiersUserItem];
-    //           const cardItemListItem = document.createElement('li');
-    //           cardItemListItem.classList.add('card-item__list-item');
-    //           cardItemListItem.id = modifier.id;
-    //           cardItemListItem.textContent = cardItemListItem.textContent = `${counter} добав${number_of(counter, ['ка', 'ки', 'ок'])} ${modifier.name}`;
-    //           cardItemList.append(cardItemListItem);
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
-    /**
-     * Если есть модификаторы
-     */
     if (typeof dataProductApi.successData.items[productInfo.id] === 'object' && typeof productInfo.modifiers === 'object') {
       const cardItemList = this.element.querySelector('.card-item__list');
       /**
@@ -414,10 +409,6 @@ class CreateCardItemReviewOrder extends CreateItem {
       }
     }
 
-
-    /**
-     * Добавляем события
-     */
     this.iconsMinus.addEventListener('click', () => {
       counterTopBar.textContent = Number(counterTopBar.textContent) - 1;
       counterBottomBar.textContent = Number(counterBottomBar.textContent) - 1;
@@ -439,37 +430,7 @@ class CreateCardItemReviewOrder extends CreateItem {
       checkBasket();
       setTimeout(() => el.remove(), 200);
     });
-    // this.iconsMinus.addEventListener('click', () => {
-    //   counterTopBar.textContent = Number(counterTopBar.textContent) - 1;
-    //   counterBottomBar.textContent = Number(counterBottomBar.textContent) - 1;
-    //   el.classList.add('card-item--animation');
-    //   basketArray.forEach((item, index) => {
-    //     if (item.id === productInfo.id) {
-    //       basketArray.splice(index, 1);
-    //     }
-    //   });
-    //   localStorage.setItem('basket', JSON.stringify(basketArray));
-    //   counterBasket();
-    //   checkBasket();
-    //   setTimeout(() => el.remove(), 200);
-    // });
 
-    // this.iconsPlus.addEventListener('click', () => {
-    //   counterTopBar.textContent = Number(counterTopBar.textContent) + 1;
-    //   basketArray.push({ id: productInfo.id });
-    //   localStorage.setItem('basket', JSON.stringify(basketArray));
-    //   counterBasket();
-    //   const cardItemContainer = document.querySelector('.card-item__container--type--review');
-    //   this.arrHtml = Array.from(cardItemContainer.children);
-    //   this.arrHtml.splice(0, this.arrHtml.length).forEach((item) => item.remove());
-    //   basketArray.forEach((item) => {
-    //     for (const elem of Object.values(dataProductApi.successData.items)) {
-    //       if (item.id === elem.id) {
-    //         cardItemContainer.append(this.create(elem));
-    //       }
-    //     }
-    //   });
-    // });
     this.iconsPlus.addEventListener('click', () => {
       counterTopBar.textContent = Number(counterTopBar.textContent) + 1;
       basketArray.push(productInfo);
@@ -536,7 +497,7 @@ class CreateCardItemHistory extends CreateItem {
                 </svg>
               </button>
               <button class="card-item__button card-item__button--type--plus">
-                <img src="[+chunkWebPath+]/img/icon-add-circle-plus.svg" alt=""
+                <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-add-circle-plus.svg]]" alt=""
                      class="card-item__icon card-item__icon--type--plus">
               </button>
             </div>

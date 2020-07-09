@@ -58,7 +58,7 @@
     min-height: fit-content;
 
     &--position--top {
-      order: -1;
+      order: -1 !important;
     }
   }
 

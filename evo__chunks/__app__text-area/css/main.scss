@@ -1,6 +1,7 @@
 @import "../../__app__head-style-and-script/css/main.scss";
 
 .text-area-wraper {
+
   &--indentation--bottom {
     margin-bottom: 100px;
   }
@@ -29,7 +30,6 @@
 
   &__container {
     border-bottom: 1px solid $gainsboroGray;
-
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -235,6 +235,12 @@
     justify-content: center;
     align-items: center;
 
+    &--position--absolute {
+      position: absolute;
+      top: 0;
+      right: 16px;
+    }
+
     &--open {
       display: flex;
     }
@@ -254,21 +260,36 @@
       margin-right: 32px;
     }
 
-    &--type--like {
-      width: 24px;
-      height: 24px;
-      stroke: gray;
-      fill: transparent;
-    }
-
-    &--liked {
-      stroke: none;
-      fill: $alizarinCrimson;
+    &--size--big {
+      width: 40px;
+      height: 40px;
     }
 
     &--size--small {
       width: 20px;
       height: 20px;
+    }
+
+    &--type--like {
+      width: 100%;
+      height: 100%;
+      stroke: gray;
+      fill: transparent;
+
+    }
+
+    &--liked {
+      stroke: none;
+      fill: $alizarinCrimson;
+      animation: pulse 1s ease-in;
+    }
+
+    &--type--hit {
+      background: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-hit.svg]]") no-repeat;
+    }
+
+    &--type--summer {
+      background: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-summer.svg]]") no-repeat;
     }
 
   }
@@ -296,7 +317,12 @@
       align-self: flex-end;
       width: 25px;
       height: 25px;
-      margin-right: 20px;
+    }
+
+    &--position--absolute {
+      position: absolute;
+      right: 16px;
+      top: 55px;
     }
 
     &--type--more {
@@ -327,7 +353,7 @@
 
       &:after {
         content: '';
-        background: url("[+chunkWebPath+]/img/icon-rubles.svg") no-repeat;
+        background: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-rubles.svg]]") no-repeat;
         background-size: cover;
         position: absolute;
         right: -17px;
@@ -344,7 +370,7 @@
 
       &:after {
         content: '';
-        background: url("[+chunkWebPath+]/img/icon-rubles.svg") no-repeat;
+        background: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-rubles.svg]]") no-repeat;
         background-size: cover;
         position: absolute;
         right: -13px;
@@ -361,4 +387,34 @@
     position: relative;
 
   }
+}
+
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+
+.text-area__application > p > img {
+  width: 100%;
+}
+
+.text-area__application > h1 {
+  margin-bottom: 20px;
+}
+
+.text-area__application > h2 {
+  margin-bottom: 20px;
+}
+
+.text-area__application > p {
+  margin-bottom: 10px;
 }

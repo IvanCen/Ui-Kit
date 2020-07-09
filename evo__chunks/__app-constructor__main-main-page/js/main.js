@@ -27,6 +27,17 @@ class ToggleMain extends ToggleMainPage {
     });
     const mainPageMainCard = new CreateMainCard();
 
+    const ourHistoryMainCard = new CreateOurHistoryMainCard({
+      selector: ['div'],
+      style: ['main-card'],
+      modifier: ['--theme--shadow',
+        '--type--border',
+      ],
+      title: ['О компании ХЛЕБНИК'],
+      text: ['Мы - пекарня ХЛЕБНИК, и мы хотим с вами познакомиться. Для этого мы каждый день открываем двери наших пекарен, запускаем производство и встаем за прилавок. Мы делаем первый шаг навстречу к вам.'],
+      buttonText: ['Читать подробнее'],
+    });
+
     const mainPageButtonJoinOrange = new CreateButton({
       selector: ['button'],
       style: ['button'],
@@ -42,6 +53,7 @@ class ToggleMain extends ToggleMainPage {
 
 
     function renderPosts(dataPosts) {
+      console.log(dataPosts);
       const mainPageContent = document.querySelector('.main-page__content-main');
       const postContainer = document.createElement('div');
       postContainer.classList.add('main-card__container-posts');
@@ -64,12 +76,11 @@ class ToggleMain extends ToggleMainPage {
           const loader = document.querySelector('.loader');
           mainPage.classList.remove('main-page--loaded');
           loader.classList.add('loader--hide');
-
-          if (!isEmptyObj(userDataObj)) {
-            rateLastOrder();
-          }
         }, 1000);
       });
+      if (!isEmptyObj(userDataObj)) {
+        rateLastOrder();
+      }
     }
 
     this.parameters.api.promoApi(renderPromo);
@@ -77,7 +88,9 @@ class ToggleMain extends ToggleMainPage {
 
     this.mainPageContent.prepend(mainPageTopBar.create());
     this.mainPageContent.prepend(createTopBarIos());
-    if (localStorage.getItem('user-sign-in') === null) {
+    this.mainPageContent.append(ourHistoryMainCard.create());
+
+    if (isEmptyObj(userInfoObj)) {
       this.mainPageContent.append(mainPageButtonJoinOrange.create());
     }
     setTimeout(() => {

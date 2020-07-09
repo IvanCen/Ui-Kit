@@ -15,9 +15,9 @@
   }
 
   &--type--swipe {
-    width: 120%;
+    width: 100%;
     display: grid;
-    grid-template-columns: 1fr 5fr 65px;
+    grid-template-columns: calc(100vw - 20px) 1fr;
     justify-items: flex-start;
     grid-gap: 10px 13px;
   }
@@ -67,6 +67,16 @@
       grid-row-gap: 20px;
       grid-column-gap: 13px;
       padding: 20px 16px;
+    }
+
+    &--direction--row-small {
+      width: 100vw;
+      display: grid;
+      grid-template-columns: 65px 1fr;
+      grid-row-gap: 20px;
+      grid-column-gap: 13px;
+      padding-top: 20px;
+      padding-left: 20px;
     }
 
     &--direction--column {
@@ -203,8 +213,7 @@
   }
 
   &__zone {
-    width: 200%;
-    height: 100%;
+    width: 100vw;
     display: flex;
     justify-content: flex-start;
     align-items: center;

@@ -104,7 +104,7 @@ class TogglePageAccount extends TogglePage {
     this.buttonContainer = document.createElement('div');
     this.page.prepend(createTopBarIos());
     this.page.prepend(accountTopBar.create());
-    if (localStorage.getItem('user-sign-in') === null) {
+    if (isEmptyObj(userInfoObj)) {
       this.buttonContainer.append(accountButtonJoinTangerin.create());
       this.buttonContainer.append(accountButtonJoinTangerinTransparent.create());
     } else {

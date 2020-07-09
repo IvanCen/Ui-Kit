@@ -15,6 +15,10 @@
   position: relative;
   min-height: 200px;
 
+  &--type--swipe {
+    min-height: 100px;
+  }
+
   &--with-animation {
     transition: transform .3s ease;
   }
@@ -84,3 +88,5 @@
     border-radius: 6px;
   }
 }
+
+

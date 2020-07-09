@@ -76,6 +76,7 @@ class CreateMapItemStores extends CreateItem {
     this.buttonDetails = this.element.querySelector('.map__button--type--details');
     this.buttonLike = this.element.querySelector('.map__button--type--like');
     this.iconLike = this.element.querySelector('.map__icon--type--like');
+    this.mapСontent = this.element.querySelector('.map__content');
 
     if (!isEmptyObj(userFavoriteStore)) {
       for (const shop of Object.values(userFavoriteStore)) {
@@ -116,7 +117,7 @@ class CreateMapItemStores extends CreateItem {
           }
         }
       } else {
-        icon.closest('.map__item').style.order = -1;
+        //icon.closest('.map__item').style.order = -1;
         icon.classList.add('map__icon--liked');
         storesDataObj.successData.forEach((item) => {
           if (item.id === store.id) {
@@ -138,7 +139,7 @@ class CreateMapItemStores extends CreateItem {
             e.get('target').options.set('iconImageHref', 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-point.svg]]');
           }
         });
-      this.element.addEventListener('click', (e) => {
+      this.mapСontent.addEventListener('click', (e) => {
         e.preventDefault();
         radioInput.checked = 'checked';
         placemark.options.set('iconImageHref', 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-point-select.svg]]');

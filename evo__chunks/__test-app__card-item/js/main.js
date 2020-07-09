@@ -337,100 +337,30 @@ class CreateCardItemReviewOrder extends CreateItem {
     this.create.bind(this);
   }
 
-  swipeDelete(container, elements, productInfo) {
-    let dragStart = 0;
-    let dragEnd = 0;
-    let offsetX = 0;
-    let offsetXOnStart = 0;
-
-    function animation(action) {
-      if (offsetX > 0) {
-        // тут действия, если тянется влево дальше минимума
-        if (action === 'end') {
-          offsetX = 0;
-          dragStart = 0;
-          dragEnd = 0;
-          offsetXOnStart = 0;
-        } else if (action === 'move') {
-          offsetX /= 1; // уменьшапем скорость смещения в 2 раза
-        }
-      }
-      const maxOffsetWidth = -100;
-      if (offsetX < maxOffsetWidth) {
-        // тут действия, если тянется вправо дальше максимума
-        if (action === 'end') {
-          offsetX = maxOffsetWidth;
-          dragStart = 0;
-          dragEnd = 0;
-          offsetXOnStart = 0;
-           setTimeout(() => {
-            elements.counterTopBar.textContent = Number(elements.counterTopBar.textContent) - 1;
-            elements.counterBottomBar.textContent = Number(elements.counterBottomBar.textContent) - 1;
-            elements.el.classList.add('card-item--animation');
-
-            for (const [index, item] of Object.entries(basketArray)) {
-
-              if (item === productInfo) {
-                basketArray.splice(index, 1);
-                break;
-              }
-            }
-            localStorage.setItem('basket', JSON.stringify(basketArray));
-            counterBasket();
-            checkBasket();
-            container.remove();
-          }, 300);
-        } else if (action === 'move') {
-          offsetX += maxOffsetWidth; // уменьшапем скорость смещения в 2 раза
-        }
-      } else {
-        offsetX = 0;
-      }
-      container.style.transform = `translate3d(${offsetX}px,0,0)`;
-    }
-
-    container.addEventListener('touchstart', (event) => {
-      dragStart = event.touches[0].clientX;
-      container.classList.remove('banner__container--with-animation');
-    }, { passive: false });
-
-    container.addEventListener('touchmove', (event) => {
-      dragEnd = event.touches[0].clientX;
-      offsetX = offsetXOnStart + dragEnd - dragStart;
-      animation('move');
-    }, { passive: false });
-
-    container.addEventListener('touchend', (event) => {
-      // event.preventDefault();
-      // event.stopPropagation();
-      dragEnd = 0;
-      offsetXOnStart = 0;
-      container.classList.add('banner__container--with-animation');
-      animation('end');
-    }, { passive: false });
-  }
-
   create(productInfo) {
     this.element = document.createElement('div');
+
     this.template = `
-          <img alt="" class="card-item__image card-item__image--size--small">
-          <div class="card-item__content-container">
-            <h3 class="card-item__title card-item__title--text--bold">${dataProductApi.successData.items[productInfo.id].name}</h3>
-            <span class="card-item__info card-item__info--indentation--bottom card-item__info--theme--shadow">Калорий ${dataProductApi.successData.items[productInfo.id].energy || ''} г</span>
-            <ul class="card-item__list"></ul>
-            <span class="card-item__price"></span>
-            <div class="card-item__icon-container">
-              <button class="card-item__button card-item__button--type--minus">
-               <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-remove-circle.svg]]" alt=""
-                     class="card-item__icon card-item__icon--type--minus">
-              </button>
-              <button class="card-item__button card-item__button--type--plus">
-                <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-add-circle-plus.svg]]" alt=""
-                     class="card-item__icon card-item__icon--type--plus">
-              </button>
+          <div class="card-item__container--direction--row-small banners__banner">
+            <div class="card-item__image card-item__image--size--small"></div>
+            <div class="card-item__content-container">
+              <h3 class="card-item__title card-item__title--text--bold">${dataProductApi.successData.items[productInfo.id].name}</h3>
+              <span class="card-item__info card-item__info--indentation--bottom card-item__info--theme--shadow">Калорий ${dataProductApi.successData.items[productInfo.id].energy || ''} г</span>
+              <ul class="card-item__list"></ul>
+              <span class="card-item__price"></span>
+              <div class="card-item__icon-container">
+                <button class="card-item__button card-item__button--type--minus">
+                 <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-remove-circle.svg]]" alt=""
+                       class="card-item__icon card-item__icon--type--minus">
+                </button>
+                <button class="card-item__button card-item__button--type--plus">
+                  <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-add-circle-plus.svg]]" alt=""
+                       class="card-item__icon card-item__icon--type--plus">
+                </button>
+              </div>
             </div>
           </div>
-          <div class="card-item__zone card-item__zone--type--delete">
+          <div class="card-item__zone card-item__zone--type--delete banners__banner">
             <img class="card-item__icon card-item__icon--size--big" src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-delete-basket.svg]]" alt="">
           </div>  
         `;
@@ -438,6 +368,7 @@ class CreateCardItemReviewOrder extends CreateItem {
     this.iconsMinus = this.element.querySelector('.card-item__button--type--minus');
     this.iconsPlus = this.element.querySelector('.card-item__button--type--plus');
     this.price = this.element.querySelector('.card-item__price');
+    this.element.setAttribute('id', productInfo.id);
     const el = this.element;
     const counterTopBar = document.querySelector('.top-bar__all-counter-order');
     const counterBottomBar = document.querySelector('.bottom-bar__counter');
@@ -477,11 +408,6 @@ class CreateCardItemReviewOrder extends CreateItem {
         this.price.textContent = priceAllModifier + dataProductApi.successData.items[productInfo.id][`price${userStore.store.priceGroup}`];
       }
     }
-    /**
-     * Добавляем события
-     */
-
-    this.swipeDelete(this.element, { el, counterTopBar, counterBottomBar }, productInfo);
 
     this.iconsMinus.addEventListener('click', () => {
       counterTopBar.textContent = Number(counterTopBar.textContent) - 1;

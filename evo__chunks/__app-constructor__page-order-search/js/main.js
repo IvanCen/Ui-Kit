@@ -6,7 +6,6 @@ class ToggleFifthPageOrderSearch extends ToggleFifthPage {
   }
 
   searchItem() {
-    console.log('dsada');
     const cardItem = new CreateCardItemFavAndHisOrder({
       selector: ['div'],
       style: ['card-item'],
@@ -25,9 +24,9 @@ class ToggleFifthPageOrderSearch extends ToggleFifthPage {
       let numberOfHits = 0;
       for (const searchItemTextPart of searchItemTextArray) {
         numberOfHits += (dataProductApi.successData.items[item].name.toLowerCase().split(searchItemTextPart).length - 1);
-        if (typeof dataProductApi.successData.items[item].intro !== 'undefined') {
+        /*if (typeof dataProductApi.successData.items[item].intro !== 'undefined') {
           numberOfHits += (dataProductApi.successData.items[item].intro.toLowerCase().split(searchItemTextPart).length - 1);
-        }
+        }*/
       }
       if (numberOfHits > 0) {
         if (typeof searchItems[numberOfHits] !== 'object') {
@@ -36,6 +35,7 @@ class ToggleFifthPageOrderSearch extends ToggleFifthPage {
         searchItems[numberOfHits].push(dataProductApi.successData.items[item]);
       }
     }
+    console.log(searchItems);
 
     if (cardItemContainerSearchEl !== null) {
       if (cardItemContainerSearchEl.childNodes.length !== 0) {
@@ -43,13 +43,16 @@ class ToggleFifthPageOrderSearch extends ToggleFifthPage {
         arrHtml.splice(0, arrHtml.length).forEach((item) => item.remove());
       }
     }
+    const arr = [];
     for (const el of Object.values(searchItems)) {
-      cardItemContainerSearchEl.prepend(cardItem.create({ id: el[0].id }));
+      arr.push(el);
     }
+    arr.flat().forEach((item) => {
+      cardItemContainerSearchEl.append(cardItem.create({ id: item.id }));
+    });
   }
 
   searchItemCategory(categoryId) {
-    console.log('dsada');
     const cardItem = new CreateCardItemFavAndHisOrder({
       selector: ['div'],
       style: ['card-item'],
@@ -95,9 +98,9 @@ class ToggleFifthPageOrderSearch extends ToggleFifthPage {
       let numberOfHits = 0;
       for (const searchItemTextPart of searchItemTextArray) {
         numberOfHits += (dataProductApi.successData.items[item].name.toLowerCase().split(searchItemTextPart).length - 1);
-        if (typeof dataProductApi.successData.items[item].intro !== 'undefined') {
+        /*if (typeof dataProductApi.successData.items[item].intro !== 'undefined') {
           numberOfHits += (dataProductApi.successData.items[item].intro.toLowerCase().split(searchItemTextPart).length - 1);
-        }
+        }*/
       }
       if (numberOfHits > 0) {
         if (typeof searchItems[numberOfHits] !== 'object') {
@@ -106,7 +109,7 @@ class ToggleFifthPageOrderSearch extends ToggleFifthPage {
         searchItems[numberOfHits].push(dataProductApi.successData.items[item]);
       }
     }
-    console.log(searchItems);
+    // console.log(searchItems);
 
     if (cardItemContainerSearchEl !== null) {
       if (cardItemContainerSearchEl.childNodes.length !== 0) {
@@ -114,9 +117,13 @@ class ToggleFifthPageOrderSearch extends ToggleFifthPage {
         arrHtml.splice(0, arrHtml.length).forEach((item) => item.remove());
       }
     }
+    const arr = [];
     for (const el of Object.values(searchItems)) {
-      cardItemContainerSearchEl.prepend(cardItem.create({ id: el[0].id }));
+      arr.push(el);
     }
+    arr.flat().forEach((item) => {
+      cardItemContainerSearchEl.append(cardItem.create({ id: item.id }));
+    });
   }
 
   rendering(isCategory, categoryId) {
@@ -150,7 +157,6 @@ class ToggleFifthPageOrderSearch extends ToggleFifthPage {
         this.fifthPage.classList.remove('fifth-page--focus-input');
         inputSearch.blur();
       }
-      console.log(isCategory);
       if (inputSearch.value.length === 0) {
         const cardItemContainerSearchEl = document.querySelector('.card-item__container--search');
         const arrHtml = Array.from(cardItemContainerSearchEl.children);
@@ -158,8 +164,12 @@ class ToggleFifthPageOrderSearch extends ToggleFifthPage {
       } else if (isCategory) {
         toggleFifthPageOrderSearch.searchItemCategory(categoryId);
       } else {
+        console.log(isCategory);
         toggleFifthPageOrderSearch.searchItem();
       }
+    });
+    this.fifthPage.addEventListener('scroll', () => {
+      inputSearch.blur();
     });
 
     clearSearchActive();
