@@ -10,7 +10,7 @@ class TogglePageOurHistory extends TogglePage {
     const topBar = new CreateTopBarWithBackButton({
       selector: ['div'],
       style: ['top-bar'],
-      modifier: ['--size--medium', '--indentation--bottom', '--theme--light'],
+      modifier: [`--size--medium${isIos ? '--ios' : ''}`, '--indentation--bottom', '--theme--light'],
       textTitle: [''],
       eventBack: [
         { type: 'click', callback: this.closePage },

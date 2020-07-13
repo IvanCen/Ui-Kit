@@ -10,7 +10,7 @@ class TogglePageStoresFilter extends TogglePage {
     const topBar = new CreateTopBarWithCloseIcon({
       selector: ['div'],
       style: ['top-bar'],
-      modifier: ['--size--medium'],
+      modifier: [`--size--medium${isIos ? '--ios' : ''}`],
       textTitle: ['Store filters'],
       eventCloseIcon: [
         { type: 'click', callback: this.closePage },

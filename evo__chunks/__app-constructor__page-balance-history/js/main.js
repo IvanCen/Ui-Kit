@@ -10,7 +10,7 @@ class TogglePageBalanceHistory extends TogglePage {
     const topBar = new CreateTopBarWithBackButton({
       selector: ['div'],
       style: ['top-bar'],
-      modifier: ['--size--medium'],
+      modifier: [`--size--medium${isIos ? '--ios' : ''}`],
       textTitle: [this.parameters.titleNameTopBar],
       eventBack: [
         { type: 'click', callback: this.closePage },

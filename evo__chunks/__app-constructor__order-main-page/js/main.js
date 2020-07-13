@@ -40,7 +40,7 @@ class ToggleOrder extends ToggleMainPage {
     const orderTopBar = new CreateTopBarOrder({
       selector: ['div'],
       style: ['top-bar'],
-      modifier: ['--indentation--top'],
+      modifier: [`${isIos ? '--indentation--top' : ''}`],
       eventToggleMenu: [
         { type: 'click', callback: switchTabMain },
       ],

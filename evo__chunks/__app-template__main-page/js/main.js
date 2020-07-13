@@ -20,6 +20,13 @@ const userBonusLog = JSON.parse(localStorage.getItem('userBonusLog')) || {};
 const dataProductApi = JSON.parse(localStorage.getItem('productData')) || {};
 const userFavoriteStore = JSON.parse(localStorage.getItem('userFavoriteStore')) || {};
 
+setTimeout(() => {
+  const mainPage = document.querySelector('.main-page');
+  const loader = document.querySelector('.loader');
+  mainPage.classList.remove('main-page--loaded');
+  loader.classList.add('loader--hide');
+}, 5000);
+
 /* if (isEmptyObj(storesDataObj)) {
   api.storesApi();
 } else if ((Date.now() - storesDataObj.lastEditDateRequest) > (24 * 60 * 60 * 1000)) {
@@ -39,6 +46,11 @@ if (isEmptyObj(applicationDataObj)) {
     }
   }
 }
+
+api.getPublicDocument('both', 'privacy-policy');
+api.getPublicDocument('both', 'user-agreement');
+api.getPublicDocument('both', 'public-offer');
+api.getPublicDocument('both', 'our-history');
 
 api.getClientApi(renderingMainPage);
 api.productApi();

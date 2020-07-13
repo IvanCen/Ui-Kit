@@ -32,7 +32,7 @@ class ToggleSubPageStoresDetails extends ToggleSubPage {
     const topBar = new CreateTopBarStoresInfo({
       selector: ['div'],
       style: ['top-bar'],
-      modifier: ['--size--small'],
+      modifier: [`${isIos ? '--size--small--ios' : '--size--small'}`],
       textTitle: [store.shortTitle],
       textSubTitle: [info.successData.timeState],
       eventBack: [

@@ -161,6 +161,7 @@ function validation() {
       input.setCustomValidity('');
       input.classList.remove('form__input-area--invalid');
       input.classList.add('form__input-area--valid');
+      formButtonSubmit.disabled = false;
       if (iconError) {
         iconError.classList.remove('form__input-icon-error--visible');
       }
@@ -169,6 +170,7 @@ function validation() {
       input.setCustomValidity(message);
       input.classList.add('form__input-area--invalid');
       input.classList.remove('form__input-area--valid');
+      formButtonSubmit.disabled = true;
       if (iconError) {
         iconError.classList.add('form__input-icon-error--visible');
       }
@@ -245,7 +247,6 @@ class CreateFormInputSignIn extends CreateItem {
               <span class="form__input-label">Имя</span>
               <ul class="form__input-requirements">
                 <li class="form__input-requirement form__input-requirement--type--name">Имя должно содержать больше двух букв</li>
-                <li class="form__input-requirement form__input-requirement--type--name">Только русские буквы</li>
               </ul>
             </label>
            </div>

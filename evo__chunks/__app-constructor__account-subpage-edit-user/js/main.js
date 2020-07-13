@@ -11,7 +11,7 @@ class ToggleSubPageAccountEditUser extends ToggleSubPage {
     const topBar = new CreateTopBarWithBackButton({
       selector: ['div'],
       style: ['top-bar'],
-      modifier: ['--size--small'],
+      modifier: [`${isIos ? '--size--small--ios' : '--size--small'}`],
       textTitle: ['Ваш профиль'],
       eventBack: [
         { type: 'click', callback: this.closePage },

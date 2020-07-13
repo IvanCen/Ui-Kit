@@ -10,6 +10,7 @@
     left: 0;
     z-index: 1;
     background: white;
+
   }
 
   &--ios {
@@ -17,9 +18,10 @@
     top: 0;
     left: 0;
     width: 100%;
+    min-height: 40px;
     height: 40px;
     background-color: $white;
-    z-index: 20;
+    z-index: 101;
 
     /*Светлый режим*/
     @media (prefers-color-scheme: light) {
@@ -31,6 +33,7 @@
     }
   }
 
+
   &--theme--dark {
     background-color: $bokaraGrey;
     color: $white;
@@ -41,17 +44,27 @@
   }
 
   &--size--small {
-    padding: 50px 16px 11px;
+    padding: 20px 16px 11px;
+
+    &--ios {
+      padding: 50px 16px 11px;
+    }
   }
 
   &--size--medium {
-    padding-top: 50px;
+    padding-top: 20px;
     padding-right: 16px;
     padding-left: 16px;
+
+    &--ios {
+      padding-top: 50px;
+      padding-right: 16px;
+      padding-left: 16px;
+    }
   }
 
   &--indentation--top {
-    padding-top: 25px;
+    padding-top: 30px;
   }
 
   &--indentation--bottom {
@@ -121,11 +134,15 @@
   &__content-container {
 
     &--size--normal {
-      padding: 50px 16px 0;
+      padding: 20px 16px 0;
     }
 
     &--size--small {
-      padding: 30px 16px 0;
+      padding: 20px 16px 0;
+
+      &--ios {
+        padding: 50px 16px 0;
+      }
     }
   }
 

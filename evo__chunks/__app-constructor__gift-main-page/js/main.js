@@ -10,7 +10,7 @@ class ToggleGift extends ToggleMainPage {
     const topBar = new CreateTopBarDefault({
       selector: ['div'],
       style: ['top-bar'],
-      modifier: ['--size--medium', '--indentation--bottom'],
+      modifier: [`--size--medium${isIos ? '--ios' : ''}`, '--indentation--bottom'],
       textTitle: ['Достижения'],
     });
     /*const giftTitleBarOther = new CreateTitleBarWithButton({

@@ -12,7 +12,7 @@ class ToggleFourthPageReviewOrder extends ToggleFourthPage {
       style: ['top-bar'],
       modifier: [
         '--theme--dark',
-        '--size--medium',
+        `--size--medium${isIos ? '--ios' : ''}`,
       ],
       eventBack: [
         { type: 'click', callback: this.closePage },

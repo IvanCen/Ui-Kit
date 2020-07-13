@@ -18,7 +18,7 @@ class ToggleBalance extends ToggleMainPage {
       selector: ['div'],
       style: ['top-bar'],
       modifier: [
-        '--size--medium',
+        `--size--medium${isIos ? '--ios' : ''}`,
       ],
       textTitle: ['Баланс'],
     });

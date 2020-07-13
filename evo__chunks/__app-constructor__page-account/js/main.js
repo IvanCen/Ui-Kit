@@ -10,7 +10,7 @@ class TogglePageAccount extends TogglePage {
     const accountTopBar = new CreateTopBarWithBackButton({
       selector: ['div'],
       style: ['top-bar'],
-      modifier: ['--size--medium', '--indentation--bottom'],
+      modifier: [`--size--medium${isIos ? '--ios' : ''}`, '--indentation--bottom'],
       textTitle: ['Личный кабинет'],
       eventBack: [
         { type: 'click', callback: this.closePage },

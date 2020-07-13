@@ -11,7 +11,7 @@ class ToggleFifthPageReviewOrder extends ToggleFifthPage {
     const topBar = new CreateTopBarReviewOrder({
       selector: ['div'],
       style: ['top-bar'],
-      modifier: ['--theme--dark', '--size--medium'],
+      modifier: ['--theme--dark', `--size--medium${isIos ? '--ios' : ''}`],
       eventBack: [
         { type: 'click', callback: this.closePage },
         { type: 'click', callback: this.deletePage },

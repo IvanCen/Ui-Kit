@@ -12,7 +12,6 @@ class ToggleMain extends ToggleMainPage {
       selector: ['div'],
       style: ['top-bar'],
       modifier: [
-        '--size--small',
         '--indentation--bottom',
         '--main',
       ],
@@ -20,6 +19,7 @@ class ToggleMain extends ToggleMainPage {
       eventOpenSignInPage: [{ type: 'click', callback: togglePageSignIn.rendering }],
       eventOpenInboxPage: [{ type: 'click', callback: togglePageInbox.rendering }],
       eventOpenAccountPage: [{ type: 'click', callback: togglePageAccount.rendering }],
+      eventOpenBalanceFill: [{ type: 'click', callback: togglePageBalanceFill.rendering }],
       eventOpenHistory: [
         { type: 'click', callback: openHistory },
 
@@ -98,27 +98,28 @@ class ToggleMain extends ToggleMainPage {
       activeFooter(footerButtonMain);
     }, 300);
 
-    const topBarTitle = document.querySelector('.top-bar__title--type--single');
+    const topBarContentContainer = document.querySelector('.top-bar__content-container--theme--dark');
     const topBar = document.querySelector('.top-bar');
 
     this.mainPageContent.addEventListener('scroll', () => {
       if (this.mainPageContent.scrollTop < 140) {
-        if (topBarTitle.classList.contains('top-bar__title--hide')) {
+        if (topBarContentContainer.classList.contains('top-bar__content-container--hide')) {
           const containerPromo = document.querySelector('.main-card__container-promo');
-          topBarTitle.classList.remove('top-bar__title--hide');
-          topBar.classList.remove('top-bar--sticky');
+          topBarContentContainer.classList.remove('top-bar__content-container--hide');
+          topBar.classList.remove(`top-bar--sticky${isIos ? '--ios' : ''}`);
           containerPromo.classList.remove('main-card__container-promo--indentation--top');
         }
       } if (this.mainPageContent.scrollTop > 140) {
-        if (!topBarTitle.classList.contains('top-bar__title--hide')) {
+        if (!topBarContentContainer.classList.contains('top-bar__content-container--hide')) {
           const containerPromo = document.querySelector('.main-card__container-promo');
-          topBarTitle.classList.add('top-bar__title--hide');
-          topBar.classList.add('top-bar--sticky');
+          topBarContentContainer.classList.add('top-bar__content-container--hide');
+          topBar.classList.add(`top-bar--sticky${isIos ? '--ios' : ''}`);
           containerPromo.classList.add('main-card__container-promo--indentation--top');
         }
       }
     });
 
+    checkMessageInbox();
     activeButton();
   }
 }

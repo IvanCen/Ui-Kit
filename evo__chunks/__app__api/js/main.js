@@ -625,14 +625,6 @@ class Api {
       .then((res) => {
         console.log(res);
         userMessages = res;
-        const dotMessage = document.querySelector('.top-bar__icon-dot');
-        userMessages.successData.messages.every((message) => {
-          if (message.wasRead !== null) {
-            dotMessage.classList.add('top-bar__icon-dot--hide');
-            return false;
-          }
-          return true;
-        });
         return res;
       })
       .then(func)

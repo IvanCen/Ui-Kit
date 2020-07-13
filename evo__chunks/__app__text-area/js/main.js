@@ -304,7 +304,7 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
     this.price = this.element.querySelector('.text-area__price');
     this.stickersContainer = this.element.querySelector('.text-area__icon-container');
 
-    if (isEmptyObj(userInfoObj) || isEmptyObj(userStore)) {
+    if (isEmptyObj(userStore)) {
       this.price.classList.add('text-area__price--hide');
     } else {
       this.price.classList.remove('text-area__price--hide');

@@ -22,7 +22,7 @@ class TogglePageOrderCategory extends TogglePageOrderCard {
     const orderCardTopBar = new CreateTopBarOrderCard({
       selector: ['div'],
       style: ['top-bar'],
-      modifier: ['--size--medium', '--indentation--bottom'],
+      modifier: [`--size--medium${isIos ? '--ios' : ''}`, '--indentation--bottom'],
       title: [categoryName],
 
       eventBack: [
@@ -48,7 +48,7 @@ class TogglePageOrderCategory extends TogglePageOrderCard {
     for (const key of Object.values(dataProductApi.successData.categoriesTree[4].children)) {
       if (key.children[categoryId] !== undefined) {
         key.children[categoryId].items.forEach((item) => {
-          if (item.hitFlag === true) {
+          if (dataProductApi.successData.items[item].hitFlag === true) {
             cardItemContainerSelector.prepend(cardItemProductCard.create(dataProductApi.successData.items[item]));
           } else {
             cardItemContainerSelector.append(cardItemProductCard.create(dataProductApi.successData.items[item]));
@@ -82,7 +82,7 @@ class TogglePageOrderCategoryAll extends TogglePage {
     const orderCardTopBar = new CreateTopBarOrderCard({
       selector: ['div'],
       style: ['top-bar'],
-      modifier: ['--size--medium', '--indentation--bottom'],
+      modifier: [`--size--medium${isIos ? '--ios' : ''}`, '--indentation--bottom'],
       title: [`${categoryName} (${itemsLength})`],
       eventBack: [
         { type: 'click', callback: this.closePage },

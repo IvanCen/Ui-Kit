@@ -61,7 +61,7 @@ class ToggleThirdPageEditUser extends ToggleThirdPage {
     const topBar = new CreateTopBarWithBackButton({
       selector: ['div'],
       style: ['top-bar'],
-      modifier: ['--size--small', '--theme--light'],
+      modifier: [`${isIos ? '--size--small--ios' : '--size--small'}`, '--theme--light'],
       textTitle: parameters.titleTopBar,
       eventBack: [
         { type: 'click', callback: this.closePage },

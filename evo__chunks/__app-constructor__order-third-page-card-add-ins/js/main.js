@@ -45,7 +45,7 @@ class ToggleThirdPageAddinsCard extends ToggleThirdPage {
     const addinsTopBar = new CreateTopBarDarkWithCloseIcon({
       selector: ['div'],
       style: ['top-bar'],
-      modifier: ['--size--small', '--theme--dark'],
+      modifier: [`${isIos ? '--size--small--ios' : '--size--small'}`, '--theme--dark'],
       textTitle: ['Добавки'],
       eventCloseIcon: [
         { type: 'click', callback: this.closePage },

@@ -11,7 +11,7 @@ class TogglePageBalanceFill extends TogglePage {
     const cardTopBar = new CreateTopBarWithBackButton({
       selector: ['div'],
       style: ['top-bar'],
-      modifier: ['--size--small', '--indentation--bottom', '--theme--light'],
+      modifier: [`${isIos ? '--size--small--ios' : '--size--small'}`, '--indentation--bottom', '--theme--light'],
       textTitle: ['Пополнение баланса'],
       eventBack: [
         { type: 'click', callback: this.closePage },

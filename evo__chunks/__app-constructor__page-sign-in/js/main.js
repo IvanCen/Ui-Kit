@@ -100,13 +100,16 @@ class TogglePageSignIn extends TogglePage {
         this.askUserEmail();
       } else {
         api.getMessages();
+        renderMainPage.closePage();
         renderMainPage.clearPage();
         renderMainPage.rendering();
         renderMainPage.openPage();
         closeOrderPage();
         togglePage.closePage();
         togglePage.deletePage();
+        textSuccess.classList.remove('form__text--close', 'form__text--hide');
         if (returnPage) {
+          console.log(returnPage);
           toggleFourthPageReviewOrder.rendering();
         }
         (async () => {
@@ -130,7 +133,11 @@ class TogglePageSignIn extends TogglePage {
     textError.classList.remove('form__text--close', 'form__text--hide');
     if (info.errors[0] !== undefined) {
       textError.textContent = info.errors[0];
+    } else {
+      textError.classList.add('form__text--close', 'form__text--hide');
     }
+    /* console.log('getdata', info);
+    api.getClientApi(this.askUserInfo); */
   }
 
   askUserName() {
@@ -148,11 +155,13 @@ class TogglePageSignIn extends TogglePage {
         textError.textContent = 'Введите имя';
       }
       if (inputAreaName.value !== '') {
+        textError.textContent = '';
         textError.classList.add('form__text--close', 'form__text--hide');
         this.sendData('name', inputAreaName.value);
         inputAreaName.value = '';
         inputNameContainer.classList.add('form__input-container--hide');
-        this.parameters.api.getClientApi(this.askUserInfo);
+        setTimeout(() => api.getClientApi(this.askUserInfo),
+          300);
       }
     });
   }
@@ -169,13 +178,14 @@ class TogglePageSignIn extends TogglePage {
       if (inputAreaBirthday.value === '') {
         textError.classList.remove('form__text--close', 'form__text--hide');
         textError.textContent = 'Укажите дату своего рождения';
-      }
-      if (inputAreaBirthday.value !== '') {
+      } else if (inputAreaBirthday.value !== '') {
+        textError.textContent = '';
         textError.classList.add('form__text--close', 'form__text--hide');
         this.sendData('birthday', inputAreaBirthday.value);
         inputAreaBirthday.value = '';
         inputBirthdayContainer.classList.add('form__input-container--hide');
-        this.parameters.api.getClientApi(this.askUserInfo);
+        setTimeout(() => api.getClientApi(this.askUserInfo),
+          300);
       }
     });
   }
@@ -183,9 +193,9 @@ class TogglePageSignIn extends TogglePage {
   askUserEmail() {
     const buttonAgree = document.querySelector('.form__button--type--agree');
     const textError = document.querySelector('.form__text--error');
+    const textSuccess = document.querySelector('.form__text--success');
     const inputEmailContainer = document.querySelector('.form__input-container--email');
     const inputAreaEmail = document.querySelector('.form__input-area--type--email');
-    const modal = document.querySelector('.modal');
 
     inputEmailContainer.classList.remove('form__input-container--hide');
     validation();
@@ -194,8 +204,7 @@ class TogglePageSignIn extends TogglePage {
       if (inputAreaEmail.value === '') {
         textError.classList.remove('form__text--close', 'form__text--hide');
         textError.textContent = 'Укажите email';
-      }
-      if (inputAreaEmail.value !== '') {
+      } else if (inputAreaEmail.value !== '') {
         this.sendData('email', inputAreaEmail.value);
         inputAreaEmail.value = '';
         inputEmailContainer.classList.add('form__input-container--hide');
@@ -203,9 +212,22 @@ class TogglePageSignIn extends TogglePage {
         textError.classList.add('form__text--close', 'form__text--hide');
         toggleModal.renderingEmail();
         toggleModal.openPage();
-      }
-      if (!modal) {
-        this.parameters.api.getClientApi(this.askUserInfo);
+
+        api.getMessages();
+        /* renderMainPage.closePage();
+        renderMainPage.clearPage();
+        renderMainPage.rendering();
+        renderMainPage.openPage();
+        closeOrderPage(); */
+        closeOrderPage();
+        togglePage.closePage();
+        togglePage.deletePage();
+        if (returnPage) {
+          toggleFourthPageReviewOrder.rendering();
+        }
+        (async () => {
+          await rateLastOrder();
+        })();
       }
     });
   }
@@ -216,7 +238,7 @@ class TogglePageSignIn extends TogglePage {
     const signInTopBar = new CreateTopBarWithCloseIcon({
       selector: ['div'],
       style: ['top-bar'],
-      modifier: ['--size--medium'],
+      modifier: [`--size--medium${isIos ? '--ios' : ''}`],
       textTitle: ['Вход'],
       eventCloseIcon: [
         { type: 'click', callback: this.closePage },
@@ -234,11 +256,16 @@ class TogglePageSignIn extends TogglePage {
         { type: 'click', callback: () => { this.registrationNumber(this); } },
       ],
       eventSkip: [
-        { type: 'click', callback: this.closePage },
-        { type: 'click', callback: this.deletePage },
-        { type: 'click', callback: renderMainPage.clearPage },
-        { type: 'click', callback: renderMainPage.rendering },
-        { type: 'click', callback: renderMainPage.openPage },
+        {
+          type: 'click',
+          callback: () => {
+            this.closePage();
+            this.deletePage();
+            if (returnPage) {
+              toggleFourthPageReviewOrder.rendering();
+            }
+          },
+        },
       ],
     });
     this.page.append(createTopBarIos());

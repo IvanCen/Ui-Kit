@@ -6,13 +6,12 @@ if ('serviceWorker' in navigator) {
       });
   }
 }
-
+const isIos = /iPhone|iPad|iPod/i.test(navigator.userAgent);
 function createTopBarIos() {
   const el = document.createElement('div');
-  if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+  if (isIos) {
     el.classList.add('top-bar--ios');
     return el;
-    /* тут код для ios, например document.querySelector('html').classList.add('ios'); */
   }
   return el;
 }
@@ -26,6 +25,20 @@ function switchActive(nodeList, activeClass) {
       this.classList.add(activeClass);
     });
   });
+}
+
+function checkMessageInbox() {
+  const dotMessage = document.querySelector('.top-bar__icon-dot');
+  if(userMessages.successData.messages) {
+    userMessages.successData.messages.every((message) => {
+      if (message.wasRead === null) {
+        dotMessage.classList.remove('top-bar__icon-dot--hide');
+        return false;
+      }
+      return true;
+    });
+  }
+
 }
 
 function openHistory() {
@@ -359,7 +372,9 @@ class TogglePage {
   openPage() {
     setTimeout(() => {
       if(this.page) {
-        this.page.classList.add(this.classOpen);
+        this.classOpen.forEach((classes) => {
+          this.page.classList.add(classes);
+        })
       }
       this.body.classList.add('body');
     }, 100);

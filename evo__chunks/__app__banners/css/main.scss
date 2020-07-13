@@ -16,7 +16,11 @@
   min-height: 200px;
 
   &--type--swipe {
-    min-height: 100px;
+    min-height: 200px;
+  }
+
+  &--border--bottom {
+    border-bottom: 1px solid $gainsboroGray;
   }
 
   &--with-animation {

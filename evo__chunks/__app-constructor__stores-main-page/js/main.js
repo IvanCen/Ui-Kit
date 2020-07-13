@@ -56,7 +56,7 @@ class ToggleStores extends ToggleMainPage {
     const storesTopBar = new CreateTopBarStores({
       selector: ['div'],
       style: ['top-bar'],
-      modifier: ['--size--medium'],
+      modifier: [`--size--medium${isIos ? '--ios' : ''}`],
       /* eventOpenFilter: [
         { type: 'click', callback: togglePageStoresFilter.rendering },
         { type: 'click', callback: togglePageStoresFilter.openPage },
@@ -143,12 +143,10 @@ class ToggleStores extends ToggleMainPage {
               const distance = ymaps.coordSystem.geo.getDistance([item.geometry._coordinates[0], item.geometry._coordinates[1]], [crd.latitude, crd.longitude]);
               if (storesElems[index]) {
                 order = Math.round(distance / 100);
-                // order = Math.round((Math.abs(item.geometry._coordinates[0] - crd.latitude) + Math.abs(item.geometry._coordinates[1] - crd.longitude)) * 10000);
                 storesElems[index].style.order = order;
-                // console.log(Math.abs(item.geometry._coordinates[0] - crd.latitude) + Math.abs(item.geometry._coordinates[1] - crd.longitude));
                 const distEl = storesElems[index].querySelector('.map__item-dist');
-                const regExp = /(\d+\.?\d)\D+\d+\D+/gi;
-                distEl.textContent = ymaps.formatter.distance(distance).replace(regExp, '$1 км');
+                const regExp = /(\d+\.?\d)\D+\d+;(\D+)/gi;
+                distEl.textContent = ymaps.formatter.distance(distance).replace(regExp, '$1 $2');
               }
 
               // console.log(storesElems[index], index, item, order);

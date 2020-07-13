@@ -12,7 +12,7 @@ class ToggleMain extends ToggleMainPage {
       selector: ['div'],
       style: ['top-bar'],
       modifier: [
-        '--size--small',
+        `${isIos ? '--size--small--ios' : '--size--small'}`,
         '--indentation--bottom',
         '--main',
       ],
@@ -119,6 +119,7 @@ class ToggleMain extends ToggleMainPage {
       }
     });
 
+    checkMessageInbox();
     activeButton();
   }
 }
