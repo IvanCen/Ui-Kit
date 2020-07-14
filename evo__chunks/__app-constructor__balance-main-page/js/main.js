@@ -49,7 +49,7 @@ class ToggleBalance extends ToggleMainPage {
             const option = {
               heart: false,
             };
-            togglePageBalanceHistoryBonus.rendering(option);
+            togglePageBalanceHistoryScore.rendering(option);
           },
         },
         { type: 'click', callback: togglePageBalanceHistoryScore.openPage },

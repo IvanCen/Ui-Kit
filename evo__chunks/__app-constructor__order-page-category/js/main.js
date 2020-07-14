@@ -10,6 +10,7 @@ class TogglePageOrderCategory extends TogglePageOrderCard {
   openPage() {
     super.openPage();
     this.mainPage.classList.add('main-page--fixed');
+    this.page.scrollTop = 0;
   }
 
   closePage() {

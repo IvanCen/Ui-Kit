@@ -29,7 +29,7 @@ function switchActive(nodeList, activeClass) {
 
 function checkMessageInbox() {
   const dotMessage = document.querySelector('.top-bar__icon-dot');
-  if(userMessages.successData.messages) {
+  if(userMessages.successData.messages.length !== 0) {
     userMessages.successData.messages.every((message) => {
       if (message.wasRead === null) {
         dotMessage.classList.remove('top-bar__icon-dot--hide');

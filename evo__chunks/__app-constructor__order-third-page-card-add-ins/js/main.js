@@ -55,6 +55,7 @@ class ToggleThirdPageAddinsCard extends ToggleThirdPage {
     const addinsTextArea = new CreateTextAreaAddins({
       selector: ['div'],
       style: ['text-area-wraper'],
+      modifier: ['--indentation--bottom'],
     });
     const addinTextArea = new CreateTextAreaAddin();
     const addinsButton = new CreateButton({

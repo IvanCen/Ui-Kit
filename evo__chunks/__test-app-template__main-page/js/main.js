@@ -125,7 +125,7 @@ const toggleThirdPageEditUser = new ToggleThirdPageEditUser({
   classOpen: ['third-page--opened'],
 });
 const toggleThirdPageAddinsCard = new ToggleThirdPageAddinsCard({
-  classOpen: ['third-page--opened'],
+  classOpen: ['third-page--opened--bottom-bar'],
 });
 const toggleFourthPageReviewOrder = new ToggleFourthPageReviewOrder({
   classOpen: ['fourth-page--opened'],
