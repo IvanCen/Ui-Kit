@@ -19,6 +19,7 @@ const userBalanceLog = JSON.parse(localStorage.getItem('userBalanceLog')) || {};
 const userBonusLog = JSON.parse(localStorage.getItem('userBonusLog')) || {};
 const dataProductApi = JSON.parse(localStorage.getItem('productData')) || {};
 const userFavoriteStore = JSON.parse(localStorage.getItem('userFavoriteStore')) || {};
+const outOfStock = JSON.parse(localStorage.getItem('outOfStock')) || {};
 
 /* if (isEmptyObj(storesDataObj)) {
   api.storesApi();
@@ -40,7 +41,7 @@ if (isEmptyObj(applicationDataObj)) {
   }
 }
 
-api.getClientApi(renderingMainPage);
+api.getClientApi();
 api.productApi();
 api.getClientOrdersApi();
 api.getClientBalanceLog();
@@ -180,10 +181,6 @@ const togglePageAccount = new TogglePageAccount({
   classOpen: ['page--opened'],
 });
 
-function renderingMainPage() {
-  renderMainPage.rendering();
-}
-
 function closeOrderPage() {
   const pagesOrder = document.querySelectorAll('.page-order');
   [...pagesOrder].forEach((item) => {
@@ -263,7 +260,7 @@ const mainPageFooter = new CreateFooter({
     { type: 'click', callback: toggleThirdPage.deletePage },
   ],
 });
-renderMainPage.openPage();
+
 mainPage.append(mainPageFooter.create());
 switchActiveFooter();
 checkBasket();
@@ -285,7 +282,7 @@ if (/\?refer=alfa.*/.test(window.location.search)) {
     });
   });
   setTimeout(() => {
-    buttonMain.dispatchEvent(new Event('click'));
+    buttonMain.dispatchEvent(new Event('click')); //рендерит страницу
   }, 1000);
 
   setTimeout(() => {

@@ -52,7 +52,7 @@ api.getPublicDocument('both', 'user-agreement');
 api.getPublicDocument('both', 'public-offer');
 api.getPublicDocument('both', 'our-history');
 
-api.getClientApi(renderingMainPage);
+api.getClientApi();
 api.productApi();
 api.getClientOrdersApi();
 api.getClientBalanceLog();
