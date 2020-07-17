@@ -58,12 +58,15 @@ class TogglePageSignIn extends TogglePage {
       const refreshLink = setInterval(() => {
         this.parameters.api.signInApi(phone, refreshNumber);
       }, 240000);
-
-      callLink.addEventListener('click', () => {
+      //запускается сразу после отправки номера
+      const timerRegSuccess = setInterval(() => {
+        this.parameters.api.authorizeApi(this.regSuccess, code, phoneNumber, timerRegSuccess, refreshLink);
+      }, 1000);
+      /* callLink.addEventListener('click', () => {
         const timerRegSuccess = setInterval(() => {
           this.parameters.api.authorizeApi(this.regSuccess, code, phoneNumber, timerRegSuccess, refreshLink);
         }, 1000);
-      });
+      }); */
     } else {
       textErrorPhone.innerHTML = info.errors[0];
       textErrorPhone.classList.remove('form__text--close', 'form__text--hide');

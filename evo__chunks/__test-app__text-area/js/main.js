@@ -357,20 +357,34 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
 
     const basketPopupIcon = document.querySelector('.bottom-bar__icon-popup');
     const basketPopupIconImg = document.querySelector('.bottom-bar__icon-popup-img');
+
     this.buttonAdd.addEventListener('click', () => {
-      basketArray.push({ id: productInfo.id, modifiers: [] });
-      basketArray.forEach((el) => {
-        if (el.id === productInfo.id) {
-          for (const modifiersUserItem in userDataObj[productInfo.id]) {
-            const counter = userDataObj[productInfo.id][modifiersUserItem];
-            if (counter !== 0) {
-              el.modifiers.push({ id: Number(modifiersUserItem), count: counter });
+      const sizeBarButtons = document.querySelectorAll('.size-bar__button');
+      let multiplier = 1;
+      if (productInfo.countCombinations !== null) {
+        [...sizeBarButtons].some((el) => {
+          if (el.classList.contains('size-bar__button--active')) {
+            multiplier = Number(el.textContent);
+            return true;
+          }
+          return false;
+        });
+      }
+      for (let i = 0; i < multiplier; i++) {
+        basketArray.push({ id: productInfo.id, modifiers: [] });
+        basketArray.forEach((el) => {
+          if (el.id === productInfo.id) {
+            for (const modifiersUserItem in userDataObj[productInfo.id]) {
+              const counter = userDataObj[productInfo.id][modifiersUserItem];
+              if (counter !== 0) {
+                el.modifiers.push({ id: Number(modifiersUserItem), count: counter });
+              }
             }
           }
-        }
-      });
-      localStorage.setItem('basket', JSON.stringify(basketArray));
-      counterBasket();
+        });
+        localStorage.setItem('basket', JSON.stringify(basketArray));
+        counterBasket();
+      }
       if (!canUseWebP()) {
         loadImg(productInfo, basketPopupIconImg, 'jpg');
       } else {

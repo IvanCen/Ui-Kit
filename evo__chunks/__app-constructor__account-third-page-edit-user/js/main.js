@@ -115,6 +115,9 @@ class ToggleThirdPageEditUser extends ToggleThirdPage {
     this.thirdPage.append(formInput.create(parameters.text));
     this.thirdPage.append(buttonEdit.create());
 
+    this.buttonAgree = this.thirdPage.querySelector('.button--type--edit-user');
+    this.buttonAgree.classList.add('form__button');
+
     if (parameters.inputType !== 'date') {
       validation();
       inputFlyLabel();

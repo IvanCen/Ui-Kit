@@ -6,7 +6,7 @@ if ('serviceWorker' in navigator) {
       });
   }
 }
-const isIos = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+const isIos = /iPhone|iPad|iPod|Safari/i.test(navigator.userAgent);
 function createTopBarIos() {
   const el = document.createElement('div');
   if (isIos) {
