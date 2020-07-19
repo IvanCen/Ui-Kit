@@ -11,6 +11,13 @@
     z-index: 1;
     background: white;
 
+    &--ios {
+      position: fixed;
+      top: 40px;
+      left: 0;
+      z-index: 1;
+      background: white;
+    }
   }
 
   &--ios {
@@ -131,7 +138,30 @@
     }
   }
 
+  &__bonus-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
   &__content-container {
+
+    &--hide {
+      display: none;
+    }
+
+    &--theme--dark {
+      background-color: $bokaraGrey;
+      color: $white;
+    }
+
+    &--size--big {
+      padding: 20px 16px 11px;
+
+      &--ios {
+        padding: 50px 16px 11px;
+      }
+    }
 
     &--size--normal {
       padding: 20px 16px 0;
@@ -143,6 +173,24 @@
       &--ios {
         padding: 50px 16px 0;
       }
+    }
+
+    &--indentation--bottom {
+      margin-bottom: 20px;
+    }
+
+    &--direction--column {
+      display: flex;
+      flex-direction: column;
+    }
+
+    &--direction--row {
+      display: flex;
+      flex-direction: row;
+    }
+
+    &--position-items--space-between {
+      justify-content: space-between;
     }
   }
 
@@ -182,12 +230,7 @@
     @extend %style-1;
     margin-bottom: 11px;
 
-    &--hide {
-      display: none;
-    }
-
     &--type--single {
-      padding-top: 66px;
       margin-bottom: 24px;
     }
 
@@ -210,7 +253,9 @@
   &__nav-container {
     display: grid;
     grid-gap: 3%;
-    grid-template-columns: 2fr 2fr 2fr 1fr 1fr;
+    /*grid-template-columns: 1fr 1fr 1fr;*/
+    grid-auto-flow: column;
+    padding: 10px 16px;
 
     @media (max-width: 374px) {
       grid-gap: 1%;
@@ -239,6 +284,14 @@
     padding: 0;
   }
 
+  &__icon {
+
+    &--heart {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
   &__icon-back {
 
     &--arrow--down {
@@ -256,7 +309,6 @@
   }
 
 
-
   &__filter-button {
     grid-area: search;
     margin-right: 20px;
@@ -269,9 +321,42 @@
     white-space: nowrap;
     grid-area: text;
 
+
     @media (max-width: 374px) {
       padding-left: 3px;
     }
+  }
+
+  &__icon-container {
+    position: relative;
+
+    &--ruble {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: $orange;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+
+      &:after {
+        content: '+';
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        border-radius: 50%;
+        background-color: $white;
+        color: $black;
+        text-align: center;
+      }
+    }
+  }
+
+  &__icon-ruble {
+    width: 24px;
+    height: 24px;
   }
 
   &__icon-dot {
@@ -296,6 +381,31 @@
   &__tab-container {
     display: flex;
     flex-wrap: nowrap;
+  }
+
+  &__number {
+
+    &--size--small {
+      @extend %style-3;
+      position: relative;
+      margin-right: 5px;
+    }
+
+    &--size--normal {
+      @extend %style-2;
+      position: relative;
+    }
+
+    &--theme--white:after {
+      content: '';
+      background: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-rubles-white.svg]]") no-repeat;
+      background-size: cover;
+      position: absolute;
+      left: 19px;
+      top: 6px;
+      width: 15px;
+      height: 16px;
+    }
   }
 
   &__tab {

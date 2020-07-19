@@ -58,12 +58,15 @@ class TogglePageSignIn extends TogglePage {
       const refreshLink = setInterval(() => {
         this.parameters.api.signInApi(phone, refreshNumber);
       }, 240000);
-
-      callLink.addEventListener('click', () => {
+      //запускается сразу после отправки номера
+      const timerRegSuccess = setInterval(() => {
+        this.parameters.api.authorizeApi(this.regSuccess, code, phoneNumber, timerRegSuccess, refreshLink);
+      }, 1000);
+      /* callLink.addEventListener('click', () => {
         const timerRegSuccess = setInterval(() => {
           this.parameters.api.authorizeApi(this.regSuccess, code, phoneNumber, timerRegSuccess, refreshLink);
         }, 1000);
-      });
+      }); */
     } else {
       textErrorPhone.innerHTML = info.errors[0];
       textErrorPhone.classList.remove('form__text--close', 'form__text--hide');
@@ -99,7 +102,9 @@ class TogglePageSignIn extends TogglePage {
       } else if (email === '') {
         this.askUserEmail();
       } else {
+        console.log('hello1')
         api.getMessages();
+        console.log('hello2')
         renderMainPage.closePage();
         renderMainPage.clearPage();
         renderMainPage.rendering();
@@ -107,6 +112,8 @@ class TogglePageSignIn extends TogglePage {
         closeOrderPage();
         togglePage.closePage();
         togglePage.deletePage();
+        console.log('hello3')
+
         textSuccess.classList.remove('form__text--close', 'form__text--hide');
         if (returnPage) {
           console.log(returnPage);
@@ -287,7 +294,7 @@ class TogglePageSignIn extends TogglePage {
     });
 
     const phoneMask = IMask(
-      document.querySelector('.form__input-area--type--phone'), {
+      document.querySelector('.form__input-area--type--phone-sign-in'), {
         mask: '+{7}(000)000-00-00',
         lazy: false,
         placeholderChar: '_',

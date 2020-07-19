@@ -6,22 +6,50 @@ class CreateTopBar extends CreateItem {
     super();
     this.parameters = parameters;
     this.element = document.createElement(this.parameters.selector);
+    let balance;
+    let bonus;
+    if (userInfoObj.successData) {
+      balance = userInfoObj.successData.balance;
+      bonus = userInfoObj.successData.bonus;
+    } else {
+      balance = '0';
+      bonus = '0';
+    }
+    const date = new Date();
+    const timeNow = [date.getHours(), date.getMinutes()].map((x) => (x < 10 ? `0${x}` : x)).join(':');
     this.template = `
-      
-      <h1 class="top-bar__title top-bar__title--type--single">${this.parameters.textTitle}</h1>
+      <div class="top-bar__content-container top-bar__content-container--theme--dark ${isIos ? 'top-bar__content-container--size--big--ios' : 'top-bar__content-container--size--big'}">
+        <h1 class="top-bar__title top-bar__title--type--single">${this.parameters.textTitle}</h1>
+        <div class="top-bar__content-container top-bar__content-container--score top-bar__content-container--direction--row
+         top-bar__content-container--position-items--space-between top-bar__content-container--indentation--bottom">
+          <div class="top-bar__content-container top-bar__content-container--direction--column">
+            <p class="top-bar__text">Доступно на сегодня, ${timeNow}</p>
+            <span class="top-bar__number top-bar__number--theme--white top-bar__number--size--normal">${balance}</span>
+            <div class="top-bar__bonus-container">
+              <span class="top-bar__number top-bar__number--size--small">${bonus}</span>
+              <svg class="top-bar__icon top-bar__icon--heart" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M23 8.28003C23 5.10003 20.41 2.53003 17.25 2.53003C14.96 2.53003 12.98 3.87003 12.05 5.82003C12.03 5.86003 11.97 5.86003 11.96 5.82003C11.04 3.88003 9.05 2.53003 6.76 2.53003C3.58 2.53003 1 5.10003 1 8.28003C1 8.95003 1.11 9.59003 1.33 10.19C1.57 10.87 1.94 11.5 2.4 12.03C2.6 12.26 2.81 12.47 3.04 12.67L11.82 21.39C11.87 21.44 11.94 21.47 12.02 21.47C12.1 21.47 12.16 21.45 12.22 21.39L21.33 12.34C21.92 11.75 22.39 11.03 22.67 10.23C22.88 9.62003 23 8.96003 23 8.28003Z" fill="#E3562F"/>
+              </svg>
+            </div>
+          </div>
+          <div class="top-bar__icon-container top-bar__icon-container--ruble">
+            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-rubles-white.svg]]" alt="Иконка рубля" class="top-bar__icon-ruble">
+          </div>   
+        </div>
+      </div>
       <div class="top-bar__nav-container">
           <button class="top-bar__button top-bar__button--type--sign-in">
             <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-sign-in.svg]]" alt="Кнопка входа" class="top-bar__icon">
-            <span class="top-bar__icon-text">Войти</span>
+            <span class="top-bar__icon-text ">Войти</span>
           </button>
           <button class="top-bar__button top-bar__button--type--inbox">
             <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-inbox.svg]]" alt="Кнопка сообщений" class="top-bar__icon">
             <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-dot.svg]]" alt="Иконка непрочитанного сообщения" class="top-bar__icon-dot top-bar__icon-dot--hide">
-            <span class="top-bar__icon-text">Сообщения</span>
+            <span class="top-bar__icon-text ">Сообщения</span>
           </button>
             <button class="top-bar__button top-bar__button--type--history">
               <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-history.svg]]" alt="Кнопка истории заказов" class="top-bar__icon">
-              <span class="top-bar__icon-text">История</span>
+              <span class="top-bar__icon-text ">История</span>
              </button>
             <button class="top-bar__button top-bar__button--position--right"></button>
           <button class="top-bar__button top-bar__button--position--right top-bar__button--type--account">
@@ -37,6 +65,9 @@ class CreateTopBar extends CreateItem {
     this.buttonInbox = this.element.querySelector('.top-bar__button--type--inbox');
     this.buttonAccount = this.element.querySelector('.top-bar__button--type--account');
     this.buttonHistory = this.element.querySelector('.top-bar__button--type--history');
+    this.navContainer = this.element.querySelector('.top-bar__nav-container');
+    this.buttonBalanceFill = this.element.querySelector('.top-bar__icon-container--ruble');
+    this.buttonContainerScore = this.element.querySelector('.top-bar__content-container--score');
 
     if (typeof this.parameters.eventOpenHistory === 'object') {
       for (const event of this.parameters.eventOpenHistory) {
@@ -58,8 +89,16 @@ class CreateTopBar extends CreateItem {
         this.buttonAccount.addEventListener(event.type, event.callback);
       }
     }
-    if (localStorage.getItem('user-sign-in') === 'true') {
+    if (typeof this.parameters.eventOpenBalanceFill === 'object') {
+      for (const event of this.parameters.eventOpenBalanceFill) {
+        this.buttonBalanceFill.addEventListener(event.type, event.callback);
+      }
+    }
+    if (!isEmptyObj(userInfoObj)) {
       this.buttonSignIn.remove();
+    } else {
+      this.navContainer.remove();
+      this.buttonContainerScore.remove();
     }
 
 
@@ -360,7 +399,9 @@ class CreateTopBarStores extends CreateItem {
     this.template = `
       <div class="top-bar__content-container top-bar__content-container--size--medium">
         <div class="top-bar__header">
-          
+          <button class="top-bar__button">
+            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-close-white.svg]]" alt="Кнопка закрытия" class="top-bar__icon top-bar__icon--type--close">
+          </button>
           <button class="button top-bar__search-button top-bar__search-button--store">
           <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-search.svg]]" alt="Кнопка поиска" class="top-bar__icon">
           </button>
@@ -373,7 +414,13 @@ class CreateTopBarStores extends CreateItem {
 
     // this.buttonFilter = this.element.querySelector('.top-bar__filter-button');
     this.buttonSearch = this.element.querySelector('.top-bar__search-button');
+    this.iconClose = this.element.querySelector('.top-bar__icon--type--close');
 
+    if (typeof this.parameters.eventCloseIcon === 'object') {
+      for (const event of this.parameters.eventCloseIcon) {
+        this.iconClose.addEventListener(event.type, event.callback);
+      }
+    }
     /* if (typeof this.parameters.eventOpenFilter === 'object') {
       for (const event of this.parameters.eventOpenFilter) {
         this.buttonFilter.addEventListener(event.type, event.callback);

@@ -116,8 +116,13 @@ class CreateBannersOrder extends CreateItem {
           `;
     this.element.insertAdjacentHTML('beforeend', this.template);
     this.element.addEventListener('click', () => {
-      toggleSubPageProductCard.rendering(productInfo);
-      toggleSubPageProductCard.openPage();
+      const page = this.element.closest('.page');
+      if (!page.classList.contains('stop-action')) {
+        toggleSubPageProductCard.rendering(productInfo);
+        toggleSubPageProductCard.openPage();
+        page.classList.add('stop-action');
+      }
+      setTimeout(() => page.classList.remove('stop-action'), 1000);
     });
 
     const imgEl = this.element.querySelector('.banners__banner-filler');

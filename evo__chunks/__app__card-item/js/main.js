@@ -56,8 +56,13 @@ class CreateCardItemOrderProductCard extends CreateItem {
     this.element.classList.add('card-item', 'card-item--direction--column');
     this.element.id = productInfo.id;
     this.element.addEventListener('click', () => {
-      toggleSubPageProductCard.rendering(productInfo);
-      toggleSubPageProductCard.openPage();
+      const page = this.element.closest('.page-order');
+      if (!page.classList.contains('stop-action')) {
+        toggleSubPageProductCard.rendering(productInfo);
+        toggleSubPageProductCard.openPage();
+        page.classList.add('stop-action');
+      }
+      setTimeout(() => page.classList.remove('stop-action'), 1000);
     });
     this.template = `
       <div class="card-item__image card-item__image--size--big">
@@ -232,11 +237,14 @@ class CreateCardItemFavAndHisOrder extends CreateItem {
     this.iconsAdd = this.element.querySelector('.card-item__icon--type--add');
     const el = this.element;
     console.log(productInfo);
-    this.element.addEventListener('click', () => {
-      toggleFifthPage.closePage();
-      toggleSubPageProductCard.rendering(dataProductApi.successData.items[productInfo.id]);
-      toggleFifthPage.deletePage();
-    });
+    /* this.element.addEventListener('click', (e) => {
+      console.log(e.target.classList.contains('card-item__icon'))
+      if (!e.target.classList.contains('card-item__button') || !e.target.classList.contains('card-item__icon')) {
+        toggleFifthPage.closePage();
+        toggleSubPageProductCard.rendering(dataProductApi.successData.items[productInfo.id]);
+        toggleFifthPage.deletePage();
+      }
+    }); */
 
     if (typeof dataProductApi.successData.items[productInfo.id] === 'object' && typeof productInfo.modifiers === 'object') {
       const cardItemList = this.element.querySelector('.card-item__list');
@@ -268,18 +276,28 @@ class CreateCardItemFavAndHisOrder extends CreateItem {
       this.iconsLike.classList.remove('card-item__icon--liked');
       this.iconsLike.addEventListener('click', function () {
         this.classList.toggle('card-item__icon--liked');
-        console.log(this);
+        /* console.log(this);
         if (this.classList.contains('card-item__icon--liked')) {
+          function duble() {
+            return itemsArray.some((el) => {
+              if (el.id === dataProductApi.successData.items[productInfo.id].id) {
+                return true;
+              }
+              return false;
+            });
+          }
+          console.log(duble());
+
           itemsArray.push({ id: productInfo.id });
           localStorage.setItem('items', JSON.stringify(itemsArray));
-        } else {
-          itemsArray.forEach((item, index) => {
-            if (item.id === dataProductApi.successData.items[productInfo.id].id) {
-              itemsArray.splice(index, 1);
-            }
-          });
-          localStorage.setItem('items', JSON.stringify(itemsArray));
-        }
+        } else { */
+        itemsArray.forEach((item, index) => {
+          if (item.id === dataProductApi.successData.items[productInfo.id].id) {
+            itemsArray.splice(index, 1);
+          }
+        });
+        localStorage.setItem('items', JSON.stringify(itemsArray));
+        // }
       });
     }
     if (!canUseWebP()) {
@@ -358,6 +376,7 @@ class CreateCardItemReviewOrder extends CreateItem {
                        class="card-item__icon card-item__icon--type--plus">
                 </button>
               </div>
+              <div class="main-card__figure main-card__figure--hide"><span class="main-card__info main-card__info--out-of">Закончилось</span></div>
             </div>
           </div>
           <div class="card-item__zone card-item__zone--type--delete banners__banner">
@@ -368,10 +387,18 @@ class CreateCardItemReviewOrder extends CreateItem {
     this.iconsMinus = this.element.querySelector('.card-item__button--type--minus');
     this.iconsPlus = this.element.querySelector('.card-item__button--type--plus');
     this.price = this.element.querySelector('.card-item__price');
+    this.figure = this.element.querySelector('.main-card__figure');
     this.element.setAttribute('id', productInfo.id);
     const el = this.element;
     const counterTopBar = document.querySelector('.top-bar__all-counter-order');
     const counterBottomBar = document.querySelector('.bottom-bar__counter');
+
+    for (const id in outOfStock.successData.itemsAndModifiers) {
+      if (Number(id) === productInfo.id) {
+        this.figure.classList.remove('main-card__figure--hide');
+        break;
+      }
+    }
 
     const imgEl = this.element.querySelector('.card-item__image');
     if (!canUseWebP()) {
@@ -504,9 +531,10 @@ class CreateCardItemHistory extends CreateItem {
           </div>`;
       this.element.insertAdjacentHTML('beforeend', this.template);
       this.iconsPlus = this.element.querySelector('.card-item__button--type--plus');
-
+      this.buttonPlus = this.element.querySelector('.card-item__button--type--plus');
       this.price = this.element.querySelector('.card-item__price');
       this.iconsLike = this.element.querySelector('.card-item__icon--type--like');
+      this.buttonLike = this.element.querySelector('.card-item__button--type--like');
 
       const imgEl = this.element.querySelector('.card-item__image');
       if (!canUseWebP()) {
@@ -515,6 +543,16 @@ class CreateCardItemHistory extends CreateItem {
         loadImg(dataProductApi.successData.items[item.itemId], imgEl, 'webp');
       }
 
+      this.element.addEventListener('click', (e) => {
+        const classArr = ['card-item__image', 'card-item__title', 'card-item__price'];
+        classArr.forEach((classEl) => {
+          if (e.target.classList.contains(classEl)) {
+            toggleFifthPage.closePage();
+            toggleSubPageProductCard.rendering(dataProductApi.successData.items[item.itemId]);
+            toggleFifthPage.deletePage();
+          }
+        });
+      });
 
       let priceAllModifier = 0;
 
@@ -562,7 +600,7 @@ class CreateCardItemHistory extends CreateItem {
 
       this.price.textContent = priceAllModifier + dataProductApi.successData.items[item.itemId].price;
 
-      this.iconsPlus.addEventListener('click', () => {
+      this.buttonPlus.addEventListener('click', () => {
         const basketPopupIcon = document.querySelector('.bottom-bar__icon-popup');
         const basketPopupIconImg = document.querySelector('.bottom-bar__icon-popup-img');
         const modifiersArr = [];
@@ -587,20 +625,24 @@ class CreateCardItemHistory extends CreateItem {
 
 
       this.iconsLike.addEventListener('click', function () {
-        this.classList.toggle('card-item__icon--liked');
-
+        console.log(item, this, productInfo);
         if (this.classList.contains('card-item__icon--liked')) {
-          const modifiersArr = [];
-          item.modifiers.forEach((modif) => {
-            modifiersArr.push({ id: modif.modificationId, count: modif.count });
-          });
-          itemsArray.push({ id: item.itemId, modifiers: modifiersArr });
-        } else {
-          itemsArray.forEach((item, index) => {
-            if (item.id === productInfo.id) {
+          this.classList.remove('card-item__icon--liked');
+          itemsArray.forEach((el, index) => {
+            if (el.id === item.itemId) {
               itemsArray.splice(index, 1);
             }
           });
+        } else {
+          this.classList.add('card-item__icon--liked');
+          console.log(doubleFav(item));
+          if (!doubleFav(item)) {
+            const modifiersArr = [];
+            item.modifiers.forEach((modif) => {
+              modifiersArr.push({ id: modif.modificationId, count: modif.count });
+            });
+            itemsArray.push({ id: item.itemId, modifiers: modifiersArr });
+          }
         }
         localStorage.setItem('items', JSON.stringify(itemsArray));
       });

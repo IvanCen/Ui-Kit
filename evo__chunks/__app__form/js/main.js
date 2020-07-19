@@ -221,7 +221,7 @@ class CreateFormInputSignIn extends CreateItem {
     this.template = `
       <div class="form__input">
         <label class="form__input-underlined">
-          <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--phone" type="tel" required>
+          <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--phone form__input-area--type--phone-sign-in" type="tel" required>
           <span class="form__input-label form__input--focused">Введите номер телефона</span>
           <ul class="form__input-requirements">
             <li class="form__input-requirement form__input-requirement--type--phone"></li>
@@ -242,13 +242,13 @@ class CreateFormInputSignIn extends CreateItem {
           <div class="form__input-container form__input-container--name form__input-container--hide">
             <h2 class="form__title">Давайте знакомиться, меня зовут Хлебник, а вас?</h2>
             <div class="form__input">
-            <label class="form__input-underlined">
-              <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--name" minlength="2">
-              <span class="form__input-label">Имя</span>
-              <ul class="form__input-requirements">
-                <li class="form__input-requirement form__input-requirement--type--name">Имя должно содержать больше двух букв</li>
-              </ul>
-            </label>
+              <label class="form__input-underlined">
+                <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--name" minlength="2">
+                <span class="form__input-label">Имя</span>
+                <ul class="form__input-requirements">
+                  <li class="form__input-requirement form__input-requirement--type--name">Имя должно содержать больше двух букв</li>
+                </ul>
+             </label>
            </div>
           </div>
           <div class="form__input-container form__input-container--birthday form__input-container--hide">
@@ -523,40 +523,7 @@ class CreateFormComment extends CreateItem {
 
     this.buttonComment = this.element.querySelector('.button--type--comment');
     this.inputArea = this.element.querySelector('.form__input-area');
-    /* function checkPromoCode(info) {
-      const error = document.querySelector('.form__input-requirement--type--comment');
 
-      if (info.success) {
-        const cardItemContainer = document.querySelector('.card-item__container--type--review');
-        const accordionContent = document.querySelector('.accordion__content');
-        const accordionButton = document.querySelector('.accordion');
-
-        error.textContent = '';
-        error.classList.add('form__input-requirement--hide');
-
-
-        toggleModal.rendering(info.successData.promoCode.description);
-        const reviewCardItem = new CreateCardItemReviewOrder({
-          style: ['card-item'],
-          modifier: [
-            '--direction--row',
-            '--border--bottom',
-          ],
-        });
-        info.successData.promoCode.presentItems.forEach((item) => {
-          for (const el of Object.values(dataProductApi.successData.items)) {
-            if (item.id === el.id) {
-              cardItemContainer.append(reviewCardItem.create(item));
-            }
-          }
-        });
-        accordionButton.click();
-      } else {
-        error.textContent = info.errors[0];
-        error.classList.add('form__input-requirement--invalid');
-        error.classList.remove('form__input-requirement--hide');
-      }
-    } */
     this.error = this.element.querySelector('.form__input-requirement--type--comment');
     this.buttonComment.addEventListener('click', () => {
       if (this.inputArea.value !== '') {
@@ -568,6 +535,74 @@ class CreateFormComment extends CreateItem {
         orderComment = this.inputArea.value;
       } else {
         this.error.textContent = 'Вы не ввели комментарий';
+        this.error.classList.add('form__input-requirement--invalid');
+        this.error.classList.remove('form__input-requirement--hide');
+      }
+    });
+
+
+    return super.create(this.element);
+  }
+}
+
+class CreateFormFriendPay extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+    this.element = document.createElement(this.parameters.selector);
+    this.template = `
+          <button class="accordion">Хотите оплатить за друга?
+            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-bottom.svg]]" alt="" class="accordion__icon-arrow">
+          </button>
+          <div class="accordion__content">
+          <div class="form">
+            <div class="form__input">
+              <label class="form__input-underlined">
+                <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--phone" type="tel" required>
+                <span class="form__input-label form__input--focused">Номер телефона</span>
+                <div class="form__input-icon-container">
+                  <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-attention-triangle.svg]]" alt="" class="form__input-icon form__input-icon-error">
+                </div>
+              </label>
+              </div>
+              <div class="form__input">
+                <label class="form__input-underlined">
+                  <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--name" minlength="2">
+                  <span class="form__input-label">Имя</span>
+                  <ul class="form__input-requirements">
+                    <li class="form__input-requirement form__input-requirement--type--name">Имя должно содержать больше двух букв</li>
+                  </ul>
+               </label>
+             </div>
+             <ul class="form__input-requirements">
+              <li class="form__input-requirement form__input-requirement--type--error"></li>
+            </ul>
+            <button class="button button--indentation--top button--theme--tangerin button--size--small form__button button--type--friend" type="submit">Подтвердить</button>
+            </div>
+          </div>
+   `;
+  }
+
+  create() {
+    this.element.insertAdjacentHTML('beforeend', this.template);
+
+    this.buttonFriend = this.element.querySelector('.button--type--friend');
+    this.inputAreaName = this.element.querySelector('.form__input-area--type--name');
+    this.inputAreaPhone = this.element.querySelector('.form__input-area--type--phone');
+    this.error = this.element.querySelector('.form__input-requirement--type--error');
+
+    this.buttonFriend.addEventListener('click', () => {
+      if (this.inputAreaName.value !== '' && this.inputAreaPhone.value !== '+7(___)___-__-__') {
+        const accordionButton = this.element.querySelector('.accordion');
+        this.error.textContent = `Имя друга: ${this.inputAreaName.value}
+          Телефон: ${this.inputAreaPhone.value}
+          `;
+        this.error.classList.add('form__input-requirement--valid');
+        this.error.classList.remove('form__input-requirement--hide');
+        setTimeout(() => accordionButton.click(), 2000);
+        // orderComment = this.inputArea.value;
+      } else {
+        this.error.textContent = 'Вы не заполнили все данные';
         this.error.classList.add('form__input-requirement--invalid');
         this.error.classList.remove('form__input-requirement--hide');
       }

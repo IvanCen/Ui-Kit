@@ -34,7 +34,11 @@ class TogglePageOrderCategory extends TogglePageOrderCard {
         {
           type: 'click',
           callback: () => {
-            toggleFifthPageOrderSearch.rendering(true, categoryId);
+            if (!this.page.classList.contains('stop-action')) {
+              toggleFifthPageOrderSearch.rendering(true, categoryId);
+              this.page.classList.add('stop-action');
+            }
+            setTimeout(() => this.page.classList.remove('stop-action'), 1000);
           },
         },
       ],
@@ -49,10 +53,12 @@ class TogglePageOrderCategory extends TogglePageOrderCard {
     for (const key of Object.values(dataProductApi.successData.categoriesTree[4].children)) {
       if (key.children[categoryId] !== undefined) {
         key.children[categoryId].items.forEach((item) => {
-          if (dataProductApi.successData.items[item].hitFlag === true) {
-            cardItemContainerSelector.prepend(cardItemProductCard.create(dataProductApi.successData.items[item]));
-          } else {
-            cardItemContainerSelector.append(cardItemProductCard.create(dataProductApi.successData.items[item]));
+          if (dataProductApi.successData.items[item]) {
+            if (dataProductApi.successData.items[item].hitFlag === true) {
+              cardItemContainerSelector.prepend(cardItemProductCard.create(dataProductApi.successData.items[item]));
+            } else {
+              cardItemContainerSelector.append(cardItemProductCard.create(dataProductApi.successData.items[item]));
+            }
           }
         });
       }
@@ -93,7 +99,11 @@ class TogglePageOrderCategoryAll extends TogglePage {
         {
           type: 'click',
           callback: () => {
-            toggleFifthPageOrderSearch.rendering(true, categoryId);
+            if (!this.page.classList.contains('stop-action')) {
+              toggleFifthPageOrderSearch.rendering(true, categoryId);
+              this.page.classList.add('stop-action');
+            }
+            setTimeout(() => this.page.classList.remove('stop-action'), 1000);
           },
         },
       ],

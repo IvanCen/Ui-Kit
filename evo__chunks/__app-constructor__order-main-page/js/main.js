@@ -59,7 +59,11 @@ class ToggleOrder extends ToggleMainPage {
         {
           type: 'click',
           callback: () => {
-            toggleFifthPageOrderSearch.rendering(false);
+            if (!this.mainPageContent.classList.contains('stop-action')) {
+              toggleFifthPageOrderSearch.rendering(false);
+              this.mainPageContent.classList.add('stop-action');
+            }
+            setTimeout(() => this.mainPageContent.classList.remove('stop-action'), 1000);
           },
         },
       ],

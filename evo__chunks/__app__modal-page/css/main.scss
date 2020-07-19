@@ -1,11 +1,11 @@
 @import "../../__app__head-style-and-script/css/main.scss";
 
-.fourth-page {
+.modal-page {
   position: fixed;
-  left: 100%;
+  top: 100%;
   width: 100%;
-  bottom: 0;
-  z-index: 40;
+  left: 0;
+  z-index: 20;
   flex-grow: 1;
   transition: all .3s ease-out;
   background-color: $white;
@@ -15,15 +15,12 @@
   overflow-y: scroll;
   flex-direction: column;
   justify-content: flex-start;
-  top: 0;
-  height: 100vh;
-   //убрать потом, сделанно для отображение с панелькой телефонов
+  height: 100%;
+
 
   &--opened {
-    left: 0;
+    top: 0;
   }
 
-  &__content {
 
-  }
 }

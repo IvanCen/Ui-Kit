@@ -6,7 +6,7 @@ if ('serviceWorker' in navigator) {
       });
   }
 }
-const isIos = /iPhone|iPad|iPod|Safari/i.test(navigator.userAgent);
+const isIos = /iPhone|iPad|iPod/i.test(navigator.userAgent);
 function createTopBarIos() {
   const el = document.createElement('div');
   if (isIos) {
@@ -15,7 +15,7 @@ function createTopBarIos() {
   }
   return el;
 }
-
+console.log(navigator.userAgent)
 function switchActive(nodeList, activeClass) {
   [...nodeList].forEach((item) => {
     item.addEventListener('click', function () {
@@ -27,9 +27,18 @@ function switchActive(nodeList, activeClass) {
   });
 }
 
+function doubleFav(productInfo) {
+  return itemsArray.some((el) => {
+    if (el.id === productInfo.itemId) {
+      return true;
+    }
+    return false;
+  });
+}
+
 function checkMessageInbox() {
   const dotMessage = document.querySelector('.top-bar__icon-dot');
-  if(userMessages.successData.messages.length !== 0) {
+  if(userMessages.success !== false && userMessages.successData.messages.length !== 0) {
     userMessages.successData.messages.every((message) => {
       if (message.wasRead === null) {
         dotMessage.classList.remove('top-bar__icon-dot--hide');
@@ -807,6 +816,70 @@ class ToggleSixthPage {
     this.body = document.querySelector('body');
     this.body.append(createSixthPage());
     this.sixthPage = document.querySelector('.sixth-page');
+  }
+}
+
+class ToggleModalPage {
+  constructor(parameters) {
+    this.parameters = parameters;
+    this.body = document.querySelector('body');
+    this.modalPage = document.querySelector('.modal-page');
+    this.modalPageContent = document.querySelector('.modal-page__content');
+    this.classOpen = this.parameters.classOpen;
+
+    this.closePage = this.closePage.bind(this);
+    this.deletePage = this.deletePage.bind(this);
+    this.openPage = this.openPage.bind(this);
+
+    if (typeof this.parameters !== 'object') {
+      this.parameters = {};
+    }
+  }
+
+  clearPage() {
+    this.modalPage = document.querySelector('.modal-page');
+    if (this.modalPage !== null) {
+      if (this.modalPage.childNodes.length !== 0) {
+        this.arrHtml = Array.from(this.modalPage.children);
+        this.arrHtml.forEach((item) => item.remove());
+      }
+    }
+  }
+
+  deletePage() {
+    if (this.modalPage) {
+      setTimeout(() => this.modalPage.remove(), 100);
+    }
+  }
+
+  closePage() {
+    this.modalPage = document.querySelector('.modal-page');
+    if (this.modalPage) {
+      this.modalPage.querySelectorAll('button').forEach((button) => {
+        button.remove();
+      });
+      if (typeof this.parameters.classOpen === 'object') {
+        for (const style of this.parameters.classOpen) {
+          this.modalPage.classList.remove(style);
+        }
+      }
+      setTimeout(() => this.body.classList.remove('body'), 100);
+    }
+  }
+
+  openPage() {
+    this.modalPage = document.querySelector('.modal-page');
+    setTimeout(() => {
+      this.modalPage.classList.add(this.classOpen);
+      this.body.classList.add('body');
+    }, 100);
+  }
+
+  rendering() {
+    this.body = document.querySelector('body');
+    this.body.append(createModalPage());
+    this.modalPage = document.querySelector('.modal-page');
+    this.modalPageContent = document.querySelector('.modal-page__content');
   }
 }
 

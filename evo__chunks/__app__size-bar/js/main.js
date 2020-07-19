@@ -1,4 +1,4 @@
-function activeSizeBar() {
+function activeSizeBar(element, countCombinationTitleParameter, titleParameter) {
   const sizeBarInfo = document.querySelector('.size-bar__info');
   const sizeBarButtons = document.querySelectorAll('.size-bar__button');
   const sizeBarButtonActive = 'size-bar__button--active';
@@ -15,11 +15,21 @@ function activeSizeBar() {
   (function switchActiveSizeButton() {
     [...sizeBarButtons].forEach((item) => {
       item.addEventListener('click', () => {
-        [...sizeBarButtons].forEach((el) => {
-          el.classList.remove(sizeBarButtonActive);
+        [...sizeBarButtons].some((el) => {
+          if (el.classList.contains(sizeBarButtonActive)) {
+            el.classList.remove(sizeBarButtonActive);
+            return true;
+          }
+          return false;
         });
         item.classList.add(sizeBarButtonActive);
         sizeBarInfo.textContent = item.textContent;
+        console.log(element);
+        if (element && countCombinationTitleParameter) {
+          const unit = titleParameter === 'netWeight' ? 'г' : 'мл';
+          const numberOfUnit = Number(countCombinationTitleParameter) * Number(item.textContent);
+          element.textContent = `${numberOfUnit} ${unit}`;
+        }
       });
     });
   }());
@@ -47,6 +57,38 @@ class CreateSizeBar extends CreateItem {
 
   create() {
     this.element.insertAdjacentHTML('beforeend', this.template);
+
+    return super.create(this.element);
+  }
+}
+
+class CreateSizeBarVolume extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+    this.element = document.createElement(this.parameters.selector);
+  }
+
+  create(productInfo) {
+    this.template = `
+              <div class="size-bar__content-container">
+                <h2 class="size-bar__title">Масса</h2>
+                <span class="size-bar__info">${productInfo.countCombinations[0]}</span>
+              </div>
+              <div class="size-bar__button-container"></div>`;
+    this.element.insertAdjacentHTML('beforeend', this.template);
+
+    this.buttonContainer = this.element.querySelector('.size-bar__button-container');
+
+    productInfo.countCombinations.forEach((item, index) => {
+      this.sizeBarButton = document.createElement('button');
+      this.sizeBarButton.textContent = item;
+      this.sizeBarButton.classList.add('size-bar__button');
+      if (index === 0) {
+        this.sizeBarButton.classList.add('size-bar__button--active');
+      }
+      this.buttonContainer.append(this.sizeBarButton);
+    });
 
     return super.create(this.element);
   }

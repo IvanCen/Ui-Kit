@@ -42,6 +42,10 @@ class ToggleFourthPageReviewOrder extends ToggleFourthPage {
       selector: ['div'],
       style: ['accordion__container'],
     });
+    const formFriendPay = new CreateFormFriendPay({
+      selector: ['div'],
+      style: ['accordion__container'],
+    });
     const reviewCardItemContainer = new CreateCardItemContainerFavAndHisOrder({
       selector: ['div'],
       style: ['card-item__container'],
@@ -80,6 +84,7 @@ class ToggleFourthPageReviewOrder extends ToggleFourthPage {
     this.fourthPage.append(reviewTopBar.create());
     this.fourthPage.append(formPromoCode.create());
     this.fourthPage.append(formComment.create());
+    this.fourthPage.append(formFriendPay.create());
     this.fourthPage.append(reviewCardItemContainer.create());
     // this.fourthPage.append(reviewCheckboxTextSlide.create());
     this.fourthPage.append(reviewButton.create());
@@ -149,6 +154,15 @@ class ToggleFourthPageReviewOrder extends ToggleFourthPage {
       api.getClientApi(checkStoreWorkTime);
     });
 
+    const phoneMaskFriend = IMask(
+      document.querySelector('.form__input-area--type--phone'), {
+        mask: '+{7}(000)000-00-00',
+        lazy: false,
+        placeholderChar: '_',
+        autoUnmask: true,
+      },
+    );
+    validation();
     activeLike();
     activeButton();
     activeAccordion();

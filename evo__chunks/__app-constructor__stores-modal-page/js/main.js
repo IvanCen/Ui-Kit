@@ -1,4 +1,4 @@
-class ToggleStores extends ToggleMainPage {
+class ToggleStores extends ToggleModalPage {
   constructor(parameters) {
     super(parameters);
     this.parameters = parameters;
@@ -51,8 +51,6 @@ class ToggleStores extends ToggleMainPage {
 
   rendering(returnPage) {
     super.rendering('stores');
-    this.mainPage.classList.add('main-page--type--search');
-    this.mainPageContent.classList.add('main-page__content--type--noscroll');
 
     const storesTopBar = new CreateTopBarStores({
       selector: ['div'],
@@ -63,7 +61,20 @@ class ToggleStores extends ToggleMainPage {
         { type: 'click', callback: togglePageStoresFilter.openPage },
       ], */
       eventOpenSearch: [
-        { type: 'click', callback: togglePageStoresSearch.rendering },
+        {
+          type: 'click',
+          callback: () => {
+            if (!this.modalPageContent.classList.contains('stop-action')) {
+              togglePageStoresSearch.rendering();
+              this.modalPageContent.classList.add('stop-action');
+            }
+            setTimeout(() => this.modalPageContent.classList.remove('stop-action'), 1000);
+          },
+        },
+      ],
+      eventCloseIcon: [
+        { type: 'click', callback: toggleModalPage.closePage },
+        { type: 'click', callback: toggleModalPage.deletePage },
       ],
     });
     const storesMap = new CreateMapStores({
@@ -92,10 +103,10 @@ class ToggleStores extends ToggleMainPage {
       style: ['map__item'],
     });
 
-    this.mainPageContent.append(createTopBarIos());
-    this.mainPageContent.append(storesTopBar.create());
-    this.mainPageContent.append(storesMap.create());
-    this.mainPageContent.append(storesMapItemWraper.create());
+    this.modalPageContent.append(createTopBarIos());
+    this.modalPageContent.append(storesTopBar.create());
+    this.modalPageContent.append(storesMap.create());
+    this.modalPageContent.append(storesMapItemWraper.create());
 
     function renderStores(stores) {
       console.log(stores.successData);
@@ -241,7 +252,7 @@ class ToggleStores extends ToggleMainPage {
     }
     renderStores(storesDataObj);
 
-    this.mainPageContent.append(storesButtonChoiceOrange.create());
+    this.modalPageContent.append(storesButtonChoiceOrange.create());
     this.chooseShop(storesDataObj, returnPage);
     setTimeout(() => {
       if (!isEmptyObj(userStore)) {

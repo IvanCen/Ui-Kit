@@ -143,7 +143,10 @@ const searchClassMethod = new Search();
 const toggleBalance = new ToggleBalance();
 const toggleOrder = new ToggleOrder();
 const toggleGift = new ToggleGift();
-const toggleStores = new ToggleStores({ api });
+const toggleStores = new ToggleStores({
+  api,
+  classOpen: ['modal-page--opened'],
+});
 const toggleModal = new ToggleModal();
 const renderMainPage = new ToggleMain({ api });
 const togglePage = new TogglePage({
@@ -166,6 +169,9 @@ const toggleFifthPage = new ToggleFifthPage({
 });
 const toggleSixthPage = new ToggleSixthPage({
   classOpen: ['sixth-page--opened'],
+});
+const toggleModalPage = new ToggleModalPage({
+  classOpen: ['modal-page--opened'],
 });
 const togglePageSignIn = new TogglePageSignIn({
   classOpen: ['page--opened'],
@@ -282,7 +288,7 @@ if (/\?refer=alfa.*/.test(window.location.search)) {
     });
   });
   setTimeout(() => {
-    buttonMain.dispatchEvent(new Event('click')); //рендерит страницу
+    buttonMain.dispatchEvent(new Event('click')); // рендерит страницу
   }, 1000);
 
   setTimeout(() => {

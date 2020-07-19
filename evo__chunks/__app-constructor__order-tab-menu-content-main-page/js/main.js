@@ -93,13 +93,17 @@ class ToggleOrderMenuContent extends ToggleOrderTabContent {
       wraperButtonTitle.textContent = `Посмотреть ${wraperItemsLength}`; */
 
       drinksButtonTitle.addEventListener('click', () => {
+        drinksButtonTitle.disabled = true;
         togglePageOrderCategoryAll.rendering(drinks, 'Напитки', drinksItemsLength, products.items, 33);
         togglePageOrderCategoryAll.openPage();
+        setTimeout(() => drinksButtonTitle.disabled = false, 1000);
       });
 
       foodButtonTitle.addEventListener('click', () => {
+        foodButtonTitle.disabled = true;
         togglePageOrderCategoryAll.rendering(food, 'Еда', foodItemsLength, products.items, 34);
         togglePageOrderCategoryAll.openPage();
+        setTimeout(() => foodButtonTitle.disabled = false, 1000);
       });
 
       /* productsButtonTitle.addEventListener('click', () => {

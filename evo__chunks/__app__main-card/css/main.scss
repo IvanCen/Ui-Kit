@@ -2,6 +2,7 @@
 
 .main-card {
   transition: all 0.2s ease-out;
+  position: relative;
 
   &--border--bottom {
     border-bottom: 1px solid $lightGrey;
@@ -75,7 +76,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    padding: 55px 0 0 16px;
+    padding: 55px 20px 20px 16px;
     z-index: 1;
   }
 
@@ -159,13 +160,37 @@
     &--theme--shadow {
       color: $dimGray;
     }
+
+    &--out-of {
+      position: absolute;
+      top: 53px;
+      left: -82px;
+      transform: rotate(-46deg);
+      @extend %style-4;
+      color: $white;
+    }
   }
+
 
   &__button {
     width: 78px;
 
     &:first-child {
       margin-right: 16px;
+    }
+  }
+
+  &__figure {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-bottom: 100px solid $alizarinCrimson;
+    border-left: 100px solid transparent;
+
+    &--hide {
+      display: none;
     }
   }
 }

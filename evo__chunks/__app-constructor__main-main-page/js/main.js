@@ -12,7 +12,6 @@ class ToggleMain extends ToggleMainPage {
       selector: ['div'],
       style: ['top-bar'],
       modifier: [
-        `${isIos ? '--size--small--ios' : '--size--small'}`,
         '--indentation--bottom',
         '--main',
       ],
@@ -20,6 +19,7 @@ class ToggleMain extends ToggleMainPage {
       eventOpenSignInPage: [{ type: 'click', callback: togglePageSignIn.rendering }],
       eventOpenInboxPage: [{ type: 'click', callback: togglePageInbox.rendering }],
       eventOpenAccountPage: [{ type: 'click', callback: togglePageAccount.rendering }],
+      eventOpenBalanceFill: [{ type: 'click', callback: togglePageBalanceFill.rendering }],
       eventOpenHistory: [
         { type: 'click', callback: openHistory },
 
@@ -53,42 +53,42 @@ class ToggleMain extends ToggleMainPage {
 
 
     function renderPosts(dataPosts) {
-      console.log(dataPosts);
-      const mainPageContent = document.querySelector('.main-page__content-main');
-      const postContainer = document.createElement('div');
-      postContainer.classList.add('main-card__container-posts');
-
-      mainPageContent.append(postContainer);
+      const postContainer = document.querySelector('.main-card__container-posts');
       dataPosts.successData.forEach((item) => {
         postContainer.prepend(mainPageMainCard.create(item));
       });
     }
 
     function renderPromo(dataPromo) {
-      const promoContainer = document.createElement('div');
-      promoContainer.classList.add('main-card__container-promo');
-      const topBar = document.querySelector('.top-bar--main');
-      topBar.after(promoContainer);
+      const promoContainer = document.querySelector('.main-card__container-promo');
       dataPromo.successData.forEach((item) => {
         promoContainer.prepend(mainPageMainCard.create(item));
-        setTimeout(() => {
-          const mainPage = document.querySelector('.main-page');
-          const loader = document.querySelector('.loader');
-          mainPage.classList.remove('main-page--loaded');
-          loader.classList.add('loader--hide');
-        }, 1000);
       });
+      setTimeout(() => {
+        const mainPage = document.querySelector('.main-page');
+        const loader = document.querySelector('.loader');
+        mainPage.classList.remove('main-page--loaded');
+        loader.classList.add('loader--hide');
+      }, 1000);
       if (!isEmptyObj(userDataObj)) {
         rateLastOrder();
       }
     }
 
-    this.parameters.api.promoApi(renderPromo);
-    this.parameters.api.postsApi(renderPosts);
-
+    this.postContainer = document.createElement('div');
+    this.promoContainer = document.createElement('div');
     this.mainPageContent.prepend(mainPageTopBar.create());
     this.mainPageContent.prepend(createTopBarIos());
-    this.mainPageContent.append(ourHistoryMainCard.create());
+    this.topBar = document.querySelector('.top-bar--main');
+
+    this.promoContainer.classList.add('main-card__container-promo');
+    this.postContainer.classList.add('main-card__container-posts');
+    this.mainPageContent.append(this.promoContainer);
+    this.mainPageContent.append(this.postContainer);
+
+    this.parameters.api.promoApi(renderPromo);
+    this.parameters.api.postsApi(renderPosts);
+    this.promoContainer.append(ourHistoryMainCard.create());
 
     if (isEmptyObj(userInfoObj)) {
       this.mainPageContent.append(mainPageButtonJoinOrange.create());
@@ -98,23 +98,20 @@ class ToggleMain extends ToggleMainPage {
       activeFooter(footerButtonMain);
     }, 300);
 
-    const topBarTitle = document.querySelector('.top-bar__title--type--single');
-    const topBar = document.querySelector('.top-bar');
+    this.topBarContentContainer = document.querySelector('.top-bar__content-container--theme--dark');
 
     this.mainPageContent.addEventListener('scroll', () => {
       if (this.mainPageContent.scrollTop < 140) {
-        if (topBarTitle.classList.contains('top-bar__title--hide')) {
-          const containerPromo = document.querySelector('.main-card__container-promo');
-          topBarTitle.classList.remove('top-bar__title--hide');
-          topBar.classList.remove('top-bar--sticky');
-          containerPromo.classList.remove('main-card__container-promo--indentation--top');
+        if (this.topBarContentContainer.classList.contains('top-bar__content-container--hide')) {
+          this.topBarContentContainer.classList.remove('top-bar__content-container--hide');
+          this.topBar.classList.remove(`top-bar--sticky${isIos ? '--ios' : ''}`);
+          this.promoContainer.classList.remove('main-card__container-promo--indentation--top');
         }
       } if (this.mainPageContent.scrollTop > 140) {
-        if (!topBarTitle.classList.contains('top-bar__title--hide')) {
-          const containerPromo = document.querySelector('.main-card__container-promo');
-          topBarTitle.classList.add('top-bar__title--hide');
-          topBar.classList.add('top-bar--sticky');
-          containerPromo.classList.add('main-card__container-promo--indentation--top');
+        if (!this.topBarContentContainer.classList.contains('top-bar__content-container--hide')) {
+          this.topBarContentContainer.classList.add('top-bar__content-container--hide');
+          this.topBar.classList.add(`top-bar--sticky${isIos ? '--ios' : ''}`);
+          this.promoContainer.classList.add('main-card__container-promo--indentation--top');
         }
       }
     });

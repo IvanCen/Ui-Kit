@@ -221,12 +221,23 @@ class CreateOrderProductMainCard extends CreateItem {
         <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-close.svg]]" alt="" class="main-card__icon main-card__icon-close">
         <div class="main-card__content-img"></div>
         <h2 class="main-card__content-title main-card__content-title">${this.parameters.title}</h2>
+        <div class="main-card__figure main-card__figure--hide"><span class="main-card__info main-card__info--out-of">Закончилось</span></div>
       </div>`;
     this.element.insertAdjacentHTML('beforeend', this.template);
     this.iconClose = this.element.querySelector('.main-card__icon-close');
+    this.figure = this.element.querySelector('.main-card__figure');
+
     if (typeof this.parameters.eventCloseIcon === 'object') {
       for (const event of this.parameters.eventCloseIcon) {
         this.iconClose.addEventListener(event.type, event.callback);
+      }
+    }
+    if (!isEmptyObj(outOfStock)) {
+      for (const id in outOfStock.successData.itemsAndModifiers) {
+        if (Number(id) === productInfo.id) {
+          this.figure.classList.remove('main-card__figure--hide');
+          break;
+        }
       }
     }
 

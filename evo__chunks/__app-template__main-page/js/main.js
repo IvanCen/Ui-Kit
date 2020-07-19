@@ -19,13 +19,7 @@ const userBalanceLog = JSON.parse(localStorage.getItem('userBalanceLog')) || {};
 const userBonusLog = JSON.parse(localStorage.getItem('userBonusLog')) || {};
 const dataProductApi = JSON.parse(localStorage.getItem('productData')) || {};
 const userFavoriteStore = JSON.parse(localStorage.getItem('userFavoriteStore')) || {};
-
-setTimeout(() => {
-  const mainPage = document.querySelector('.main-page');
-  const loader = document.querySelector('.loader');
-  mainPage.classList.remove('main-page--loaded');
-  loader.classList.add('loader--hide');
-}, 5000);
+const outOfStock = JSON.parse(localStorage.getItem('outOfStock')) || {};
 
 /* if (isEmptyObj(storesDataObj)) {
   api.storesApi();
@@ -46,11 +40,6 @@ if (isEmptyObj(applicationDataObj)) {
     }
   }
 }
-
-api.getPublicDocument('both', 'privacy-policy');
-api.getPublicDocument('both', 'user-agreement');
-api.getPublicDocument('both', 'public-offer');
-api.getPublicDocument('both', 'our-history');
 
 api.getClientApi();
 api.productApi();
@@ -137,7 +126,7 @@ const toggleThirdPageEditUser = new ToggleThirdPageEditUser({
   classOpen: ['third-page--opened'],
 });
 const toggleThirdPageAddinsCard = new ToggleThirdPageAddinsCard({
-  classOpen: ['third-page--opened'],
+  classOpen: ['third-page--opened--bottom-bar'],
 });
 const toggleFourthPageReviewOrder = new ToggleFourthPageReviewOrder({
   classOpen: ['fourth-page--opened'],
@@ -154,7 +143,10 @@ const searchClassMethod = new Search();
 const toggleBalance = new ToggleBalance();
 const toggleOrder = new ToggleOrder();
 const toggleGift = new ToggleGift();
-const toggleStores = new ToggleStores({ api });
+const toggleStores = new ToggleStores({
+  api,
+  classOpen: ['modal-page--opened'],
+});
 const toggleModal = new ToggleModal();
 const renderMainPage = new ToggleMain({ api });
 const togglePage = new TogglePage({
@@ -178,6 +170,9 @@ const toggleFifthPage = new ToggleFifthPage({
 const toggleSixthPage = new ToggleSixthPage({
   classOpen: ['sixth-page--opened'],
 });
+const toggleModalPage = new ToggleModalPage({
+  classOpen: ['modal-page--opened'],
+});
 const togglePageSignIn = new TogglePageSignIn({
   classOpen: ['page--opened'],
   api,
@@ -192,10 +187,6 @@ const togglePageAccount = new TogglePageAccount({
   classOpen: ['page--opened'],
 });
 
-function renderingMainPage() {
-  renderMainPage.rendering();
-}
-
 function closeOrderPage() {
   const pagesOrder = document.querySelectorAll('.page-order');
   [...pagesOrder].forEach((item) => {
@@ -203,79 +194,92 @@ function closeOrderPage() {
   });
 }
 
+function closePages() {
+  togglePage.closePage();
+  togglePage.deletePage();
+  closeOrderPage();
+  toggleSubPage.closePage();
+  toggleSubPage.deletePage();
+  toggleThirdPage.closePage();
+  toggleThirdPage.deletePage();
+  toggleFourthPage.closePage();
+  toggleFourthPage.deletePage();
+  toggleSixthPage.closePage();
+  toggleSixthPage.closePage();
+}
+
 const mainPageFooter = new CreateFooter({
   selector: ['div'],
   style: ['footer'],
   eventOpenMainPage: [
-    { type: 'click', callback: renderMainPage.closePage },
-    { type: 'click', callback: renderMainPage.clearPage },
-    { type: 'click', callback: renderMainPage.rendering },
-    { type: 'click', callback: renderMainPage.openPage },
-    { type: 'click', callback: togglePage.closePage },
-    { type: 'click', callback: togglePage.deletePage },
-    { type: 'click', callback: closeOrderPage },
-    { type: 'click', callback: toggleSubPage.closePage },
-    { type: 'click', callback: toggleSubPage.deletePage },
-    { type: 'click', callback: toggleThirdPage.closePage },
-    { type: 'click', callback: toggleThirdPage.deletePage },
+    {
+      type: 'click',
+      callback: () => {
+        if (!body.classList.contains('stop-action')) {
+          renderMainPage.closePage();
+          renderMainPage.clearPage();
+          renderMainPage.rendering();
+          renderMainPage.openPage();
+          closePages();
+          body.classList.add('stop-action');
+        }
+        setTimeout(() => body.classList.remove('stop-action'), 2000);
+      },
+    },
   ],
   eventOpenCardsPage: [
-    { type: 'click', callback: toggleBalance.closePage },
-    { type: 'click', callback: toggleBalance.clearPage },
-    { type: 'click', callback: toggleBalance.rendering },
-    { type: 'click', callback: toggleBalance.openPage },
-    { type: 'click', callback: togglePage.closePage },
-    { type: 'click', callback: togglePage.deletePage },
-    { type: 'click', callback: closeOrderPage },
-    { type: 'click', callback: toggleSubPage.closePage },
-    { type: 'click', callback: toggleSubPage.deletePage },
-    { type: 'click', callback: toggleThirdPage.closePage },
-    { type: 'click', callback: toggleThirdPage.deletePage },
+    {
+      type: 'click',
+      callback: () => {
+        toggleBalance.closePage();
+        toggleBalance.clearPage();
+        toggleBalance.rendering();
+        toggleBalance.openPage();
+        closePages();
+      },
+    },
   ],
   eventOpenOrderPage: [
-    { type: 'click', callback: toggleOrder.closePage },
-    { type: 'click', callback: toggleOrder.clearPage },
-    { type: 'click', callback: toggleOrder.rendering },
-    { type: 'click', callback: toggleOrder.openPage },
-    { type: 'click', callback: toggleOrderMenuContent.rendering },
-    { type: 'click', callback: toggleOrderHitsContent.rendering },
-    { type: 'click', callback: toggleOrderHistoryContent.rendering },
-    { type: 'click', callback: togglePage.closePage },
-    { type: 'click', callback: togglePage.deletePage },
-    { type: 'click', callback: closeOrderPage },
-    { type: 'click', callback: toggleSubPage.closePage },
-    { type: 'click', callback: toggleSubPage.deletePage },
-    { type: 'click', callback: toggleThirdPage.closePage },
-    { type: 'click', callback: toggleThirdPage.deletePage },
+    {
+      type: 'click',
+      callback: () => {
+        toggleOrder.closePage();
+        toggleOrder.clearPage();
+        toggleOrder.rendering();
+        toggleOrder.openPage();
+        toggleOrderMenuContent.rendering();
+        toggleOrderHitsContent.rendering();
+        toggleOrderHistoryContent.rendering();
+        closePages();
+      },
+    },
   ],
   eventOpenGiftPage: [
-    { type: 'click', callback: toggleGift.closePage },
-    { type: 'click', callback: toggleGift.clearPage },
-    { type: 'click', callback: toggleGift.rendering },
-    { type: 'click', callback: toggleGift.openPage },
-    { type: 'click', callback: togglePage.closePage },
-    { type: 'click', callback: togglePage.deletePage },
-    { type: 'click', callback: closeOrderPage },
-    { type: 'click', callback: toggleSubPage.closePage },
-    { type: 'click', callback: toggleSubPage.deletePage },
-    { type: 'click', callback: toggleThirdPage.closePage },
-    { type: 'click', callback: toggleThirdPage.deletePage },
+    {
+      type: 'click',
+      callback: () => {
+        toggleGift.closePage();
+        toggleGift.clearPage();
+        toggleGift.rendering();
+        toggleGift.openPage();
+        closePages();
+      },
+    },
   ],
   eventOpenStoresPage: [
-    { type: 'click', callback: toggleStores.closePage },
-    { type: 'click', callback: toggleStores.clearPage },
-    { type: 'click', callback: toggleStores.rendering },
-    { type: 'click', callback: toggleStores.openPage },
-    { type: 'click', callback: togglePage.closePage },
-    { type: 'click', callback: togglePage.deletePage },
-    { type: 'click', callback: closeOrderPage },
-    { type: 'click', callback: toggleSubPage.closePage },
-    { type: 'click', callback: toggleSubPage.deletePage },
-    { type: 'click', callback: toggleThirdPage.closePage },
-    { type: 'click', callback: toggleThirdPage.deletePage },
+    {
+      type: 'click',
+      callback: () => {
+        toggleStores.closePage();
+        toggleStores.clearPage();
+        toggleStores.rendering();
+        toggleStores.openPage();
+        closePages();
+      },
+    },
   ],
 });
-renderMainPage.openPage();
+
 mainPage.append(mainPageFooter.create());
 switchActiveFooter();
 checkBasket();
@@ -297,7 +301,7 @@ if (/\?refer=alfa.*/.test(window.location.search)) {
     });
   });
   setTimeout(() => {
-    buttonMain.dispatchEvent(new Event('click'));
+    buttonMain.dispatchEvent(new Event('click')); // рендерит страницу
   }, 1000);
 
   setTimeout(() => {

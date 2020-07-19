@@ -668,4 +668,42 @@ class Api {
         console.log('Ошибка. Запрос не выполнен: ', err);
       });
   }
+
+  getShopOutOfStockItemsAndModifiers(store, func) {
+    const request = {
+      method: 'get-shop-out-of-stock-items-and-modifiers',
+      shopId: store,
+      outputFormat: 'json',
+    };
+
+    fetch(this.options.baseUrl, {
+      method: 'POST',
+      headers: this.options.headers,
+      body: JSON.stringify(request),
+
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+      .then((res) => {
+        console.log(res);
+        if (res.success) {
+          outOfStock.successData = res.successData;
+          localStorage.setItem('outOfStock', JSON.stringify(outOfStock));
+          /*for (const id in outOfStock.successData.itemsAndModifiers) {
+            delete dataProductApi.successData.items[id];
+            delete dataProductApi.successData.modifiers[id];
+            delete dataProductApi.successData.ingredients[id];
+          }*/
+        }
+        return res;
+      })
+      .then(func)
+      .catch((err) => {
+        console.log('Ошибка. Запрос не выполнен: ', err);
+      });
+  }
 }
