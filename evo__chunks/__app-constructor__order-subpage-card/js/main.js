@@ -35,7 +35,16 @@ class ToggleSubPageProductCard extends ToggleSubPage {
     this.subPage.append(textAreaProductCard.create(productInfo));
 
     const buttonReset = this.subPage.querySelector('.text-area__button--type--reset');
+    const nutritionContainer = this.subPage.querySelector('.text-area__content-container--type--more');
+    const buttonMore = nutritionContainer.querySelector('.text-area__button--type--more');
     const mainCard = this.subPage.querySelector('.main-card');
+
+    console.log(nutritionContainer.offsetHeight);
+    if (nutritionContainer.offsetHeight < 110) {
+      buttonMore.remove();
+      nutritionContainer.classList.remove('text-area__content-container--type--more');
+    }
+
     if (productInfo.countCombinations !== null) {
       mainCard.append(sizeBarVolume.create(productInfo));
       const areaInfo = this.subPage.querySelector(`.text-area__info-number--${productInfo.countCombinationTitleParameter}`);
@@ -52,7 +61,6 @@ class ToggleSubPageProductCard extends ToggleSubPage {
       });
     }
 
-    activeButton();
     this.openPage();
   }
 }

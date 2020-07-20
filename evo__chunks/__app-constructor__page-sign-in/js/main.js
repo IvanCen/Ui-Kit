@@ -58,7 +58,7 @@ class TogglePageSignIn extends TogglePage {
       const refreshLink = setInterval(() => {
         this.parameters.api.signInApi(phone, refreshNumber);
       }, 240000);
-      //запускается сразу после отправки номера
+      // запускается сразу после отправки номера
       const timerRegSuccess = setInterval(() => {
         this.parameters.api.authorizeApi(this.regSuccess, code, phoneNumber, timerRegSuccess, refreshLink);
       }, 1000);
@@ -102,9 +102,9 @@ class TogglePageSignIn extends TogglePage {
       } else if (email === '') {
         this.askUserEmail();
       } else {
-        console.log('hello1')
+        console.log('hello1');
         api.getMessages();
-        console.log('hello2')
+        console.log('hello2');
         renderMainPage.closePage();
         renderMainPage.clearPage();
         renderMainPage.rendering();
@@ -112,7 +112,7 @@ class TogglePageSignIn extends TogglePage {
         closeOrderPage();
         togglePage.closePage();
         togglePage.deletePage();
-        console.log('hello3')
+        console.log('hello3');
 
         textSuccess.classList.remove('form__text--close', 'form__text--hide');
         if (returnPage) {
@@ -303,7 +303,7 @@ class TogglePageSignIn extends TogglePage {
     );
 
     inputFlyLabel();
-    activeButton();
+    
     this.openPage();
   }
 }

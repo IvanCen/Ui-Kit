@@ -147,7 +147,9 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
     }
 
     element.addEventListener('click', () => {
-      toggleThirdPageAddinsCard.rendering(productInfo);
+      stopAction(() => {
+        toggleThirdPageAddinsCard.rendering(productInfo);
+      });
     });
     descriptionArea.after(element);
   }
@@ -318,6 +320,7 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
     }
 
     this.buttonMore.addEventListener('click', () => {
+      console.log(this.nutritionArea, this.nutritionArea.offsetHeight, this.nutritionArea.scrollHeight);
       this.nutritionArea.classList.remove('text-area__content-container--type--more');
       this.buttonMore.remove();
     });
@@ -360,11 +363,16 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
 
     this.buttonAdd.addEventListener('click', () => {
       const sizeBarButtons = document.querySelectorAll('.size-bar__button');
-      let multiplier = 1;
+      let multiplier;
+      if (sizeBarButtons.length !== 0 && sizeBarButtons[0].getAttribute('multiplier') !== undefined) {
+        multiplier = sizeBarButtons[0].getAttribute('multiplier');
+      } else {
+        multiplier = 1;
+      }
       if (productInfo.countCombinations !== null) {
         [...sizeBarButtons].some((el) => {
           if (el.classList.contains('size-bar__button--active')) {
-            multiplier = Number(el.textContent);
+            multiplier = el.getAttribute('multiplier');
             return true;
           }
           return false;
@@ -660,34 +668,46 @@ class CreateTextAreaAccount extends CreateItem {
     this.buttonReward = this.element.querySelector('.text-area--type--reward');
 
     this.buttonPrivacy.addEventListener('click', () => {
-      toggleSubPageApplication.rendering(this.setData('privacy-policy'));
+      stopAction(() => {
+        toggleSubPageApplication.rendering(this.setData('privacy-policy'));
+      });
     });
     this.buttonTerms.addEventListener('click', () => {
-      toggleSubPageApplication.rendering(this.setData('user-agreement'));
+      stopAction(() => {
+        toggleSubPageApplication.rendering(this.setData('user-agreement'));
+      });
     });
     this.buttonPublic.addEventListener('click', () => {
-      toggleSubPageApplication.rendering(this.setData('public-offer'));
+      stopAction(() => {
+        toggleSubPageApplication.rendering(this.setData('public-offer'));
+      });
     });
     this.buttonBalance.addEventListener('click', () => {
-      renderMainPage.closePage();
-      renderMainPage.clearPage();
-      togglePage.closePage();
-      togglePage.deletePage();
-      toggleBalance.rendering();
-      toggleBalance.openPage();
+      stopAction(() => {
+        renderMainPage.closePage();
+        renderMainPage.clearPage();
+        togglePage.closePage();
+        togglePage.deletePage();
+        toggleBalance.rendering();
+        toggleBalance.openPage();
+      });
     });
     this.buttonOrder.addEventListener('click', () => {
-      togglePage.closePage();
-      togglePage.deletePage();
-      openHistory();
+      stopAction(() => {
+        togglePage.closePage();
+        togglePage.deletePage();
+        openHistory();
+      });
     });
     this.buttonReward.addEventListener('click', () => {
-      renderMainPage.closePage();
-      renderMainPage.clearPage();
-      togglePage.closePage();
-      togglePage.deletePage();
-      toggleGift.rendering();
-      toggleGift.openPage();
+      stopAction(() => {
+        renderMainPage.closePage();
+        renderMainPage.clearPage();
+        togglePage.closePage();
+        togglePage.deletePage();
+        toggleGift.rendering();
+        toggleGift.openPage();
+      });
     });
 
     return super.create(this.element);
@@ -721,6 +741,7 @@ class CreateTextAreaStoreInfo extends CreateItem {
     super();
     this.parameters = parameters;
     this.element = document.createElement(this.parameters.selector);
+
     this.template = `
       <div class="text-area">
         <div class="text-area__container text-area__container--indentation--normal">
@@ -1066,9 +1087,7 @@ class CreateTextAreaBankInfo extends CreateItem {
     this.parameters = parameters;
     this.element = document.createElement(this.parameters.selector);
     this.template = `
-
-          <h2 class="text-area__title ">${this.parameters.text}</h2>
-
+      <h2 class="text-area__title ">${this.parameters.text}</h2>
     `;
   }
 

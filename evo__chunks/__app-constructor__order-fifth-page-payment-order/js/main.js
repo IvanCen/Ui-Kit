@@ -17,21 +17,18 @@ class ToggleFifthPageReviewOrder extends ToggleFifthPage {
         { type: 'click', callback: this.deletePage },
       ],
       eventStores: [
-        { type: 'click', callback: toggleStores.closePage },
-        { type: 'click', callback: toggleStores.clearPage },
-        { type: 'click', callback: toggleStores.rendering },
-        { type: 'click', callback: toggleStores.openPage },
-        { type: 'click', callback: togglePage.closePage },
-        { type: 'click', callback: togglePage.deletePage },
-        { type: 'click', callback: closeOrderPage },
-        { type: 'click', callback: toggleSubPage.closePage },
-        { type: 'click', callback: toggleSubPage.deletePage },
-        { type: 'click', callback: toggleThirdPage.closePage },
-        { type: 'click', callback: toggleThirdPage.deletePage },
-        { type: 'click', callback: toggleFourthPage.closePage },
-        { type: 'click', callback: toggleFourthPage.deletePage },
-        { type: 'click', callback: toggleFifthPage.closePage },
-        { type: 'click', callback: toggleFifthPage.deletePage },
+        {
+          type: 'click',
+          callback: () => {
+            stopAction(() => {
+              toggleStores.closePage();
+              toggleStores.clearPage();
+              toggleStores.rendering();
+              toggleStores.openPage();
+              closePages();
+            });
+          },
+        },
       ],
     });
 
@@ -55,7 +52,7 @@ class ToggleFifthPageReviewOrder extends ToggleFifthPage {
     this.fifthPage.append(createTopBarIos());
     this.fifthPage.append(topBar.create());
     this.fifthPage.append(textArea.create());
-    activeButton();
+    
     this.openPage();
   }
 }

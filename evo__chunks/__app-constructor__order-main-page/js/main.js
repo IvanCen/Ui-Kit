@@ -48,7 +48,12 @@ class ToggleOrder extends ToggleMainPage {
         { type: 'click', callback: switchTabHits },
       ],
       eventToggleHistory: [
-        { type: 'click', callback: switchTabHistory },
+        {
+          type: 'click',
+          callback: () => {
+            switchTabHistory();
+          },
+        },
       ],
       eventToggleFavorite: [
         { type: 'click', callback: toggleOrderFavoriteContent.clearTab },
@@ -59,11 +64,9 @@ class ToggleOrder extends ToggleMainPage {
         {
           type: 'click',
           callback: () => {
-            if (!this.mainPageContent.classList.contains('stop-action')) {
+            stopAction(() => {
               toggleFifthPageOrderSearch.rendering(false);
-              this.mainPageContent.classList.add('stop-action');
-            }
-            setTimeout(() => this.mainPageContent.classList.remove('stop-action'), 1000);
+            });
           },
         },
       ],
@@ -74,17 +77,18 @@ class ToggleOrder extends ToggleMainPage {
       style: ['bottom-bar'],
       modifier: ['--indentation--normal'],
       eventStores: [
-        { type: 'click', callback: toggleStores.closePage },
-        { type: 'click', callback: toggleStores.clearPage },
-        { type: 'click', callback: toggleStores.rendering },
-        { type: 'click', callback: toggleStores.openPage },
-        { type: 'click', callback: togglePage.closePage },
-        { type: 'click', callback: togglePage.deletePage },
-        { type: 'click', callback: closeOrderPage },
-        { type: 'click', callback: toggleSubPage.closePage },
-        { type: 'click', callback: toggleSubPage.deletePage },
-        { type: 'click', callback: toggleThirdPage.closePage },
-        { type: 'click', callback: toggleThirdPage.deletePage },
+        {
+          type: 'click',
+          callback: () => {
+            stopAction(() => {
+              toggleStores.closePage();
+              toggleStores.clearPage();
+              toggleStores.rendering();
+              toggleStores.openPage();
+              closePages();
+            });
+          },
+        },
       ],
     });
 

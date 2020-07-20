@@ -457,7 +457,7 @@ class CreateTopBarReviewOrder extends CreateItem {
           <span class="top-bar__info">Самовывоз по адресу</span>
           <div class="top-bar__select-container">
             <button class="top-bar__select-item top-bar__select-item--theme--dark top-bar__select-item--type--stores">
-              ${localStorage.getItem('short-name-shop') || 'Адрес магазина'}
+              ${!isEmptyObj(userStore) ? userStore.store.shortTitle : 'Адрес магазина' || 'Адрес магазина'}
               <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-bottom-white.svg]]" alt="Кнопка выбора адреса магазина"
                    class="top-bar__icon top-bar__icon-arrow-down">
             </button>

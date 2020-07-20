@@ -20,6 +20,10 @@
     padding-top: 20px;
   }
 
+  &--indentation--left {
+    padding-left: 35px;
+  }
+
   &--indentation--bottom {
     padding-bottom: 80px;
   }
@@ -42,9 +46,18 @@
       padding: 20px 16px 20px 0;
     }
 
+    &--indentation--top-bottom {
+      padding: 10px 0 ;
+    }
+
     &--direction--column {
       flex-direction: column;
     }
+
+    &--no-border {
+      border-bottom: 1px solid transparent;
+    }
+
 
   }
 
@@ -379,7 +392,7 @@
         height: 11px;
       }
     }
-    
+
   }
 
   &__number {

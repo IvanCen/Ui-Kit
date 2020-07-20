@@ -6,7 +6,7 @@ class CreateBottomBarOrder extends CreateItem {
     this.template = `
         <div class="bottom-bar__select-container">
           <span class="bottom-bar__info">Самовывоз по адресу</span>
-          <button class="bottom-bar__select-item">${localStorage.getItem('short-name-shop') || 'Адрес магазина'}
+          <button class="bottom-bar__select-item">${!isEmptyObj(userStore) ? userStore.store.shortTitle : 'Адрес магазина' || 'Адрес магазина'}
             <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-bottom-white.svg]]" alt="" class="bottom-bar__icon">
           </button>
         </div>
@@ -36,20 +36,18 @@ class CreateBottomBarOrder extends CreateItem {
       }
     }
     this.basket.addEventListener('click', () => {
-      if (localStorage.getItem('short-name-shop') !== null) {
-        toggleFourthPageReviewOrder.rendering();
+      if (!isEmptyObj(userStore)) {
+        stopAction(() => {
+          toggleFourthPageReviewOrder.rendering();
+        });
       } else {
-        toggleStores.closePage();
-        toggleStores.clearPage();
-        toggleStores.rendering(true);
-        toggleStores.openPage();
-        togglePage.closePage();
-        togglePage.deletePage();
-        closeOrderPage();
-        toggleSubPage.closePage();
-        toggleSubPage.deletePage();
-        toggleThirdPage.closePage();
-        toggleThirdPage.deletePage();
+        stopAction(() => {
+          toggleStores.closePage();
+          toggleStores.clearPage();
+          toggleStores.rendering(true);
+          toggleStores.openPage();
+          closePages();
+        });
       }
     });
 

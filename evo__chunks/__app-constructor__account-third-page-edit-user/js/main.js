@@ -122,7 +122,7 @@ class ToggleThirdPageEditUser extends ToggleThirdPage {
       validation();
       inputFlyLabel();
     }
-    activeButton();
+    
     this.openPage();
   }
 }

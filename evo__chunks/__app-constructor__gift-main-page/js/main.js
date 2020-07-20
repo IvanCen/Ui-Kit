@@ -45,6 +45,6 @@ class ToggleGift extends ToggleMainPage {
 
     const footerButtonGIft = document.querySelector('.footer__button--type--gift');
     activeFooter(footerButtonGIft);
-    activeButton();
+    
   }
 }

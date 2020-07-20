@@ -170,7 +170,7 @@ const toggleFifthPage = new ToggleFifthPage({
 const toggleSixthPage = new ToggleSixthPage({
   classOpen: ['sixth-page--opened'],
 });
-const toggleModalPage = new ToggleModalPage({
+const toggleModalPage = new ToggleModalPageStores({
   classOpen: ['modal-page--opened'],
 });
 const togglePageSignIn = new TogglePageSignIn({

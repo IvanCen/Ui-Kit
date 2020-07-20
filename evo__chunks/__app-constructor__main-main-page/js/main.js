@@ -16,10 +16,39 @@ class ToggleMain extends ToggleMainPage {
         '--main',
       ],
       textTitle: ['Отличный день для кофе ☕'],
-      eventOpenSignInPage: [{ type: 'click', callback: togglePageSignIn.rendering }],
-      eventOpenInboxPage: [{ type: 'click', callback: togglePageInbox.rendering }],
-      eventOpenAccountPage: [{ type: 'click', callback: togglePageAccount.rendering }],
-      eventOpenBalanceFill: [{ type: 'click', callback: togglePageBalanceFill.rendering }],
+      eventOpenSignInPage: [{
+        type: 'click',
+        callback: () => {
+          stopAction(() => {
+            togglePageSignIn.rendering();
+          });
+        },
+      }],
+      eventOpenInboxPage: [{
+        type: 'click',
+        callback: () => {
+          stopAction(() => {
+            togglePageInbox.rendering();
+          });
+        },
+      }],
+      eventOpenAccountPage: [{
+        type: 'click',
+        callback: () => {
+          stopAction(() => {
+            togglePageAccount.rendering();
+          });
+        },
+      }],
+      eventOpenBalanceFill:
+        [{
+          type: 'click',
+          callback: () => {
+            stopAction(() => {
+              togglePageBalanceFill.rendering();
+            });
+          },
+        }],
       eventOpenHistory: [
         { type: 'click', callback: openHistory },
 
@@ -117,6 +146,5 @@ class ToggleMain extends ToggleMainPage {
     });
 
     checkMessageInbox();
-    activeButton();
   }
 }

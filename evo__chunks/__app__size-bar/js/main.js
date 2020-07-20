@@ -24,10 +24,9 @@ function activeSizeBar(element, countCombinationTitleParameter, titleParameter) 
         });
         item.classList.add(sizeBarButtonActive);
         sizeBarInfo.textContent = item.textContent;
-        console.log(element);
         if (element && countCombinationTitleParameter) {
           const unit = titleParameter === 'netWeight' ? 'г' : 'мл';
-          const numberOfUnit = Number(countCombinationTitleParameter) * Number(item.textContent);
+          const numberOfUnit = Number(countCombinationTitleParameter / 100) * Number(item.textContent);
           element.textContent = `${numberOfUnit} ${unit}`;
         }
       });
@@ -70,10 +69,11 @@ class CreateSizeBarVolume extends CreateItem {
   }
 
   create(productInfo) {
+    this.startCount = productInfo.countCombinations[0] * productInfo[productInfo.countCombinationTitleParameter];
     this.template = `
               <div class="size-bar__content-container">
                 <h2 class="size-bar__title">Масса</h2>
-                <span class="size-bar__info">${productInfo.countCombinations[0]}</span>
+                <span class="size-bar__info">${this.startCount}</span>
               </div>
               <div class="size-bar__button-container"></div>`;
     this.element.insertAdjacentHTML('beforeend', this.template);
@@ -82,7 +82,8 @@ class CreateSizeBarVolume extends CreateItem {
 
     productInfo.countCombinations.forEach((item, index) => {
       this.sizeBarButton = document.createElement('button');
-      this.sizeBarButton.textContent = item;
+      this.sizeBarButton.textContent = productInfo[productInfo.countCombinationTitleParameter] * item;
+      this.sizeBarButton.setAttribute('multiplier', item);
       this.sizeBarButton.classList.add('size-bar__button');
       if (index === 0) {
         this.sizeBarButton.classList.add('size-bar__button--active');

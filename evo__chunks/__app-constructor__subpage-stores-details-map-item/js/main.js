@@ -11,7 +11,6 @@ class ToggleSubPageStoresDetails extends ToggleSubPage {
       if (item.checked) {
         stores.successData.forEach((el) => {
           if (el.id === Number(item.id)) {
-            localStorage.setItem('short-name-shop', el.shortTitle);
             userStore.store = el;
             localStorage.setItem('userStore', JSON.stringify(userStore));
           }
@@ -88,7 +87,7 @@ class ToggleSubPageStoresDetails extends ToggleSubPage {
 
     setTimeout(() => {
       this.subPage.append(buttonShowAllOrange.create());
-      activeButton();
+      
     }, 350);
 
 

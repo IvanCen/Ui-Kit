@@ -1,48 +1,37 @@
-class TogglePageStoresSearch extends TogglePage {
+class TogglePageStoresSearch extends ToggleModalPageSearch {
   constructor(parameters) {
     super(parameters);
     this.parameters = parameters;
     this.rendering = this.rendering.bind(this);
   }
 
-  chooseShop() {
-    const page = document.querySelector('.page');
-    const buttonChoose = page.querySelector('.button--type--choose-search');
-    buttonChoose.addEventListener('click', () => {
-      const radioInputs = page.querySelectorAll('.radio__input');
-      console.log(radioInputs);
-      [...radioInputs].forEach((item) => {
-        if (item.checked) {
-          storesDataObj.successData.forEach((el) => {
-            if (el.id === Number(item.id)) {
-              localStorage.setItem('short-name-shop', el.shortTitle);
-              userStore.store = el;
-              localStorage.setItem('userStore', JSON.stringify(userStore));
-            }
-          });
-          togglePage.closePage();
-          togglePage.deletePage();
-          toggleStores.closePage();
-          toggleStores.clearPage();
-          toggleOrder.rendering();
-          toggleOrder.openPage();
-          toggleOrderMenuContent.rendering();
-          toggleOrderHitsContent.rendering();
-          toggleOrderHistoryContent.rendering();
-
-          toggleSubPage.closePage();
-          toggleSubPage.deletePage();
-          toggleThirdPage.closePage();
-          toggleThirdPage.deletePage();
-          const footerButton = document.querySelectorAll('.footer__button');
-          const footerButtonOrder = document.querySelector('.footer__button--type--order');
-          [...footerButton].forEach((itemEl) => {
-            itemEl.classList.remove('footer__button--active');
-            itemEl.firstElementChild.classList.remove('footer__icon--active');
-          });
-          footerButtonOrder.classList.add('footer__button--active');
-          footerButtonOrder.firstElementChild.classList.add('footer__icon--active');
-        }
+  chooseShop(page) {
+    const storesButton = document.querySelector('.bottom-bar__select-item');
+    const radioInputs = page.querySelectorAll('.radio__input');
+    const mapItem = page.querySelectorAll('.map__item');
+    [...mapItem].forEach((input) => {
+      input.addEventListener('click', () => {
+        [...radioInputs].forEach((item) => {
+          if (item.checked) {
+            storesDataObj.successData.forEach((el) => {
+              if (el.id === Number(item.id)) {
+                api.getShopOutOfStockItemsAndModifiers(el.id);
+                userStore.store = el;
+                localStorage.setItem('userStore', JSON.stringify(userStore));
+                if (storesButton) {
+                  storesButton.textContent = el.shortTitle;
+                }
+                /*const mapRadioInput = document.querySelectorAll('.map__radio-input');
+                [...mapRadioInput].forEach((radio) => {
+                  console.log(radio.id, item.id)
+                  if (radio.id === item.id) {
+                    radio.checked = true;
+                  }
+                });*/
+              }
+            });
+          }
+        });
       });
     });
   }
@@ -95,40 +84,24 @@ class TogglePageStoresSearch extends TogglePage {
       style: ['map'],
       modifier: ['--type--search'],
     });
-    const storesButtonChoiceOrange = new CreateButton({
-      selector: ['button'],
-      style: ['button'],
-      modifier: ['--size--big',
-        '--theme--tangerin',
-        '--type--fixed',
-        '--theme--shadow-big',
-        '--type--choose-search',
-      ],
-      text: ['Выбрать'],
-      event: [
-        { type: 'click', callback: this.closePage },
-        { type: 'click', callback: this.deletePage },
-      ],
-    });
 
-    this.page.append(createTopBarIos());
-    this.page.append(topBar.create());
-    this.page.append(mapItemStoresSearchWraper.create());
-    this.page.append(storesButtonChoiceOrange.create());
-    const inputSearch = document.querySelector('.top-bar-search__input-area');
-    const mapItemsContainer = document.querySelector('.map__container--type--search');
+    this.modalPageSearch.append(createTopBarIos());
+    this.modalPageSearch.append(topBar.create());
+    this.modalPageSearch.append(mapItemStoresSearchWraper.create());
+    const inputSearch = this.modalPageSearch.querySelector('.top-bar-search__input-area');
+    const mapItemsContainer = this.modalPageSearch.querySelector('.map__container--type--search');
 
     inputSearch.addEventListener('focus', () => {
-      this.page.classList.add('page--focus-input');
+      this.modalPageSearch.classList.add('modal-page-search--focus-input');
     });
 
     inputSearch.addEventListener('blur', () => {
-      this.page.classList.remove('page--focus-input');
+      this.modalPageSearch.classList.remove('modal-page-search--focus-input');
     });
 
     inputSearch.addEventListener('keyup', (event) => {
       if (event.code === 'Enter' || event.code === 'Go' || event.code === 13) {
-        this.page.classList.remove('page--focus-input');
+        this.modalPageSearch.classList.remove('modal-page-search--focus-input');
         inputSearch.blur();
       }
       if (inputSearch.value.length < 1) {
@@ -136,12 +109,12 @@ class TogglePageStoresSearch extends TogglePage {
         arrHtml.splice(0, arrHtml.length).forEach((item) => item.remove());
       } else {
         togglePageStoresSearch.searchStores();
-        togglePageStoresSearch.chooseShop();
+        togglePageStoresSearch.chooseShop(this.modalPageSearch);
       }
     });
 
     clearSearchActive();
-    activeButton();
+
     this.openPage();
   }
 }

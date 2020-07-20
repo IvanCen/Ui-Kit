@@ -95,7 +95,7 @@ class ToggleFourthPageReviewOrder extends ToggleFourthPage {
     const productsItems = dataProductApi.successData.items;
     basketArray.forEach((item) => {
       for (const el of Object.values(productsItems)) {
-        if (item.id === el.id) {
+        if (productsItems[item.id] !== undefined && !isEmptyObj(item) && item.id === el.id) {
           this.cardItemContainer.append(reviewCardItem.create(item));
         }
       }
@@ -162,9 +162,8 @@ class ToggleFourthPageReviewOrder extends ToggleFourthPage {
         autoUnmask: true,
       },
     );
+
     validation();
-    activeLike();
-    activeButton();
     activeAccordion();
     inputFlyLabel();
     this.openPage();

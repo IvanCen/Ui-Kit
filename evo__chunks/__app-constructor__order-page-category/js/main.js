@@ -34,11 +34,9 @@ class TogglePageOrderCategory extends TogglePageOrderCard {
         {
           type: 'click',
           callback: () => {
-            if (!this.page.classList.contains('stop-action')) {
+            stopAction(() => {
               toggleFifthPageOrderSearch.rendering(true, categoryId);
-              this.page.classList.add('stop-action');
-            }
-            setTimeout(() => this.page.classList.remove('stop-action'), 1000);
+            });
           },
         },
       ],
@@ -99,11 +97,9 @@ class TogglePageOrderCategoryAll extends TogglePage {
         {
           type: 'click',
           callback: () => {
-            if (!this.page.classList.contains('stop-action')) {
+            stopAction(() => {
               toggleFifthPageOrderSearch.rendering(true, categoryId);
-              this.page.classList.add('stop-action');
-            }
-            setTimeout(() => this.page.classList.remove('stop-action'), 1000);
+            });
           },
         },
       ],

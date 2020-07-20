@@ -58,6 +58,21 @@ class Api {
         storesDataObj.successData = storesInfo.successData;
         storesDataObj.lastEditDateRequest = Date.now();
         localStorage.setItem('storesData', JSON.stringify(storesDataObj));
+        if (!isEmptyObj(userStore)) {
+          function isOldStore() {
+            return storesDataObj.successData.every((store) => {
+              console.log(store.id, userStore.store.id);
+              if (store.id === userStore.store.id) {
+                return false;
+              }
+              return true;
+            });
+          }
+          if (isOldStore()) {
+            delete userStore.store;
+            localStorage.setItem('userStore', JSON.stringify(userStore));
+          }
+        }
       })
       .catch((err) => {
         console.log('Ошибка. Запрос не выполнен: ', err);
@@ -693,11 +708,11 @@ class Api {
         if (res.success) {
           outOfStock.successData = res.successData;
           localStorage.setItem('outOfStock', JSON.stringify(outOfStock));
-          /*for (const id in outOfStock.successData.itemsAndModifiers) {
+          /* for (const id in outOfStock.successData.itemsAndModifiers) {
             delete dataProductApi.successData.items[id];
             delete dataProductApi.successData.modifiers[id];
             delete dataProductApi.successData.ingredients[id];
-          }*/
+          } */
         }
         return res;
       })

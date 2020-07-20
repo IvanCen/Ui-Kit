@@ -29,11 +29,13 @@ class ToggleSubPageAccountEditUser extends ToggleSubPage {
         {
           type: 'click',
           callback: () => {
-            toggleThirdPageEditUser.rendering({
-              titleTopBar: 'Редактирование имени',
-              inputLabel: 'Введите новое имя',
-              identifier: 'name',
-              inputType: 'text',
+            stopAction(() => {
+              toggleThirdPageEditUser.rendering({
+                titleTopBar: 'Редактирование имени',
+                inputLabel: 'Введите новое имя',
+                identifier: 'name',
+                inputType: 'text',
+              });
             });
           },
         },
@@ -58,11 +60,13 @@ class ToggleSubPageAccountEditUser extends ToggleSubPage {
           {
             type: 'click',
             callback: () => {
-              toggleThirdPageEditUser.rendering({
-                titleTopBar: 'Редактирование даты рождения',
-                inputLabel: '',
-                identifier: 'birthday',
-                inputType: 'date',
+              stopAction(() => {
+                toggleThirdPageEditUser.rendering({
+                  titleTopBar: 'Редактирование даты рождения',
+                  inputLabel: '',
+                  identifier: 'birthday',
+                  inputType: 'date',
+                });
               });
             },
           },
@@ -88,18 +92,20 @@ class ToggleSubPageAccountEditUser extends ToggleSubPage {
         {
           type: 'click',
           callback: () => {
-            toggleThirdPageEditUser.rendering({
-              titleTopBar: 'Редактирование email',
-              inputLabel: 'Введите новый email',
-              identifier: 'email',
-              inputType: 'email',
-              text: 'На ваш email будет отправлена ссылка, пройдите по ней, для подтверждения.',
+            stopAction(() => {
+              toggleThirdPageEditUser.rendering({
+                titleTopBar: 'Редактирование email',
+                inputLabel: 'Введите новый email',
+                identifier: 'email',
+                inputType: 'email',
+                text: 'На ваш email будет отправлена ссылка, пройдите по ней, для подтверждения.',
+              });
             });
           },
         },
       ],
     });
-    const buttonJoinOrange = new CreateButton({
+/*    const buttonJoinOrange = new CreateButton({
       selector: ['button'],
       style: ['button'],
       modifier: [
@@ -110,16 +116,23 @@ class ToggleSubPageAccountEditUser extends ToggleSubPage {
       ],
       text: ['Редактировать'],
       eventsOpen: [
-        { type: 'click', callback: togglePageSignIn.rendering },
+        {
+          type: 'click',
+          callback: () => {
+            stopAction(() => {
+              togglePageSignIn.rendering();
+            });
+          },
+        },
       ],
-    });
+    });*/
     this.subPage.append(createTopBarIos());
     this.subPage.append(topBar.create());
     this.subPage.append(textAreaName.create());
     this.subPage.append(textAreaBirthday.create());
     this.subPage.append(textAreaPhone.create());
     this.subPage.append(textAreaEmail.create());
-    this.subPage.append(buttonJoinOrange.create());
+    //this.subPage.append(buttonJoinOrange.create());
 
 
     this.openPage();

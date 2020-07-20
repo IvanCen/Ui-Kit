@@ -119,7 +119,7 @@ class ToggleThirdPageAddinsCard extends ToggleThirdPage {
     });
 
     switchAdd(productInfo);
-    activeButton();
+    
     this.openPage();
   }
 }

@@ -21,6 +21,29 @@ $whisper: #E5E5E5;
 $ghostWhite: #F1F1F2;
 $dodgerBlue: #2F80ED;
 
+.main-page {
+  overflow-y: scroll;
+
+  &--loaded {
+    display: none;
+  }
+
+  &--size--small {
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 78px);
+
+  }
+
+  &--type--search {
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 78px);
+    justify-content: space-between;
+  }
+
+}
+
 ::-webkit-scrollbar {
   width: 0;
   height: 0;

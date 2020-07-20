@@ -43,6 +43,40 @@ class CreateMapItemStores extends CreateItem {
     this.create = this.create.bind(this);
   }
 
+  get day() {
+    this.date = new Date();
+    this.weekday = this.date.getDay();
+    this.daysArr = [
+      {
+        ru: 'Воскресенье',
+        en: 'sunday',
+      },
+      {
+        ru: 'Понедельник',
+        en: 'monday',
+      },
+      {
+        ru: 'Вторник',
+        en: 'tuesday',
+      }, {
+        ru: 'Среда',
+        en: 'wednesday',
+      },
+      {
+        ru: 'Четверг',
+        en: 'thursday',
+      },
+      {
+        ru: 'Пятница',
+        en: 'friday',
+      },
+      {
+        ru: 'Суббота',
+        en: 'saturday',
+      }];
+    return this.daysArr[this.weekday];
+  }
+
   create(store, placemark, myMap, id) {
     function identity() {
       if (id !== undefined) {
@@ -53,24 +87,43 @@ class CreateMapItemStores extends CreateItem {
     this.element = document.createElement('div');
     this.element.classList.add('map__item');
     this.element.setAttribute('data-id', store.id);
+    let phone;
+    if (store.phone !== null) {
+      const regExp = /(\+\d)(\d{3})(\d{3})(\d{2})(\d{2})/g;
+      phone = store.phone.replace(regExp, '$1 ($2) $3-$4-$5');
+    }
+    console.log(store, this.day.en);
 
     this.template = `
             <div class="map__content">
-              <input type="radio" class="radio__input" id="${identity()}${store.id}" name="radio"/>
+              <input type="radio" class="radio__input map__radio-input" id="${identity()}${store.id}" name="radio"/>
               <label class="map__item-title radio__label map__radio-label radio__label--available" for="${identity()}${store.id}">${store.shortTitle} <br>
                 <span class="map__item-text">${store.longTitle} <br>
                 <span class="map__item-dist"></span>
                 </span>
               </label>
+              <div class="map__button-container">
+                <svg class="map__button map__button--type--like"  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path class="map__icon map__icon--type--like" d="M23 8.28003C23 5.10003 20.41 2.53003 17.25 2.53003C14.96 2.53003 12.98 3.87003 12.05 5.82003C12.03 5.86003 11.97 5.86003 11.96 5.82003C11.04 3.88003 9.05 2.53003 6.76 2.53003C3.58 2.53003 1 5.10003 1 8.28003C1 8.95003 1.11 9.59003 1.33 10.19C1.57 10.87 1.94 11.5 2.4 12.03C2.6 12.26 2.81 12.47 3.04 12.67L11.82 21.39C11.87 21.44 11.94 21.47 12.02 21.47C12.1 21.47 12.16 21.45 12.22 21.39L21.33 12.34C21.92 11.75 22.39 11.03 22.67 10.23C22.88 9.62003 23 8.96003 23 8.28003Z"/>
+                </svg>
+                
+              </div>
             </div>
-            <div class="map__button-container">
-            <svg class="map__button map__button--type--like"  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path class="map__icon map__icon--type--like" d="M23 8.28003C23 5.10003 20.41 2.53003 17.25 2.53003C14.96 2.53003 12.98 3.87003 12.05 5.82003C12.03 5.86003 11.97 5.86003 11.96 5.82003C11.04 3.88003 9.05 2.53003 6.76 2.53003C3.58 2.53003 1 5.10003 1 8.28003C1 8.95003 1.11 9.59003 1.33 10.19C1.57 10.87 1.94 11.5 2.4 12.03C2.6 12.26 2.81 12.47 3.04 12.67L11.82 21.39C11.87 21.44 11.94 21.47 12.02 21.47C12.1 21.47 12.16 21.45 12.22 21.39L21.33 12.34C21.92 11.75 22.39 11.03 22.67 10.23C22.88 9.62003 23 8.96003 23 8.28003Z"/>
-            </svg>
-              <button class="map__button map__button--type--details">
-                <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-info.svg]]" alt="" class="map__icon map__icon--position--top">
-              </button>
+            <div class="map__content map__content--indentation--normal">
+             <h3 class="map__item-text map__item-text--indentation--right">${this.day.ru}:</h3>
+             <span class="map__item-text">${store[this.day.en]}</span>
             </div>
+            <div class="map__content">
+              <div class="map__container-phone">
+                <a class="map__item-phone" href="tel:${store.phone}">
+                 <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-phone.svg]]" alt="" class="text-area__icon text-area__icon--position--center text-area__icon--phone">
+                </a>
+                <a href="tel:${store.phone}" class="text-area__title text-area__title--size--small text-area__title--type--bold">${phone || store.phone}</a>
+              </div>
+              <a href="https://www.google.ru/maps/place/${this.parameters.address}/@${this.parameters.latitude},${this.parameters.longitude}z?hl=ru" target="_blank" class="shop-info__direction">
+                <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-on-map.svg]]" alt="" class="text-area__icon text-area__icon--position--center">
+              </a>
+            </div>  
             `;
     this.element.insertAdjacentHTML('beforeend', this.template);
     this.buttonDetails = this.element.querySelector('.map__button--type--details');
@@ -89,7 +142,7 @@ class CreateMapItemStores extends CreateItem {
 
     const radioInput = this.element.querySelector('.radio__input');
 
-    function renderDetailStorePage(info) {
+    /* function renderDetailStorePage(info) {
       if (info.success === true) {
         toggleSubPageStoresDetails.rendering(store, info);
         toggleSubPageStoresDetails.openPage();
@@ -105,7 +158,7 @@ class CreateMapItemStores extends CreateItem {
         }
       }
       api.checkWorkTimeStore(store, renderDetailStorePage);
-    });
+    }); */
     this.buttonLike.addEventListener('click', function () {
       const icon = this.firstElementChild;
       if (icon.classList.contains('map__icon--liked')) {
@@ -117,7 +170,6 @@ class CreateMapItemStores extends CreateItem {
           }
         }
       } else {
-        //icon.closest('.map__item').style.order = -1;
         icon.classList.add('map__icon--liked');
         storesDataObj.successData.forEach((item) => {
           if (item.id === store.id) {
@@ -132,7 +184,19 @@ class CreateMapItemStores extends CreateItem {
         .add('click', (e) => {
           e.get('target').options.set('iconImageHref', 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-point-select.svg]]');
           const radioInputId = document.getElementById(store.id);
+          const storesButton = document.querySelector('.bottom-bar__select-item');
           radioInputId.checked = 'checked';
+          console.log(radioInputId);
+          storesDataObj.successData.forEach((el) => {
+            if (el.id === Number(radioInputId.id)) {
+              api.getShopOutOfStockItemsAndModifiers(el.id);
+              userStore.store = el;
+              localStorage.setItem('userStore', JSON.stringify(userStore));
+              if (storesButton) {
+                storesButton.textContent = el.shortTitle;
+              }
+            }
+          });
         })
         .add('click', (e) => {
           if (e.get('target') == false) {
@@ -142,6 +206,7 @@ class CreateMapItemStores extends CreateItem {
       this.mapСontent.addEventListener('click', (e) => {
         e.preventDefault();
         radioInput.checked = 'checked';
+
         placemark.options.set('iconImageHref', 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-point-select.svg]]');
         myMap.panTo([Number(store.latitude), Number(store.longitude)], {
           delay: 1000,

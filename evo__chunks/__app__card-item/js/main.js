@@ -1,12 +1,3 @@
-function activeLike() {
-  const cardItemIconTypeLike = document.querySelectorAll('.card-item__icon--type--like');
-  [...cardItemIconTypeLike].forEach((item) => {
-    item.addEventListener('click', () => {
-      item.classList.toggle('card-item__icon--liked');
-    });
-  });
-}
-
 class CreateCardItemOrder extends CreateItem {
   constructor(parameters) {
     super();
@@ -56,13 +47,10 @@ class CreateCardItemOrderProductCard extends CreateItem {
     this.element.classList.add('card-item', 'card-item--direction--column');
     this.element.id = productInfo.id;
     this.element.addEventListener('click', () => {
-      const page = this.element.closest('.page-order');
-      if (!page.classList.contains('stop-action')) {
+      stopAction(() => {
         toggleSubPageProductCard.rendering(productInfo);
         toggleSubPageProductCard.openPage();
-        page.classList.add('stop-action');
-      }
-      setTimeout(() => page.classList.remove('stop-action'), 1000);
+      });
     });
     this.template = `
       <div class="card-item__image card-item__image--size--big">
@@ -245,6 +233,16 @@ class CreateCardItemFavAndHisOrder extends CreateItem {
         toggleFifthPage.deletePage();
       }
     }); */
+    this.element.addEventListener('click', (e) => {
+      const classArr = ['card-item__image', 'card-item__title'];
+      classArr.forEach((classEl) => {
+        if (e.target.classList.contains(classEl)) {
+          toggleFifthPage.closePage();
+          toggleSubPageProductCard.rendering(dataProductApi.successData.items[productInfo.id]);
+          toggleFifthPage.deletePage();
+        }
+      });
+    });
 
     if (typeof dataProductApi.successData.items[productInfo.id] === 'object' && typeof productInfo.modifiers === 'object') {
       const cardItemList = this.element.querySelector('.card-item__list');
@@ -276,28 +274,12 @@ class CreateCardItemFavAndHisOrder extends CreateItem {
       this.iconsLike.classList.remove('card-item__icon--liked');
       this.iconsLike.addEventListener('click', function () {
         this.classList.toggle('card-item__icon--liked');
-        /* console.log(this);
-        if (this.classList.contains('card-item__icon--liked')) {
-          function duble() {
-            return itemsArray.some((el) => {
-              if (el.id === dataProductApi.successData.items[productInfo.id].id) {
-                return true;
-              }
-              return false;
-            });
-          }
-          console.log(duble());
-
-          itemsArray.push({ id: productInfo.id });
-          localStorage.setItem('items', JSON.stringify(itemsArray));
-        } else { */
         itemsArray.forEach((item, index) => {
           if (item.id === dataProductApi.successData.items[productInfo.id].id) {
             itemsArray.splice(index, 1);
           }
         });
         localStorage.setItem('items', JSON.stringify(itemsArray));
-        // }
       });
     }
     if (!canUseWebP()) {
@@ -392,11 +374,12 @@ class CreateCardItemReviewOrder extends CreateItem {
     const el = this.element;
     const counterTopBar = document.querySelector('.top-bar__all-counter-order');
     const counterBottomBar = document.querySelector('.bottom-bar__counter');
-
-    for (const id in outOfStock.successData.itemsAndModifiers) {
-      if (Number(id) === productInfo.id) {
-        this.figure.classList.remove('main-card__figure--hide');
-        break;
+    if (!isEmptyObj(outOfStock) && outOfStock.success === true && outOfStock.successData.itemsAndModifiers.length !== 0) {
+      for (const id in outOfStock.successData.itemsAndModifiers) {
+        if (Number(id) === productInfo.id) {
+          this.figure.classList.remove('main-card__figure--hide');
+          break;
+        }
       }
     }
 
@@ -436,26 +419,26 @@ class CreateCardItemReviewOrder extends CreateItem {
       }
     }
 
-    this.iconsMinus.addEventListener('click', () => {
-      counterTopBar.textContent = Number(counterTopBar.textContent) - 1;
-      counterBottomBar.textContent = Number(counterBottomBar.textContent) - 1;
-      el.classList.add('card-item--animation');
-      /**
-       * Проходим корзину
-       */
-      for (const [index, item] of Object.entries(basketArray)) {
-        /**
-         * Удаляем первое полное совпадение и обязательно выходим из цикла
-         */
-        if (item === productInfo) {
-          basketArray.splice(index, 1);
-          break;
+    this.iconsMinus.addEventListener('click', function () {
+      (() => {
+        if (!this.classList.contains('stop-action')) {
+          counterTopBar.textContent = Number(counterTopBar.textContent) - 1;
+          counterBottomBar.textContent = Number(counterBottomBar.textContent) - 1;
+          el.classList.add('card-item--animation');
+          for (const [index, item] of Object.entries(basketArray)) {
+            if (item === productInfo) {
+              basketArray.splice(index, 1);
+              break;
+            }
+          }
+          localStorage.setItem('basket', JSON.stringify(basketArray));
+          counterBasket();
+          checkBasket();
+          setTimeout(() => el.remove(), 200);
+          this.classList.add('stop-action');
         }
-      }
-      localStorage.setItem('basket', JSON.stringify(basketArray));
-      counterBasket();
-      checkBasket();
-      setTimeout(() => el.remove(), 200);
+        setTimeout(() => this.classList.remove('stop-action'), 1000);
+      })();
     });
 
     this.iconsPlus.addEventListener('click', () => {
@@ -467,6 +450,7 @@ class CreateCardItemReviewOrder extends CreateItem {
       // this.arrHtml = Array.from(cardItemContainer.children);
       // this.arrHtml.splice(0, this.arrHtml.length).forEach((item) => item.remove());
       cardItemContainer.append(this.create(productInfo));
+      activeBanners(this.element, true);
     });
     return super.create(this.element);
   }
@@ -535,6 +519,8 @@ class CreateCardItemHistory extends CreateItem {
       this.price = this.element.querySelector('.card-item__price');
       this.iconsLike = this.element.querySelector('.card-item__icon--type--like');
       this.buttonLike = this.element.querySelector('.card-item__button--type--like');
+
+      this.element.id = item.itemId;
 
       const imgEl = this.element.querySelector('.card-item__image');
       if (!canUseWebP()) {
@@ -627,14 +613,27 @@ class CreateCardItemHistory extends CreateItem {
       this.iconsLike.addEventListener('click', function () {
         console.log(item, this, productInfo);
         if (this.classList.contains('card-item__icon--liked')) {
+          const allIconsLikes = document.querySelectorAll('.card-item__icon--liked');
           this.classList.remove('card-item__icon--liked');
+          [...allIconsLikes].forEach((like) => {
+            if (like.closest('.card-item').getAttribute('id') === String(item.itemId)) {
+              like.classList.remove('card-item__icon--liked');
+            }
+          });
           itemsArray.forEach((el, index) => {
             if (el.id === item.itemId) {
               itemsArray.splice(index, 1);
             }
           });
         } else {
+          console.log(this);
           this.classList.add('card-item__icon--liked');
+          const allIconsLikes = document.querySelectorAll('.card-item__icon--type--like');
+          [...allIconsLikes].forEach((like) => {
+            if (like.closest('.card-item').getAttribute('id') === String(item.itemId)) {
+              like.classList.add('card-item__icon--liked');
+            }
+          });
           console.log(doubleFav(item));
           if (!doubleFav(item)) {
             const modifiersArr = [];

@@ -43,6 +43,6 @@ class ToggleInboxTabMessagesContent extends ToggleInboxTabContent {
     }
 
 
-    activeButton();
+    
   }
 }

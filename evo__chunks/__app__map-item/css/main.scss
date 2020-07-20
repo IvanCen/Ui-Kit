@@ -11,21 +11,28 @@
   }
 
   &--default {
-    height: calc(50vh - 50px);
+    height: 50vh;
   }
 
   &__container {
     display: flex;
     flex-direction: column;
-    padding: 12px 16px 70px 16px;
+    padding: 12px 16px 0 16px;
     width: 100%;
     overflow-y: scroll;
+  }
+
+  &__container-phone {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
   &__button-container {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-left: 10px;
   }
 
   &__button {
@@ -33,7 +40,6 @@
     &--type--like {
       width: 20px;
       height: 20px;
-      margin-right: 20px;
     }
   }
 
@@ -53,9 +59,11 @@
 
   &__item {
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     padding: 10px 0;
     min-height: fit-content;
+    border-bottom: 1px solid $gainsboroGray;
 
     &--position--top {
       order: -1 !important;
@@ -64,6 +72,16 @@
 
   &__content {
     display: flex;
+    justify-content: space-between;
+
+    &--direction--column {
+      flex-direction: column;
+    }
+
+    &--indentation--normal {
+      padding: 5px 0 0px 35px;
+      justify-content: start;
+    }
   }
 
   &__item-title {
@@ -73,6 +91,14 @@
   &__item-text {
     @extend %style-6;
     color: $dimGray;
+
+    &--indentation--right {
+      margin-right: 5px;
+    }
+  }
+
+  &__item-phone {
+    margin-right: 15px;
   }
 
   &__radio-button {

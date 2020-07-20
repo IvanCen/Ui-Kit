@@ -21,6 +21,7 @@ const dataProductApi = JSON.parse(localStorage.getItem('productData')) || {};
 const userFavoriteStore = JSON.parse(localStorage.getItem('userFavoriteStore')) || {};
 const outOfStock = JSON.parse(localStorage.getItem('outOfStock')) || {};
 
+
 /* if (isEmptyObj(storesDataObj)) {
   api.storesApi();
 } else if ((Date.now() - storesDataObj.lastEditDateRequest) > (24 * 60 * 60 * 1000)) {
@@ -44,8 +45,6 @@ if (isEmptyObj(applicationDataObj)) {
 api.getClientApi();
 api.productApi();
 api.getClientOrdersApi();
-api.getClientBalanceLog();
-api.getClientBonusLog();
 api.getMessages();
 
 const toggleOrderMenuContent = new ToggleOrderMenuContent({ api });
@@ -60,7 +59,7 @@ const togglePageSeeAll = new TogglePageSeeAll({
   classOpen: ['page--opened'],
 });
 const togglePageStoresSearch = new TogglePageStoresSearch({
-  classOpen: ['page--opened'],
+  classOpen: ['modal-page-search--opened'],
 });
 const toggleFifthPageOrderSearch = new ToggleFifthPageOrderSearch({
   classOpen: ['fifth-page--opened'],
@@ -81,12 +80,6 @@ const togglePageOrderCategoryAll = new TogglePageOrderCategoryAll({
   classOpen: ['page--opened--bottom-bar'],
 });
 const togglePageOrderCategory = new TogglePageOrderCategory({
-  classOpen: ['page-order--opened--bottom-bar'],
-});
-const togglePageOrderCategory2 = new TogglePageOrderCategory({
-  classOpen: ['page-order--opened--bottom-bar'],
-});
-const togglePageOrderCategory3 = new TogglePageOrderCategory({
   classOpen: ['page-order--opened--bottom-bar'],
 });
 const togglePageBalanceHistoryScore = new TogglePageBalanceHistory({
@@ -170,8 +163,11 @@ const toggleFifthPage = new ToggleFifthPage({
 const toggleSixthPage = new ToggleSixthPage({
   classOpen: ['sixth-page--opened'],
 });
-const toggleModalPage = new ToggleModalPage({
+const toggleModalPage = new ToggleModalPageStores({
   classOpen: ['modal-page--opened'],
+});
+const toggleModalPageSearch = new ToggleModalPageSearch({
+  classOpen: ['modal-page-search--opened'],
 });
 const togglePageSignIn = new TogglePageSignIn({
   classOpen: ['page--opened'],
@@ -194,20 +190,6 @@ function closeOrderPage() {
   });
 }
 
-function closePages() {
-  togglePage.closePage();
-  togglePage.deletePage();
-  closeOrderPage();
-  toggleSubPage.closePage();
-  toggleSubPage.deletePage();
-  toggleThirdPage.closePage();
-  toggleThirdPage.deletePage();
-  toggleFourthPage.closePage();
-  toggleFourthPage.deletePage();
-  toggleSixthPage.closePage();
-  toggleSixthPage.closePage();
-}
-
 const mainPageFooter = new CreateFooter({
   selector: ['div'],
   style: ['footer'],
@@ -215,15 +197,13 @@ const mainPageFooter = new CreateFooter({
     {
       type: 'click',
       callback: () => {
-        if (!body.classList.contains('stop-action')) {
+        stopAction(() => {
           renderMainPage.closePage();
           renderMainPage.clearPage();
           renderMainPage.rendering();
           renderMainPage.openPage();
           closePages();
-          body.classList.add('stop-action');
-        }
-        setTimeout(() => body.classList.remove('stop-action'), 2000);
+        });
       },
     },
   ],
@@ -302,11 +282,12 @@ if (/\?refer=alfa.*/.test(window.location.search)) {
   });
   setTimeout(() => {
     buttonMain.dispatchEvent(new Event('click')); // рендерит страницу
-  }, 1000);
+  }, 2000);
 
   setTimeout(() => {
     document.querySelectorAll('.page-order').forEach((el) => {
       el.classList.remove('page-order--hide');
+      el.classList.remove('page-order--opened--bottom-bar');
     });
   }, 3000);
 }());

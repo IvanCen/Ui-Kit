@@ -30,20 +30,26 @@ function activeBanners(containerBanners, isSwipe) {
         offsetX = (offsetX + maxOffsetWidth) / 2; // уменьшапем скорость смещения в 2 раза
       }
     } else if (maxOffsetWidth / 2 > offsetX && action === 'end' && isSwipe) {
-      setTimeout(() => {
-        counterTopBar.textContent = Number(counterTopBar.textContent) - 1;
-        counterBottomBar.textContent = Number(counterBottomBar.textContent) - 1;
-        for (const [index, item] of Object.entries(basketArray)) {
-          if (item.id === Number(containerBanners.getAttribute('id'))) {
-            basketArray.splice(index, 1);
-            break;
-          }
+      (() => {
+        if (!containerBanners.classList.contains('stop-action')) {
+          setTimeout(() => {
+            for (const [index, item] of Object.entries(basketArray)) {
+              if (item.id === Number(containerBanners.getAttribute('id'))) {
+                basketArray.splice(index, 1);
+                break;
+              }
+            }
+            counterTopBar.textContent = basketArray.length;
+            counterBottomBar.textContent = basketArray.length;
+            localStorage.setItem('basket', JSON.stringify(basketArray));
+            counterBasket();
+            checkBasket();
+            containerBanners.remove();
+          }, 300);
+          containerBanners.classList.add('stop-action');
         }
-        localStorage.setItem('basket', JSON.stringify(basketArray));
-        counterBasket();
-        checkBasket();
-        containerBanners.remove();
-      }, 300);
+        setTimeout(() => containerBanners.classList.remove('stop-action'), 1000);
+      })();
     }
     containerBanners.style.transform = `translate3d(${offsetX}px,0,0)`;
   }
@@ -116,13 +122,10 @@ class CreateBannersOrder extends CreateItem {
           `;
     this.element.insertAdjacentHTML('beforeend', this.template);
     this.element.addEventListener('click', () => {
-      const page = this.element.closest('.page');
-      if (!page.classList.contains('stop-action')) {
+      stopAction(() => {
         toggleSubPageProductCard.rendering(productInfo);
         toggleSubPageProductCard.openPage();
-        page.classList.add('stop-action');
-      }
-      setTimeout(() => page.classList.remove('stop-action'), 1000);
+      });
     });
 
     const imgEl = this.element.querySelector('.banners__banner-filler');

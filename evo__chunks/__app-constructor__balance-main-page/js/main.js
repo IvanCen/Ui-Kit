@@ -49,11 +49,15 @@ class ToggleBalance extends ToggleMainPage {
             const option = {
               heart: false,
             };
-            togglePageBalanceHistoryScore.rendering(option);
+            stopAction(() => {
+              function renderScore() {
+                togglePageBalanceHistoryScore.rendering(option);
+                togglePageBalanceHistoryScore.openPage();
+              }
+              api.getClientBalanceLog(renderScore);
+            });
           },
         },
-        { type: 'click', callback: togglePageBalanceHistoryScore.openPage },
-
       ],
     });
     const textAreaBonus = new CreateTextAreaBalance({
@@ -70,8 +74,21 @@ class ToggleBalance extends ToggleMainPage {
         return '0';
       },
       eventButton: [
-        { type: 'click', callback: togglePageBalanceHistoryBonus.rendering },
-        { type: 'click', callback: togglePageBalanceHistoryBonus.openPage },
+        {
+          type: 'click',
+          callback: () => {
+            const option = {
+              heart: true,
+            };
+            stopAction(() => {
+              function renderBonus() {
+                togglePageBalanceHistoryBonus.rendering(option);
+                togglePageBalanceHistoryBonus.openPage();
+              }
+              api.getClientBonusLog(renderBonus);
+            });
+          },
+        },
       ],
     });
     const buttonJoinOrange = new CreateButton({
@@ -85,7 +102,14 @@ class ToggleBalance extends ToggleMainPage {
       ],
       text: ['Войти'],
       eventsOpen: [
-        { type: 'click', callback: togglePageSignIn.rendering },
+        {
+          type: 'click',
+          callback: () => {
+            stopAction(() => {
+              togglePageSignIn.rendering();
+            });
+          },
+        },
       ],
     });
     const buttonFill = new CreateButton({
@@ -99,7 +123,14 @@ class ToggleBalance extends ToggleMainPage {
       ],
       text: ['Пополнить'],
       eventsOpen: [
-        { type: 'click', callback: togglePageBalanceFill.rendering },
+        {
+          type: 'click',
+          callback: () => {
+            stopAction(() => {
+              togglePageBalanceFill.rendering();
+            });
+          },
+        },
       ],
     });
     this.mainPageContent.append(createTopBarIos());
