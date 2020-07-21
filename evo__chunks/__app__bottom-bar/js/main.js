@@ -38,15 +38,12 @@ class CreateBottomBarOrder extends CreateItem {
     this.basket.addEventListener('click', () => {
       if (!isEmptyObj(userStore)) {
         stopAction(() => {
-          toggleFourthPageReviewOrder.rendering();
+          toggleModalPageReviewOrder.rendering();
         });
       } else {
         stopAction(() => {
-          toggleStores.closePage();
-          toggleStores.clearPage();
           toggleStores.rendering(true);
           toggleStores.openPage();
-          closePages();
         });
       }
     });

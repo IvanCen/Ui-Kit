@@ -1,4 +1,4 @@
-class ToggleFourthPageReviewOrder extends ToggleFourthPage {
+class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
   constructor(parameters) {
     super(parameters);
     this.parameters = parameters;
@@ -14,24 +14,23 @@ class ToggleFourthPageReviewOrder extends ToggleFourthPage {
         '--theme--dark',
         `--size--medium${isIos ? '--ios' : ''}`,
       ],
-      eventBack: [
-        { type: 'click', callback: this.closePage },
-        { type: 'click', callback: this.deletePage },
+      eventClose: [
+        {
+          type: 'click',
+          callback: () => {
+            this.closePage();
+            this.deletePage();
+          },
+        },
       ],
       eventStores: [
-        { type: 'click', callback: toggleStores.closePage },
-        { type: 'click', callback: toggleStores.clearPage },
-        { type: 'click', callback: toggleStores.rendering },
-        { type: 'click', callback: toggleStores.openPage },
-        { type: 'click', callback: togglePage.closePage },
-        { type: 'click', callback: togglePage.deletePage },
-        { type: 'click', callback: closeOrderPage },
-        { type: 'click', callback: toggleSubPage.closePage },
-        { type: 'click', callback: toggleSubPage.deletePage },
-        { type: 'click', callback: toggleThirdPage.closePage },
-        { type: 'click', callback: toggleThirdPage.deletePage },
-        { type: 'click', callback: toggleFourthPage.closePage },
-        { type: 'click', callback: toggleFourthPage.deletePage },
+        {
+          type: 'click',
+          callback: () => {
+            toggleStores.rendering();
+            toggleStores.openPage();
+          },
+        },
       ],
     });
     const formPromoCode = new CreateFormPromoCode({
@@ -80,14 +79,14 @@ class ToggleFourthPageReviewOrder extends ToggleFourthPage {
     });
 
 
-    this.fourthPage.append(createTopBarIos());
-    this.fourthPage.append(reviewTopBar.create());
-    this.fourthPage.append(formPromoCode.create());
-    this.fourthPage.append(formComment.create());
-    this.fourthPage.append(formFriendPay.create());
-    this.fourthPage.append(reviewCardItemContainer.create());
+    this.modalPageOrderReview.append(createTopBarIos());
+    this.modalPageOrderReview.append(reviewTopBar.create());
+    this.modalPageOrderReview.append(formPromoCode.create());
+    this.modalPageOrderReview.append(formComment.create());
+    this.modalPageOrderReview.append(formFriendPay.create());
+    this.modalPageOrderReview.append(reviewCardItemContainer.create());
     // this.fourthPage.append(reviewCheckboxTextSlide.create());
-    this.fourthPage.append(reviewButton.create());
+    this.modalPageOrderReview.append(reviewButton.create());
 
     this.cardItemContainer = document.querySelector('.card-item__container--type--review');
     this.reviewButton = document.querySelector('.button--type--make-order');
@@ -107,7 +106,7 @@ class ToggleFourthPageReviewOrder extends ToggleFourthPage {
     function renderPayOrderPage(info) {
       console.log(info);
       if (info.success) {
-        toggleFifthPageReviewOrder.rendering(info);
+        toggleModalPagePaymentOrder.rendering(info);
       } else {
         toggleModal.rendering(info.errors[0]);
       }
@@ -134,11 +133,10 @@ class ToggleFourthPageReviewOrder extends ToggleFourthPage {
     }
     function checkStoreWorkTime(info) {
       if (info.success === false) {
-        toggleSubPage.closePage();
-        toggleThirdPage.closePage();
-        toggleFourthPage.closePage();
+        closePages();
+        toggleModalPageOrderPayment.closePage();
         returnPage = true;
-        togglePageSignIn.rendering();
+        toggleModalPageSignIn.rendering();
       }
       if (info.success === true) {
         for (const day in userStore.store) {

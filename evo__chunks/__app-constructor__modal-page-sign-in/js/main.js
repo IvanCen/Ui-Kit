@@ -1,4 +1,4 @@
-class TogglePageSignIn extends TogglePage {
+class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
   constructor(parameters) {
     super(parameters);
     this.parameters = parameters;
@@ -109,15 +109,13 @@ class TogglePageSignIn extends TogglePage {
         renderMainPage.clearPage();
         renderMainPage.rendering();
         renderMainPage.openPage();
-        closeOrderPage();
-        togglePage.closePage();
-        togglePage.deletePage();
+        closePages();
         console.log('hello3');
 
         textSuccess.classList.remove('form__text--close', 'form__text--hide');
         if (returnPage) {
           console.log(returnPage);
-          toggleFourthPageReviewOrder.rendering();
+          toggleModalPageReviewOrder.rendering();
         }
         (async () => {
           await rateLastOrder();
@@ -221,16 +219,10 @@ class TogglePageSignIn extends TogglePage {
         toggleModal.openPage();
 
         api.getMessages();
-        /* renderMainPage.closePage();
-        renderMainPage.clearPage();
-        renderMainPage.rendering();
-        renderMainPage.openPage();
-        closeOrderPage(); */
-        closeOrderPage();
-        togglePage.closePage();
-        togglePage.deletePage();
+
+        closePages()
         if (returnPage) {
-          toggleFourthPageReviewOrder.rendering();
+          toggleModalPageReviewOrder.rendering();
         }
         (async () => {
           await rateLastOrder();
@@ -274,15 +266,15 @@ class TogglePageSignIn extends TogglePage {
             this.closePage();
             this.deletePage();
             if (returnPage) {
-              toggleFourthPageReviewOrder.rendering();
+              toggleModalPageReviewOrder.rendering();
             }
           },
         },
       ],
     });
-    this.page.append(createTopBarIos());
-    this.page.append(signInTopBar.create());
-    this.page.append(formInputSignIn.create());
+    this.modalPageSignIn.append(createTopBarIos());
+    this.modalPageSignIn.append(signInTopBar.create());
+    this.modalPageSignIn.append(formInputSignIn.create());
     const inputArea = document.querySelector('.form__input-area--type--phone');
     inputArea.addEventListener('focusout', () => {
       this.registrationNumber(this);
@@ -303,7 +295,7 @@ class TogglePageSignIn extends TogglePage {
     );
 
     inputFlyLabel();
-    
+
     this.openPage();
   }
 }

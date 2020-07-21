@@ -20,7 +20,7 @@ class ToggleMain extends ToggleMainPage {
         type: 'click',
         callback: () => {
           stopAction(() => {
-            togglePageSignIn.rendering();
+            toggleModalPageSignIn.rendering();
           });
         },
       }],
@@ -77,7 +77,12 @@ class ToggleMain extends ToggleMainPage {
         '--type--fixed',
       ],
       text: ['Войти'],
-      events: [{ type: 'click', callback: togglePageSignIn.rendering }],
+      events: [{
+        type: 'click',
+        callback: () => {
+          toggleModalPageSignIn.rendering();
+        },
+      }],
     });
 
 

@@ -65,7 +65,7 @@ class ToggleOrder extends ToggleMainPage {
           type: 'click',
           callback: () => {
             stopAction(() => {
-              toggleFifthPageOrderSearch.rendering(false);
+              toggleModalPageOrderSearch.rendering(false);
             });
           },
         },
@@ -81,11 +81,8 @@ class ToggleOrder extends ToggleMainPage {
           type: 'click',
           callback: () => {
             stopAction(() => {
-              toggleStores.closePage();
-              toggleStores.clearPage();
               toggleStores.rendering();
               toggleStores.openPage();
-              closePages();
             });
           },
         },

@@ -41,7 +41,7 @@ class TogglePageAccount extends TogglePage {
                 this.closePage();
                 this.deletePage();
                 setTimeout(() => {
-                  togglePageSignIn.rendering();
+                  toggleModalPageSignIn.rendering();
                 }, 300);
               });
             },
@@ -111,7 +111,7 @@ class TogglePageAccount extends TogglePage {
                 this.closePage();
                 this.deletePage();
                 setTimeout(() => {
-                  togglePageSignIn.rendering();
+                  toggleModalPageSignIn.rendering();
                 }, 300);
               });
             },

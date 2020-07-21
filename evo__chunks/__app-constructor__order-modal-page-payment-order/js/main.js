@@ -1,5 +1,5 @@
 
-class ToggleFifthPageReviewOrder extends ToggleFifthPage {
+class ToggleModalPagePaymentOrder extends ToggleModalPageOrderPaymentRoot {
   constructor(parameters) {
     super(parameters);
     this.parameters = parameters;
@@ -12,20 +12,22 @@ class ToggleFifthPageReviewOrder extends ToggleFifthPage {
       selector: ['div'],
       style: ['top-bar'],
       modifier: ['--theme--dark', `--size--medium${isIos ? '--ios' : ''}`],
-      eventBack: [
-        { type: 'click', callback: this.closePage },
-        { type: 'click', callback: this.deletePage },
+      eventClose: [
+        {
+          type: 'click',
+          callback: () => {
+            this.closePage();
+            this.deletePage();
+          },
+        },
       ],
       eventStores: [
         {
           type: 'click',
           callback: () => {
             stopAction(() => {
-              toggleStores.closePage();
-              toggleStores.clearPage();
               toggleStores.rendering();
               toggleStores.openPage();
-              closePages();
             });
           },
         },
@@ -49,10 +51,10 @@ class ToggleFifthPageReviewOrder extends ToggleFifthPage {
       comment: [info.successData.orderComment],
     });
 
-    this.fifthPage.append(createTopBarIos());
-    this.fifthPage.append(topBar.create());
-    this.fifthPage.append(textArea.create());
-    
+    this.modalPageOrderPayment.append(createTopBarIos());
+    this.modalPageOrderPayment.append(topBar.create());
+    this.modalPageOrderPayment.append(textArea.create());
+
     this.openPage();
   }
 }

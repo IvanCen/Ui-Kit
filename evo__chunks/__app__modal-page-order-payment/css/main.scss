@@ -1,11 +1,11 @@
 @import "../../__app__head-style-and-script/css/main.scss";
 
-.modal-page-order-review {
+.modal-page-order-payment {
   position: fixed;
   top: 100%;
   width: 100%;
   left: 0;
-  z-index: 110;
+  z-index: 120;
   flex-grow: 1;
   transition: all .3s ease-out;
   background-color: $white;

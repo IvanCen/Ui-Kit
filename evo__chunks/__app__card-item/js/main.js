@@ -223,6 +223,7 @@ class CreateCardItemFavAndHisOrder extends CreateItem {
     this.iconsLike = this.element.querySelector('.card-item__icon--type--like');
     this.img = this.element.querySelector('.card-item__image');
     this.iconsAdd = this.element.querySelector('.card-item__icon--type--add');
+    this.element.setAttribute('data-id', productInfo.id);
     const el = this.element;
     console.log(productInfo);
     /* this.element.addEventListener('click', (e) => {
@@ -237,9 +238,9 @@ class CreateCardItemFavAndHisOrder extends CreateItem {
       const classArr = ['card-item__image', 'card-item__title'];
       classArr.forEach((classEl) => {
         if (e.target.classList.contains(classEl)) {
-          toggleFifthPage.closePage();
+          toggleModalPageSearch.closePage();
+          toggleModalPageSearch.deletePage();
           toggleSubPageProductCard.rendering(dataProductApi.successData.items[productInfo.id]);
-          toggleFifthPage.deletePage();
         }
       });
     });
@@ -272,14 +273,32 @@ class CreateCardItemFavAndHisOrder extends CreateItem {
       });
     } else {
       this.iconsLike.classList.remove('card-item__icon--liked');
+      itemsArray.forEach((item) => {
+        if (item.id === productInfo.id) {
+          this.iconsLike.classList.add('card-item__icon--liked');
+        }
+      });
       this.iconsLike.addEventListener('click', function () {
-        this.classList.toggle('card-item__icon--liked');
-        itemsArray.forEach((item, index) => {
-          if (item.id === dataProductApi.successData.items[productInfo.id].id) {
-            itemsArray.splice(index, 1);
+        const allIconsLikes = document.querySelectorAll('.card-item__icon--type--like');
+        if (this.classList.contains('card-item__icon--liked')) {
+          this.classList.remove('card-item__icon--liked');
+          itemsArray.forEach((item, index) => {
+            if (item.id === dataProductApi.successData.items[productInfo.id].id) {
+              itemsArray.splice(index, 1);
+            }
+          });
+          localStorage.setItem('items', JSON.stringify(itemsArray));
+        } else {
+          this.classList.add('card-item__icon--liked');
+          [...allIconsLikes].forEach((like) => {
+            if (like.closest('.card-item').getAttribute('data-id') === String(productInfo.id)) {
+              like.classList.add('card-item__icon--liked');
+            }
+          });
+          if (!doubleFav(productInfo)) {
+            itemsArray.push({ id: productInfo.id });
           }
-        });
-        localStorage.setItem('items', JSON.stringify(itemsArray));
+        }
       });
     }
     if (!canUseWebP()) {
@@ -520,7 +539,7 @@ class CreateCardItemHistory extends CreateItem {
       this.iconsLike = this.element.querySelector('.card-item__icon--type--like');
       this.buttonLike = this.element.querySelector('.card-item__button--type--like');
 
-      this.element.id = item.itemId;
+      this.element.setAttribute('data-id', item.itemId);
 
       const imgEl = this.element.querySelector('.card-item__image');
       if (!canUseWebP()) {
@@ -613,10 +632,10 @@ class CreateCardItemHistory extends CreateItem {
       this.iconsLike.addEventListener('click', function () {
         console.log(item, this, productInfo);
         if (this.classList.contains('card-item__icon--liked')) {
-          const allIconsLikes = document.querySelectorAll('.card-item__icon--liked');
+          const allIconsLiked = document.querySelectorAll('.card-item__icon--liked');
           this.classList.remove('card-item__icon--liked');
-          [...allIconsLikes].forEach((like) => {
-            if (like.closest('.card-item').getAttribute('id') === String(item.itemId)) {
+          [...allIconsLiked].forEach((like) => {
+            if (like.closest('.card-item').getAttribute('data-id') === String(item.itemId)) {
               like.classList.remove('card-item__icon--liked');
             }
           });
@@ -630,7 +649,7 @@ class CreateCardItemHistory extends CreateItem {
           this.classList.add('card-item__icon--liked');
           const allIconsLikes = document.querySelectorAll('.card-item__icon--type--like');
           [...allIconsLikes].forEach((like) => {
-            if (like.closest('.card-item').getAttribute('id') === String(item.itemId)) {
+            if (like.closest('.card-item').getAttribute('data-id') === String(item.itemId)) {
               like.classList.add('card-item__icon--liked');
             }
           });

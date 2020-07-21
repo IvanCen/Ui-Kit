@@ -1,4 +1,4 @@
-class ToggleFifthPageOrderSearch extends ToggleFifthPage {
+class ToggleModalPageOrderSearch extends ToggleModalPageSearch {
   constructor(parameters) {
     super(parameters);
     this.parameters = parameters;
@@ -139,22 +139,22 @@ class ToggleFifthPageOrderSearch extends ToggleFifthPage {
     });
     const cardItemContainerSearch = new CreateCardItemContainer();
 
-    this.fifthPage.append(createTopBarIos());
-    this.fifthPage.append(topBar.create());
-    this.fifthPage.append(cardItemContainerSearch.create('search'));
+    this.modalPageSearch.append(createTopBarIos());
+    this.modalPageSearch.append(topBar.create());
+    this.modalPageSearch.append(cardItemContainerSearch.create('search'));
     const inputSearch = document.querySelector('.top-bar-search__input-area');
 
     inputSearch.addEventListener('focus', () => {
-      this.fifthPage.classList.add('fifth-page--focus-input');
+      this.modalPageSearch.classList.add('modal-page-search--focus-input');
     });
 
     inputSearch.addEventListener('blur', () => {
-      this.fifthPage.classList.remove('fifth-page--focus-input');
+      this.modalPageSearch.classList.remove('modal-page-search--focus-input');
     });
 
     inputSearch.addEventListener('keyup', (event) => {
       if (event.code === 'Enter' || event.code === 'Go' || event.code === 13) {
-        this.fifthPage.classList.remove('fifth-page--focus-input');
+        this.fifthPage.classList.remove('modal-page-search--focus-input');
         inputSearch.blur();
       }
       if (inputSearch.value.length === 0) {
@@ -162,13 +162,13 @@ class ToggleFifthPageOrderSearch extends ToggleFifthPage {
         const arrHtml = Array.from(cardItemContainerSearchEl.children);
         arrHtml.splice(0, arrHtml.length).forEach((item) => item.remove());
       } else if (isCategory) {
-        toggleFifthPageOrderSearch.searchItemCategory(categoryId);
+        toggleModalPageOrderSearch.searchItemCategory(categoryId);
       } else {
         console.log(isCategory);
-        toggleFifthPageOrderSearch.searchItem();
+        toggleModalPageOrderSearch.searchItem();
       }
     });
-    this.fifthPage.addEventListener('scroll', () => {
+    this.modalPageSearch.addEventListener('scroll', () => {
       inputSearch.blur();
     });
 

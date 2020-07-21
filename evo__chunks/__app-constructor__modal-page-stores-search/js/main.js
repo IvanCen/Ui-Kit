@@ -1,4 +1,4 @@
-class TogglePageStoresSearch extends ToggleModalPageSearch {
+class ToggleModalPageStoresSearch extends ToggleModalPageSearch {
   constructor(parameters) {
     super(parameters);
     this.parameters = parameters;
@@ -108,8 +108,8 @@ class TogglePageStoresSearch extends ToggleModalPageSearch {
         const arrHtml = Array.from(mapItemsContainer.children);
         arrHtml.splice(0, arrHtml.length).forEach((item) => item.remove());
       } else {
-        togglePageStoresSearch.searchStores();
-        togglePageStoresSearch.chooseShop(this.modalPageSearch);
+        toggleModalPageStoresSearch.searchStores();
+        toggleModalPageStoresSearch.chooseShop(this.modalPageSearch);
       }
     });
 
@@ -118,3 +118,5 @@ class TogglePageStoresSearch extends ToggleModalPageSearch {
     this.openPage();
   }
 }
+
+

@@ -7,7 +7,100 @@ let orderInfo;
 let orderPayInfo;
 let orderComment;
 let userMessages;
-const itemsArray = JSON.parse(localStorage.getItem('items')) || [];
+
+let itemsArrayLet;
+let basketArrayLet;
+let userDataObjLet;
+let applicationDataObjLet;
+let storesDataObjLet;
+let userInfoObjLet;
+let userLastOrdersObjLet;
+let userStoreLet;
+let userBalanceLogLet;
+let userBonusLogLet;
+let dataProductApiLet;
+let userFavoriteStoreLet;
+let outOfStockLet;
+
+try {
+  itemsArrayLet = JSON.parse(localStorage.getItem('items')) || [];
+} catch (e) {
+  api.sendDebugMessage(e);
+}
+try {
+  basketArrayLet = JSON.parse(localStorage.getItem('basket')) || [];
+} catch (e) {
+  api.sendDebugMessage(e);
+}
+try {
+  userDataObjLet = JSON.parse(localStorage.getItem('userData')) || {};
+} catch (e) {
+  api.sendDebugMessage(e);
+}
+try {
+  applicationDataObjLet = JSON.parse(localStorage.getItem('applicationData')) || {};
+} catch (e) {
+  api.sendDebugMessage(e);
+}
+try {
+  storesDataObjLet = JSON.parse(localStorage.getItem('storesData')) || {};
+} catch (e) {
+  api.sendDebugMessage(e);
+}
+try {
+  userInfoObjLet = JSON.parse(localStorage.getItem('userInfo')) || {};
+} catch (e) {
+  api.sendDebugMessage(e);
+}
+try {
+  userLastOrdersObjLet = JSON.parse(localStorage.getItem('userLastOrders')) || {};
+} catch (e) {
+  api.sendDebugMessage(e);
+}
+try {
+  userStoreLet = JSON.parse(localStorage.getItem('userStore')) || {};
+} catch (e) {
+  api.sendDebugMessage(e);
+}
+try {
+  userBalanceLogLet = JSON.parse(localStorage.getItem('userBalanceLog')) || {};
+} catch (e) {
+  api.sendDebugMessage(e);
+}
+try {
+  userBonusLogLet = JSON.parse(localStorage.getItem('userBonusLog')) || {};
+} catch (e) {
+  api.sendDebugMessage(e);
+}
+try {
+  dataProductApiLet = JSON.parse(localStorage.getItem('productData')) || {};
+} catch (e) {
+  api.sendDebugMessage(e);
+}
+try {
+  userFavoriteStoreLet = JSON.parse(localStorage.getItem('userFavoriteStore')) || {};
+} catch (e) {
+  api.sendDebugMessage(e);
+}
+try {
+  outOfStockLet = JSON.parse(localStorage.getItem('outOfStock')) || {};
+} catch (e) {
+  api.sendDebugMessage(e);
+}
+const itemsArray = itemsArrayLet;
+const basketArray = basketArrayLet;
+const userDataObj = userDataObjLet;
+const applicationDataObj = applicationDataObjLet;
+const storesDataObj = storesDataObjLet;
+const userInfoObj = userInfoObjLet;
+const userLastOrdersObj = userLastOrdersObjLet;
+const userStore = userStoreLet;
+const userBalanceLog = userBalanceLogLet;
+const userBonusLog = userBonusLogLet;
+const dataProductApi = dataProductApiLet;
+const userFavoriteStore = userFavoriteStoreLet;
+const outOfStock = outOfStockLet;
+/*const itemsArray = JSON.parse(localStorage.getItem('items')) || [];
 const basketArray = JSON.parse(localStorage.getItem('basket')) || [];
 const userDataObj = JSON.parse(localStorage.getItem('userData')) || {};
 const applicationDataObj = JSON.parse(localStorage.getItem('applicationData')) || {};
@@ -19,14 +112,14 @@ const userBalanceLog = JSON.parse(localStorage.getItem('userBalanceLog')) || {};
 const userBonusLog = JSON.parse(localStorage.getItem('userBonusLog')) || {};
 const dataProductApi = JSON.parse(localStorage.getItem('productData')) || {};
 const userFavoriteStore = JSON.parse(localStorage.getItem('userFavoriteStore')) || {};
-const outOfStock = JSON.parse(localStorage.getItem('outOfStock')) || {};
-
+const outOfStock = JSON.parse(localStorage.getItem('outOfStock')) || {};*/
 
 /* if (isEmptyObj(storesDataObj)) {
-  api.storesApi();
-} else if ((Date.now() - storesDataObj.lastEditDateRequest) > (24 * 60 * 60 * 1000)) {
-  api.storesApi();
-} */
+    api.storesApi();
+  } else if ((Date.now() - storesDataObj.lastEditDateRequest) > (24 * 60 * 60 * 1000)) {
+    api.storesApi();
+  } */
+
 api.storesApi(); // пока каждый раз вызываем при старте
 
 if (isEmptyObj(applicationDataObj)) {
@@ -58,11 +151,11 @@ const toggleInboxTabLastOffersContent = new ToggleInboxTabLastOffersContent();
 const togglePageSeeAll = new TogglePageSeeAll({
   classOpen: ['page--opened'],
 });
-const togglePageStoresSearch = new TogglePageStoresSearch({
+const toggleModalPageStoresSearch = new ToggleModalPageStoresSearch({
   classOpen: ['modal-page-search--opened'],
 });
-const toggleFifthPageOrderSearch = new ToggleFifthPageOrderSearch({
-  classOpen: ['fifth-page--opened'],
+const toggleModalPageOrderSearch = new ToggleModalPageOrderSearch({
+  classOpen: ['modal-page-search--opened'],
 });
 const toggleSubPageStoresDetails = new ToggleSubPageStoresDetails({
   classOpen: ['subpage--opened'],
@@ -121,14 +214,11 @@ const toggleThirdPageEditUser = new ToggleThirdPageEditUser({
 const toggleThirdPageAddinsCard = new ToggleThirdPageAddinsCard({
   classOpen: ['third-page--opened--bottom-bar'],
 });
-const toggleFourthPageReviewOrder = new ToggleFourthPageReviewOrder({
-  classOpen: ['fourth-page--opened'],
+const toggleModalPageReviewOrder = new ToggleModalPageReviewOrder({
+  classOpen: ['modal-page-order-review--opened'],
 });
-const toggleFifthPageReviewOrder = new ToggleFifthPageReviewOrder({
-  classOpen: ['fifth-page--opened'],
-});
-const toggleSixthPageReviewOrder = new ToggleSixthPageReviewOrder({
-  classOpen: ['sixth-page--opened'],
+const toggleModalPagePaymentOrder = new ToggleModalPagePaymentOrder({
+  classOpen: ['modal-page-order-payment--opened'],
 });
 
 
@@ -169,8 +259,14 @@ const toggleModalPage = new ToggleModalPageStores({
 const toggleModalPageSearch = new ToggleModalPageSearch({
   classOpen: ['modal-page-search--opened'],
 });
-const togglePageSignIn = new TogglePageSignIn({
-  classOpen: ['page--opened'],
+const toggleModalPageOrderReview = new ToggleModalPageOrderReviewRoot({
+  classOpen: ['modal-page-order-review--opened'],
+});
+const toggleModalPageOrderPayment = new ToggleModalPageOrderPaymentRoot({
+  classOpen: ['modal-page-order-payment--opened'],
+});
+const toggleModalPageSignIn = new ToggleModalPageSignIn({
+  classOpen: ['modal-page-sign-in--opened'],
   api,
 });
 const togglePageBalanceFill = new TogglePageBalanceFill({
@@ -250,15 +346,15 @@ const mainPageFooter = new CreateFooter({
     {
       type: 'click',
       callback: () => {
-        toggleStores.closePage();
-        toggleStores.clearPage();
-        toggleStores.rendering();
-        toggleStores.openPage();
-        closePages();
+        stopAction(() => {
+          toggleStores.rendering();
+          toggleStores.openPage();
+        });
       },
     },
   ],
 });
+
 
 mainPage.append(mainPageFooter.create());
 switchActiveFooter();
@@ -291,3 +387,14 @@ if (/\?refer=alfa.*/.test(window.location.search)) {
     });
   }, 3000);
 }());
+
+
+setTimeout(() => {
+  const loader = document.querySelector('.loader');
+  // const mainPage = document.querySelector('.main-page');
+  mainPage.classList.remove('main-page--loaded');
+  loader.classList.add('loader--hide');
+}, 5000);
+
+
+

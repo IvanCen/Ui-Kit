@@ -448,9 +448,8 @@ class CreateTopBarReviewOrder extends CreateItem {
     this.template = `
         <div class="top-bar__content-container">
           <div class="top-bar__header">
-            <button class="button top-bar__button top-bar__button--theme--dark top-bar__button--type--back">
-              <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-back.svg]]" alt="Кнопка назад"
-                   class="top-bar__icon top-bar__icon-back">
+            <button class="button top-bar__button top-bar__button--theme--dark top-bar__button--type--close">
+              <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-close-white.svg]]" alt="Кнопка закрытия" class="top-bar__icon top-bar__icon--type--close">
             </button>
           </div>
           <h1 class="top-bar__title">Товаров в корзине (<span class="top-bar__all-counter-order"></span>)</h1>
@@ -482,10 +481,10 @@ class CreateTopBarReviewOrder extends CreateItem {
       }
     }
 
-    this.iconBack = this.element.querySelector('.top-bar__button--type--back');
-    if (typeof this.parameters.eventBack === 'object') {
-      for (const event of this.parameters.eventBack) {
-        this.iconBack.addEventListener(event.type, event.callback);
+    this.iconClose = this.element.querySelector('.top-bar__button--type--close');
+    if (typeof this.parameters.eventClose === 'object') {
+      for (const event of this.parameters.eventClose) {
+        this.iconClose.addEventListener(event.type, event.callback);
       }
     }
 

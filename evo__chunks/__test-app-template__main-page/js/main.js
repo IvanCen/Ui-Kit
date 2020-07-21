@@ -59,10 +59,10 @@ const toggleInboxTabLastOffersContent = new ToggleInboxTabLastOffersContent();
 const togglePageSeeAll = new TogglePageSeeAll({
   classOpen: ['page--opened'],
 });
-const togglePageStoresSearch = new TogglePageStoresSearch({
+const togglePageStoresSearch = new ToggleModalPageStoresSearch({
   classOpen: ['page--opened'],
 });
-const toggleFifthPageOrderSearch = new ToggleFifthPageOrderSearch({
+const toggleFifthPageOrderSearch = new ToggleModalPageOrderSearch({
   classOpen: ['fifth-page--opened'],
 });
 const toggleSubPageStoresDetails = new ToggleSubPageStoresDetails({
@@ -128,10 +128,10 @@ const toggleThirdPageEditUser = new ToggleThirdPageEditUser({
 const toggleThirdPageAddinsCard = new ToggleThirdPageAddinsCard({
   classOpen: ['third-page--opened--bottom-bar'],
 });
-const toggleFourthPageReviewOrder = new ToggleFourthPageReviewOrder({
+const toggleFourthPageReviewOrder = new ToggleModalPageReviewOrder({
   classOpen: ['fourth-page--opened'],
 });
-const toggleFifthPageReviewOrder = new ToggleFifthPageReviewOrder({
+const toggleFifthPageReviewOrder = new ToggleModalPageReviewOrder({
   classOpen: ['fifth-page--opened'],
 });
 const toggleSixthPageReviewOrder = new ToggleSixthPageReviewOrder({
@@ -173,7 +173,7 @@ const toggleSixthPage = new ToggleSixthPage({
 const toggleModalPage = new ToggleModalPageStores({
   classOpen: ['modal-page--opened'],
 });
-const togglePageSignIn = new TogglePageSignIn({
+const togglePageSignIn = new ToggleModalPageSignIn({
   classOpen: ['page--opened'],
   api,
 });

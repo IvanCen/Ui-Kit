@@ -46,7 +46,7 @@ class ToggleStores extends ToggleModalPageStores {
           type: 'click',
           callback: () => {
             stopAction(() => {
-              togglePageStoresSearch.rendering();
+              toggleModalPageStoresSearch.rendering();
             });
           },
         },

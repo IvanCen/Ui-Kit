@@ -483,7 +483,7 @@ class CreateFormPromoCode extends CreateItem {
         toggleSubPage.closePage();
         toggleThirdPage.closePage();
         toggleFourthPage.closePage();
-        togglePageSignIn.rendering();
+        toggleModalPageSignIn.rendering();
       }
     });
 

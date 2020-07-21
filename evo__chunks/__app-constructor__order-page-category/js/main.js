@@ -35,7 +35,7 @@ class TogglePageOrderCategory extends TogglePageOrderCard {
           type: 'click',
           callback: () => {
             stopAction(() => {
-              toggleFifthPageOrderSearch.rendering(true, categoryId);
+              toggleModalPageOrderSearch.rendering(true, categoryId);
             });
           },
         },
@@ -98,7 +98,7 @@ class TogglePageOrderCategoryAll extends TogglePage {
           type: 'click',
           callback: () => {
             stopAction(() => {
-              toggleFifthPageOrderSearch.rendering(true, categoryId);
+              toggleModalPageOrderSearch.rendering(true, categoryId);
             });
           },
         },

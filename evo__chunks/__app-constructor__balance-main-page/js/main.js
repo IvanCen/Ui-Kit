@@ -106,7 +106,7 @@ class ToggleBalance extends ToggleMainPage {
           type: 'click',
           callback: () => {
             stopAction(() => {
-              togglePageSignIn.rendering();
+              toggleModalPageSignIn.rendering();
             });
           },
         },

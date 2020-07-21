@@ -5,3 +5,5 @@
     loader.textContent = frases[Math.floor(Math.random() * frases.length)];
   }, 2000);
 }());
+
+
