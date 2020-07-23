@@ -13,8 +13,14 @@ class ToggleSubPageProductCard extends ToggleSubPage {
       style: ['main-card'],
       title: [productInfo.name],
       eventCloseIcon: [
-        { type: 'click', callback: this.closePage },
-        { type: 'click', callback: this.deletePage },
+        {
+          type: 'click',
+          callback: () => {
+            this.closePage();
+            this.deletePage();
+            window.history.back();
+          },
+        },
       ],
     });
     const textAreaProductCard = new CreateTextAreaAddinsProductCard({
@@ -39,7 +45,6 @@ class ToggleSubPageProductCard extends ToggleSubPage {
     const buttonMore = nutritionContainer.querySelector('.text-area__button--type--more');
     const mainCard = this.subPage.querySelector('.main-card');
 
-    console.log(nutritionContainer.offsetHeight);
     if (nutritionContainer.offsetHeight < 110) {
       buttonMore.remove();
       nutritionContainer.classList.remove('text-area__content-container--type--more');
@@ -54,7 +59,7 @@ class ToggleSubPageProductCard extends ToggleSubPage {
     }
     if (buttonReset) {
       buttonReset.addEventListener('click', () => {
-        userDataObj[productInfo.id] = {};
+        delete userDataObj[productInfo.id];
         localStorage.setItem('userData', userDataObj);
         toggleSubPage.clearPage();
         this.rendering(productInfo);

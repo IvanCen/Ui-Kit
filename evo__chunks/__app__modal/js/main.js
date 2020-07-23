@@ -94,15 +94,6 @@ function createModalEmail() {
     </div>`;
 
   element.innerHTML = template;
-  /*const button = element.querySelector('.modal__button-accept');
-  button.addEventListener('click', () => {
-    setTimeout(() => {
-      togglePage.closePage();
-      togglePage.deletePage();
-      renderMainPage.clearPage();
-      renderMainPage.rendering();
-      renderMainPage.openPage();
-    }, 2500);
-  });*/
+
   return element;
 }

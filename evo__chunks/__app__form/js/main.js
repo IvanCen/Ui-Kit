@@ -155,24 +155,26 @@ function validation() {
   function checkInput(input) {
     const inputUnderlined = input.parentNode;
     const iconError = inputUnderlined.querySelector('.form__input-icon-error');
-    input.CustomValidation.invalidities = [];
-    input.CustomValidation.checkValidity(input);
-    if (input.CustomValidation.invalidities.length === 0 && input.value !== '') {
-      input.setCustomValidity('');
-      input.classList.remove('form__input-area--invalid');
-      input.classList.add('form__input-area--valid');
-      formButtonSubmit.disabled = false;
-      if (iconError) {
-        iconError.classList.remove('form__input-icon-error--visible');
-      }
-    } else {
-      const message = input.CustomValidation.getInvalidities();
-      input.setCustomValidity(message);
-      input.classList.add('form__input-area--invalid');
-      input.classList.remove('form__input-area--valid');
-      formButtonSubmit.disabled = true;
-      if (iconError) {
-        iconError.classList.add('form__input-icon-error--visible');
+    if (input.CustomValidation) {
+      input.CustomValidation.invalidities = [];
+      input.CustomValidation.checkValidity(input);
+      if (input.CustomValidation.invalidities.length === 0 && input.value !== '') {
+        input.setCustomValidity('');
+        input.classList.remove('form__input-area--invalid');
+        input.classList.add('form__input-area--valid');
+        formButtonSubmit.disabled = false;
+        if (iconError) {
+          iconError.classList.remove('form__input-icon-error--visible');
+        }
+      } else {
+        const message = input.CustomValidation.getInvalidities();
+        input.setCustomValidity(message);
+        input.classList.add('form__input-area--invalid');
+        input.classList.remove('form__input-area--valid');
+        formButtonSubmit.disabled = true;
+        if (iconError) {
+          iconError.classList.add('form__input-icon-error--visible');
+        }
       }
     }
   }
@@ -233,8 +235,18 @@ class CreateFormInputSignIn extends CreateItem {
         </div>
         <p class="form__text form__text--error-phone form__text--hide"></p>
         <div class="form__call-container">
-           <a href="" class="form__link form__link--type--call">Позвонить</a>
-           <p class="form__text">Авторизация осуществляется по бесплатному звонку, как только соединение будет установлено - мы вас авторизуем.</p>
+          <div class="form__title">В течении нескольких секунд Вам поступит звонок</div>
+          <div class="form__group form__group--m-top form__group--d-ib">
+              <div class="form__input-wrapper  form__input-wrapper--last-number-inputs">
+                  <p class="form__text form__text--indentation--small">Введите последние 4 цифры входящего номера в качестве кода для входа</p>
+                  <input type="tel" inputmode="numeric" maxlength="1" class="last-number-input" name="first-phone"  autocomplete="qwe">
+                  <input type="tel" inputmode="numeric" maxlength="1" class="last-number-input" name="second-phone"  autocomplete="qwe">
+                  <input type="tel" inputmode="numeric" maxlength="1" class="last-number-input" name="third-phone"  autocomplete="off">
+                  <input type="tel" inputmode="numeric" maxlength="1" class="last-number-input" name="fourth-phone"  autocomplete="qwe">
+              </div>
+              <p class="form__text form__text--indentation--small">Вы ввели номер <span class="number-for-registration"></span>, если вы ошиблись при вводе, то <a href="" type="reset">исправьте номер</a></p>
+          </div>
+          <button class="form__link form__link--type--call">Подтвердить</button>
         </div>
         <p class="form__text form__text--success form__text--hide">Вы авторизованны!</p>
         <p class="form__text form__text--error form__text--hide"></p>

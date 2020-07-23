@@ -14,7 +14,7 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
     this.inputArea = document.querySelector('.form__input-area--type--phone');
     this.inputArea.classList.add('form__input--focused');
     this.phoneNumber = this.inputArea.value;
-    this.parameters.api.signInApi(this.phoneNumber, this.regCall);
+    this.parameters.api.signInCodeApi(this.phoneNumber, this.regCall);
   }
 
   sendData(setName, value) {
@@ -36,19 +36,24 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
     const callContainer = document.querySelector('.form__call-container');
     const textError = document.querySelector('.form__text--error');
     const textErrorPhone = document.querySelector('.form__text--error-phone');
-    function refreshNumber(infoNumber) {
+    const numberForRegistrationEl = document.querySelector('.number-for-registration');
+    const numbersElements = document.querySelectorAll('.last-number-input');
+    console.log(phoneNumber);
+    /* function refreshNumber(infoNumber) {
       callLink.href = `tel:${infoNumber.successData.phone}`;
-    }
+    } */
+    console.log(info);
     if (info.success === true) {
-      const { code, phone } = info.successData;
+      const { phone } = info.successData;
 
       textErrorPhone.classList.add('form__text--close', 'form__text--hide');
       textError.classList.add('form__text--hide');
       callContainer.classList.add('form__call-container--open');
       input.classList.add('form__input--close');
       accessButton.classList.add('form__button--hide');
-      callLink.href = `tel:${phone}`;
-      if (phoneNumber === '+70000000000' || phoneNumber === '+7(000)000-00-00') {
+      numberForRegistrationEl.textContent = phoneNumber;
+
+      /* if (phoneNumber === '+70000000000' || phoneNumber === '+7(000)000-00-00') {
         callLink.style.visibility = 'hidden';
 
         const timerRegSuccess = setInterval(() => {
@@ -58,15 +63,83 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
       const refreshLink = setInterval(() => {
         this.parameters.api.signInApi(phone, refreshNumber);
       }, 240000);
-      // запускается сразу после отправки номера
-      const timerRegSuccess = setInterval(() => {
-        this.parameters.api.authorizeApi(this.regSuccess, code, phoneNumber, timerRegSuccess, refreshLink);
-      }, 1000);
-      /* callLink.addEventListener('click', () => {
+
+       callLink.addEventListener('click', () => {
         const timerRegSuccess = setInterval(() => {
           this.parameters.api.authorizeApi(this.regSuccess, code, phoneNumber, timerRegSuccess, refreshLink);
         }, 1000);
       }); */
+      callLink.addEventListener('click', () => {
+        const codeArr = [...numbersElements].map((number) => number.value);
+        const code = codeArr.join('');
+        this.parameters.api.authorizeCallInApi(this.regSuccess, code, phoneNumber);
+      });
+
+      function expandBlock(input) {
+        if (input.style.maxHeight === 0 || input.style.maxHeight === '0px') {
+          input.style.maxHeight = `${input.scrollHeight}px`;
+          setTimeout(() => {
+            input.style.maxHeight = '100%';
+          }, 250);
+        } else if (input.style.maxHeight === '100%') {
+          setTimeout(() => {
+            if (input.closest('.form__group').classList.contains('form__group--isInvalid')) return;
+            if (input.classList.contains('form__tips--info')) return;
+            input.style.maxHeight = `${input.scrollHeight}px`;
+            input.style.maxHeight = 0;
+          }, 250);
+        }
+      }
+
+      function checkCodeIsEntered() {
+        let emptyInputs = 0;
+        document.querySelectorAll('.form__input-wrapper--last-number-inputs input').forEach((el) => {
+          if (el.value !== '') emptyInputs++;
+        });
+        return emptyInputs === 4;
+      }
+
+      function onlyNumbers(e) {
+        if (!/\d/.test(e.key)) e.preventDefault();
+      }
+
+      document.querySelectorAll('.form__input-wrapper--last-number-inputs input').forEach((el, index) => {
+        el.addEventListener('focus', (e) => {
+          e.currentTarget.closest('.form__group').classList.add('form__group--focused');
+          const tips = e.currentTarget.closest('.form__group').querySelectorAll('.form__tips');
+          if (tips.length) {
+            tips.forEach((el) => { expandBlock(el); });
+          }
+        });
+        el.addEventListener('blur', (e) => {
+          const tips = e.currentTarget.closest('.form__group').querySelectorAll('.form__tips');
+          if (tips.length) {
+            tips.forEach((el) => { expandBlock(el); });
+          }
+          e.currentTarget.closest('.form__group').classList.remove('form__group--focused');
+        });
+        el.addEventListener('beforeinput', (e) => {
+          el.value = '';
+        });
+        el.addEventListener('keyup', function (e) {
+          const re = /\d/;
+          if (this.value.match(re)) {
+            try { el.nextElementSibling.focus(); } catch (e) {
+              console.log(e);
+            }
+          }
+          if (el.getAttribute('name') === 'fourth-phone' && checkCodeIsEntered()) {
+            callLink.click();
+          }
+        });
+        el.addEventListener('keypress', onlyNumbers);
+      });
+
+
+      // запускается сразу после отправки номера
+      /* const timerRegSuccess = setInterval(() => {
+        this.parameters.api.authorizeApi(this.regSuccess, code, phoneNumber, timerRegSuccess, refreshLink);
+      }, 1000); */
     } else {
       textErrorPhone.innerHTML = info.errors[0];
       textErrorPhone.classList.remove('form__text--close', 'form__text--hide');
@@ -74,12 +147,17 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
   }
 
   regSuccess(infoSuccess) {
-    if (infoSuccess.success === true) {
-      const callContainer = document.querySelector('.form__call-container');
+    const textErrorPhone = document.querySelector('.form__text--error-phone');
+    const callContainer = document.querySelector('.form__call-container');
 
+    if (infoSuccess.success === true) {
+      textErrorPhone.classList.add('form__text--close', 'form__text--hide');
       callContainer.remove();
 
       this.parameters.api.getClientApi(this.askUserInfo);
+    } else {
+      textErrorPhone.innerHTML = infoSuccess.errors[0];
+      textErrorPhone.classList.remove('form__text--close', 'form__text--hide');
     }
   }
 
@@ -102,21 +180,20 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
       } else if (email === '') {
         this.askUserEmail();
       } else {
-        console.log('hello1');
         api.getMessages();
-        console.log('hello2');
-        renderMainPage.closePage();
-        renderMainPage.clearPage();
-        renderMainPage.rendering();
-        renderMainPage.openPage();
-        closePages();
-        console.log('hello3');
+        if (returnPageObj.returnMainPageAfterSignIn) {
+          renderMainPage.closePage();
+          renderMainPage.clearPage();
+          renderMainPage.rendering();
+          renderMainPage.openPage();
+          toggleModalPageSignIn.closePage();
+          toggleModalPageSignIn.deletePage();
+        } else {
+          toggleModalPageSignIn.closePage();
+          toggleModalPageSignIn.deletePage();
+        }
 
         textSuccess.classList.remove('form__text--close', 'form__text--hide');
-        if (returnPage) {
-          console.log(returnPage);
-          toggleModalPageReviewOrder.rendering();
-        }
         (async () => {
           await rateLastOrder();
         })();
@@ -217,13 +294,21 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
         textError.classList.add('form__text--close', 'form__text--hide');
         toggleModal.renderingEmail();
         toggleModal.openPage();
-
         api.getMessages();
-
-        closePages()
-        if (returnPage) {
-          toggleModalPageReviewOrder.rendering();
+        api.getClientApi();
+        if (returnPageObj.returnMainPageAfterSignIn) {
+          renderMainPage.closePage();
+          renderMainPage.clearPage();
+          renderMainPage.rendering();
+          renderMainPage.openPage();
+          toggleModalPageSignIn.closePage();
+          toggleModalPageSignIn.deletePage();
+        } else {
+          toggleModalPageSignIn.closePage();
+          toggleModalPageSignIn.deletePage();
         }
+
+
         (async () => {
           await rateLastOrder();
         })();
@@ -259,14 +344,16 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
           type: 'click',
           callback: () => {
             api.getMessages();
-            renderMainPage.closePage();
-            renderMainPage.clearPage();
-            renderMainPage.rendering();
-            renderMainPage.openPage();
-            this.closePage();
-            this.deletePage();
-            if (returnPage) {
-              toggleModalPageReviewOrder.rendering();
+            if (returnPageObj.returnMainPageAfterSignIn) {
+              renderMainPage.closePage();
+              renderMainPage.clearPage();
+              renderMainPage.rendering();
+              renderMainPage.openPage();
+              toggleModalPageSignIn.closePage();
+              toggleModalPageSignIn.deletePage();
+            } else {
+              toggleModalPageSignIn.closePage();
+              toggleModalPageSignIn.deletePage();
             }
           },
         },
@@ -276,9 +363,9 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
     this.modalPageSignIn.append(signInTopBar.create());
     this.modalPageSignIn.append(formInputSignIn.create());
     const inputArea = document.querySelector('.form__input-area--type--phone');
-    inputArea.addEventListener('focusout', () => {
+    /* inputArea.addEventListener('focusout', () => {
       this.registrationNumber(this);
-    });
+    }); */
     inputArea.addEventListener('keydown', (event) => {
       if (event.code === 'Enter' || event.code === 'Go' || event.code === 13) {
         this.registrationNumber(this);

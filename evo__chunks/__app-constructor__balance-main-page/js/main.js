@@ -99,6 +99,7 @@ class ToggleBalance extends ToggleMainPage {
         '--theme--tangerin',
         '--theme--shadow-big',
         '--type--fixed',
+        '-route',
       ],
       text: ['Войти'],
       eventsOpen: [
@@ -120,6 +121,7 @@ class ToggleBalance extends ToggleMainPage {
         '--theme--tangerin',
         '--theme--shadow-big',
         '--type--fixed',
+        '-route',
       ],
       text: ['Пополнить'],
       eventsOpen: [

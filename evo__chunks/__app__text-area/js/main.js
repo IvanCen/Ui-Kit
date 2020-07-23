@@ -99,6 +99,7 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
         if (nutritionEl) {
           const regExp = /(\d*\.\d*).*/gm;
           const number = Number(nutritionEl.textContent.replace(regExp, '$1'));
+          console.log(number, obj[nutritionItem], counter);
           nutritionEl.textContent = `${number + (obj[nutritionItem] * counter)} г`;
         }
       }
@@ -121,7 +122,7 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
             </div>`;
     element.insertAdjacentHTML('beforeend', template);
 
-    if (typeof userDataObj[productInfo.id] === 'object') {
+    if (typeof userDataObj === 'object' && userDataObj[productInfo.id] !== undefined && typeof userDataObj[productInfo.id] === 'object') {
       const textAreaList = element.querySelector('.text-area__list');
       for (const modifiersUserItem in userDataObj[productInfo.id]) {
         const productItemModif = dataProductApi.successData.modifiers[Number(modifiersUserItem)];
@@ -358,52 +359,8 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
       }
     });
 
-    const basketPopupIcon = document.querySelector('.bottom-bar__icon-popup');
-    const basketPopupIconImg = document.querySelector('.bottom-bar__icon-popup-img');
-
     this.buttonAdd.addEventListener('click', () => {
-      const sizeBarButtons = document.querySelectorAll('.size-bar__button');
-      let multiplier;
-      if (sizeBarButtons.length !== 0 && sizeBarButtons[0].getAttribute('multiplier') !== undefined) {
-        multiplier = sizeBarButtons[0].getAttribute('multiplier');
-      } else {
-        multiplier = 1;
-      }
-      if (productInfo.countCombinations !== null) {
-        [...sizeBarButtons].some((el) => {
-          if (el.classList.contains('size-bar__button--active')) {
-            multiplier = el.getAttribute('multiplier');
-            return true;
-          }
-          return false;
-        });
-      }
-      for (let i = 0; i < multiplier; i++) {
-        basketArray.push({ id: productInfo.id, modifiers: [] });
-        basketArray.forEach((el) => {
-          if (el.id === productInfo.id) {
-            for (const modifiersUserItem in userDataObj[productInfo.id]) {
-              const counter = userDataObj[productInfo.id][modifiersUserItem];
-              if (counter !== 0) {
-                el.modifiers.push({ id: Number(modifiersUserItem), count: counter });
-              }
-            }
-          }
-        });
-        localStorage.setItem('basket', JSON.stringify(basketArray));
-        counterBasket();
-      }
-      if (!canUseWebP()) {
-        loadImg(productInfo, basketPopupIconImg, 'jpg');
-      } else {
-        loadImg(productInfo, basketPopupIconImg, 'webp');
-      }
-      basketPopupIcon.classList.add('bottom-bar__icon-popup--open');
-      setTimeout(() => {
-        basketPopupIcon.classList.remove('bottom-bar__icon-popup--open');
-        basketPopupIconImg.style.backgroundImage = '';
-      }, 3000);
-      checkBasket();
+      addProductToBasket(productInfo);
     });
 
     const shareData = {
@@ -464,11 +421,13 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
     });
 
     const descriptionArea = this.element.querySelector('.text-area--description-wraper');
-    if (!isEmptyObj(userDataObj[productInfo.id])) {
+    const modifiers = this.element.querySelectorAll('.text-area--type--modifier');
+    if (typeof userDataObj === 'object' && userDataObj[productInfo.id] !== undefined && !isEmptyObj(userDataObj[productInfo.id])) {
       const buttonReset = document.createElement('button');
       buttonReset.classList.add('text-area__button', 'text-area__button--type--reset');
       buttonReset.textContent = 'сбросить модификаторы';
       descriptionArea.before(buttonReset);
+      [...modifiers].pop().firstElementChild.classList.add('text-area__container--no-border');
     }
 
     return super.create(this.element);
@@ -540,7 +499,7 @@ class CreateTextAreaAddin extends CreateItem {
           </div>
         </div>
       `;
-      if (typeof userDataObj[productInfo.id] === 'object') {
+      if (typeof userDataObj === 'object' && typeof userDataObj[productInfo.id] === 'object') {
         for (const modifiersUserItem in userDataObj[productInfo.id]) {
           if (String(item.id) === modifiersUserItem) {
             const counter = userDataObj[productInfo.id][modifiersUserItem];
@@ -849,7 +808,7 @@ class CreateTextAreaBalance extends CreateItem {
           </svg>
           <p class="text-area__text text-area__text--theme--shadow">${this.parameters.text}</p>
         </div>
-        <button class="button button--size--medium button${this.parameters.themeButton} text-area__button text-area__button--open text-area__button--type--${this.parameters.identifier}">${this.parameters.buttonText}</button>
+        <button class="button button--size--medium button${this.parameters.themeButton} text-area__button text-area__button--open text-area__button--type--${this.parameters.identifier} button-route">${this.parameters.buttonText}</button>
       </div>
     `;
   }

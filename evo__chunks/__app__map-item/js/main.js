@@ -93,7 +93,6 @@ class CreateMapItemStores extends CreateItem {
       phone = store.phone.replace(regExp, '$1 ($2) $3-$4-$5');
     }
     console.log(store, this.day.en);
-
     this.template = `
             <div class="map__content">
               <input type="radio" class="radio__input map__radio-input" id="${identity()}${store.id}" name="radio"/>
@@ -109,18 +108,18 @@ class CreateMapItemStores extends CreateItem {
                 
               </div>
             </div>
-            <div class="map__content map__content--indentation--normal">
+            <div class="map__content map__content--indentation--normal map__content--time">
              <h3 class="map__item-text map__item-text--indentation--right">${this.day.ru}:</h3>
              <span class="map__item-text">${store[this.day.en]}</span>
             </div>
-            <div class="map__content">
+            <div class="map__content map__content--info">
               <div class="map__container-phone">
                 <a class="map__item-phone" href="tel:${store.phone}">
                  <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-phone.svg]]" alt="" class="text-area__icon text-area__icon--position--center text-area__icon--phone">
                 </a>
                 <a href="tel:${store.phone}" class="text-area__title text-area__title--size--small text-area__title--type--bold">${phone || store.phone}</a>
               </div>
-              <a href="https://www.google.ru/maps/place/${this.parameters.address}/@${this.parameters.latitude},${this.parameters.longitude}z?hl=ru" target="_blank" class="shop-info__direction">
+              <a href="https://www.google.ru/maps/place/${store.shortTitle}/@${store.latitude},${store.longitude}z?hl=ru" target="_blank" class="shop-info__direction">
                 <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-on-map.svg]]" alt="" class="text-area__icon text-area__icon--position--center">
               </a>
             </div>  
@@ -129,7 +128,7 @@ class CreateMapItemStores extends CreateItem {
     this.buttonDetails = this.element.querySelector('.map__button--type--details');
     this.buttonLike = this.element.querySelector('.map__button--type--like');
     this.iconLike = this.element.querySelector('.map__icon--type--like');
-    this.mapСontent = this.element.querySelector('.map__content');
+    this.mapContent = this.element.querySelector('.map__content');
 
     if (!isEmptyObj(userFavoriteStore)) {
       for (const shop of Object.values(userFavoriteStore)) {
@@ -141,6 +140,19 @@ class CreateMapItemStores extends CreateItem {
     }
 
     const radioInput = this.element.querySelector('.radio__input');
+
+    this.element.addEventListener('click', (e) => {
+      if (e.target.classList.contains('map__content--info') || e.target.classList.contains('map__radio-label') || e.target.classList.contains('map__content--time')) {
+        radioInput.checked = 'checked';
+
+        placemark.options.set('iconImageHref', 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-point-select.svg]]');
+        myMap.panTo([Number(store.latitude), Number(store.longitude)], {
+          delay: 1000,
+        }).then(() => {
+          myMap.setZoom(15);
+        });
+      }
+    });
 
     /* function renderDetailStorePage(info) {
       if (info.success === true) {
@@ -185,8 +197,14 @@ class CreateMapItemStores extends CreateItem {
           e.get('target').options.set('iconImageHref', 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-point-select.svg]]');
           const radioInputId = document.getElementById(store.id);
           const storesButton = document.querySelector('.bottom-bar__select-item');
+          const mapItem = radioInputId.closest('.map__item');
+          mapItem.scrollIntoView({ block: 'center', behavior: 'smooth' });
           radioInputId.checked = 'checked';
-          console.log(radioInputId);
+          myMap.panTo([Number(store.latitude), Number(store.longitude)], {
+            delay: 1000,
+          }).then(() => {
+            myMap.setZoom(15);
+          });
           storesDataObj.successData.forEach((el) => {
             if (el.id === Number(radioInputId.id)) {
               api.getShopOutOfStockItemsAndModifiers(el.id);
@@ -203,17 +221,6 @@ class CreateMapItemStores extends CreateItem {
             e.get('target').options.set('iconImageHref', 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-point.svg]]');
           }
         });
-      this.mapСontent.addEventListener('click', (e) => {
-        e.preventDefault();
-        radioInput.checked = 'checked';
-
-        placemark.options.set('iconImageHref', 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-point-select.svg]]');
-        myMap.panTo([Number(store.latitude), Number(store.longitude)], {
-          delay: 1000,
-        }).then(() => {
-          myMap.setZoom(15);
-        });
-      });
     }
 
     return this.element;

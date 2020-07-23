@@ -27,8 +27,13 @@ class TogglePageOrderCategory extends TogglePageOrderCard {
       title: [categoryName],
 
       eventBack: [
-        { type: 'click', callback: this.closePage },
-        { type: 'click', callback: this.deletePage },
+        {
+          type: 'click',
+          callback: () => {
+            this.closePage();
+            this.deletePage();
+          },
+        },
       ],
       eventOpenSearch: [
         {

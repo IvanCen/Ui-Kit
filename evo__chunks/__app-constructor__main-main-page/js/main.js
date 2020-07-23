@@ -7,7 +7,9 @@ class ToggleMain extends ToggleMainPage {
 
   rendering() {
     super.rendering('main');
-
+    if (returnPageObj) {
+      returnPageObj.returnMainPageAfterSignIn = false;
+    }
     const mainPageTopBar = new CreateTopBar({
       selector: ['div'],
       style: ['top-bar'],
@@ -20,6 +22,7 @@ class ToggleMain extends ToggleMainPage {
         type: 'click',
         callback: () => {
           stopAction(() => {
+            returnPageObj.returnMainPageAfterSignIn = true;
             toggleModalPageSignIn.rendering();
           });
         },
@@ -80,6 +83,7 @@ class ToggleMain extends ToggleMainPage {
       events: [{
         type: 'click',
         callback: () => {
+          returnPageObj.returnMainPageAfterSignIn = true;
           toggleModalPageSignIn.rendering();
         },
       }],
@@ -101,8 +105,11 @@ class ToggleMain extends ToggleMainPage {
       setTimeout(() => {
         const mainPage = document.querySelector('.main-page');
         const loader = document.querySelector('.loader');
-        mainPage.classList.remove('main-page--loaded');
-        loader.classList.add('loader--hide');
+        if (loader) {
+          mainPage.classList.remove('main-page--loaded');
+          loader.classList.add('loader--hide');
+          loader.remove();
+        }
       }, 1000);
       if (!isEmptyObj(userDataObj)) {
         rateLastOrder();

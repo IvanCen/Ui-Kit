@@ -7,7 +7,8 @@ class ToggleStores extends ToggleModalPageStores {
   }
 
   chooseShop() {
-    const storesButton = document.querySelector('.bottom-bar__select-item');
+    const storesButtonBottomBar = document.querySelector('.bottom-bar__select-item');
+    const storesButtonTopBar = document.querySelector('.top-bar__select-item--type--stores');
     const radioInputs = document.querySelectorAll('.radio__input');
     const mapItem = document.querySelectorAll('.map__item');
     [...mapItem].forEach((input) => {
@@ -19,8 +20,11 @@ class ToggleStores extends ToggleModalPageStores {
                 api.getShopOutOfStockItemsAndModifiers(el.id);
                 userStore.store = el;
                 localStorage.setItem('userStore', JSON.stringify(userStore));
-                if (storesButton) {
-                  storesButton.textContent = el.shortTitle;
+                if (storesButtonBottomBar) {
+                  storesButtonBottomBar.textContent = el.shortTitle;
+                }
+                if (storesButtonTopBar) {
+                  storesButtonTopBar.textContent = el.shortTitle;
                 }
               }
             });
@@ -220,9 +224,9 @@ class ToggleStores extends ToggleModalPageStores {
         console.log(userLocation);
         myMap.geoObjects.add(myCollection);
         myMap.geoObjects.add(userLocation);
-        /*myMap.events.add('click', (event) => {
+        /* myMap.events.add('click', (event) => {
           myCollection.getClosestTo(event.get('coords'));
-        });*/
+        }); */
       });
     }
     renderStores(storesDataObj);
@@ -239,7 +243,5 @@ class ToggleStores extends ToggleModalPageStores {
       }
       this.chooseShop();
     }, 300);
-    const footerButtonStores = document.querySelector('.footer__button--type--stores');
-    activeFooter(footerButtonStores);
   }
 }

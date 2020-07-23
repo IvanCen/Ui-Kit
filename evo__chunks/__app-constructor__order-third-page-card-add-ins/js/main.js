@@ -87,39 +87,18 @@ class ToggleThirdPageAddinsCard extends ToggleThirdPage {
     const buttonReset = this.thirdPage.querySelector('.text-area__button--type--reset');
     console.log(productInfo);
     buttonReset.addEventListener('click', () => {
-      userDataObj[productInfo.id] = {};
+      delete userDataObj[productInfo.id];
       localStorage.setItem('userData', userDataObj);
       toggleThirdPage.clearPage();
       this.rendering(productInfo);
     });
 
     buttonAdd.addEventListener('click', () => {
-      const basketPopupIcon = document.querySelector('.bottom-bar__icon-popup');
-      const basketPopupIconImg = document.querySelector('.bottom-bar__icon-popup-img');
-      basketArray.push({ id: productInfo.id, modifiers: [] });
-      basketArray.forEach((el) => {
-        if (el.id === productInfo.id) {
-          for (const modifiersUserItem in userDataObj[productInfo.id]) {
-            const counter = userDataObj[productInfo.id][modifiersUserItem];
-            if (counter !== 0) {
-              el.modifiers.push({ id: Number(modifiersUserItem), count: counter });
-            }
-          }
-        }
-      });
-      localStorage.setItem('basket', JSON.stringify(basketArray));
-      counterBasket();
-      loadImg(productInfo, basketPopupIconImg, 'webp');
-      basketPopupIcon.classList.add('bottom-bar__icon-popup--open');
-      setTimeout(() => {
-        basketPopupIcon.classList.remove('bottom-bar__icon-popup--open');
-        basketPopupIconImg.style.backgroundImage = '';
-      }, 3000);
-      checkBasket();
+      addProductToBasket(productInfo);
     });
 
     switchAdd(productInfo);
-    
+
     this.openPage();
   }
 }

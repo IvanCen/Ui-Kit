@@ -21,13 +21,13 @@ class ToggleModalPageStoresSearch extends ToggleModalPageSearch {
                 if (storesButton) {
                   storesButton.textContent = el.shortTitle;
                 }
-                /*const mapRadioInput = document.querySelectorAll('.map__radio-input');
+                /* const mapRadioInput = document.querySelectorAll('.map__radio-input');
                 [...mapRadioInput].forEach((radio) => {
                   console.log(radio.id, item.id)
                   if (radio.id === item.id) {
                     radio.checked = true;
                   }
-                });*/
+                }); */
               }
             });
           }
@@ -118,5 +118,3 @@ class ToggleModalPageStoresSearch extends ToggleModalPageSearch {
     this.openPage();
   }
 }
-
-

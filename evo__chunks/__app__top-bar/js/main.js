@@ -32,27 +32,27 @@ class CreateTopBar extends CreateItem {
               </svg>
             </div>
           </div>
-          <div class="top-bar__icon-container top-bar__icon-container--ruble">
+          <button class="top-bar__button top-bar__button--type--fill button-route">
             <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-rubles-white.svg]]" alt="Иконка рубля" class="top-bar__icon-ruble">
-          </div>   
+          </button>   
         </div>
       </div>
       <div class="top-bar__nav-container">
-          <button class="top-bar__button top-bar__button--type--sign-in">
+          <button class="top-bar__button top-bar__button--type--sign-in button-route">
             <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-sign-in.svg]]" alt="Кнопка входа" class="top-bar__icon">
             <span class="top-bar__icon-text ">Войти</span>
           </button>
-          <button class="top-bar__button top-bar__button--type--inbox">
+          <button class="top-bar__button top-bar__button--type--inbox button-route">
             <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-inbox.svg]]" alt="Кнопка сообщений" class="top-bar__icon">
             <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-dot.svg]]" alt="Иконка непрочитанного сообщения" class="top-bar__icon-dot top-bar__icon-dot--hide">
             <span class="top-bar__icon-text ">Сообщения</span>
           </button>
-            <button class="top-bar__button top-bar__button--type--history">
+            <button class="top-bar__button top-bar__button--type--history button-route">
               <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-history.svg]]" alt="Кнопка истории заказов" class="top-bar__icon">
               <span class="top-bar__icon-text ">История</span>
              </button>
             <button class="top-bar__button top-bar__button--position--right"></button>
-          <button class="top-bar__button top-bar__button--position--right top-bar__button--type--account">
+          <button class="top-bar__button top-bar__button--position--right top-bar__button--type--account button-route">
             <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-accaunt.svg]]" alt="Кнопка входа в личный кабинет" class="top-bar__icon">
           </button>
       </div>`;
@@ -65,8 +65,8 @@ class CreateTopBar extends CreateItem {
     this.buttonInbox = this.element.querySelector('.top-bar__button--type--inbox');
     this.buttonAccount = this.element.querySelector('.top-bar__button--type--account');
     this.buttonHistory = this.element.querySelector('.top-bar__button--type--history');
+    this.buttonBalanceFill = this.element.querySelector('.top-bar__button--type--fill');
     this.navContainer = this.element.querySelector('.top-bar__nav-container');
-    this.buttonBalanceFill = this.element.querySelector('.top-bar__icon-container--ruble');
     this.buttonContainerScore = this.element.querySelector('.top-bar__content-container--score');
 
     if (typeof this.parameters.eventOpenHistory === 'object') {
@@ -94,6 +94,7 @@ class CreateTopBar extends CreateItem {
         this.buttonBalanceFill.addEventListener(event.type, event.callback);
       }
     }
+
     if (!isEmptyObj(userInfoObj)) {
       this.buttonSignIn.remove();
     } else {
@@ -130,6 +131,7 @@ class CreateTopBarWithCloseIcon extends CreateItem {
         this.iconClose.addEventListener(event.type, event.callback);
       }
     }
+    this.iconClose.addEventListener('click', () => window.history.back());
 
     return super.create(this.element);
   }
@@ -155,6 +157,9 @@ class CreateTopBarDarkWithCloseIcon extends CreateItem {
   create(productInfo) {
     this.element.insertAdjacentHTML('beforeend', this.template);
     this.iconClose = this.element.querySelector('.top-bar__icon--type--close');
+
+    this.iconClose.addEventListener('click', () => window.history.back());
+
     if (typeof this.parameters.eventCloseIcon === 'object') {
       for (const event of this.parameters.eventCloseIcon) {
         this.iconClose.addEventListener(event.type, event.callback);
@@ -209,7 +214,7 @@ class CreateTopBarWithBackButton extends CreateItem {
         this.buttonBack.addEventListener(event.type, event.callback);
       }
     }
-
+    this.buttonBack.addEventListener('click', () => window.history.back());
     return super.create(this.element);
   }
 }
@@ -239,7 +244,7 @@ class CreateTopBarStoresInfo extends CreateItem {
         this.buttonBack.addEventListener(event.type, event.callback);
       }
     }
-
+    this.buttonBack.addEventListener('click', () => window.history.back());
     return super.create(this.element);
   }
 }
@@ -252,7 +257,7 @@ class CreateTopBarOrder extends CreateItem {
     this.template = `
       <div class="top-bar__content-container top-bar__content-container--size--small">
         <div class="top-bar__header">
-          <button class="button top-bar__search-button">
+          <button class="button top-bar__search-button button-route">
             <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-search.svg]]" alt="Кнопка поиска" class="top-bar__icon">
           </button>
         </div>
@@ -332,6 +337,8 @@ class CreateTopBarInbox extends CreateItem {
     this.topBarTabLastOffers = this.element.querySelector('.top-bar__tab--last-offers');
     this.iconBack = this.element.querySelector('.top-bar__back-button');
 
+    this.iconBack.addEventListener('click', () => window.history.back());
+
     if (typeof this.parameters.eventToggleMessages === 'object') {
       for (const event of this.parameters.eventToggleMessages) {
         this.topBarTabMessages.addEventListener(event.type, event.callback);
@@ -363,7 +370,7 @@ class CreateTopBarOrderCard extends CreateItem {
           <button class="button top-bar__back-button">
             <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-back.svg]]" alt="Кнопка назад" class="top-bar__icon top-bar__icon-back">
           </button>
-          <button class="button top-bar__search-button">
+          <button class="button top-bar__search-button button-route">
             <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-search.svg]]" alt="Кнопка поиска" class="top-bar__icon">
           </button>
           </div>
@@ -375,6 +382,9 @@ class CreateTopBarOrderCard extends CreateItem {
     this.element.insertAdjacentHTML('beforeend', this.template);
     this.iconBack = this.element.querySelector('.top-bar__back-button');
     this.iconSearch = this.element.querySelector('.top-bar__search-button');
+
+    this.iconBack.addEventListener('click', () => window.history.back());
+
     if (typeof this.parameters.eventBack === 'object') {
       for (const event of this.parameters.eventBack) {
         this.iconBack.addEventListener(event.type, event.callback);
@@ -402,7 +412,7 @@ class CreateTopBarStores extends CreateItem {
           <button class="top-bar__button">
             <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-close-white.svg]]" alt="Кнопка закрытия" class="top-bar__icon top-bar__icon--type--close">
           </button>
-          <button class="button top-bar__search-button top-bar__search-button--store">
+          <button class="button top-bar__search-button top-bar__search-button--store button-route">
           <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-search.svg]]" alt="Кнопка поиска" class="top-bar__icon">
           </button>
         </div>
@@ -415,6 +425,8 @@ class CreateTopBarStores extends CreateItem {
     // this.buttonFilter = this.element.querySelector('.top-bar__filter-button');
     this.buttonSearch = this.element.querySelector('.top-bar__search-button');
     this.iconClose = this.element.querySelector('.top-bar__icon--type--close');
+
+    this.iconClose.addEventListener('click', () => window.history.back());
 
     if (typeof this.parameters.eventCloseIcon === 'object') {
       for (const event of this.parameters.eventCloseIcon) {
@@ -455,12 +467,12 @@ class CreateTopBarReviewOrder extends CreateItem {
           <h1 class="top-bar__title">Товаров в корзине (<span class="top-bar__all-counter-order"></span>)</h1>
           <span class="top-bar__info">Самовывоз по адресу</span>
           <div class="top-bar__select-container">
-            <button class="top-bar__select-item top-bar__select-item--theme--dark top-bar__select-item--type--stores">
+            <button class="top-bar__select-item top-bar__select-item--theme--dark top-bar__select-item--type--stores button-route">
               ${!isEmptyObj(userStore) ? userStore.store.shortTitle : 'Адрес магазина' || 'Адрес магазина'}
               <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-bottom-white.svg]]" alt="Кнопка выбора адреса магазина"
                    class="top-bar__icon top-bar__icon-arrow-down">
             </button>
-            <button class=" top-bar__select-item top-bar__select-item--theme--dark top-bar__select-item--size--small top-bar__select-item--hide">
+            <button class=" top-bar__select-item top-bar__select-item--theme--dark top-bar__select-item--size--small top-bar__select-item--hide button-route">
               <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-man-white.svg]]" alt="" class="top-bar__icon">
               <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-bottom-white.svg]]" alt="Кнопка выбора"
                    class="top-bar__icon top-bar__icon-arrow-down">
@@ -474,6 +486,9 @@ class CreateTopBarReviewOrder extends CreateItem {
     this.buttonFilter = this.element.querySelector('.top-bar__filter-button');
     this.buttonSearch = this.element.querySelector('.top-bar__search-button');
     this.storesButton = this.element.querySelector('.top-bar__select-item--type--stores');
+    this.iconClose = this.element.querySelector('.top-bar__button--type--close');
+
+    this.iconClose.addEventListener('click', () => window.history.back());
 
     if (typeof this.parameters.eventStores === 'object') {
       for (const event of this.parameters.eventStores) {
@@ -481,7 +496,6 @@ class CreateTopBarReviewOrder extends CreateItem {
       }
     }
 
-    this.iconClose = this.element.querySelector('.top-bar__button--type--close');
     if (typeof this.parameters.eventClose === 'object') {
       for (const event of this.parameters.eventClose) {
         this.iconClose.addEventListener(event.type, event.callback);

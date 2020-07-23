@@ -13,7 +13,7 @@ class ToggleGift extends ToggleMainPage {
       modifier: [`--size--medium${isIos ? '--ios' : ''}`, '--indentation--bottom'],
       textTitle: ['Достижения'],
     });
-    /*const giftTitleBarOther = new CreateTitleBarWithButton({
+    /* const giftTitleBarOther = new CreateTitleBarWithButton({
       selector: ['div'],
       style: ['title-bar'],
       title: ['Ваши достижения'],
@@ -27,7 +27,7 @@ class ToggleGift extends ToggleMainPage {
     const cardBannersContainer = new CreateBannersContainerOrder();
     const bannersReward = new CreateBannerRectangle({
       bannerSize: ['small'],
-    });*/
+    }); */
 
 
     const cardItemContainer = new CreateCardItemContainerProductCard();
@@ -45,6 +45,5 @@ class ToggleGift extends ToggleMainPage {
 
     const footerButtonGIft = document.querySelector('.footer__button--type--gift');
     activeFooter(footerButtonGIft);
-    
   }
 }

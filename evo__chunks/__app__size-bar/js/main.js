@@ -4,6 +4,11 @@ function activeSizeBar(element, countCombinationTitleParameter, titleParameter) 
   const sizeBarButtonActive = 'size-bar__button--active';
   const sizeBar = document.querySelector('.size-bar');
   const sizeBarButtonContainer = document.querySelector('.size-bar__button-container');
+  const priceEl = document.querySelector('.text-area__price');
+  let price;
+  if (priceEl) {
+    price = priceEl.textContent;
+  }
 
   (function sizeBarOpen() {
     sizeBar.addEventListener('click', () => {
@@ -26,8 +31,11 @@ function activeSizeBar(element, countCombinationTitleParameter, titleParameter) 
         sizeBarInfo.textContent = item.textContent;
         if (element && countCombinationTitleParameter) {
           const unit = titleParameter === 'netWeight' ? 'г' : 'мл';
+          const multiplier = item.getAttribute('multiplier');
+          const priceActual = Number(price) * Number(multiplier);
           const numberOfUnit = Number(countCombinationTitleParameter / 100) * Number(item.textContent);
           element.textContent = `${numberOfUnit} ${unit}`;
+          priceEl.textContent = priceActual;
         }
       });
     });

@@ -61,7 +61,6 @@ class Api {
         if (!isEmptyObj(userStore)) {
           function isOldStore() {
             return storesDataObj.successData.every((store) => {
-              console.log(store.id, userStore.store.id);
               if (store.id === userStore.store.id) {
                 return false;
               }
@@ -158,6 +157,33 @@ class Api {
       });
   }
 
+  signInCodeApi(phoneSend, func) {
+    const request = {
+      method: 'sign-in',
+      sendCodeMethod: 'callIn',
+      phone: `+${phoneSend}`,
+      outputFormat: 'json',
+    };
+
+    fetch(this.options.baseUrl, {
+      method: 'POST',
+      headers: this.options.headers,
+      body: JSON.stringify(request),
+
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+      .then((signInInfo) => signInInfo)
+      .then(func)
+      .catch((err) => {
+        console.log('Ошибка. Запрос не выполнен: ', err);
+      });
+  }
+
   authorizeApi(func, code, phoneNumber, timerRegSuccess, refreshLink) {
     console.log(phoneNumber, code);
     const request = {
@@ -185,6 +211,38 @@ class Api {
           clearTimeout(timerRegSuccess);
           clearTimeout(refreshLink);
         }
+        return authorizeInfo;
+      })
+      .then(func)
+      .catch((err) => {
+        console.log('Ошибка. Запрос не выполнен: ', err);
+      });
+  }
+
+  authorizeCallInApi(func, code, phone) {
+    console.log(phone, code);
+
+    const request = {
+      method: 'authorize',
+      sendCodeMethod: 'callIn',
+      phone,
+      code,
+      outputFormat: 'json',
+    };
+
+    fetch('[~30~]', {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/html' },
+      body: JSON.stringify(request),
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+      .then((authorizeInfo) => {
+        console.log(authorizeInfo);
         return authorizeInfo;
       })
       .then(func)

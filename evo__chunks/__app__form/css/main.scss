@@ -42,7 +42,7 @@
 
     &--type--sign-in.button {
       position: absolute;
-      bottom: 80px;
+      bottom: 0;
       right: 16px;
       width: auto;
     }
@@ -273,6 +273,10 @@
   &--indentation {
     padding-top: 40px;
   }
+
+  &--indentation--small{
+    margin: 10px 0;
+  }
 }
 
 .form__input-container {
@@ -309,7 +313,6 @@
   opacity: 0;
   flex-direction: column;
   justify-content: space-around;
-  align-items: center;
   min-height: 200px;
   transition: all 0.3s ease-in;
 
@@ -321,14 +324,16 @@
 
 .form__link {
   display: block;
+  position: absolute;
+  bottom: 0;
+  right: 16px;
   color: $white;
   text-decoration: none;
   width: 150px;
   height: 50px;
   background-color: $orange;
   border-radius: 50px;
-  margin: auto;
-  padding-top: 15px;
+  margin: 0;
   text-align: center;
   @extend %style-3;
   box-shadow: 0 8px 10px rgba(0, 0, 0, .25);
@@ -337,4 +342,31 @@
 .form__title {
   @extend %style-4;
   padding-top: 20px;
+}
+
+.last-number-input{
+  @extend %style-3;
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  padding: 5px;
+  border: 2px solid $orange;
+  border-radius: 5px;
+  text-align: center;
+  margin-right: 10px;
+  z-index: 9;
+}
+
+.form__input-wrapper{
+  position: relative;
+  width: 100%;
+  border-bottom: 1px solid rgba(0,0,0, .2);
+  &--last-number-inputs{
+    .float-label{
+      position: relative;
+      display: block;
+      top: -1rem;
+    }
+    border-bottom: none;
+  }
 }

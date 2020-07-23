@@ -30,6 +30,9 @@ class CreateTopBarSearch extends CreateItem {
     this.element.insertAdjacentHTML('beforeend', this.template);
 
     this.iconClose = this.element.querySelector('.top-bar-search__icon--type--close');
+
+    this.iconClose.addEventListener('click', () => window.history.back());
+
     if (typeof this.parameters.eventCloseIcon === 'object') {
       for (const event of this.parameters.eventCloseIcon) {
         this.iconClose.addEventListener(event.type, event.callback);

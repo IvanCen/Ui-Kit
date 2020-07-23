@@ -44,6 +44,12 @@ function switchActive(nodeList, activeClass) {
   });
 }
 
+function setRandomPhraseTobBarMain() {
+  const phrases = ['Отличный день для кофе ☕', 'Отличный день для булочки 🥐'];
+  const title = document.querySelector('.top-bar__title--type--single');
+  title.textContent = phrases[Math.floor(Math.random() * phrases.length)];
+}
+
 function doubleFav(productInfo) {
   return itemsArray.some((el) => {
     if (el.id === productInfo.itemId) {
@@ -51,6 +57,50 @@ function doubleFav(productInfo) {
     }
     return false;
   });
+}
+
+function addProductToBasket(productInfo) {
+  const basketPopupIcon = document.querySelector('.bottom-bar__icon-popup');
+  const basketPopupIconImg = document.querySelector('.bottom-bar__icon-popup-img');
+  const sizeBarButtons = document.querySelectorAll('.size-bar__button');
+  let multiplier;
+  if (sizeBarButtons.length !== 0 && sizeBarButtons[0].getAttribute('multiplier') !== undefined) {
+    multiplier = sizeBarButtons[0].getAttribute('multiplier');
+  } else {
+    multiplier = 1;
+  }
+  if (productInfo.countCombinations !== null) {
+    [...sizeBarButtons].some((el) => {
+      if (el.classList.contains('size-bar__button--active')) {
+        multiplier = el.getAttribute('multiplier');
+        return true;
+      }
+      return false;
+    });
+  }
+  for (let i = 0; i < multiplier; i++) {
+    const modifiersArr = [];
+    for (const modifiersUserItem in userDataObj[productInfo.id]) {
+      const counter = userDataObj[productInfo.id][modifiersUserItem];
+      if (counter !== 0) {
+        modifiersArr.push({ id: Number(modifiersUserItem), count: counter });
+      }
+    }
+    basketArray.push({ id: productInfo.id, modifiers: modifiersArr });
+    localStorage.setItem('basket', JSON.stringify(basketArray));
+    counterBasket();
+  }
+  if (!canUseWebP()) {
+    loadImg(productInfo, basketPopupIconImg, 'jpg');
+  } else {
+    loadImg(productInfo, basketPopupIconImg, 'webp');
+  }
+  basketPopupIcon.classList.add('bottom-bar__icon-popup--open');
+  setTimeout(() => {
+    basketPopupIcon.classList.remove('bottom-bar__icon-popup--open');
+    basketPopupIconImg.style.backgroundImage = '';
+  }, 3000);
+  checkBasket();
 }
 
 function checkMessageInbox() {
@@ -398,9 +448,11 @@ class TogglePage {
   }
 
   deletePage() {
-    if (this.page) {
-      setTimeout(() => this.page.remove(), 300);
-    }
+      setTimeout(() => {
+        if (this.page) {
+        this.page.remove()
+        }
+      }, 300);
   }
 
   closePage() {
@@ -435,6 +487,7 @@ class TogglePage {
   rendering() {
     this.body.append(createPage());
     this.page = document.querySelector('.page');
+    history.pushState({ state: '#page' }, null, '#page');
     this.openPage();
   }
 }
@@ -524,6 +577,7 @@ class TogglePageOrderCard {
       this.page.classList.add(this.classOpen);
       this.body.classList.add('body');
     }, 100);
+    history.pushState({ state: '#page-order' }, null, '#page-order');
   }
 
   rendering() {
@@ -570,9 +624,11 @@ class ToggleSubPage {
 
   deletePage() {
     this.page = document.querySelector('.subpage');
-    if (this.page) {
-      setTimeout(() => this.page.remove(), 300);
-    }
+      setTimeout(() => {
+        if (this.page) {
+          this.page.remove()
+        }
+      }, 300);
   }
 
   closePage() {
@@ -603,6 +659,7 @@ class ToggleSubPage {
   rendering() {
     this.body.append(createSubPage());
     this.subPage = document.querySelector('.subpage');
+    history.pushState({ state: '#subpage' }, null, '#subpage');
     this.openPage();
   }
 }
@@ -636,17 +693,16 @@ class ToggleThirdPage {
   }
 
   deletePage() {
-    if (this.thirdPage) {
-      setTimeout(() => this.thirdPage.remove(), 300);
-    }
+      setTimeout(() => {
+        if (this.thirdPage) {
+          this.thirdPage.remove()
+        }
+      }, 300);
   }
 
   closePage() {
     this.thirdPage = document.querySelector('.third-page');
     if (this.thirdPage) {
-      this.thirdPage.querySelectorAll('button').forEach((button) => {
-        button.remove();
-      });
       if (typeof this.parameters.classOpen === 'object') {
         for (const style of this.parameters.classOpen) {
           this.thirdPage.classList.remove(style);
@@ -669,6 +725,7 @@ class ToggleThirdPage {
   rendering() {
     this.body.append(createThirdPage());
     this.thirdPage = document.querySelector('.third-page');
+    history.pushState({ state: '#page-third' }, null, '#page-third');
   }
 }
 
@@ -700,9 +757,11 @@ class ToggleFourthPage {
   }
 
   deletePage() {
-    if (this.fourthPage) {
-      setTimeout(() => this.fourthPage.remove(), 300);
-    }
+      setTimeout(() => {
+        if (this.fourthPage) {
+          this.fourthPage.remove()
+        }
+      }, 300);
   }
 
   closePage() {
@@ -764,9 +823,11 @@ class ToggleFifthPage {
   }
 
   deletePage() {
-    if (this.fifthPage) {
-      setTimeout(() => this.fifthPage.remove(), 100);
-    }
+      setTimeout(() => {
+        if (this.fifthPage) {
+          this.fifthPage.remove()
+        }
+      }, 100);
   }
 
   closePage() {
@@ -827,9 +888,12 @@ class ToggleSixthPage {
   }
 
   deletePage() {
-    if (this.sixthPage) {
-      setTimeout(() => this.sixthPage.remove(), 100);
-    }
+      setTimeout(() => {
+        if (this.sixthPage) {
+          this.sixthPage.remove()
+        }
+      }, 100);
+
   }
 
   closePage() {
@@ -890,9 +954,11 @@ class ToggleModalPageStores {
   }
 
   deletePage() {
-    if (this.modalPage) {
-      setTimeout(() => this.modalPage.remove(), 100);
-    }
+      setTimeout(() => {
+        if (this.modalPage) {
+          this.modalPage.remove()
+        }
+      }, 100);
   }
 
   closePage() {
@@ -916,6 +982,7 @@ class ToggleModalPageStores {
       this.modalPage.classList.add(this.classOpen);
       this.body.classList.add('body');
     }, 100);
+    history.pushState({ state: '#modal-page-stores' }, null, '#modal-page-stores');
   }
 
   rendering() {
@@ -954,9 +1021,11 @@ class ToggleModalPageSearch {
   }
 
   deletePage() {
-    if (this.modalPageSearch) {
-      setTimeout(() => this.modalPageSearch.remove(), 100);
-    }
+      setTimeout(() => {
+        if (this.modalPageSearch) {
+          this.modalPageSearch.remove()
+        }
+      }, 100);
   }
 
   closePage() {
@@ -980,6 +1049,7 @@ class ToggleModalPageSearch {
       this.modalPageSearch.classList.add(this.classOpen);
       this.body.classList.add('body');
     }, 100);
+    history.pushState({ state: '#modal-page-search' }, null, '#modal-page-search');
   }
 
   rendering() {
@@ -987,6 +1057,7 @@ class ToggleModalPageSearch {
     this.body.append(createModalPageSearch());
     this.modalPageSearch = document.querySelector('.modal-page-search');
     this.modalPageSearchContent = document.querySelector('.modal-page-search__content');
+
   }
 }
 
@@ -1018,9 +1089,11 @@ class ToggleModalPageOrderReviewRoot {
   }
 
   deletePage() {
-    if (this.modalPageOrderReview) {
-      setTimeout(() => this.modalPageOrderReview.remove(), 100);
-    }
+      setTimeout(() => {
+        if (this.modalPageOrderReview) {
+          this.modalPageOrderReview.remove()
+        }
+      }, 100);
   }
 
   closePage() {
@@ -1044,6 +1117,8 @@ class ToggleModalPageOrderReviewRoot {
       this.modalPageOrderReview.classList.add(this.classOpen);
       this.body.classList.add('body');
     }, 100);
+    history.pushState({ state: '#modal-page-order-review' }, null, '#modal-page-order-review');
+
   }
 
   rendering() {
@@ -1082,9 +1157,11 @@ class ToggleModalPageOrderPaymentRoot {
   }
 
   deletePage() {
-    if (this.modalPageOrderPayment) {
-      setTimeout(() => this.modalPageOrderPayment.remove(), 100);
-    }
+      setTimeout(() => {
+        if (this.modalPageOrderPayment) {
+          this.modalPageOrderPayment.remove()
+        }
+      }, 100);
   }
 
   closePage() {
@@ -1108,6 +1185,7 @@ class ToggleModalPageOrderPaymentRoot {
       this.modalPageOrderPayment.classList.add(this.classOpen);
       this.body.classList.add('body');
     }, 100);
+    history.pushState({ state: '#modal-page-order-payment' }, null, '#modal-page-order-payment');
   }
 
   rendering() {
@@ -1146,9 +1224,11 @@ class ToggleModalPageSignInRoot {
   }
 
   deletePage() {
-    if (this.modalPageSignIn) {
-      setTimeout(() => this.modalPageSignIn.remove(), 100);
-    }
+      setTimeout(() => {
+        if (this.modalPageSignIn) {
+          this.modalPageSignIn.remove()
+        }
+      }, 100);
   }
 
   closePage() {
@@ -1172,6 +1252,7 @@ class ToggleModalPageSignInRoot {
       this.modalPageSignIn.classList.add(this.classOpen);
       this.body.classList.add('body');
     }, 100);
+    history.pushState({ state: '#modal-page-sign-in' }, null, '#modal-page-sign-in');
   }
 
   rendering() {
@@ -1179,6 +1260,7 @@ class ToggleModalPageSignInRoot {
     this.body.append(createModalPageSignIn());
     this.modalPageSignIn = document.querySelector('.modal-page-sign-in');
     this.modalPageSignInContent = document.querySelector('.modal-page-sign-in__content');
+
   }
 }
 
@@ -1208,6 +1290,7 @@ class ToggleMainPage {
         this.mainPageContent.classList.add('main-page__content--opened');
       }
     }, 100);
+    history.pushState({ state: '#' }, null, '#');
   }
 
   closePage() {
@@ -1301,9 +1384,11 @@ class ToggleModal {
   }
 
   deletePage() {
-    if (this.modal) {
-      setTimeout(() => this.modal.remove(), 100);
-    }
+      setTimeout(() => {
+        if (this.modal) {
+          this.modal.remove()
+        }
+      }, 100);
   }
 
   closePage() {

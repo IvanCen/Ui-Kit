@@ -62,7 +62,6 @@ class CreateCardItemOrderProductCard extends CreateItem {
       </div>`;
     this.element.insertAdjacentHTML('beforeend', this.template);
     this.stickersContainer = this.element.querySelector('.card-item__stickers-container');
-
     if (productInfo.stickers.length !== 0) {
       productInfo.stickers.forEach((stickerName) => {
         const stickerEl = document.createElement('div');
@@ -313,7 +312,7 @@ class CreateCardItemFavAndHisOrder extends CreateItem {
       const modifiersArr = [];
       if (productInfo.modifiers !== undefined) {
         productInfo.modifiers.forEach((modif) => {
-          modifiersArr.push({ id: modif.modificationId, count: modif.count });
+          modifiersArr.push({ id: modif.id, count: modif.count });
         });
       }
       basketArray.push({ id: productInfo.id, modifiers: modifiersArr });

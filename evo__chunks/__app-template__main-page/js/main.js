@@ -2,7 +2,7 @@ const mainPage = document.querySelector('.main-page');
 mainPage.classList.add('main-page--loaded');
 const body = document.querySelector('body');
 const api = new Api();
-let returnPage;
+const returnPageObj = { returnMainPageAfterSignIn: false };
 let orderInfo;
 let orderPayInfo;
 let orderComment;
@@ -22,69 +22,83 @@ let dataProductApiLet;
 let userFavoriteStoreLet;
 let outOfStockLet;
 
+
 try {
   itemsArrayLet = JSON.parse(localStorage.getItem('items')) || [];
 } catch (e) {
+  itemsArrayLet = [];
   api.sendDebugMessage(e);
 }
 try {
   basketArrayLet = JSON.parse(localStorage.getItem('basket')) || [];
 } catch (e) {
+  basketArrayLet = [];
   api.sendDebugMessage(e);
 }
 try {
   userDataObjLet = JSON.parse(localStorage.getItem('userData')) || {};
 } catch (e) {
+  userDataObjLet = {};
   api.sendDebugMessage(e);
 }
 try {
   applicationDataObjLet = JSON.parse(localStorage.getItem('applicationData')) || {};
 } catch (e) {
+  applicationDataObjLet = {};
   api.sendDebugMessage(e);
 }
 try {
   storesDataObjLet = JSON.parse(localStorage.getItem('storesData')) || {};
 } catch (e) {
+  storesDataObjLet = {};
   api.sendDebugMessage(e);
 }
 try {
   userInfoObjLet = JSON.parse(localStorage.getItem('userInfo')) || {};
 } catch (e) {
+  userInfoObjLet = {};
   api.sendDebugMessage(e);
 }
 try {
   userLastOrdersObjLet = JSON.parse(localStorage.getItem('userLastOrders')) || {};
 } catch (e) {
+  userLastOrdersObjLet = {};
   api.sendDebugMessage(e);
 }
 try {
   userStoreLet = JSON.parse(localStorage.getItem('userStore')) || {};
 } catch (e) {
+  userStoreLet = {};
   api.sendDebugMessage(e);
 }
 try {
   userBalanceLogLet = JSON.parse(localStorage.getItem('userBalanceLog')) || {};
 } catch (e) {
+  userBalanceLogLet = {};
   api.sendDebugMessage(e);
 }
 try {
   userBonusLogLet = JSON.parse(localStorage.getItem('userBonusLog')) || {};
 } catch (e) {
+  userBonusLogLet = {};
   api.sendDebugMessage(e);
 }
 try {
   dataProductApiLet = JSON.parse(localStorage.getItem('productData')) || {};
 } catch (e) {
+  dataProductApiLet = {};
   api.sendDebugMessage(e);
 }
 try {
   userFavoriteStoreLet = JSON.parse(localStorage.getItem('userFavoriteStore')) || {};
 } catch (e) {
+  userFavoriteStoreLet = {};
   api.sendDebugMessage(e);
 }
 try {
   outOfStockLet = JSON.parse(localStorage.getItem('outOfStock')) || {};
 } catch (e) {
+  outOfStockLet = {};
   api.sendDebugMessage(e);
 }
 const itemsArray = itemsArrayLet;
@@ -100,19 +114,6 @@ const userBonusLog = userBonusLogLet;
 const dataProductApi = dataProductApiLet;
 const userFavoriteStore = userFavoriteStoreLet;
 const outOfStock = outOfStockLet;
-/*const itemsArray = JSON.parse(localStorage.getItem('items')) || [];
-const basketArray = JSON.parse(localStorage.getItem('basket')) || [];
-const userDataObj = JSON.parse(localStorage.getItem('userData')) || {};
-const applicationDataObj = JSON.parse(localStorage.getItem('applicationData')) || {};
-const storesDataObj = JSON.parse(localStorage.getItem('storesData')) || {};
-const userInfoObj = JSON.parse(localStorage.getItem('userInfo')) || {};
-const userLastOrdersObj = JSON.parse(localStorage.getItem('userLastOrders')) || {};
-const userStore = JSON.parse(localStorage.getItem('userStore')) || {};
-const userBalanceLog = JSON.parse(localStorage.getItem('userBalanceLog')) || {};
-const userBonusLog = JSON.parse(localStorage.getItem('userBonusLog')) || {};
-const dataProductApi = JSON.parse(localStorage.getItem('productData')) || {};
-const userFavoriteStore = JSON.parse(localStorage.getItem('userFavoriteStore')) || {};
-const outOfStock = JSON.parse(localStorage.getItem('outOfStock')) || {};*/
 
 /* if (isEmptyObj(storesDataObj)) {
     api.storesApi();
@@ -356,7 +357,7 @@ const mainPageFooter = new CreateFooter({
 });
 
 
-mainPage.append(mainPageFooter.create());
+mainPage.after(mainPageFooter.create());
 switchActiveFooter();
 checkBasket();
 
@@ -385,16 +386,15 @@ if (/\?refer=alfa.*/.test(window.location.search)) {
       el.classList.remove('page-order--hide');
       el.classList.remove('page-order--opened--bottom-bar');
     });
+    setRandomPhraseTobBarMain();
   }, 3000);
 }());
 
-
 setTimeout(() => {
   const loader = document.querySelector('.loader');
-  // const mainPage = document.querySelector('.main-page');
-  mainPage.classList.remove('main-page--loaded');
-  loader.classList.add('loader--hide');
+  if (loader) {
+    mainPage.classList.remove('main-page--loaded');
+    loader.classList.add('loader--hide');
+    loader.remove();
+  }
 }, 5000);
-
-
-
