@@ -392,7 +392,7 @@ class CreateCardItemReviewOrder extends CreateItem {
     const el = this.element;
     const counterTopBar = document.querySelector('.top-bar__all-counter-order');
     const counterBottomBar = document.querySelector('.bottom-bar__counter');
-    if (!isEmptyObj(outOfStock) && outOfStock.success === true && outOfStock.successData.itemsAndModifiers.length !== 0) {
+    if (!isEmptyObj(outOfStock) && outOfStock.successData.itemsAndModifiers.length !== 0) {
       for (const id in outOfStock.successData.itemsAndModifiers) {
         if (Number(id) === productInfo.id) {
           this.figure.classList.remove('main-card__figure--hide');

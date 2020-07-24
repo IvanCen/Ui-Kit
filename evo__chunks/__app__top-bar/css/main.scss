@@ -22,7 +22,7 @@
 
   &--ios {
     position: fixed;
-    top: 0;
+    top: -1;
     left: 0;
     width: 100%;
     min-height: 40px;
@@ -67,6 +67,10 @@
       padding-top: 50px;
       padding-right: 16px;
       padding-left: 16px;
+
+      @media (max-width:374px) {
+        padding-top: 40px;
+      }
     }
   }
 

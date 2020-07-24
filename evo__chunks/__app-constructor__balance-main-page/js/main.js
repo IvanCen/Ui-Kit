@@ -107,6 +107,7 @@ class ToggleBalance extends ToggleMainPage {
           type: 'click',
           callback: () => {
             stopAction(() => {
+              returnPageObj.returnBalanceAfterSignIn = true;
               toggleModalPageSignIn.rendering();
             });
           },

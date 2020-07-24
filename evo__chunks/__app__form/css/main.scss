@@ -42,7 +42,7 @@
 
     &--type--sign-in.button {
       position: absolute;
-      bottom: 0;
+      bottom: 16px;
       right: 16px;
       width: auto;
     }
@@ -325,7 +325,7 @@
 .form__link {
   display: block;
   position: absolute;
-  bottom: 0;
+  bottom: 16px;
   right: 16px;
   color: $white;
   text-decoration: none;

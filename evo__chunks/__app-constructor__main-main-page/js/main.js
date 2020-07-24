@@ -93,14 +93,18 @@ class ToggleMain extends ToggleMainPage {
     function renderPosts(dataPosts) {
       const postContainer = document.querySelector('.main-card__container-posts');
       dataPosts.successData.forEach((item) => {
-        postContainer.prepend(mainPageMainCard.create(item));
+        if (postContainer) {
+          postContainer.prepend(mainPageMainCard.create(item));
+        }
       });
     }
 
     function renderPromo(dataPromo) {
       const promoContainer = document.querySelector('.main-card__container-promo');
       dataPromo.successData.forEach((item) => {
-        promoContainer.prepend(mainPageMainCard.create(item));
+        if (promoContainer) {
+          promoContainer.prepend(mainPageMainCard.create(item));
+        }
       });
       setTimeout(() => {
         const mainPage = document.querySelector('.main-page');

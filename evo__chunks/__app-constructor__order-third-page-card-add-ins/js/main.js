@@ -39,8 +39,17 @@ class ToggleThirdPageAddinsCard extends ToggleThirdPage {
     return itemModifierWithTitles;
   }
 
-  rendering(productInfo) {
-    super.rendering();
+  scrollToModifier(modifierName) {
+    this.titlesModifiers = this.thirdPage.querySelectorAll('.text-area__title--type--modifier');
+    [...this.titlesModifiers].forEach((title) => {
+      if (title.textContent === modifierName) {
+        title.scrollIntoView({ block: 'start', behavior: 'smooth' });
+      }
+    });
+  }
+
+  rendering(productInfo, modifierName, pushRoute) {
+    super.rendering(pushRoute);
 
     const addinsTopBar = new CreateTopBarDarkWithCloseIcon({
       selector: ['div'],
@@ -76,29 +85,39 @@ class ToggleThirdPageAddinsCard extends ToggleThirdPage {
     this.thirdPage.append(addinsTopBar.create(productInfo));
     this.thirdPage.append(addinsTextArea.create(productInfo));
     this.thirdPage.append(addinsButton.create());
+
     this.addinsContainer = this.thirdPage.querySelector('.text-area__counter-container');
-    const modifierObjWithTitle = this.getModifiers(productInfo);
-    const modifierArrWithTitle = Object.entries(modifierObjWithTitle);
-    modifierArrWithTitle.forEach((item) => {
+    this.buttonAdd = this.thirdPage.querySelector('.button--type--add-adds');
+    this.buttonReset = this.thirdPage.querySelector('.text-area__button--type--reset');
+
+    this.modifierObjWithTitle = this.getModifiers(productInfo);
+    this.modifierArrWithTitle = Object.entries(this.modifierObjWithTitle);
+    this.modifierArrWithTitle.forEach((item) => {
       this.addinsContainer.after(addinTextArea.create(item, productInfo));
     });
 
-    const buttonAdd = document.querySelector('.button--type--add-adds');
-    const buttonReset = this.thirdPage.querySelector('.text-area__button--type--reset');
-    console.log(productInfo);
-    buttonReset.addEventListener('click', () => {
+
+    this.buttonReset.addEventListener('click', () => {
       delete userDataObj[productInfo.id];
       localStorage.setItem('userData', userDataObj);
       toggleThirdPage.clearPage();
-      this.rendering(productInfo);
+      this.pushRoute = false;
+      this.rendering(productInfo, modifierName, this.pushRoute);
     });
 
-    buttonAdd.addEventListener('click', () => {
+    this.buttonAdd.addEventListener('click', () => {
       addProductToBasket(productInfo);
     });
 
     switchAdd(productInfo);
 
+    this.textAreaWraper = this.thirdPage.querySelectorAll('.text-area__wraper');
+    [...this.textAreaWraper].forEach((el) => {
+      this.containersModifiers = el.querySelectorAll('.text-area__container--type--modifier');
+      [...this.containersModifiers].pop().classList.add('text-area__container--no-border');
+    });
+
     this.openPage();
+    this.scrollToModifier(modifierName);
   }
 }

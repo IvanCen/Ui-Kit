@@ -92,7 +92,6 @@ class CreateMapItemStores extends CreateItem {
       const regExp = /(\+\d)(\d{3})(\d{3})(\d{2})(\d{2})/g;
       phone = store.phone.replace(regExp, '$1 ($2) $3-$4-$5');
     }
-    console.log(store, this.day.en);
     this.template = `
             <div class="map__content">
               <input type="radio" class="radio__input map__radio-input" id="${identity()}${store.id}" name="radio"/>
@@ -142,15 +141,21 @@ class CreateMapItemStores extends CreateItem {
     const radioInput = this.element.querySelector('.radio__input');
 
     this.element.addEventListener('click', (e) => {
-      if (e.target.classList.contains('map__content--info') || e.target.classList.contains('map__radio-label') || e.target.classList.contains('map__content--time')) {
+      console.log(e.target.classList);
+      if (e.target.classList.contains('map__content--info')
+        || e.target.classList.contains('map__radio-label')
+        || e.target.classList.contains('map__content--time')
+        || e.target.classList.contains('map__radio-input')
+      ) {
         radioInput.checked = 'checked';
-
+        toggleModalPage.closePage();
+        toggleModalPage.deletePage();
         placemark.options.set('iconImageHref', 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-point-select.svg]]');
         myMap.panTo([Number(store.latitude), Number(store.longitude)], {
           delay: 1000,
-        }).then(() => {
+        });/* .then(() => {
           myMap.setZoom(15);
-        });
+        }); */
       }
     });
 
@@ -196,22 +201,26 @@ class CreateMapItemStores extends CreateItem {
         .add('click', (e) => {
           e.get('target').options.set('iconImageHref', 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-point-select.svg]]');
           const radioInputId = document.getElementById(store.id);
-          const storesButton = document.querySelector('.bottom-bar__select-item');
+          const storesButtonBottomBar = document.querySelector('.bottom-bar__select-item');
+          const storesButtonTopBar = document.querySelector('.top-bar__select-item--type--stores');
           const mapItem = radioInputId.closest('.map__item');
-          mapItem.scrollIntoView({ block: 'center', behavior: 'smooth' });
+          mapItem.scrollIntoView({ block: 'end', behavior: 'smooth' }); // на маленьких экранах только режим block: 'end' работает корректно
           radioInputId.checked = 'checked';
           myMap.panTo([Number(store.latitude), Number(store.longitude)], {
             delay: 1000,
-          }).then(() => {
+          });/* .then(() => {
             myMap.setZoom(15);
-          });
+          }); */
           storesDataObj.successData.forEach((el) => {
             if (el.id === Number(radioInputId.id)) {
               api.getShopOutOfStockItemsAndModifiers(el.id);
               userStore.store = el;
               localStorage.setItem('userStore', JSON.stringify(userStore));
-              if (storesButton) {
-                storesButton.textContent = el.shortTitle;
+              if (storesButtonBottomBar) {
+                storesButtonBottomBar.textContent = el.shortTitle;
+              }
+              if (storesButtonTopBar) {
+                storesButtonTopBar.textContent = el.shortTitle;
               }
             }
           });

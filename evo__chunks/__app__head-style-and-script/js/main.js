@@ -656,10 +656,12 @@ class ToggleSubPage {
     }, 100);
   }
 
-  rendering() {
+  rendering(pushRoute) {
     this.body.append(createSubPage());
     this.subPage = document.querySelector('.subpage');
-    history.pushState({ state: '#subpage' }, null, '#subpage');
+    if(pushRoute !== false) {
+      history.pushState({ state: '#subpage' }, null, '#subpage');
+    }
     this.openPage();
   }
 }
@@ -722,10 +724,12 @@ class ToggleThirdPage {
     }, 100);
   }
 
-  rendering() {
+  rendering(pushRoute) {
     this.body.append(createThirdPage());
     this.thirdPage = document.querySelector('.third-page');
-    history.pushState({ state: '#page-third' }, null, '#page-third');
+    if(pushRoute !== false) {
+      history.pushState({ state: '#page-third' }, null, '#page-third');
+    }
   }
 }
 

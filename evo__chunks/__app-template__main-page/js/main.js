@@ -2,7 +2,11 @@ const mainPage = document.querySelector('.main-page');
 mainPage.classList.add('main-page--loaded');
 const body = document.querySelector('body');
 const api = new Api();
-const returnPageObj = { returnMainPageAfterSignIn: false };
+const returnPageObj = {
+  returnMainPageAfterSignIn: false,
+  returnBalanceAfterSignIn: false,
+};
+const orderFriendData = {};
 let orderInfo;
 let orderPayInfo;
 let orderComment;
@@ -308,11 +312,13 @@ const mainPageFooter = new CreateFooter({
     {
       type: 'click',
       callback: () => {
-        toggleBalance.closePage();
-        toggleBalance.clearPage();
-        toggleBalance.rendering();
-        toggleBalance.openPage();
-        closePages();
+        stopAction(() => {
+          toggleBalance.closePage();
+          toggleBalance.clearPage();
+          toggleBalance.rendering();
+          toggleBalance.openPage();
+          closePages();
+        });
       },
     },
   ],
@@ -320,14 +326,16 @@ const mainPageFooter = new CreateFooter({
     {
       type: 'click',
       callback: () => {
-        toggleOrder.closePage();
-        toggleOrder.clearPage();
-        toggleOrder.rendering();
-        toggleOrder.openPage();
-        toggleOrderMenuContent.rendering();
-        toggleOrderHitsContent.rendering();
-        toggleOrderHistoryContent.rendering();
-        closePages();
+        stopAction(() => {
+          toggleOrder.closePage();
+          toggleOrder.clearPage();
+          toggleOrder.rendering();
+          toggleOrder.openPage();
+          toggleOrderMenuContent.rendering();
+          toggleOrderHitsContent.rendering();
+          toggleOrderHistoryContent.rendering();
+          closePages();
+        });
       },
     },
   ],
@@ -335,11 +343,13 @@ const mainPageFooter = new CreateFooter({
     {
       type: 'click',
       callback: () => {
-        toggleGift.closePage();
-        toggleGift.clearPage();
-        toggleGift.rendering();
-        toggleGift.openPage();
-        closePages();
+        stopAction(() => {
+          toggleGift.closePage();
+          toggleGift.clearPage();
+          toggleGift.rendering();
+          toggleGift.openPage();
+          closePages();
+        });
       },
     },
   ],

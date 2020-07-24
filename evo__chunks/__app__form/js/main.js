@@ -570,7 +570,7 @@ class CreateFormFriendPay extends CreateItem {
           <div class="form">
             <div class="form__input">
               <label class="form__input-underlined">
-                <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--phone" type="tel" required>
+                <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--phone form__input-area--type--phone-friend" type="tel" required>
                 <span class="form__input-label form__input--focused">Номер телефона</span>
                 <div class="form__input-icon-container">
                   <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-attention-triangle.svg]]" alt="" class="form__input-icon form__input-icon-error">
@@ -600,19 +600,20 @@ class CreateFormFriendPay extends CreateItem {
 
     this.buttonFriend = this.element.querySelector('.button--type--friend');
     this.inputAreaName = this.element.querySelector('.form__input-area--type--name');
-    this.inputAreaPhone = this.element.querySelector('.form__input-area--type--phone');
+    this.inputAreaPhone = this.element.querySelector('.form__input-area--type--phone-friend');
     this.error = this.element.querySelector('.form__input-requirement--type--error');
 
     this.buttonFriend.addEventListener('click', () => {
       if (this.inputAreaName.value !== '' && this.inputAreaPhone.value !== '+7(___)___-__-__') {
         const accordionButton = this.element.querySelector('.accordion');
-        this.error.textContent = `Имя друга: ${this.inputAreaName.value}
+        /*this.error.textContent = `Имя друга: ${this.inputAreaName.value}
           Телефон: ${this.inputAreaPhone.value}
           `;
         this.error.classList.add('form__input-requirement--valid');
-        this.error.classList.remove('form__input-requirement--hide');
+        this.error.classList.remove('form__input-requirement--hide');*/
         setTimeout(() => accordionButton.click(), 2000);
-        // orderComment = this.inputArea.value;
+        orderFriendData.friendName = this.inputAreaName.value;
+        orderFriendData.friendPhone = this.inputAreaPhone.value;
       } else {
         this.error.textContent = 'Вы не заполнили все данные';
         this.error.classList.add('form__input-requirement--invalid');

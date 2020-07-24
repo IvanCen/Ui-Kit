@@ -10,8 +10,29 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
     this.askUserInfo = this.askUserInfo.bind(this);
   }
 
+  returnPage() {
+    if (returnPageObj.returnMainPageAfterSignIn) {
+      renderMainPage.closePage();
+      renderMainPage.clearPage();
+      renderMainPage.rendering();
+      renderMainPage.openPage();
+      toggleModalPageSignIn.closePage();
+      toggleModalPageSignIn.deletePage();
+    } else if (returnPageObj.returnBalanceAfterSignIn) {
+      toggleBalance.closePage();
+      toggleBalance.clearPage();
+      toggleBalance.rendering();
+      toggleBalance.openPage();
+      toggleModalPageSignIn.closePage();
+      toggleModalPageSignIn.deletePage();
+    } else {
+      toggleModalPageSignIn.closePage();
+      toggleModalPageSignIn.deletePage();
+    }
+  }
+
   registrationNumber() {
-    this.inputArea = document.querySelector('.form__input-area--type--phone');
+    this.inputArea = document.querySelector('.form__input-area--type--phone-sign-in');
     this.inputArea.classList.add('form__input--focused');
     this.phoneNumber = this.inputArea.value;
     this.parameters.api.signInCodeApi(this.phoneNumber, this.regCall);
@@ -28,9 +49,8 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
   }
 
   regCall(info) {
-    const inputArea = document.querySelector('.form__input-area--type--phone');
+    const inputArea = document.querySelector('.form__input-area--type--phone-sign-in');
     const phoneNumber = inputArea.value;
-    const input = document.querySelector('.form__input');
     const callLink = document.querySelector('.form__link--type--call');
     const accessButton = document.querySelector('.form__button--type--sign-in');
     const callContainer = document.querySelector('.form__call-container');
@@ -45,6 +65,7 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
     console.log(info);
     if (info.success === true) {
       const { phone } = info.successData;
+      const input = document.querySelector('.form__input');
 
       textErrorPhone.classList.add('form__text--close', 'form__text--hide');
       textError.classList.add('form__text--hide');
@@ -181,17 +202,7 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
         this.askUserEmail();
       } else {
         api.getMessages();
-        if (returnPageObj.returnMainPageAfterSignIn) {
-          renderMainPage.closePage();
-          renderMainPage.clearPage();
-          renderMainPage.rendering();
-          renderMainPage.openPage();
-          toggleModalPageSignIn.closePage();
-          toggleModalPageSignIn.deletePage();
-        } else {
-          toggleModalPageSignIn.closePage();
-          toggleModalPageSignIn.deletePage();
-        }
+        this.returnPage();
 
         textSuccess.classList.remove('form__text--close', 'form__text--hide');
         (async () => {
@@ -296,18 +307,7 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
         toggleModal.openPage();
         api.getMessages();
         api.getClientApi();
-        if (returnPageObj.returnMainPageAfterSignIn) {
-          renderMainPage.closePage();
-          renderMainPage.clearPage();
-          renderMainPage.rendering();
-          renderMainPage.openPage();
-          toggleModalPageSignIn.closePage();
-          toggleModalPageSignIn.deletePage();
-        } else {
-          toggleModalPageSignIn.closePage();
-          toggleModalPageSignIn.deletePage();
-        }
-
+        this.returnPage();
 
         (async () => {
           await rateLastOrder();
@@ -344,17 +344,7 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
           type: 'click',
           callback: () => {
             api.getMessages();
-            if (returnPageObj.returnMainPageAfterSignIn) {
-              renderMainPage.closePage();
-              renderMainPage.clearPage();
-              renderMainPage.rendering();
-              renderMainPage.openPage();
-              toggleModalPageSignIn.closePage();
-              toggleModalPageSignIn.deletePage();
-            } else {
-              toggleModalPageSignIn.closePage();
-              toggleModalPageSignIn.deletePage();
-            }
+            this.returnPage();
           },
         },
       ],
@@ -362,7 +352,7 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
     this.modalPageSignIn.append(createTopBarIos());
     this.modalPageSignIn.append(signInTopBar.create());
     this.modalPageSignIn.append(formInputSignIn.create());
-    const inputArea = document.querySelector('.form__input-area--type--phone');
+    const inputArea = document.querySelector('.form__input-area--type--phone-sign-in');
     /* inputArea.addEventListener('focusout', () => {
       this.registrationNumber(this);
     }); */

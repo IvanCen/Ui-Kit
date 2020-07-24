@@ -37,35 +37,23 @@ class ToggleModalPageStoresSearch extends ToggleModalPageSearch {
   }
 
   searchStores() {
-    const storesMapItem = new CreateMapItemStores();
+    this.storesMapItem = new CreateMapItemStores();
+    this.inputSearch = this.modalPageSearch.querySelector('.top-bar-search__input-area');
+    this.mapItemsContainer = this.modalPageSearch.querySelector('.map__container--type--search');
+    this.searchString = this.inputSearch.value.toLowerCase().trim();
+    let find = 0;
 
-    const inputSearch = document.querySelector('.top-bar-search__input-area');
-    const mapItemsContainer = document.querySelector('.map__container--type--search');
-    let searchItemText = inputSearch.value;
-    searchItemText = searchItemText.toLowerCase();
-    const searchItemTextArray = searchItemText.split(' ');
-    const searchItems = {};
-
-    storesDataObj.successData.forEach((item) => {
-      let numberOfHits = 0;
-      for (const searchItemTextPart of searchItemTextArray) {
-        numberOfHits += (item.shortTitle.toLowerCase().split(searchItemTextPart).length - 1);
-      }
-      if (numberOfHits > 0) {
-        if (typeof searchItems[numberOfHits] !== 'object') {
-          searchItems[numberOfHits] = [];
-        }
-        searchItems[numberOfHits].push(item);
-      }
-    });
-    if (mapItemsContainer !== null) {
-      if (mapItemsContainer.childNodes.length !== 0) {
-        const arrHtml = Array.from(mapItemsContainer.children);
-        arrHtml.splice(0, arrHtml.length).forEach((item) => item.remove());
+    if (this.mapItemsContainer !== null) {
+      if (this.mapItemsContainer.childNodes.length !== 0) {
+        this.arrHtml = Array.from(this.mapItemsContainer.children);
+        this.arrHtml.splice(0, this.arrHtml.length).forEach((item) => item.remove());
       }
     }
-    for (const el of Object.values(searchItems)) {
-      mapItemsContainer.append(storesMapItem.create(el[0], undefined, undefined, 0));
+    for (const store of storesDataObj.successData) {
+      if (store.longTitle.toLowerCase().indexOf(this.searchString) > -1) {
+        find++;
+        this.mapItemsContainer.append(this.storesMapItem.create(store, undefined, undefined, 0));
+      }
     }
   }
 

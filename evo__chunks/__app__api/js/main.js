@@ -361,15 +361,26 @@ class Api {
       });
   }
 
-  makeOrderApi(phone, orderArrItems, shopId, orderComment, func) {
+  makeOrderApi(phone, orderArrItems, shopId, orderComment, orderFriendData, func) {
     let comment;
+    let replaceName;
+    let replacePhone;
+    const { friendName, friendPhone } = orderFriendData;
+
+    if (friendName !== '' && friendPhone !== '') {
+      replaceName = friendName;
+      replacePhone = friendPhone;
+    } else {
+      replaceName = '';
+      replacePhone = '';
+    }
     if (orderComment !== '') {
       comment = orderComment;
     } else {
       comment = '';
     }
     console.log(comment);
-    console.log(phone, orderArrItems, shopId, orderComment, func);
+    console.log(phone, orderArrItems, shopId, orderComment, replaceName, replacePhone, func);
     let store = JSON.parse(localStorage.getItem('userStore'));
     store = store.store;
     const request = {
@@ -379,6 +390,8 @@ class Api {
       shopId: store.id,
       promoCode: '',
       comment,
+      replaceName,
+      replacePhone,
       outputFormat: 'json',
     };
 

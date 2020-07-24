@@ -1,9 +1,12 @@
 @import "../../__app__head-style-and-script/css/main.scss";
 
 .maps {
-  height: 40vh;
+  height: calc(50vh - 74px);
   width: 100%;
 
+  &--ios {
+    height: calc(50vh - 105px);
+  }
   @media (max-width:374px) {
     min-height: 218px;
   }

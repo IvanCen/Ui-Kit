@@ -110,6 +110,7 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
     const descriptionArea = el.querySelector('.text-area--type--description');
     const element = document.createElement('div');
     element.classList.add('text-area', 'text-area--theme--light', 'text-area--type--modifier');
+    // element.setAttribute('modifiers-id')
     const template = `
             <div class="text-area__container text-area__container--indentation--small">
               <div class="text-area__content-container text-area__content-container--direction--column">
@@ -146,10 +147,9 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
         }
       }
     }
-
     element.addEventListener('click', () => {
       stopAction(() => {
-        toggleThirdPageAddinsCard.rendering(productInfo);
+        toggleThirdPageAddinsCard.rendering(productInfo, modifierName);
       });
     });
     descriptionArea.after(element);
@@ -471,13 +471,13 @@ class CreateTextAreaAddin extends CreateItem {
   create(modifierWithTitle, productInfo) {
     this.element = document.createElement('div');
     this.element.classList.add('text-area__wraper');
-    this.templateTitle = `<h2 class="text-area__title text-area__title--type--uppercase text-area__title--type--bold">${modifierWithTitle[0]}</h2>`;
+    this.templateTitle = `<h2 class="text-area__title text-area__title--type--uppercase text-area__title--type--bold text-area__title--type--modifier">${modifierWithTitle[0]}</h2>`;
 
     this.element.insertAdjacentHTML('beforeend', this.templateTitle);
     for (const item of Object.values(modifierWithTitle[1])) {
       this.template = `
         <div id="${item.id}" class="text-area text-area--theme--light text-area--type--add-ins">
-          <div class="text-area__container text-area__container--indentation--small">
+          <div class="text-area__container text-area__container--indentation--small text-area__container--type--modifier">
             <div class="text-area__content-container text-area__content-container--direction--column">
               <h3 class="text-area__title text-area__title--size--small text-area__title--type--bold text-area__title--type--modifier">${item.name}</h3>
               <span class="text-area__price text-area__price--size--small">${item.price}</span>

@@ -12,6 +12,10 @@
 
   &--default {
     height: 50vh;
+
+    @media (max-width:330px) {
+      height: 43vh;
+    }
   }
 
   &__container {

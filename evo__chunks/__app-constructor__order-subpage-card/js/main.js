@@ -5,8 +5,8 @@ class ToggleSubPageProductCard extends ToggleSubPage {
     this.rendering = this.rendering.bind(this);
   }
 
-  rendering(productInfo) {
-    super.rendering();
+  rendering(productInfo, pushRoute) {
+    super.rendering(pushRoute);
 
     const productCard = new CreateOrderProductMainCard({
       selector: ['div'],
@@ -62,7 +62,8 @@ class ToggleSubPageProductCard extends ToggleSubPage {
         delete userDataObj[productInfo.id];
         localStorage.setItem('userData', userDataObj);
         toggleSubPage.clearPage();
-        this.rendering(productInfo);
+        this.pushRoute = false;
+        this.rendering(productInfo, this.pushRoute);
       });
     }
 

@@ -1,4 +1,4 @@
-class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
+class ToggleModalPageReviewOrder extends ToggleModalPageOrderReview {
   constructor(parameters) {
     super(parameters);
     this.parameters = parameters;
@@ -106,7 +106,7 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
     function renderPayOrderPage(info) {
       console.log(info);
       if (info.success) {
-        toggleModalPagePaymentOrder.rendering(info);
+        toggleFifthPageReviewOrder.rendering(info);
       } else {
         toggleModal.rendering(info.errors[0]);
       }
@@ -121,7 +121,7 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
             const { phone } = userInfoObj.successData;
             const { id } = userStore.store;
 
-            api.makeOrderApi(phone, basketArray, id, orderComment, orderFriendData, renderPayOrderPage);
+            api.makeOrderApi(phone, basketArray, id, orderComment, renderPayOrderPage);
           } else {
             toggleModal.rendering(info.successData.timeStatePickUp);
           }
@@ -133,6 +133,8 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
     }
     function checkStoreWorkTime(info) {
       if (info.success === false) {
+        closePages();
+        toggleModalPageOrderReview.closePage();
         toggleModalPageSignIn.rendering();
       }
       if (info.success === true) {
