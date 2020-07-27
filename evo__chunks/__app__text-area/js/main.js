@@ -506,7 +506,7 @@ class CreateTextAreaAddin extends CreateItem {
             if (counter !== 0) {
               this.template = `
                 <div id="${item.id}" class="text-area text-area--theme--light text-area--type--add-ins">
-                  <div class="text-area__container text-area__container--indentation--small">
+                  <div class="text-area__container text-area__container--indentation--small text-area__container--type--modifier">
                     <div class="text-area__content-container text-area__content-container--direction--column">
                       <h3 class="text-area__title text-area__title--size--small text-area__title--type--bold text-area__title--theme--chocolate text-area__title--type--modifier">
                         ${counter} добав${number_of(counter, ['ка', 'ки', 'ок'])} ${item.name}
@@ -664,8 +664,8 @@ class CreateTextAreaAccount extends CreateItem {
         renderMainPage.clearPage();
         togglePage.closePage();
         togglePage.deletePage();
-        toggleGift.rendering();
-        toggleGift.openPage();
+        toggleReward.rendering();
+        toggleReward.openPage();
       });
     });
 

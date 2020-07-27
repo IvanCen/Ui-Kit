@@ -57,6 +57,12 @@ function BindingHistoryApi() {
       },
     },
     {
+      path: '#page-third',
+      content: () => {
+        alwaysCloseHash();
+      },
+    },
+    {
       path: '#modal-page-stores',
       content: () => {
         toggleModalPageStoresSearch.closePage();

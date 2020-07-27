@@ -1,4 +1,4 @@
-class ToggleGift extends ToggleMainPage {
+class ToggleReward extends ToggleMainPage {
   constructor(parameters) {
     super(parameters);
     this.parameters = parameters;

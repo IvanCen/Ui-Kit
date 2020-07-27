@@ -27,8 +27,10 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
         {
           type: 'click',
           callback: () => {
-            toggleStores.rendering();
-            toggleStores.openPage();
+            stopAction(() => {
+              toggleStores.rendering();
+              toggleStores.openPage();
+            });
           },
         },
       ],

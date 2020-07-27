@@ -119,6 +119,7 @@ const dataProductApi = dataProductApiLet;
 const userFavoriteStore = userFavoriteStoreLet;
 const outOfStock = outOfStockLet;
 
+//api.sendDebugMessage(JSON.stringify(basketArray));
 /* if (isEmptyObj(storesDataObj)) {
     api.storesApi();
   } else if ((Date.now() - storesDataObj.lastEditDateRequest) > (24 * 60 * 60 * 1000)) {
@@ -230,7 +231,7 @@ const toggleModalPagePaymentOrder = new ToggleModalPagePaymentOrder({
 const searchClassMethod = new Search();
 const toggleBalance = new ToggleBalance();
 const toggleOrder = new ToggleOrder();
-const toggleGift = new ToggleGift();
+const toggleReward = new ToggleReward();
 const toggleStores = new ToggleStores({
   api,
   classOpen: ['modal-page--opened'],
@@ -312,13 +313,11 @@ const mainPageFooter = new CreateFooter({
     {
       type: 'click',
       callback: () => {
-        stopAction(() => {
-          toggleBalance.closePage();
-          toggleBalance.clearPage();
-          toggleBalance.rendering();
-          toggleBalance.openPage();
-          closePages();
-        });
+        toggleBalance.closePage();
+        toggleBalance.clearPage();
+        toggleBalance.rendering();
+        toggleBalance.openPage();
+        closePages();
       },
     },
   ],
@@ -326,16 +325,14 @@ const mainPageFooter = new CreateFooter({
     {
       type: 'click',
       callback: () => {
-        stopAction(() => {
-          toggleOrder.closePage();
-          toggleOrder.clearPage();
-          toggleOrder.rendering();
-          toggleOrder.openPage();
-          toggleOrderMenuContent.rendering();
-          toggleOrderHitsContent.rendering();
-          toggleOrderHistoryContent.rendering();
-          closePages();
-        });
+        toggleOrder.closePage();
+        toggleOrder.clearPage();
+        toggleOrder.rendering();
+        toggleOrder.openPage();
+        toggleOrderMenuContent.rendering();
+        toggleOrderHitsContent.rendering();
+        toggleOrderHistoryContent.rendering();
+        closePages();
       },
     },
   ],
@@ -343,13 +340,11 @@ const mainPageFooter = new CreateFooter({
     {
       type: 'click',
       callback: () => {
-        stopAction(() => {
-          toggleGift.closePage();
-          toggleGift.clearPage();
-          toggleGift.rendering();
-          toggleGift.openPage();
-          closePages();
-        });
+        toggleReward.closePage();
+        toggleReward.clearPage();
+        toggleReward.rendering();
+        toggleReward.openPage();
+        closePages();
       },
     },
   ],

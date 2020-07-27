@@ -39,11 +39,14 @@ class ToggleThirdPageAddinsCard extends ToggleThirdPage {
     return itemModifierWithTitles;
   }
 
-  scrollToModifier(modifierName) {
-    this.titlesModifiers = this.thirdPage.querySelectorAll('.text-area__title--type--modifier');
-    [...this.titlesModifiers].forEach((title) => {
+  scrollToModifier(modifierName, page) {
+    this.titlesModifiers = this.thirdPage.querySelectorAll('.text-area__title--type--uppercase');
+    [...this.titlesModifiers].forEach((title, index) => {
       if (title.textContent === modifierName) {
-        title.scrollIntoView({ block: 'start', behavior: 'smooth' });
+        title.closest('.text-area__wraper').scrollIntoView({ block: 'start', inline: 'start', behavior: 'smooth' });
+        if (isIos) {
+          page.scrollTop -= 40;
+        }
       }
     });
   }
@@ -114,10 +117,13 @@ class ToggleThirdPageAddinsCard extends ToggleThirdPage {
     this.textAreaWraper = this.thirdPage.querySelectorAll('.text-area__wraper');
     [...this.textAreaWraper].forEach((el) => {
       this.containersModifiers = el.querySelectorAll('.text-area__container--type--modifier');
-      [...this.containersModifiers].pop().classList.add('text-area__container--no-border');
+
+      if (this.containersModifiers.length !== 0) {
+        [...this.containersModifiers].pop().classList.add('text-area__container--no-border');
+      }
     });
 
     this.openPage();
-    this.scrollToModifier(modifierName);
+    this.scrollToModifier(modifierName, this.thirdPage);
   }
 }

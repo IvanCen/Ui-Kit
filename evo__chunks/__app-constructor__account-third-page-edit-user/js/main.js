@@ -10,40 +10,43 @@ class ToggleThirdPageEditUser extends ToggleThirdPage {
   sendData(setName, value) {
     function showError(info) {
       const textError = document.querySelector('.form__text--error');
-      textError.classList.remove('form__text--close', 'form__text--hide');
-      if (info.errors[0] !== undefined) {
-        textError.textContent = info.errors[0];
-      } else {
-        api.getClientApi();
-        const textSuccess = document.querySelector('.form__text--success');
-        const textArea = document.querySelector(`.text-area__title--type--${setName}`);
-        textSuccess.textContent = 'Данные изменены';
-        textSuccess.classList.remove('form__text--close', 'form__text--hide');
-        textSuccess.classList.add('form__text--indentation');
-
-        if (setName === 'email') {
-          toggleModal.renderingEmail();
-          toggleModal.openPage();
-          const modal = document.querySelector('.modal');
-          if (!modal) {
-            api.getClientApi();
+      if(textError) {
+        textError.classList.remove('form__text--close', 'form__text--hide');
+        if (info.errors[0] !== undefined) {
+          textError.textContent = info.errors[0];
+        } else {
+          api.getClientApi();
+          const textSuccess = document.querySelector('.form__text--success');
+          const textArea = document.querySelector(`.text-area__title--type--${setName}`);
+          textSuccess.textContent = 'Данные изменены';
+          textSuccess.classList.remove('form__text--close', 'form__text--hide');
+          textSuccess.classList.add('form__text--indentation');
+  
+          if (setName === 'email') {
+            toggleModal.renderingEmail();
+            toggleModal.openPage();
+            const modal = document.querySelector('.modal');
+            if (!modal) {
+              api.getClientApi();
+              setTimeout(() => {
+                textArea.textContent = userInfoObj.successData[setName];
+                toggleThirdPage.closePage();
+                toggleThirdPage.deletePage();
+              }, 2000);
+  
+              toggleThirdPage.closePage();
+              toggleThirdPage.deletePage();
+            }
+          } else {
             setTimeout(() => {
               textArea.textContent = userInfoObj.successData[setName];
               toggleThirdPage.closePage();
               toggleThirdPage.deletePage();
             }, 2000);
-
-            toggleThirdPage.closePage();
-            toggleThirdPage.deletePage();
           }
-        } else {
-          setTimeout(() => {
-            textArea.textContent = userInfoObj.successData[setName];
-            toggleThirdPage.closePage();
-            toggleThirdPage.deletePage();
-          }, 2000);
         }
       }
+      
     }
     const request = {
       method: 'set-client',

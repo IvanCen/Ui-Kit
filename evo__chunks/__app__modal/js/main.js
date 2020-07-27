@@ -53,7 +53,7 @@ function createModalReward(info) {
             <h2 class="modal__title">${info.title}</h2>
             <div style="background-image: url('[+chunkWebPath+]/img/img__main-card--reward.jpg')"alt="" class="modal__img"></div>
             <p class="modal__text modal__text--indentation--big modal__text--size--big">${info.text}</p>
-            <p class="modal__text modal__text--indentation--small modal__text--size--normal modal__text--theme--shadow">${info.promoCode}</p>
+            <p class="modal__text modal__text--indentation--small modal__text--size--normal modal__text--theme--shadow modal__text--type--promo-code">${info.promoCode}</p>
             <span class="modal__text modal__text--size--small modal__text--theme--shadow modal__text--indentation--big">${info.date}</span>
             <div class="modal__button-container">
               <button class="button button--size--small button--theme--tangerin modal__button modal__button-accept">Закрыть</button>
@@ -61,7 +61,10 @@ function createModalReward(info) {
           </div>`;
 
   element.innerHTML = template;
-
+  if (!info.promoCode) {
+    const promoCode = element.querySelector('.modal__text--type--promo-code');
+    promoCode.remove();
+  }
   return element;
 }
 

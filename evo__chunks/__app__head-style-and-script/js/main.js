@@ -33,6 +33,19 @@ function createTopBarIos() {
   return el;
 }
 
+function getFormattedApiDate(dateApi) {
+  const regExp = /\d+-(\d+)-(\d+)\s(\d+:\d+):\d+/g;
+  const monthNumber = dateApi.replace(regExp, '$1');
+  let monthName;
+  const monthArr = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентяря', 'Октабря', 'Ноября', 'Декбаря'];
+  monthArr.forEach((item, index) => {
+    if (index + 1 === Number(monthNumber)) {
+      monthName = item;
+    }
+  });
+  return dateApi.replace(regExp, `$2 ${monthName} $3`);
+}
+
 function switchActive(nodeList, activeClass) {
   [...nodeList].forEach((item) => {
     item.addEventListener('click', function () {

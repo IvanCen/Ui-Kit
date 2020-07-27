@@ -130,33 +130,6 @@ class Api {
       });
   }
 
-  signInApi(phoneSend, func) {
-    const request = {
-      method: 'sign-in',
-      sendCodeMethod: 'callOut',
-      phone: `+${phoneSend}`,
-      outputFormat: 'json',
-    };
-
-    fetch(this.options.baseUrl, {
-      method: 'POST',
-      headers: this.options.headers,
-      body: JSON.stringify(request),
-
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Ошибка: ${res.status}`);
-      })
-      .then((signInInfo) => signInInfo)
-      .then(func)
-      .catch((err) => {
-        console.log('Ошибка. Запрос не выполнен: ', err);
-      });
-  }
-
   signInCodeApi(phoneSend, func) {
     const request = {
       method: 'sign-in',
@@ -178,41 +151,6 @@ class Api {
         return Promise.reject(`Ошибка: ${res.status}`);
       })
       .then((signInInfo) => signInInfo)
-      .then(func)
-      .catch((err) => {
-        console.log('Ошибка. Запрос не выполнен: ', err);
-      });
-  }
-
-  authorizeApi(func, code, phoneNumber, timerRegSuccess, refreshLink) {
-    console.log(phoneNumber, code);
-    const request = {
-      method: 'authorize',
-      sendCodeMethod: 'callOut',
-      phone: phoneNumber,
-      code,
-      outputFormat: 'json',
-    };
-
-    fetch('[~30~]', {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/html' },
-      body: JSON.stringify(request),
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Ошибка: ${res.status}`);
-      })
-      .then((authorizeInfo) => {
-        console.log(authorizeInfo);
-        if (authorizeInfo.success === true) {
-          clearTimeout(timerRegSuccess);
-          clearTimeout(refreshLink);
-        }
-        return authorizeInfo;
-      })
       .then(func)
       .catch((err) => {
         console.log('Ошибка. Запрос не выполнен: ', err);
@@ -242,7 +180,7 @@ class Api {
         return Promise.reject(`Ошибка: ${res.status}`);
       })
       .then((authorizeInfo) => {
-        console.log(authorizeInfo);
+        console.log(authorizeInfo, 'auth');
         return authorizeInfo;
       })
       .then(func)
