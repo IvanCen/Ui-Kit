@@ -79,13 +79,14 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
   regCall(info) {
     const inputArea = document.querySelector('.form__input-area--type--phone-sign-in');
     const phoneNumber = inputArea.value;
-    const callLink = document.querySelector('.form__link--type--call');
+    const callButton = document.querySelector('.form__button--type--call');
     const accessButton = document.querySelector('.form__button--type--sign-in');
     const callContainer = document.querySelector('.form__call-container');
     const textError = document.querySelector('.form__text--error');
     const textErrorPhone = document.querySelector('.form__text--error-phone');
     const numberForRegistrationEl = document.querySelector('.number-for-registration');
     const numbersElements = document.querySelectorAll('.last-number-input');
+    const linkBack = document.querySelector('.form__link--type--back');
 
     console.log(info);
     if (info.success === true) {
@@ -97,12 +98,21 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
       input.classList.add('form__input--close');
       accessButton.classList.add('form__button--hide');
       numberForRegistrationEl.textContent = phoneNumber;
+      textError.textContent = '';
 
-      callLink.addEventListener('click', () => {
+      callButton.addEventListener('click', () => {
         const codeArr = [...numbersElements].map((number) => number.value);
         const code = codeArr.join('');
         localStorage.setItem('authorizationCode', code);
         this.parameters.api.authorizeCallInApi(this.regSuccess, code, phoneNumber);
+      });
+
+      linkBack.addEventListener('click', () => {
+        textErrorPhone.classList.remove('form__text--close', 'form__text--hide');
+        textError.classList.remove('form__text--hide');
+        callContainer.classList.remove('form__call-container--open');
+        input.classList.remove('form__input--close');
+        accessButton.classList.remove('form__button--hide');
       });
 
       document.querySelectorAll('.form__input-wrapper--last-number-inputs input').forEach((el, index) => {
@@ -137,7 +147,7 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
             }
           }
           if (el.getAttribute('name') === 'fourth-phone' && this.checkCodeIsEntered()) {
-            callLink.click();
+            callButton.click();
           }
         });
         el.addEventListener('keypress', this.onlyNumbers);

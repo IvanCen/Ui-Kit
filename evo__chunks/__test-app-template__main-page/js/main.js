@@ -256,6 +256,7 @@ const toggleModalPagePaymentOrder = new ToggleModalPagePaymentOrder({
 });
 
 
+
 const searchClassMethod = new Search();
 const toggleBalance = new ToggleBalance();
 const toggleOrder = new ToggleOrder();

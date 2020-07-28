@@ -139,27 +139,30 @@ class ToggleMain extends ToggleMainPage {
       this.mainPageContent.append(mainPageButtonJoinOrange.create());
     }
     setTimeout(() => {
-      const footerButtonMain = document.querySelector('.footer__button--type--main');
-      activeFooter(footerButtonMain);
+      this.footerButtonMain = document.querySelector('.footer__button--type--main');
+      activeFooter(this.footerButtonMain);
     }, 300);
 
-    this.topBarContentContainer = document.querySelector('.top-bar__content-container--theme--dark');
 
-    this.mainPageContent.addEventListener('scroll', () => {
-      if (this.mainPageContent.scrollTop < 140) {
-        if (this.topBarContentContainer.classList.contains('top-bar__content-container--hide')) {
-          this.topBarContentContainer.classList.remove('top-bar__content-container--hide');
-          this.topBar.classList.remove(`top-bar--sticky${isIos ? '--ios' : ''}`);
-          this.promoContainer.classList.remove('main-card__container-promo--indentation--top');
+    if (!isEmptyObj(userInfoObj)) {
+      this.topBarContentContainer = document.querySelector('.top-bar__content-container--theme--dark');
+
+      this.mainPageContent.addEventListener('scroll', () => {
+        if (this.mainPageContent.scrollTop < 212) {
+          if (this.topBarContentContainer.classList.contains('top-bar__content-container--hide')) {
+            this.topBarContentContainer.classList.remove('top-bar__content-container--hide');
+            this.topBar.classList.remove(`top-bar--fixed${isIos ? '--ios' : ''}`);
+            this.promoContainer.classList.remove('main-card__container-promo--indentation--top');
+          }
+        } if (this.mainPageContent.scrollTop > 212) {
+          if (!this.topBarContentContainer.classList.contains('top-bar__content-container--hide')) {
+            this.topBarContentContainer.classList.add('top-bar__content-container--hide');
+            this.topBar.classList.add(`top-bar--fixed${isIos ? '--ios' : ''}`);
+            this.promoContainer.classList.add('main-card__container-promo--indentation--top');
+          }
         }
-      } if (this.mainPageContent.scrollTop > 140) {
-        if (!this.topBarContentContainer.classList.contains('top-bar__content-container--hide')) {
-          this.topBarContentContainer.classList.add('top-bar__content-container--hide');
-          this.topBar.classList.add(`top-bar--sticky${isIos ? '--ios' : ''}`);
-          this.promoContainer.classList.add('main-card__container-promo--indentation--top');
-        }
-      }
-    });
+      });
+    }
 
     checkMessageInbox();
   }

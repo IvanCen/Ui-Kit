@@ -26,8 +26,8 @@
 
   &--opened--bottom-bar {
     left: 0;
-    background-color: $pattensBlue;
     height: calc(100vh - 133px);
+    background-color: $white;
   }
 
   &__content {

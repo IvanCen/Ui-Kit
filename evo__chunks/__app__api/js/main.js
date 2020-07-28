@@ -760,4 +760,37 @@ class Api {
         console.log('Ошибка. Запрос не выполнен: ', err);
       });
   }
+
+  getClientAchievements(func) {
+    const request = {
+      method: 'get-client-achievements',
+      outputFormat: 'json',
+    };
+
+    fetch(this.options.baseUrl, {
+      method: 'POST',
+      headers: this.options.headers,
+      body: JSON.stringify(request),
+
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+      .then((res) => {
+        console.log(res);
+        if (res.success) {
+          userAchievements.successData = res.successData;
+          localStorage.setItem('userAchievements', JSON.stringify(userAchievements));
+        }
+
+        return res;
+      })
+      .then(func)
+      .catch((err) => {
+        console.log('Ошибка. Запрос не выполнен: ', err);
+      });
+  }
 }

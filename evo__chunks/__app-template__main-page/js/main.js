@@ -12,6 +12,7 @@ let orderPayInfo;
 let orderComment;
 let userMessages;
 
+let authorizationCodeLet;
 let itemsArrayLet;
 let basketArrayLet;
 let userDataObjLet;
@@ -25,8 +26,14 @@ let userBonusLogLet;
 let dataProductApiLet;
 let userFavoriteStoreLet;
 let outOfStockLet;
+let userAchievementsLet;
 
-
+try {
+  authorizationCodeLet = localStorage.getItem('authorizationCode') || '';
+} catch (e) {
+  authorizationCodeLet = '';
+  api.sendDebugMessage(e);
+}
 try {
   itemsArrayLet = JSON.parse(localStorage.getItem('items')) || [];
 } catch (e) {
@@ -105,6 +112,13 @@ try {
   outOfStockLet = {};
   api.sendDebugMessage(e);
 }
+try {
+  userAchievementsLet = JSON.parse(localStorage.getItem('userAchievements')) || {};
+} catch (e) {
+  userAchievementsLet = {};
+  api.sendDebugMessage(e);
+}
+const authorizationCode = authorizationCodeLet;
 const itemsArray = itemsArrayLet;
 const basketArray = basketArrayLet;
 const userDataObj = userDataObjLet;
@@ -118,8 +132,9 @@ const userBonusLog = userBonusLogLet;
 const dataProductApi = dataProductApiLet;
 const userFavoriteStore = userFavoriteStoreLet;
 const outOfStock = outOfStockLet;
+const userAchievements = userAchievementsLet;
 
-//api.sendDebugMessage(JSON.stringify(basketArray));
+
 /* if (isEmptyObj(storesDataObj)) {
     api.storesApi();
   } else if ((Date.now() - storesDataObj.lastEditDateRequest) > (24 * 60 * 60 * 1000)) {
@@ -141,8 +156,21 @@ if (isEmptyObj(applicationDataObj)) {
   }
 }
 
-api.getClientApi();
+function getUserInfo(info) {
+  if (info.success) {
+    api.getClientApi();
+  } else {
+    delete userInfoObj.successData;
+    localStorage.setItem('userInfo', JSON.stringify(userInfoObj));
+  }
+}
+
+if (authorizationCode !== '' && !isEmptyObj(userInfoObj)) {
+  api.authorizeCallInApi(getUserInfo, authorizationCode, userInfoObj.successData.phone);
+}
+
 api.productApi();
+api.getClientAchievements();
 api.getClientOrdersApi();
 api.getMessages();
 

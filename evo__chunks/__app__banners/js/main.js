@@ -1,4 +1,4 @@
-function activeBanners(containerBanners, isSwipe) {
+function activeBanners(containerBanners, isSwipe, funcCheckBasket = () => {}) {
   let dragStart = 0;
   let dragEnd = 0;
   let offsetX = 0;
@@ -44,6 +44,7 @@ function activeBanners(containerBanners, isSwipe) {
             localStorage.setItem('basket', JSON.stringify(basketArray));
             counterBasket();
             checkBasket();
+            checkEmptyBasket();
             containerBanners.remove();
           }, 300);
           containerBanners.classList.add('stop-action');

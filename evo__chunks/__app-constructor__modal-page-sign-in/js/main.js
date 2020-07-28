@@ -48,6 +48,34 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
     this.parameters.api.setClientApi(request, this.showError);
   }
 
+  expandBlock(input) {
+    if (input.style.maxHeight === 0 || input.style.maxHeight === '0px') {
+      input.style.maxHeight = `${input.scrollHeight}px`;
+      setTimeout(() => {
+        input.style.maxHeight = '100%';
+      }, 250);
+    } else if (input.style.maxHeight === '100%') {
+      setTimeout(() => {
+        if (input.closest('.form__group').classList.contains('form__group--isInvalid')) return;
+        if (input.classList.contains('form__tips--info')) return;
+        input.style.maxHeight = `${input.scrollHeight}px`;
+        input.style.maxHeight = 0;
+      }, 250);
+    }
+  }
+
+  checkCodeIsEntered() {
+    let emptyInputs = 0;
+    document.querySelectorAll('.form__input-wrapper--last-number-inputs input').forEach((el) => {
+      if (el.value !== '') emptyInputs++;
+    });
+    return emptyInputs === 4;
+  }
+
+  onlyNumbers(e) {
+    if (!/\d/.test(e.key)) e.preventDefault();
+  }
+
   regCall(info) {
     const inputArea = document.querySelector('.form__input-area--type--phone-sign-in');
     const phoneNumber = inputArea.value;
@@ -58,13 +86,9 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
     const textErrorPhone = document.querySelector('.form__text--error-phone');
     const numberForRegistrationEl = document.querySelector('.number-for-registration');
     const numbersElements = document.querySelectorAll('.last-number-input');
-    console.log(phoneNumber);
-    /* function refreshNumber(infoNumber) {
-      callLink.href = `tel:${infoNumber.successData.phone}`;
-    } */
+
     console.log(info);
     if (info.success === true) {
-      const { phone } = info.successData;
       const input = document.querySelector('.form__input');
 
       textErrorPhone.classList.add('form__text--close', 'form__text--hide');
@@ -74,93 +98,50 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
       accessButton.classList.add('form__button--hide');
       numberForRegistrationEl.textContent = phoneNumber;
 
-      /* if (phoneNumber === '+70000000000' || phoneNumber === '+7(000)000-00-00') {
-        callLink.style.visibility = 'hidden';
-
-        const timerRegSuccess = setInterval(() => {
-          this.parameters.api.authorizeApi(this.regSuccess, code, phoneNumber, timerRegSuccess, refreshLink);
-        }, 1000);
-      }
-      const refreshLink = setInterval(() => {
-        this.parameters.api.signInApi(phone, refreshNumber);
-      }, 240000);
-
-       callLink.addEventListener('click', () => {
-        const timerRegSuccess = setInterval(() => {
-          this.parameters.api.authorizeApi(this.regSuccess, code, phoneNumber, timerRegSuccess, refreshLink);
-        }, 1000);
-      }); */
       callLink.addEventListener('click', () => {
         const codeArr = [...numbersElements].map((number) => number.value);
         const code = codeArr.join('');
+        localStorage.setItem('authorizationCode', code);
         this.parameters.api.authorizeCallInApi(this.regSuccess, code, phoneNumber);
       });
-
-      function expandBlock(input) {
-        if (input.style.maxHeight === 0 || input.style.maxHeight === '0px') {
-          input.style.maxHeight = `${input.scrollHeight}px`;
-          setTimeout(() => {
-            input.style.maxHeight = '100%';
-          }, 250);
-        } else if (input.style.maxHeight === '100%') {
-          setTimeout(() => {
-            if (input.closest('.form__group').classList.contains('form__group--isInvalid')) return;
-            if (input.classList.contains('form__tips--info')) return;
-            input.style.maxHeight = `${input.scrollHeight}px`;
-            input.style.maxHeight = 0;
-          }, 250);
-        }
-      }
-
-      function checkCodeIsEntered() {
-        let emptyInputs = 0;
-        document.querySelectorAll('.form__input-wrapper--last-number-inputs input').forEach((el) => {
-          if (el.value !== '') emptyInputs++;
-        });
-        return emptyInputs === 4;
-      }
-
-      function onlyNumbers(e) {
-        if (!/\d/.test(e.key)) e.preventDefault();
-      }
 
       document.querySelectorAll('.form__input-wrapper--last-number-inputs input').forEach((el, index) => {
         el.addEventListener('focus', (e) => {
           e.currentTarget.closest('.form__group').classList.add('form__group--focused');
           const tips = e.currentTarget.closest('.form__group').querySelectorAll('.form__tips');
           if (tips.length) {
-            tips.forEach((el) => { expandBlock(el); });
+            tips.forEach((el) => {
+              this.expandBlock(el);
+            });
           }
         });
         el.addEventListener('blur', (e) => {
           const tips = e.currentTarget.closest('.form__group').querySelectorAll('.form__tips');
           if (tips.length) {
-            tips.forEach((el) => { expandBlock(el); });
+            tips.forEach((el) => {
+              this.expandBlock(el);
+            });
           }
           e.currentTarget.closest('.form__group').classList.remove('form__group--focused');
         });
         el.addEventListener('beforeinput', (e) => {
           el.value = '';
         });
-        el.addEventListener('keyup', function (e) {
+        el.addEventListener('keyup', (event) => {
           const re = /\d/;
-          if (this.value.match(re)) {
-            try { el.nextElementSibling.focus(); } catch (e) {
+          if (event.target.value.match(re)) {
+            try {
+              el.nextElementSibling.focus();
+            } catch (e) {
               console.log(e);
             }
           }
-          if (el.getAttribute('name') === 'fourth-phone' && checkCodeIsEntered()) {
+          if (el.getAttribute('name') === 'fourth-phone' && this.checkCodeIsEntered()) {
             callLink.click();
           }
         });
-        el.addEventListener('keypress', onlyNumbers);
+        el.addEventListener('keypress', this.onlyNumbers);
       });
-
-
-      // запускается сразу после отправки номера
-      /* const timerRegSuccess = setInterval(() => {
-        this.parameters.api.authorizeApi(this.regSuccess, code, phoneNumber, timerRegSuccess, refreshLink);
-      }, 1000); */
     } else {
       textErrorPhone.innerHTML = info.errors[0];
       textErrorPhone.classList.remove('form__text--close', 'form__text--hide');
@@ -208,13 +189,6 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
         (async () => {
           await rateLastOrder();
         })();
-        /* setTimeout(() => {
-          buttonAgree.classList.add('form__button--hide');
-          textSuccess.textContent = 'Добро пожаловать в Хлебник!';
-          textSuccess.classList.remove('form__text--close', 'form__text--hide');
-          textSuccess.classList.add('form__text--indentation');
-          inputsContainer.classList.remove('form__inputs-container--hide');
-        }, 2500); */
       }
     } else {
       this.showError(userInfo);
@@ -229,8 +203,6 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
     } else {
       textError.classList.add('form__text--close', 'form__text--hide');
     }
-    /* console.log('getdata', info);
-    api.getClientApi(this.askUserInfo); */
   }
 
   askUserName() {
@@ -337,7 +309,12 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
         '--indentation',
       ],
       events: [
-        { type: 'click', callback: () => { this.registrationNumber(this); } },
+        {
+          type: 'click',
+          callback: () => {
+            this.registrationNumber(this);
+          },
+        },
       ],
       eventSkip: [
         {

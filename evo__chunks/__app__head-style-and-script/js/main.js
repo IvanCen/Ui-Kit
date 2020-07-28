@@ -389,6 +389,49 @@ function loadImgNotSquare(productInfo, imgEl, expansion, timer) {
   return '';
 }
 
+function checkEmptyBasket() {
+  if (basketArray.length === 0) {
+    const backButton = new CreateButton({
+      selector: ['button'],
+      style: ['button'],
+      modifier: ['--size--big',
+        '--theme--tangerin',
+        '--type--fixed-low',
+        '--theme--shadow-big',
+      ],
+      text: ['К меню'],
+      events: [
+        {
+          type: 'click',
+          callback: () => {
+            toggleModalPageReviewOrder.closePage();
+            toggleModalPageReviewOrder.deletePage();
+          },
+        },
+      ],
+    });
+    const titleBarEmptyBasket = new CreateTitleBar({
+      selector: ['div'],
+      style: ['title-bar'],
+      modifier: ['--indentation--top', '--size--medium'],
+      text: ['Добавьте товары в корзину, чтобы продолжить'],
+    });
+    const accordionContainer = document.querySelectorAll('.accordion__container');
+    const buttonOrder = document.querySelector('.button--type--make-order');
+    const modalPageOrderReview = document.querySelector('.modal-page-order-review');
+    const cardItemContainer = document.querySelector('.card-item__container--type--review');
+
+    [...accordionContainer, cardItemContainer, buttonOrder].forEach((el) => el.remove());
+    modalPageOrderReview.append(titleBarEmptyBasket.create());
+    modalPageOrderReview.append(backButton.create());
+  }
+}
+
+function clearFriendDataInfo() {
+  delete orderFriendData.friendName;
+  delete orderFriendData.friendPhone;
+}
+
 function counterBasket() {
   const basket = document.querySelector('.bottom-bar__icon--type--basket');
   const counterIcon = document.querySelector('.bottom-bar__counter');
@@ -733,6 +776,7 @@ class ToggleThirdPage {
   openPage() {
     setTimeout(() => {
       this.thirdPage.classList.add(this.classOpen);
+      this.thirdPage.classList.add(`third-page${isIos ? '--ios' : ''}`);
       this.body.classList.add('body');
     }, 100);
   }
@@ -1109,6 +1153,7 @@ class ToggleModalPageOrderReviewRoot {
       setTimeout(() => {
         if (this.modalPageOrderReview) {
           this.modalPageOrderReview.remove()
+          clearFriendDataInfo();
         }
       }, 100);
   }

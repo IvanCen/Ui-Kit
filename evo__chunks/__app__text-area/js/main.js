@@ -141,7 +141,20 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
             } = productItemModif;
 
             this.countNutrition({
-              caffeine, carbon, cholesterol, energy, energyFatValue, fats, fiber, netWeight, protein, saturatedFats, sodium, sugar, transFats, volume,
+              caffeine,
+              carbon,
+              cholesterol,
+              energy,
+              energyFatValue,
+              fats,
+              fiber,
+              netWeight,
+              protein,
+              saturatedFats,
+              sodium,
+              sugar,
+              transFats,
+              volume,
             }, el, counter);
           }
         }
@@ -178,7 +191,7 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
       <div class="text-area text-area--theme--light text-area--type--description">
         <div class="text-area__container text-area__container--indentation--normal">
           <div class="text-area__content-container text-area__content-container--direction--column">
-            <p class="text-area__text text-area__text--theme--shadow text-area__text--indentation--big">${productInfo.intro}</p>
+            <p class="text-area__text text-area__text--theme--shadow">${productInfo.intro}</p>
             <div class="text-area__button-container">
               <button class="button text-area__button text-area__button--type--like text-area__button--position--absolute">
                 <svg class="text-area__icon text-area__icon--type--like" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -197,15 +210,14 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
         <div class="text-area__content-container text-area__content-container--direction--row text-area__content-container--type--more">
           <div class="text-area__text-container">
             <h2 class="text-area__title text-area__title--size--normal">Подробная информация</h2>
-            <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--top text-area__info--netWeight">
+            <span class="text-area__info text-area__info--text-size--normal text-area__info--text-bold text-area__info--netWeight">
               Масса нетто
-              <span class="text-area__info--text-size--normal text-area__info-number--indentation--left text-area__info-number--netWeight">
+              <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--left text-area__info-number--netWeight">
               ${productInfo.netWeight || ''} г</span>
-              
             </span>
-            <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--top text-area__info--volume">
+            <span class="text-area__info text-area__info--text-size--normal text-area__info--text-bold text-area__info--volume">
               Объём
-              <span class="text-area__info--text-size--normal text-area__info-number--indentation--left text-area__info-number--volume">
+              <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--left text-area__info-number--volume">
               ${productInfo.volume || ''} мл</span>
             </span>
             <span class="text-area__info text-area__info--text-size--normal text-area__info--text-bold">
@@ -304,6 +316,7 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
     this.buttonMore = this.element.querySelector('.text-area__button--type--more');
     this.buttonAdd = this.element.querySelector('.text-area__button--type--add-product');
     this.nutritionArea = this.element.querySelector('.text-area__content-container--type--more');
+    this.introEl = this.element.querySelector('.text-area--type--description');
     this.price = this.element.querySelector('.text-area__price');
     this.stickersContainer = this.element.querySelector('.text-area__icon-container');
 
@@ -312,6 +325,11 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
     } else {
       this.price.classList.remove('text-area__price--hide');
     }
+
+    if (productInfo.intro === '') {
+      this.introEl.remove();
+    }
+
     if (productInfo.stickers.length !== 0) {
       productInfo.stickers.forEach((stickerName) => {
         const stickerEl = document.createElement('div');

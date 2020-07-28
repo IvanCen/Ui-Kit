@@ -440,15 +440,17 @@ class CreateCardItemReviewOrder extends CreateItem {
     this.iconsMinus.addEventListener('click', function () {
       (() => {
         if (!this.classList.contains('stop-action')) {
-          counterTopBar.textContent = Number(counterTopBar.textContent) - 1;
-          counterBottomBar.textContent = Number(counterBottomBar.textContent) - 1;
+
           el.classList.add('card-item--animation');
           for (const [index, item] of Object.entries(basketArray)) {
             if (item === productInfo) {
+              console.log(item, productInfo)
               basketArray.splice(index, 1);
               break;
             }
           }
+          counterTopBar.textContent = basketArray.length;
+          counterBottomBar.textContent = basketArray.length;
           localStorage.setItem('basket', JSON.stringify(basketArray));
           counterBasket();
           checkBasket();

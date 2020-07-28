@@ -339,7 +339,6 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
     }
 
     this.buttonMore.addEventListener('click', () => {
-      console.log(this.nutritionArea, this.nutritionArea.offsetHeight, this.nutritionArea.scrollHeight);
       this.nutritionArea.classList.remove('text-area__content-container--type--more');
       this.buttonMore.remove();
     });
@@ -469,10 +468,6 @@ class CreateTextAreaAddins extends CreateItem {
     }
 
     this.template = `
-      <div class="text-area__counter-container">
-        <span class="text-area__all-counter-title">У вашего напитка сейчас </span>
-        <span class="text-area__all-counter"><span class="text-area__all-counter-number">${allCountAdds} добавок</span></span>
-      </div>
       <button class="text-area__button text-area__button--type--reset">Очистить добавки</button>
     `;
     this.element.insertAdjacentHTML('beforeend', this.template);

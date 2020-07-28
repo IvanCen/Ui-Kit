@@ -359,7 +359,7 @@ class CreateCardItemReviewOrder extends CreateItem {
     this.create.bind(this);
   }
 
-  create(productInfo) {
+  create(productInfo, funcCheckBasket) {
     this.element = document.createElement('div');
     this.energy = `Калорий ${dataProductApi.successData.items[productInfo.id].energy} г`;
 
@@ -400,7 +400,7 @@ class CreateCardItemReviewOrder extends CreateItem {
     const counterBottomBar = document.querySelector('.bottom-bar__counter');
     if (!isEmptyObj(outOfStock) && outOfStock.successData.itemsAndModifiers.length !== 0) {
       for (const id in outOfStock.successData.itemsAndModifiers) {
-        if (Number(id) === productInfo.id) {
+        if (Number(id) === Number(productInfo.id)) {
           this.figure.classList.remove('main-card__figure--hide');
           break;
         }
@@ -450,18 +450,19 @@ class CreateCardItemReviewOrder extends CreateItem {
     this.iconsMinus.addEventListener('click', function () {
       (() => {
         if (!this.classList.contains('stop-action')) {
-          counterTopBar.textContent = Number(counterTopBar.textContent) - 1;
-          counterBottomBar.textContent = Number(counterBottomBar.textContent) - 1;
           el.classList.add('card-item--animation');
           for (const [index, item] of Object.entries(basketArray)) {
-            if (item === productInfo) {
+            if (JSON.stringify(item) === JSON.stringify(productInfo)) {
               basketArray.splice(index, 1);
               break;
             }
           }
+          counterTopBar.textContent = basketArray.length;
+          counterBottomBar.textContent = basketArray.length;
           localStorage.setItem('basket', JSON.stringify(basketArray));
           counterBasket();
           checkBasket();
+          checkEmptyBasket();
           setTimeout(() => el.remove(), 200);
           this.classList.add('stop-action');
         }
