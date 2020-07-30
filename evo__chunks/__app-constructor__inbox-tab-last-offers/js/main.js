@@ -43,6 +43,6 @@ class ToggleInboxTabLastOffersContent extends ToggleInboxTabContent {
       });
     }
 
-    activeButton();
+    
   }
 }

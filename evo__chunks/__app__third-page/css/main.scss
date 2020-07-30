@@ -5,7 +5,7 @@
   left: 100%;
   width: 100%;
   bottom: 0;
-  z-index: 4;
+  z-index: 30;
   background-color: $pattensBlue;
   flex-grow: 1;
   transition: all .3s ease-out;
@@ -17,7 +17,11 @@
   justify-content: flex-start;
   top: 0;
   height: calc(100vh - 78px);
-   //убрать потом, сделанно для отображение с панелькой телефонов
+
+  &--opened--bottom-bar {
+    left: 0;
+    height: calc(100vh - 133px);
+  }
 
   &--opened {
 

@@ -11,11 +11,11 @@
   width: 100%;
   bottom: 0;
   left: 0;
-  z-index: 10;
+  z-index: 39;
   backdrop-filter: blur(27px);
 
   &--position--over {
-    z-index: 10;
+    z-index: 39;
   }
 
   &__button {

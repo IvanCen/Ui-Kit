@@ -11,7 +11,7 @@ class ToggleSubPageGiftCard extends ToggleSubPage {
     const giftCardTopBar = new CreateTopBarWithBackButton({
       selector: ['div'],
       style: ['top-bar'],
-      modifier: ['--size--small', '--indentation--bottom', '--theme--light'],
+      modifier: [`${isIos ? '--size--small--ios' : '--size--small'}`, '--indentation--bottom', '--theme--light'],
       textTitle: ['Создать подарок'],
       eventBack: [
         { type: 'click', callback: this.closePage },

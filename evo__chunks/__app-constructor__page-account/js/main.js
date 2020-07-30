@@ -10,11 +10,17 @@ class TogglePageAccount extends TogglePage {
     const accountTopBar = new CreateTopBarWithBackButton({
       selector: ['div'],
       style: ['top-bar'],
-      modifier: ['--size--medium', '--indentation--bottom'],
+      modifier: [`--size--medium${isIos ? '--ios' : ''}`, '--indentation--bottom'],
       textTitle: ['Личный кабинет'],
       eventBack: [
-        { type: 'click', callback: this.closePage },
-        { type: 'click', callback: this.deletePage },
+        {
+          type: 'click',
+          callback: () => {
+            checkMessageInbox();
+            this.closePage();
+            this.deletePage();
+          },
+        },
       ],
     });
     const accountButtonJoinTangerin = new CreateButton(
@@ -31,11 +37,13 @@ class TogglePageAccount extends TogglePage {
           {
             type: 'click',
             callback: () => {
-              this.closePage();
-              this.deletePage();
-              setTimeout(() => {
-                togglePageSignIn.rendering();
-              }, 300);
+              stopAction(() => {
+                this.closePage();
+                this.deletePage();
+                setTimeout(() => {
+                  toggleModalPageSignIn.rendering();
+                }, 300);
+              });
             },
           },
         ],
@@ -52,7 +60,14 @@ class TogglePageAccount extends TogglePage {
         ],
         text: ['Выйти'],
         events: [
-          { type: 'click', callback: api.logout },
+          {
+            type: 'click',
+            callback: () => {
+              stopAction(() => {
+                api.logout();
+              });
+            },
+          },
         ],
       },
     );
@@ -67,7 +82,14 @@ class TogglePageAccount extends TogglePage {
         ],
         text: ['Профиль'],
         events: [
-          { type: 'click', callback: toggleSubPageAccountEditUser.rendering },
+          {
+            type: 'click',
+            callback: () => {
+              stopAction(() => {
+                toggleSubPageAccountEditUser.rendering();
+              });
+            },
+          },
         ],
       },
     );
@@ -85,11 +107,13 @@ class TogglePageAccount extends TogglePage {
           {
             type: 'click',
             callback: () => {
-              this.closePage();
-              this.deletePage();
-              setTimeout(() => {
-                togglePageSignIn.rendering();
-              }, 300);
+              stopAction(() => {
+                this.closePage();
+                this.deletePage();
+                setTimeout(() => {
+                  toggleModalPageSignIn.rendering();
+                }, 300);
+              });
             },
           },
         ],
@@ -104,7 +128,7 @@ class TogglePageAccount extends TogglePage {
     this.buttonContainer = document.createElement('div');
     this.page.prepend(createTopBarIos());
     this.page.prepend(accountTopBar.create());
-    if (localStorage.getItem('user-sign-in') === null) {
+    if (isEmptyObj(userInfoObj)) {
       this.buttonContainer.append(accountButtonJoinTangerin.create());
       this.buttonContainer.append(accountButtonJoinTangerinTransparent.create());
     } else {
@@ -113,7 +137,7 @@ class TogglePageAccount extends TogglePage {
     }
     this.page.append(this.buttonContainer);
     this.page.append(accountTextArea.create());
-    activeButton();
+
     this.openPage();
   }
 }

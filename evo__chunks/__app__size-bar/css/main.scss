@@ -5,6 +5,10 @@
   background-color: $white;
   padding-left: 16px;
 
+  &--hide {
+    display: none;
+  }
+
   &--open {
     color: $white;
     background: $nero;

@@ -10,7 +10,7 @@ class TogglePageSeeAll extends TogglePage {
     const giftSeeAllTopBar = new CreateTopBarWithBackButton({
       selector: ['div'],
       style: ['top-bar'],
-      modifier: ['--size--small', '--indentation--bottom'],
+      modifier: [`${isIos ? '--size--small--ios' : '--size--small'}`, '--indentation--bottom'],
       textTitle: ['Популярные (16)'],
       eventBack: [
         { type: 'click', callback: this.closePage },

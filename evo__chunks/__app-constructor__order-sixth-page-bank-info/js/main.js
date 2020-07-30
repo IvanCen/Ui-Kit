@@ -13,7 +13,7 @@ class ToggleSixthPageReviewOrder extends ToggleSixthPage {
       style: ['top-bar'],
       modifier: [
         '--theme--dark',
-        '--size--medium',
+        `--size--medium${isIos ? '--ios' : ''}`,
       ],
       textTitle: ['Информация'],
       eventCloseIcon: [

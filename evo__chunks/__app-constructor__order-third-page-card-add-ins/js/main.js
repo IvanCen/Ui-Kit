@@ -39,13 +39,25 @@ class ToggleThirdPageAddinsCard extends ToggleThirdPage {
     return itemModifierWithTitles;
   }
 
-  rendering(productInfo) {
-    super.rendering();
+  scrollToModifier(modifierName, page) {
+    this.titlesModifiers = this.thirdPage.querySelectorAll('.text-area__title--type--uppercase');
+    [...this.titlesModifiers].forEach((title, index) => {
+      if (title.textContent === modifierName) {
+        title.closest('.text-area__wraper').scrollIntoView({ block: 'start', inline: 'start', behavior: 'smooth' });
+        if (isIos) {
+          page.scrollTop -= 40;
+        }
+      }
+    });
+  }
+
+  rendering(productInfo, modifierName, pushRoute) {
+    super.rendering(pushRoute);
 
     const addinsTopBar = new CreateTopBarDarkWithCloseIcon({
       selector: ['div'],
       style: ['top-bar'],
-      modifier: ['--size--small', '--theme--dark'],
+      modifier: [`${isIos ? '--size--small--ios' : '--size--small'}`, '--theme--dark'],
       textTitle: ['Добавки'],
       eventCloseIcon: [
         { type: 'click', callback: this.closePage },
@@ -55,6 +67,7 @@ class ToggleThirdPageAddinsCard extends ToggleThirdPage {
     const addinsTextArea = new CreateTextAreaAddins({
       selector: ['div'],
       style: ['text-area-wraper'],
+      modifier: ['--indentation--bottom'],
     });
     const addinTextArea = new CreateTextAreaAddin();
     const addinsButton = new CreateButton({
@@ -75,50 +88,42 @@ class ToggleThirdPageAddinsCard extends ToggleThirdPage {
     this.thirdPage.append(addinsTopBar.create(productInfo));
     this.thirdPage.append(addinsTextArea.create(productInfo));
     this.thirdPage.append(addinsButton.create());
+
     this.addinsContainer = this.thirdPage.querySelector('.text-area__counter-container');
-    const modifierObjWithTitle = this.getModifiers(productInfo);
-    const modifierArrWithTitle = Object.entries(modifierObjWithTitle);
-    modifierArrWithTitle.forEach((item) => {
+    this.buttonAdd = this.thirdPage.querySelector('.button--type--add-adds');
+    this.buttonReset = this.thirdPage.querySelector('.text-area__button--type--reset');
+
+    this.modifierObjWithTitle = this.getModifiers(productInfo);
+    this.modifierArrWithTitle = Object.entries(this.modifierObjWithTitle);
+    this.modifierArrWithTitle.forEach((item) => {
       this.addinsContainer.after(addinTextArea.create(item, productInfo));
     });
 
-    const buttonAdd = document.querySelector('.button--type--add-adds');
-    const buttonReset = this.thirdPage.querySelector('.text-area__button--type--reset');
-    console.log(productInfo);
-    buttonReset.addEventListener('click', () => {
-      userDataObj[productInfo.id] = {};
+
+    this.buttonReset.addEventListener('click', () => {
+      delete userDataObj[productInfo.id];
       localStorage.setItem('userData', userDataObj);
       toggleThirdPage.clearPage();
-      this.rendering(productInfo);
+      this.pushRoute = false;
+      this.rendering(productInfo, modifierName, this.pushRoute);
     });
 
-    buttonAdd.addEventListener('click', () => {
-      const basketPopupIcon = document.querySelector('.bottom-bar__icon-popup');
-      const basketPopupIconImg = document.querySelector('.bottom-bar__icon-popup-img');
-      basketArray.push({ id: productInfo.id, modifiers: [] });
-      basketArray.forEach((el) => {
-        if (el.id === productInfo.id) {
-          for (const modifiersUserItem in userDataObj[productInfo.id]) {
-            const counter = userDataObj[productInfo.id][modifiersUserItem];
-            if (counter !== 0) {
-              el.modifiers.push({ id: Number(modifiersUserItem), count: counter });
-            }
-          }
-        }
-      });
-      localStorage.setItem('basket', JSON.stringify(basketArray));
-      counterBasket();
-      loadImg(productInfo, basketPopupIconImg, 'webp');
-      basketPopupIcon.classList.add('bottom-bar__icon-popup--open');
-      setTimeout(() => {
-        basketPopupIcon.classList.remove('bottom-bar__icon-popup--open');
-        basketPopupIconImg.style.backgroundImage = '';
-      }, 3000);
-      checkBasket();
+    this.buttonAdd.addEventListener('click', () => {
+      addProductToBasket(productInfo);
     });
 
     switchAdd(productInfo);
-    activeButton();
+
+    this.textAreaWraper = this.thirdPage.querySelectorAll('.text-area__wraper');
+    [...this.textAreaWraper].forEach((el) => {
+      this.containersModifiers = el.querySelectorAll('.text-area__container--type--modifier');
+
+      if (this.containersModifiers.length !== 0) {
+        [...this.containersModifiers].pop().classList.add('text-area__container--no-border');
+      }
+    });
+
     this.openPage();
+    this.scrollToModifier(modifierName, this.thirdPage);
   }
 }

@@ -44,7 +44,7 @@
 
     &:after {
       content: '';
-      background: url("[+chunkWebPath+]/img/icon-ruble.svg") no-repeat;
+      background: url("data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-ruble.svg]]") no-repeat;
       background-size: cover;
       position: absolute;
       right: -12px;

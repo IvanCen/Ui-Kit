@@ -18,7 +18,7 @@ class ToggleBalance extends ToggleMainPage {
       selector: ['div'],
       style: ['top-bar'],
       modifier: [
-        '--size--medium',
+        `--size--medium${isIos ? '--ios' : ''}`,
       ],
       textTitle: ['Баланс'],
     });
@@ -49,11 +49,15 @@ class ToggleBalance extends ToggleMainPage {
             const option = {
               heart: false,
             };
-            togglePageBalanceHistoryBonus.rendering(option);
+            stopAction(() => {
+              function renderScore() {
+                togglePageBalanceHistoryScore.rendering(option);
+                togglePageBalanceHistoryScore.openPage();
+              }
+              api.getClientBalanceLog(renderScore);
+            });
           },
         },
-        { type: 'click', callback: togglePageBalanceHistoryScore.openPage },
-
       ],
     });
     const textAreaBonus = new CreateTextAreaBalance({
@@ -70,8 +74,21 @@ class ToggleBalance extends ToggleMainPage {
         return '0';
       },
       eventButton: [
-        { type: 'click', callback: togglePageBalanceHistoryBonus.rendering },
-        { type: 'click', callback: togglePageBalanceHistoryBonus.openPage },
+        {
+          type: 'click',
+          callback: () => {
+            const option = {
+              heart: true,
+            };
+            stopAction(() => {
+              function renderBonus() {
+                togglePageBalanceHistoryBonus.rendering(option);
+                togglePageBalanceHistoryBonus.openPage();
+              }
+              api.getClientBonusLog(renderBonus);
+            });
+          },
+        },
       ],
     });
     const buttonJoinOrange = new CreateButton({
@@ -82,10 +99,19 @@ class ToggleBalance extends ToggleMainPage {
         '--theme--tangerin',
         '--theme--shadow-big',
         '--type--fixed',
+        '-route',
       ],
       text: ['Войти'],
       eventsOpen: [
-        { type: 'click', callback: togglePageSignIn.rendering },
+        {
+          type: 'click',
+          callback: () => {
+            stopAction(() => {
+              returnPageObj.returnBalanceAfterSignIn = true;
+              toggleModalPageSignIn.rendering();
+            });
+          },
+        },
       ],
     });
     const buttonFill = new CreateButton({
@@ -96,15 +122,23 @@ class ToggleBalance extends ToggleMainPage {
         '--theme--tangerin',
         '--theme--shadow-big',
         '--type--fixed',
+        '-route',
       ],
       text: ['Пополнить'],
       eventsOpen: [
-        { type: 'click', callback: togglePageBalanceFill.rendering },
+        {
+          type: 'click',
+          callback: () => {
+            stopAction(() => {
+              togglePageBalanceFill.rendering();
+            });
+          },
+        },
       ],
     });
     this.mainPageContent.append(createTopBarIos());
     this.mainPageContent.append(topBar.create());
-    if (localStorage.getItem('user-sign-in') === null) {
+    if (isEmptyObj(userInfoObj)) {
       this.mainPageContent.append(card.create());
       this.mainPageContent.append(buttonJoinOrange.create());
     } else {

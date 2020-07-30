@@ -14,6 +14,14 @@
     padding: 0 16px;
   }
 
+  &--type--swipe {
+    width: 100%;
+    display: grid;
+    grid-template-columns: calc(100vw - 20px) 1fr;
+    justify-items: flex-start;
+    grid-gap: 10px 13px;
+  }
+
   &--direction--row {
     display: grid;
     grid-template-columns: 65px 1fr;
@@ -59,6 +67,16 @@
       grid-row-gap: 20px;
       grid-column-gap: 13px;
       padding: 20px 16px;
+    }
+
+    &--direction--row-small {
+      width: 100vw;
+      display: grid;
+      grid-template-columns: 65px 1fr;
+      grid-row-gap: 20px;
+      grid-column-gap: 13px;
+      padding-top: 20px;
+      padding-left: 20px;
     }
 
     &--direction--column {
@@ -155,6 +173,7 @@
   }
 
   &__image {
+    position: relative;
     border-radius: 50%;
     background-size: cover;
     background-repeat: no-repeat;
@@ -189,6 +208,20 @@
     &--disable {
       opacity: 0.4;
     }
+
+
+  }
+
+  &__zone {
+    width: 100vw;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 20px;
+
+    &--type--delete {
+      background: no-repeat $alizarinCrimson;
+    }
   }
 
   &__info-container {
@@ -220,16 +253,29 @@
     display: flex;
     width: 100%;
     justify-content: center;
-    margin: 20px 0;
+    margin: 5px 0;
     max-width: 200px;
 
-     &--size--small {
-       margin: 16px 0;
-     }
+    &--position--absolute {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+    }
+
+    &--size--small {
+      margin: 16px 0;
+    }
+  }
+
+  &__stickers-container {
+    display: flex;
+    position: absolute;
+    bottom: 0;
+    left: 0;
   }
 
   &__button {
-    padding: 0;
+    padding: 10px;
 
     &--type--minus {
       margin-right: 20px;
@@ -258,6 +304,19 @@
       stroke: none;
       fill: $alizarinCrimson;
     }
+
+    &--type--hit {
+      background: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-hit.svg]]") no-repeat;
+    }
+
+    &--type--summer {
+      background: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-summer.svg]]") no-repeat;
+    }
+
+    &--size--big {
+      width: 30px;
+      height: 30px;
+    }
   }
 
   &__list {
@@ -275,7 +334,7 @@
 
     &:after {
       content: '';
-      background: url("[+chunkWebPath+]/img/icon-rubles.svg") no-repeat;
+      background: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-rubles.svg]]") no-repeat;
       background-size: cover;
       position: absolute;
       right: -13px;

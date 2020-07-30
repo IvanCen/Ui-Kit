@@ -13,13 +13,13 @@ class ToggleOrderHistoryContent extends ToggleOrderTabContent {
   }
 
   rendering() {
-    const orderHistoryMainCard = new CreateOrderMainCard({
+    /* const orderHistoryMainCard = new CreateOrderMainCard({
       selector: ['div'],
       style: ['main-card'],
       title: ['Когда история повторяется'],
       text: ['Предыдущие заказы появятся здесь, для быстрого заказа сного'],
       eventOpenSignInPage: [{ type: 'click', callback: togglePageSignIn.rendering }],
-    });
+    }); */
     const cardItem = new CreateCardItemHistory();
 
     this.mainPageContent = document.querySelector('.main-page__content');
@@ -37,8 +37,5 @@ class ToggleOrderHistoryContent extends ToggleOrderTabContent {
       }
     }
     api.getClientOrdersApi(render);
-
-    activeLike();
-    activeButton();
   }
 }

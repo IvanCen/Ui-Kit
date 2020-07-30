@@ -7,25 +7,68 @@ class ToggleMain extends ToggleMainPage {
 
   rendering() {
     super.rendering('main');
-
+    if (returnPageObj) {
+      returnPageObj.returnMainPageAfterSignIn = false;
+    }
     const mainPageTopBar = new CreateTopBar({
       selector: ['div'],
       style: ['top-bar'],
       modifier: [
-        '--size--small',
         '--indentation--bottom',
         '--main',
       ],
       textTitle: ['Отличный день для кофе ☕'],
-      eventOpenSignInPage: [{ type: 'click', callback: togglePageSignIn.rendering }],
-      eventOpenInboxPage: [{ type: 'click', callback: togglePageInbox.rendering }],
-      eventOpenAccountPage: [{ type: 'click', callback: togglePageAccount.rendering }],
+      eventOpenSignInPage: [{
+        type: 'click',
+        callback: () => {
+          stopAction(() => {
+            returnPageObj.returnMainPageAfterSignIn = true;
+            toggleModalPageSignIn.rendering();
+          });
+        },
+      }],
+      eventOpenInboxPage: [{
+        type: 'click',
+        callback: () => {
+          stopAction(() => {
+            togglePageInbox.rendering();
+          });
+        },
+      }],
+      eventOpenAccountPage: [{
+        type: 'click',
+        callback: () => {
+          stopAction(() => {
+            togglePageAccount.rendering();
+          });
+        },
+      }],
+      eventOpenBalanceFill:
+        [{
+          type: 'click',
+          callback: () => {
+            stopAction(() => {
+              togglePageBalanceFill.rendering();
+            });
+          },
+        }],
       eventOpenHistory: [
         { type: 'click', callback: openHistory },
 
       ],
     });
     const mainPageMainCard = new CreateMainCard();
+
+    const ourHistoryMainCard = new CreateOurHistoryMainCard({
+      selector: ['div'],
+      style: ['main-card'],
+      modifier: ['--theme--shadow',
+        '--type--border',
+      ],
+      title: ['О компании ХЛЕБНИК'],
+      text: ['Мы - пекарня ХЛЕБНИК, и мы хотим с вами познакомиться. Для этого мы каждый день открываем двери наших пекарен, запускаем производство и встаем за прилавок. Мы делаем первый шаг навстречу к вам.'],
+      buttonText: ['Читать подробнее'],
+    });
 
     const mainPageButtonJoinOrange = new CreateButton({
       selector: ['button'],
@@ -37,75 +80,90 @@ class ToggleMain extends ToggleMainPage {
         '--type--fixed',
       ],
       text: ['Войти'],
-      events: [{ type: 'click', callback: togglePageSignIn.rendering }],
+      events: [{
+        type: 'click',
+        callback: () => {
+          returnPageObj.returnMainPageAfterSignIn = true;
+          toggleModalPageSignIn.rendering();
+        },
+      }],
     });
 
 
     function renderPosts(dataPosts) {
-      const mainPageContent = document.querySelector('.main-page__content-main');
-      const postContainer = document.createElement('div');
-      postContainer.classList.add('main-card__container-posts');
-
-      mainPageContent.append(postContainer);
+      const postContainer = document.querySelector('.main-card__container-posts');
       dataPosts.successData.forEach((item) => {
-        postContainer.prepend(mainPageMainCard.create(item));
+        if (postContainer) {
+          postContainer.prepend(mainPageMainCard.create(item));
+        }
       });
     }
 
     function renderPromo(dataPromo) {
-      const promoContainer = document.createElement('div');
-      promoContainer.classList.add('main-card__container-promo');
-      const topBar = document.querySelector('.top-bar--main');
-      topBar.after(promoContainer);
+      const promoContainer = document.querySelector('.main-card__container-promo');
       dataPromo.successData.forEach((item) => {
-        promoContainer.prepend(mainPageMainCard.create(item));
-        setTimeout(() => {
-          const mainPage = document.querySelector('.main-page');
-          const loader = document.querySelector('.loader');
+        if (promoContainer) {
+          promoContainer.prepend(mainPageMainCard.create(item));
+        }
+      });
+      setTimeout(() => {
+        const mainPage = document.querySelector('.main-page');
+        const loader = document.querySelector('.loader');
+        if (loader) {
           mainPage.classList.remove('main-page--loaded');
           loader.classList.add('loader--hide');
-
-          if (!isEmptyObj(userDataObj)) {
-            rateLastOrder();
-          }
-        }, 1000);
-      });
+          loader.remove();
+        }
+      }, 1000);
+      if (!isEmptyObj(userDataObj)) {
+        rateLastOrder();
+      }
     }
+
+    this.postContainer = document.createElement('div');
+    this.promoContainer = document.createElement('div');
+    this.mainPageContent.prepend(mainPageTopBar.create());
+    this.mainPageContent.prepend(createTopBarIos());
+    this.topBar = document.querySelector('.top-bar--main');
+
+    this.promoContainer.classList.add('main-card__container-promo');
+    this.postContainer.classList.add('main-card__container-posts');
+    this.mainPageContent.append(this.promoContainer);
+    this.mainPageContent.append(this.postContainer);
 
     this.parameters.api.promoApi(renderPromo);
     this.parameters.api.postsApi(renderPosts);
+    this.promoContainer.append(ourHistoryMainCard.create());
 
-    this.mainPageContent.prepend(mainPageTopBar.create());
-    this.mainPageContent.prepend(createTopBarIos());
-    if (localStorage.getItem('user-sign-in') === null) {
+    if (isEmptyObj(userInfoObj)) {
       this.mainPageContent.append(mainPageButtonJoinOrange.create());
     }
     setTimeout(() => {
-      const footerButtonMain = document.querySelector('.footer__button--type--main');
-      activeFooter(footerButtonMain);
+      this.footerButtonMain = document.querySelector('.footer__button--type--main');
+      activeFooter(this.footerButtonMain);
     }, 300);
 
-    const topBarTitle = document.querySelector('.top-bar__title--type--single');
-    const topBar = document.querySelector('.top-bar');
 
-    this.mainPageContent.addEventListener('scroll', () => {
-      if (this.mainPageContent.scrollTop < 140) {
-        if (topBarTitle.classList.contains('top-bar__title--hide')) {
-          const containerPromo = document.querySelector('.main-card__container-promo');
-          topBarTitle.classList.remove('top-bar__title--hide');
-          topBar.classList.remove('top-bar--sticky');
-          containerPromo.classList.remove('main-card__container-promo--indentation--top');
-        }
-      } if (this.mainPageContent.scrollTop > 140) {
-        if (!topBarTitle.classList.contains('top-bar__title--hide')) {
-          const containerPromo = document.querySelector('.main-card__container-promo');
-          topBarTitle.classList.add('top-bar__title--hide');
-          topBar.classList.add('top-bar--sticky');
-          containerPromo.classList.add('main-card__container-promo--indentation--top');
-        }
-      }
-    });
+    if (!isEmptyObj(userInfoObj)) {
+      this.topBarContentContainer = document.querySelector('.top-bar__content-container--theme--dark');
 
-    activeButton();
+      this.mainPageContent.addEventListener('scroll', () => {
+        if (this.mainPageContent.scrollTop < 212) {
+          if (this.topBarContentContainer.classList.contains('top-bar__content-container--hide')) {
+            this.topBarContentContainer.classList.remove('top-bar__content-container--hide');
+            this.topBar.classList.remove(`top-bar--fixed${isIos ? '--ios' : ''}`);
+            this.promoContainer.classList.remove('main-card__container-promo--indentation--top');
+          }
+        } if (this.mainPageContent.scrollTop > 212) {
+          if (!this.topBarContentContainer.classList.contains('top-bar__content-container--hide')) {
+            this.topBarContentContainer.classList.add('top-bar__content-container--hide');
+            this.topBar.classList.add(`top-bar--fixed${isIos ? '--ios' : ''}`);
+            this.promoContainer.classList.add('main-card__container-promo--indentation--top');
+          }
+        }
+      });
+    }
+
+    checkMessageInbox();
   }
 }

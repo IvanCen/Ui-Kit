@@ -39,7 +39,7 @@ class CreateSelectItem extends CreateItem {
           <span class="select-item__info">Сумма пополнения</span>
           <div class="select-item__button-container">
             <button class="select-item__button">500</button>
-            <img src="[+chunkWebPath+]/img/icon-expand-direction-bottom.svg" alt="" class="select-item__icon">
+            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-bottom.svg]]" alt="" class="select-item__icon">
           </div>
           <div class="popup-bar">
             <button class="popup-bar__button"><span class="popup-bar__number">100</span></button>

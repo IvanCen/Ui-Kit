@@ -1,0 +1,35 @@
+@import "../../__app__head-style-and-script/css/main.scss";
+
+.modal-page-search {
+  position: fixed;
+  top: 100%;
+  width: 100%;
+  left: 0;
+  z-index: 140;
+  flex-grow: 1;
+  transition: all .3s ease-out;
+  background-color: $white;
+  display: flex;
+  align-items: stretch;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 100%;
+
+  &--focus-input{
+    padding-bottom: calc(50vh);
+  }
+
+  &--opened {
+    top: 0;
+  }
+
+  &--opened-stores {
+    top: 0;
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+
+
+}

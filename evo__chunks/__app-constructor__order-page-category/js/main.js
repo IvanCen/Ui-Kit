@@ -10,6 +10,7 @@ class TogglePageOrderCategory extends TogglePageOrderCard {
   openPage() {
     super.openPage();
     this.mainPage.classList.add('main-page--fixed');
+    this.page.scrollTop = 0;
   }
 
   closePage() {
@@ -22,18 +23,25 @@ class TogglePageOrderCategory extends TogglePageOrderCard {
     const orderCardTopBar = new CreateTopBarOrderCard({
       selector: ['div'],
       style: ['top-bar'],
-      modifier: ['--size--medium', '--indentation--bottom'],
+      modifier: [`--size--medium${isIos ? '--ios' : ''}`, '--indentation--bottom'],
       title: [categoryName],
 
       eventBack: [
-        { type: 'click', callback: this.closePage },
-        { type: 'click', callback: this.deletePage },
+        {
+          type: 'click',
+          callback: () => {
+            this.closePage();
+            this.deletePage();
+          },
+        },
       ],
       eventOpenSearch: [
         {
           type: 'click',
           callback: () => {
-            toggleFifthPageOrderSearch.rendering(true, categoryId);
+            stopAction(() => {
+              toggleModalPageOrderSearch.rendering(true, categoryId);
+            });
           },
         },
       ],
@@ -45,26 +53,19 @@ class TogglePageOrderCategory extends TogglePageOrderCard {
     this.page.append(orderCardTopBar.create());
     this.page.append(cardItemContainer.create());
     const cardItemContainerSelector = this.page.querySelector('.card-item__container');
-    console.log(category, categoryId, categoryName);
-    /*for (const key of Object.values(dataProductApi.successData.categoriesTree[4].children)) {
-      console.log(key.children[categoryId]);
+    for (const key of Object.values(dataProductApi.successData.categoriesTree[4].children)) {
       if (key.children[categoryId] !== undefined) {
-        category.forEach((item) => {
-          if (item.hitFlag === true) {
-            cardItemContainerSelector.prepend(cardItemProductCard.create(item));
-          } else {
-            cardItemContainerSelector.append(cardItemProductCard.create(item));
+        key.children[categoryId].items.forEach((item) => {
+          if (dataProductApi.successData.items[item]) {
+            if (dataProductApi.successData.items[item].hitFlag === true) {
+              cardItemContainerSelector.prepend(cardItemProductCard.create(dataProductApi.successData.items[item]));
+            } else {
+              cardItemContainerSelector.append(cardItemProductCard.create(dataProductApi.successData.items[item]));
+            }
           }
         });
       }
-    }*/
-    category.forEach((item) => {
-      if (item.hitFlag === true) {
-        cardItemContainerSelector.prepend(cardItemProductCard.create(item));
-      } else {
-        cardItemContainerSelector.append(cardItemProductCard.create(item));
-      }
-    });
+    }
   }
 }
 
@@ -91,7 +92,7 @@ class TogglePageOrderCategoryAll extends TogglePage {
     const orderCardTopBar = new CreateTopBarOrderCard({
       selector: ['div'],
       style: ['top-bar'],
-      modifier: ['--size--medium', '--indentation--bottom'],
+      modifier: [`--size--medium${isIos ? '--ios' : ''}`, '--indentation--bottom'],
       title: [`${categoryName} (${itemsLength})`],
       eventBack: [
         { type: 'click', callback: this.closePage },
@@ -101,7 +102,9 @@ class TogglePageOrderCategoryAll extends TogglePage {
         {
           type: 'click',
           callback: () => {
-            toggleFifthPageOrderSearch.rendering(true, categoryId);
+            stopAction(() => {
+              toggleModalPageOrderSearch.rendering(true, categoryId);
+            });
           },
         },
       ],

@@ -2,13 +2,6 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="b488bf80-f1d2-414d-b1e2-6d740de484d6" name="new.xleb.ru" url="http://new.xleb.ru">
-        <fileTransfer host="new.xleb.ru" port="21">
-          <advancedOptions>
-            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
-          </advancedOptions>
-        </fileTransfer>
-      </webServer>
       <webServer id="26d2b2a2-4628-4743-a938-8c670e9dce5c" name="demo.xleb.ru" url="http://5.53.124.91">
         <fileTransfer accessType="SFTP" host="5.53.124.91" port="22" sshConfigId="97664716-988f-4c44-ad0e-5d9c45086027" sshConfig="admin@5.53.124.91:22 password">
           <advancedOptions>

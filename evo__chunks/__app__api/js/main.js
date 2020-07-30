@@ -8,6 +8,7 @@ class Api {
     };
   }
 
+
   productApi() {
     const request = {
       method: 'get-catalog',
@@ -58,13 +59,27 @@ class Api {
         storesDataObj.successData = storesInfo.successData;
         storesDataObj.lastEditDateRequest = Date.now();
         localStorage.setItem('storesData', JSON.stringify(storesDataObj));
+        if (!isEmptyObj(userStore)) {
+          function isOldStore() {
+            return storesDataObj.successData.every((store) => {
+              if (store.id === userStore.store.id) {
+                return false;
+              }
+              return true;
+            });
+          }
+          if (isOldStore()) {
+            delete userStore.store;
+            localStorage.setItem('userStore', JSON.stringify(userStore));
+          }
+        }
       })
       .catch((err) => {
         console.log('Ошибка. Запрос не выполнен: ', err);
       });
   }
 
-  promoApi(renderPromo) {
+  promoApi(func) {
     const request = {
       method: 'get-promo',
       offset: 0,
@@ -84,13 +99,13 @@ class Api {
         return Promise.reject(`Ошибка: ${res.status}`);
       })
       .then((promoInfo) => promoInfo)
-      .then(renderPromo)
+      .then(func)
       .catch((err) => {
         console.log('Ошибка. Запрос не выполнен: ', err);
       });
   }
 
-  postsApi(renderPosts) {
+  postsApi(func) {
     const request = {
       method: 'get-posts',
       offset: 0,
@@ -110,16 +125,16 @@ class Api {
         return Promise.reject(`Ошибка: ${res.status}`);
       })
       .then((postsInfo) => postsInfo)
-      .then(renderPosts)
+      .then(func)
       .catch((err) => {
         console.log('Ошибка. Запрос не выполнен: ', err);
       });
   }
 
-  signInApi(phoneSend, func) {
+  signInCodeApi(phoneSend, func) {
     const request = {
       method: 'sign-in',
-      sendCodeMethod: 'callOut',
+      sendCodeMethod: 'callIn',
       phone: `+${phoneSend}`,
       outputFormat: 'json',
     };
@@ -143,12 +158,13 @@ class Api {
       });
   }
 
-  authorizeApi(func, code, phoneNumber, timerRegSuccess, refreshLink) {
-    console.log(phoneNumber, code);
+  authorizeCallInApi(func, code, phone) {
+    console.log(phone, code);
+
     const request = {
       method: 'authorize',
-      sendCodeMethod: 'callOut',
-      phone: phoneNumber,
+      sendCodeMethod: 'callIn',
+      phone,
       code,
       outputFormat: 'json',
     };
@@ -165,11 +181,7 @@ class Api {
         return Promise.reject(`Ошибка: ${res.status}`);
       })
       .then((authorizeInfo) => {
-        console.log(authorizeInfo);
-        if (authorizeInfo.success === true) {
-          clearTimeout(timerRegSuccess);
-          clearTimeout(refreshLink);
-        }
+        console.log(authorizeInfo, 'auth');
         return authorizeInfo;
       })
       .then(func)
@@ -253,10 +265,10 @@ class Api {
       });
   }
 
-  getPrivacyPolicy(mode, documentName) {
+  getPublicDocument(mode, documentName) {
     const request = {
       method: 'get-public-document',
-      document: 'privacy-policy',
+      document: documentName,
       mode,
       outputFormat: 'json',
     };
@@ -279,7 +291,7 @@ class Api {
           applicationDataObj[documentName].lastEditDateRequest = Date.now();
         } else if (info.successData.editDate !== applicationDataObj[documentName].editDate) {
           applicationDataObj[documentName].editDate = info.successData.editDate;
-          api.getPrivacyPolicy('both');
+          this.getPublicDocument('both', documentName);
         }
         localStorage.setItem('applicationData', JSON.stringify(applicationDataObj));
       })
@@ -288,85 +300,26 @@ class Api {
       });
   }
 
-  getUserAgreement(mode, documentName) {
-    const request = {
-      method: 'get-public-document',
-      document: 'user-agreement',
-      mode,
-      outputFormat: 'json',
-    };
-
-    fetch(this.options.baseUrl, {
-      method: 'POST',
-      headers: this.options.headers,
-      body: JSON.stringify(request),
-
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Ошибка: ${res.status}`);
-      })
-      .then((info) => {
-        if (isEmptyObj(applicationDataObj[documentName]) || info.successData.content !== undefined) {
-          applicationDataObj[documentName] = info.successData;
-          applicationDataObj[documentName].lastEditDateRequest = Date.now();
-        } else if (info.successData.editDate !== applicationDataObj[documentName].editDate) {
-          applicationDataObj[documentName].editDate = info.successData.editDate;
-          api.getUserAgreement('both');
-        }
-        localStorage.setItem('applicationData', JSON.stringify(applicationDataObj));
-      })
-      .catch((err) => {
-        console.log('Ошибка. Запрос не выполнен: ', err);
-      });
-  }
-
-  getPublicOffer(mode, documentName) {
-    const request = {
-      method: 'get-public-document',
-      document: 'public-offer',
-      mode,
-      outputFormat: 'json',
-    };
-
-    fetch(this.options.baseUrl, {
-      method: 'POST',
-      headers: this.options.headers,
-      body: JSON.stringify(request),
-
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Ошибка: ${res.status}`);
-      })
-      .then((info) => {
-        if (isEmptyObj(applicationDataObj[documentName]) || info.successData.content !== undefined) {
-          applicationDataObj[documentName] = info.successData;
-          applicationDataObj[documentName].lastEditDateRequest = Date.now();
-        } else if (info.successData.editDate !== applicationDataObj[documentName].editDate) {
-          applicationDataObj[documentName].editDate = info.successData.editDate;
-          api.getPublicOffer('both');
-        }
-        localStorage.setItem('applicationData', JSON.stringify(applicationDataObj));
-      })
-      .catch((err) => {
-        console.log('Ошибка. Запрос не выполнен: ', err);
-      });
-  }
-
-  makeOrderApi(phone, orderArrItems, shopId, orderComment, func) {
+  makeOrderApi(phone, orderArrItems, shopId, orderComment, orderFriendData, func) {
     let comment;
+    let replaceName;
+    let replacePhone;
+    const { friendName, friendPhone } = orderFriendData;
+
+    if (friendName !== '' && friendPhone !== '') {
+      replaceName = friendName;
+      replacePhone = friendPhone;
+    } else {
+      replaceName = '';
+      replacePhone = '';
+    }
     if (orderComment !== '') {
       comment = orderComment;
     } else {
       comment = '';
     }
     console.log(comment);
-    console.log(phone, orderArrItems, shopId, orderComment, func);
+    console.log(phone, orderArrItems, shopId, orderComment, replaceName, replacePhone, func);
     let store = JSON.parse(localStorage.getItem('userStore'));
     store = store.store;
     const request = {
@@ -376,6 +329,8 @@ class Api {
       shopId: store.id,
       promoCode: '',
       comment,
+      replaceName,
+      replacePhone,
       outputFormat: 'json',
     };
 
@@ -442,7 +397,7 @@ class Api {
       method: 'recharge_the_balance',
       user: userPhone,
       amount,
-      from: 'app', // Доступные варианты: app, site
+      from: 'appWidget', // Доступные варианты: app, site, appWidget
       outputFormat: 'json',
     };
 
@@ -695,14 +650,6 @@ class Api {
       .then((res) => {
         console.log(res);
         userMessages = res;
-        const dotMessage = document.querySelector('.top-bar__icon-dot');
-        userMessages.successData.messages.every((message) => {
-          if (message.wasRead !== null) {
-            dotMessage.classList.add('top-bar__icon-dot--hide');
-            return false;
-          }
-          return true;
-        });
         return res;
       })
       .then(func)
@@ -739,6 +686,107 @@ class Api {
       })
       .then((res) => {
         console.log(res);
+        return res;
+      })
+      .then(func)
+      .catch((err) => {
+        console.log('Ошибка. Запрос не выполнен: ', err);
+      });
+  }
+
+  getShopOutOfStockItemsAndModifiers(store, func) {
+    const request = {
+      method: 'get-shop-out-of-stock-items-and-modifiers',
+      shopId: store,
+      outputFormat: 'json',
+    };
+
+    fetch(this.options.baseUrl, {
+      method: 'POST',
+      headers: this.options.headers,
+      body: JSON.stringify(request),
+
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+      .then((res) => {
+        console.log(res);
+        if (res.success) {
+          outOfStock.successData = res.successData;
+          localStorage.setItem('outOfStock', JSON.stringify(outOfStock));
+          /* for (const id in outOfStock.successData.itemsAndModifiers) {
+            delete dataProductApi.successData.items[id];
+            delete dataProductApi.successData.modifiers[id];
+            delete dataProductApi.successData.ingredients[id];
+          } */
+        }
+        return res;
+      })
+      .then(func)
+      .catch((err) => {
+        console.log('Ошибка. Запрос не выполнен: ', err);
+      });
+  }
+
+  sendDebugMessage(message, func) {
+    const request = {
+      method: 'send-debug-message',
+      message,
+      outputFormat: 'json',
+    };
+
+    fetch(this.options.baseUrl, {
+      method: 'POST',
+      headers: this.options.headers,
+      body: JSON.stringify(request),
+
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+      .then((res) => {
+        console.log(res);
+
+        return res;
+      })
+      .then(func)
+      .catch((err) => {
+        console.log('Ошибка. Запрос не выполнен: ', err);
+      });
+  }
+
+  getClientAchievements(func) {
+    const request = {
+      method: 'get-client-achievements',
+      outputFormat: 'json',
+    };
+
+    fetch(this.options.baseUrl, {
+      method: 'POST',
+      headers: this.options.headers,
+      body: JSON.stringify(request),
+
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+      .then((res) => {
+        console.log(res);
+        if (res.success) {
+          userAchievements.successData = res.successData;
+          localStorage.setItem('userAchievements', JSON.stringify(userAchievements));
+        }
+
         return res;
       })
       .then(func)

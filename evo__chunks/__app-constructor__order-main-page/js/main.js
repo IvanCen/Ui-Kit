@@ -40,7 +40,7 @@ class ToggleOrder extends ToggleMainPage {
     const orderTopBar = new CreateTopBarOrder({
       selector: ['div'],
       style: ['top-bar'],
-      modifier: ['--indentation--top'],
+      modifier: [`${isIos ? '--indentation--top' : ''}`],
       eventToggleMenu: [
         { type: 'click', callback: switchTabMain },
       ],
@@ -48,7 +48,12 @@ class ToggleOrder extends ToggleMainPage {
         { type: 'click', callback: switchTabHits },
       ],
       eventToggleHistory: [
-        { type: 'click', callback: switchTabHistory },
+        {
+          type: 'click',
+          callback: () => {
+            switchTabHistory();
+          },
+        },
       ],
       eventToggleFavorite: [
         { type: 'click', callback: toggleOrderFavoriteContent.clearTab },
@@ -56,8 +61,14 @@ class ToggleOrder extends ToggleMainPage {
         { type: 'click', callback: switchTabFavorite },
       ],
       eventOpenSearch: [
-        { type: 'click', callback: toggleFifthPageOrderSearch.rendering },
-        { type: 'click', callback: toggleFifthPageOrderSearch.openPage },
+        {
+          type: 'click',
+          callback: () => {
+            stopAction(() => {
+              toggleModalPageOrderSearch.rendering(false);
+            });
+          },
+        },
       ],
     });
 
@@ -66,17 +77,15 @@ class ToggleOrder extends ToggleMainPage {
       style: ['bottom-bar'],
       modifier: ['--indentation--normal'],
       eventStores: [
-        { type: 'click', callback: toggleStores.closePage },
-        { type: 'click', callback: toggleStores.clearPage },
-        { type: 'click', callback: toggleStores.rendering },
-        { type: 'click', callback: toggleStores.openPage },
-        { type: 'click', callback: togglePage.closePage },
-        { type: 'click', callback: togglePage.deletePage },
-        { type: 'click', callback: closeOrderPage },
-        { type: 'click', callback: toggleSubPage.closePage },
-        { type: 'click', callback: toggleSubPage.deletePage },
-        { type: 'click', callback: toggleThirdPage.closePage },
-        { type: 'click', callback: toggleThirdPage.deletePage },
+        {
+          type: 'click',
+          callback: () => {
+            stopAction(() => {
+              toggleStores.rendering();
+              toggleStores.openPage();
+            });
+          },
+        },
       ],
     });
 

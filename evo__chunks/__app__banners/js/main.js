@@ -1,8 +1,10 @@
-function activeBanners(containerBanners) {
+function activeBanners(containerBanners, isSwipe, funcCheckBasket = () => {}) {
   let dragStart = 0;
   let dragEnd = 0;
   let offsetX = 0;
   let offsetXOnStart = 0;
+  const counterTopBar = document.querySelector('.top-bar__all-counter-order');
+  const counterBottomBar = document.querySelector('.bottom-bar__counter');
 
   function bannersAnimation(action) {
     if (offsetX > 0) {
@@ -27,6 +29,28 @@ function activeBanners(containerBanners) {
       } else if (action === 'move') {
         offsetX = (offsetX + maxOffsetWidth) / 2; // уменьшапем скорость смещения в 2 раза
       }
+    } else if (maxOffsetWidth / 2 > offsetX && action === 'end' && isSwipe) {
+      (() => {
+        if (!containerBanners.classList.contains('stop-action')) {
+          setTimeout(() => {
+            for (const [index, item] of Object.entries(basketArray)) {
+              if (item.id === Number(containerBanners.getAttribute('id'))) {
+                basketArray.splice(index, 1);
+                break;
+              }
+            }
+            counterTopBar.textContent = basketArray.length;
+            counterBottomBar.textContent = basketArray.length;
+            localStorage.setItem('basket', JSON.stringify(basketArray));
+            counterBasket();
+            checkBasket();
+            checkEmptyBasket();
+            containerBanners.remove();
+          }, 300);
+          containerBanners.classList.add('stop-action');
+        }
+        setTimeout(() => containerBanners.classList.remove('stop-action'), 1000);
+      })();
     }
     containerBanners.style.transform = `translate3d(${offsetX}px,0,0)`;
   }
@@ -99,8 +123,10 @@ class CreateBannersOrder extends CreateItem {
           `;
     this.element.insertAdjacentHTML('beforeend', this.template);
     this.element.addEventListener('click', () => {
-      toggleSubPageProductCard.rendering(productInfo);
-      toggleSubPageProductCard.openPage();
+      stopAction(() => {
+        toggleSubPageProductCard.rendering(productInfo);
+        toggleSubPageProductCard.openPage();
+      });
     });
 
     const imgEl = this.element.querySelector('.banners__banner-filler');

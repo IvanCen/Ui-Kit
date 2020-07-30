@@ -40,7 +40,7 @@
       display: block;
       width: 15px;
       height: 15px;
-      background-image: url("[+chunkWebPath+]/img/icon-checkbox.svg");
+      background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-checkbox.svg]]");
       background-position: center;
       background-size: cover;
     }

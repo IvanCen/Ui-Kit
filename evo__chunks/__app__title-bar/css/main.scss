@@ -9,6 +9,10 @@
   margin-bottom: 20px;
   min-height: fit-content;
 
+  &--size--medium {
+    @extend %style-2;
+  }
+
   &--theme--dark {
     background-color: $bokaraGrey;
   }

@@ -23,32 +23,6 @@ function activeFilterButton() {
   });
 }
 
-function activeButton() {
-  const buttonThemeTangerinTransparent = document.querySelectorAll('.button--theme--tangerin-transparent');
-  const buttonThemeLight = document.querySelectorAll('.button--theme--light');
-  const buttonThemeTangerin = document.querySelectorAll('.button--theme--tangerin');
-  const buttonThemeDarkTransparent = document.querySelectorAll('.button--theme--dark-transparent');
-  const buttonThemeOrangesTransparent = document.querySelectorAll('.button--theme--oranges-transparent');
-  const arrButton = [
-    ...buttonThemeTangerinTransparent,
-    ...buttonThemeLight,
-    ...buttonThemeTangerin,
-    ...buttonThemeDarkTransparent,
-    ...buttonThemeOrangesTransparent,
-  ];
-  let doubleTouchStartTimestamp = 0;
-  document.addEventListener('touchstart', { passive: false }, (event) => {
-    const now = +(new Date());
-    if (doubleTouchStartTimestamp + 500 > now) {
-      event.preventDefault();
-    }
-    doubleTouchStartTimestamp = now;
-  });
-
-  [...arrButton].forEach((item) => {
-    addEventListenerButton(item);
-  });
-}
 
 class CreateButton extends CreateItem {
   constructor(parameters) {

@@ -11,7 +11,7 @@ class TogglePageInbox extends TogglePage {
     const inboxTopBar = new CreateTopBarInbox({
       selector: ['div'],
       style: ['top-bar'],
-      modifier: ['--indentation--top'],
+      modifier: [`${isIos ? '--indentation--top' : ''}`],
       eventBack: [
         { type: 'click', callback: this.closePage },
         { type: 'click', callback: this.deletePage },
@@ -20,8 +20,8 @@ class TogglePageInbox extends TogglePage {
           callback: () => {
             const dotMessage = document.querySelector('.top-bar__icon-dot');
             userMessages.successData.messages.every((message) => {
-              if (message.wasRead === null) {
-                dotMessage.classList.remove('top-bar__icon-dot--hide');
+              if (message.wasRead !== null) {
+                dotMessage.classList.add('top-bar__icon-dot--hide');
                 return false;
               }
               return true;

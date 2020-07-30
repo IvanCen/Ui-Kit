@@ -46,63 +46,70 @@ class ToggleOrderMenuContent extends ToggleOrderTabContent {
 
 
     function renderProduct(data) {
-      const products = data.successData;
-      console.log(products);
-      const drinks = [];
-      const food = [];
-      const product = [];
-      const wraper = [];
+      if (!isEmptyObj(data)) {
+        const products = data.successData;
+        console.log(products);
+        const drinks = [];
+        const food = [];
+        const product = [];
+        const wraper = [];
 
-      let drinksItemsLength = 0;
-      let foodItemsLength = 0;
-      const productItemsLength = 0;
-      const wraperItemsLength = 0;
-
-      for (const item of Object.values(products.categories)) {
-        if (item.parent === 33) {
-          drinks.push(item);
-          drinksItemsLength += item.items.length;
+        let drinksItemsLength = 0;
+        let foodItemsLength = 0;
+        const productItemsLength = 0;
+        const wraperItemsLength = 0;
+        if (products !== undefined) {
+          for (const item of Object.values(products.categories)) {
+            if (item.parent === 33) {
+              drinks.push(item);
+              drinksItemsLength += item.items.length;
+            }
+            if (item.parent === 34) {
+              food.push(item);
+              foodItemsLength += item.items.length;
+            }
+          /* if (item.name === 'Продукты') {
+            product.push(item);
+            productItemsLength += item.items.length;
+          }
+          if (item.name === 'Упаковка') {
+            wraper.push(item);
+            wraperItemsLength += item.items.length;
+          } */
+          }
         }
-        if (item.parent === 34) {
-          food.push(item);
-          foodItemsLength += item.items.length;
-        }
-        /* if (item.name === 'Продукты') {
-          product.push(item);
-          productItemsLength += item.items.length;
-        }
-        if (item.name === 'Упаковка') {
-          wraper.push(item);
-          wraperItemsLength += item.items.length;
-        } */
-      }
 
-      const drinkContainer = document.querySelector('.card-item__container--drinks');
-      const foodContainer = document.querySelector('.card-item__container--foods');
-      const productsContainer = document.querySelector('.card-item__container--products');
-      const wraperContainer = document.querySelector('.card-item__container--wraper');
 
-      const drinksButtonTitle = document.querySelector('.title-bar__button--type--drinks');
-      const foodButtonTitle = document.querySelector('.title-bar__button--type--foods');
-      /* const productsButtonTitle = document.querySelector('.title-bar__button--type--products');
+        const drinkContainer = document.querySelector('.card-item__container--drinks');
+        const foodContainer = document.querySelector('.card-item__container--foods');
+        const productsContainer = document.querySelector('.card-item__container--products');
+        const wraperContainer = document.querySelector('.card-item__container--wraper');
+
+        const drinksButtonTitle = document.querySelector('.title-bar__button--type--drinks');
+        const foodButtonTitle = document.querySelector('.title-bar__button--type--foods');
+        /* const productsButtonTitle = document.querySelector('.title-bar__button--type--products');
       const wraperButtonTitle = document.querySelector('.title-bar__button--type--wraper'); */
 
-      drinksButtonTitle.textContent = `Посмотреть ${drinksItemsLength}`;
-      foodButtonTitle.textContent = `Посмотреть ${foodItemsLength}`;
-      /* productsButtonTitle.textContent = `Посмотреть ${productItemsLength}`;
+        drinksButtonTitle.textContent = `Посмотреть ${drinksItemsLength}`;
+        foodButtonTitle.textContent = `Посмотреть ${foodItemsLength}`;
+        /* productsButtonTitle.textContent = `Посмотреть ${productItemsLength}`;
       wraperButtonTitle.textContent = `Посмотреть ${wraperItemsLength}`; */
 
-      drinksButtonTitle.addEventListener('click', () => {
-        togglePageOrderCategoryAll.rendering(drinks, 'Напитки', drinksItemsLength, products.items, 33);
-        togglePageOrderCategoryAll.openPage();
-      });
+        drinksButtonTitle.addEventListener('click', () => {
+          drinksButtonTitle.disabled = true;
+          togglePageOrderCategoryAll.rendering(drinks, 'Напитки', drinksItemsLength, products.items, 33);
+          togglePageOrderCategoryAll.openPage();
+          setTimeout(() => drinksButtonTitle.disabled = false, 1000);
+        });
 
-      foodButtonTitle.addEventListener('click', () => {
-        togglePageOrderCategoryAll.rendering(food, 'Еда', foodItemsLength, products.items, 34);
-        togglePageOrderCategoryAll.openPage();
-      });
+        foodButtonTitle.addEventListener('click', () => {
+          foodButtonTitle.disabled = true;
+          togglePageOrderCategoryAll.rendering(food, 'Еда', foodItemsLength, products.items, 34);
+          togglePageOrderCategoryAll.openPage();
+          setTimeout(() => foodButtonTitle.disabled = false, 1000);
+        });
 
-      /* productsButtonTitle.addEventListener('click', () => {
+        /* productsButtonTitle.addEventListener('click', () => {
         togglePageOrderCategoryAll.rendering(product, 'Продукты', productItemsLength, products.items, 221);
       });
 
@@ -110,15 +117,17 @@ class ToggleOrderMenuContent extends ToggleOrderTabContent {
         togglePageOrderCategoryAll.rendering(wraper, 'Упаковка', wraperItemsLength, products.items, 272);
       }); */
 
-      function rendered(arr, container) {
-        arr.forEach((item) => {
-          container.append(orderCardItem.create(item, products));
-        });
-      }
-      rendered(drinks, drinkContainer);
-      rendered(food, foodContainer);
+        function rendered(arr, container) {
+          arr.forEach((item) => {
+            container.append(orderCardItem.create(item, products));
+          });
+        }
+
+        rendered(drinks, drinkContainer);
+        rendered(food, foodContainer);
       // rendered(product, productsContainer);
       // rendered(wraper, wraperContainer);
+      }
     }
     this.mainPageTabContent.append(orderTitleBarDrinks.create());
     this.mainPageTabContent.append(orderCardItemContainerDrinks.create('drinks'));

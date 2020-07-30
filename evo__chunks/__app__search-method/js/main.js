@@ -35,6 +35,7 @@ class Search {
       // console.log(categoryId);
       // console.log(categories[categoryId].children);
       if (typeof categories[categoryId].children === 'undefined') {
+        // eslint-disable-next-line no-continue
         continue;
       }
       const result = this.getChildrenCategories(id, categories[categoryId].children);

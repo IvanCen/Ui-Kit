@@ -1,12 +1,3 @@
-function activeLike() {
-  const cardItemIconTypeLike = document.querySelectorAll('.card-item__icon--type--like');
-  [...cardItemIconTypeLike].forEach((item) => {
-    item.addEventListener('click', () => {
-      item.classList.toggle('card-item__icon--liked');
-    });
-  });
-}
-
 class CreateCardItemOrder extends CreateItem {
   constructor(parameters) {
     super();
@@ -56,16 +47,28 @@ class CreateCardItemOrderProductCard extends CreateItem {
     this.element.classList.add('card-item', 'card-item--direction--column');
     this.element.id = productInfo.id;
     this.element.addEventListener('click', () => {
-      toggleSubPageProductCard.rendering(productInfo);
-      toggleSubPageProductCard.openPage();
+      stopAction(() => {
+        toggleSubPageProductCard.rendering(productInfo);
+        toggleSubPageProductCard.openPage();
+      });
     });
     this.template = `
-      <div class="card-item__image card-item__image--size--big"></div>
+      <div class="card-item__image card-item__image--size--big">
+        <div class="card-item__stickers-container"></div>
+      </div>
       <div class="card-item__info-container">
         <h3 class="card-item__title card-item__title--text--normal card-item__title--position--center">${productInfo.name}</h3>
         <span class="card-item__available-info card-item__available-info--show">
       </div>`;
     this.element.insertAdjacentHTML('beforeend', this.template);
+    this.stickersContainer = this.element.querySelector('.card-item__stickers-container');
+    if (productInfo.stickers.length !== 0) {
+      productInfo.stickers.forEach((stickerName) => {
+        const stickerEl = document.createElement('div');
+        stickerEl.classList.add('text-area__icon', 'text-area__icon--size--big', `text-area__icon--type--${stickerName}`);
+        this.stickersContainer.prepend(stickerEl);
+      });
+    }
 
     const imgEl = this.element.querySelector('.card-item__image');
     if (!canUseWebP()) {
@@ -84,22 +87,26 @@ class CreateCardItemRewardCard extends CreateItem {
     this.parameters = parameters;
   }
 
-  create(productInfo) {
+  create(rewardInfo) {
+    const {
+      description, id, title, image, unlockDate, icon,
+    } = rewardInfo;
     this.element = document.createElement('div');
     this.element.classList.add('card-item');
-    // this.element.id = productInfo.id;
+    this.element.id = id;
     this.element.addEventListener('click', () => {
       toggleModal.renderingReward({
-        title: 'Любитель кофе',
-        text: 'Вы выпили 10 чашек кофе. И куда в вас столько влазит?',
-        promoCode: 'Держите промокод «МЕДОВЫЙРАФ» на еще одну. Пейте на здоровье.',
-        date: 'Получено: 2 июня 2020',
+        title,
+        description,
+        promoCode: null,
+        unlockDate,
+        image,
       });
     });
     this.template = `
-      <div style="background-image: url('[+chunkWebPath+]/img/img__card-item--reward.jpg')" class="card-item__image-reward"></div>
+      <div style="background-image: url(${icon})" class="card-item__image-reward"></div>
       <div class="card-item__info-container">
-        <h3 class="card-item__title card-item__title--text--normal card-item__title--position--center">Любитель кофе</h3>
+        <h3 class="card-item__title card-item__title--text--normal card-item__title--position--center">${title}</h3>
         <span class="card-item__available-info card-item__available-info--show">
       </div>`;
     this.element.insertAdjacentHTML('beforeend', this.template);
@@ -210,7 +217,7 @@ class CreateCardItemFavAndHisOrder extends CreateItem {
                 </svg>
               </button>
               <button class="card-item__button card-item__button--size--big">
-                <img src="[+chunkWebPath+]/img/icon-add-circle-plus.svg" alt=""
+                <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-add-circle-plus.svg]]" alt=""
                      class="card-item__icon card-item__icon--type--add">
               </button>
             </div>
@@ -219,12 +226,26 @@ class CreateCardItemFavAndHisOrder extends CreateItem {
     this.iconsLike = this.element.querySelector('.card-item__icon--type--like');
     this.img = this.element.querySelector('.card-item__image');
     this.iconsAdd = this.element.querySelector('.card-item__icon--type--add');
+    this.element.setAttribute('data-id', productInfo.id);
     const el = this.element;
     console.log(productInfo);
-    this.element.addEventListener('click', () => {
-      toggleFifthPage.closePage();
-      toggleSubPageProductCard.rendering(dataProductApi.successData.items[productInfo.id]);
-      toggleFifthPage.deletePage();
+    /* this.element.addEventListener('click', (e) => {
+      console.log(e.target.classList.contains('card-item__icon'))
+      if (!e.target.classList.contains('card-item__button') || !e.target.classList.contains('card-item__icon')) {
+        toggleFifthPage.closePage();
+        toggleSubPageProductCard.rendering(dataProductApi.successData.items[productInfo.id]);
+        toggleFifthPage.deletePage();
+      }
+    }); */
+    this.element.addEventListener('click', (e) => {
+      const classArr = ['card-item__image', 'card-item__title'];
+      classArr.forEach((classEl) => {
+        if (e.target.classList.contains(classEl)) {
+          toggleModalPageSearch.closePage();
+          toggleModalPageSearch.deletePage();
+          toggleSubPageProductCard.rendering(dataProductApi.successData.items[productInfo.id]);
+        }
+      });
     });
 
     if (typeof dataProductApi.successData.items[productInfo.id] === 'object' && typeof productInfo.modifiers === 'object') {
@@ -255,19 +276,31 @@ class CreateCardItemFavAndHisOrder extends CreateItem {
       });
     } else {
       this.iconsLike.classList.remove('card-item__icon--liked');
+      itemsArray.forEach((item) => {
+        if (item.id === productInfo.id) {
+          this.iconsLike.classList.add('card-item__icon--liked');
+        }
+      });
       this.iconsLike.addEventListener('click', function () {
-        this.classList.toggle('card-item__icon--liked');
-        console.log(this);
+        const allIconsLikes = document.querySelectorAll('.card-item__icon--type--like');
         if (this.classList.contains('card-item__icon--liked')) {
-          itemsArray.push({ id: productInfo.id });
-          localStorage.setItem('items', JSON.stringify(itemsArray));
-        } else {
+          this.classList.remove('card-item__icon--liked');
           itemsArray.forEach((item, index) => {
             if (item.id === dataProductApi.successData.items[productInfo.id].id) {
               itemsArray.splice(index, 1);
             }
           });
           localStorage.setItem('items', JSON.stringify(itemsArray));
+        } else {
+          this.classList.add('card-item__icon--liked');
+          [...allIconsLikes].forEach((like) => {
+            if (like.closest('.card-item').getAttribute('data-id') === String(productInfo.id)) {
+              like.classList.add('card-item__icon--liked');
+            }
+          });
+          if (!doubleFav(productInfo)) {
+            itemsArray.push({ id: productInfo.id });
+          }
         }
       });
     }
@@ -283,7 +316,7 @@ class CreateCardItemFavAndHisOrder extends CreateItem {
       const modifiersArr = [];
       if (productInfo.modifiers !== undefined) {
         productInfo.modifiers.forEach((modif) => {
-          modifiersArr.push({ id: modif.modificationId, count: modif.count });
+          modifiersArr.push({ id: modif.id, count: modif.count });
         });
       }
       basketArray.push({ id: productInfo.id, modifiers: modifiersArr });
@@ -326,108 +359,57 @@ class CreateCardItemReviewOrder extends CreateItem {
     this.create.bind(this);
   }
 
-  swipeDelete(container, elements, productInfo) {
-    let dragStart = 0;
-    let dragEnd = 0;
-    let offsetX = 0;
-    let offsetXOnStart = 0;
-
-    function animation(action) {
-      if (offsetX > 0) {
-        // тут действия, если тянется влево дальше минимума
-        if (action === 'end') {
-          offsetX = 0;
-          dragStart = 0;
-          dragEnd = 0;
-          offsetXOnStart = 0;
-        } else if (action === 'move') {
-          offsetX /= 1; // уменьшапем скорость смещения в 2 раза
-        }
-      }
-      const maxOffsetWidth = -100;
-      if (offsetX < maxOffsetWidth) {
-        // тут действия, если тянется вправо дальше максимума
-        if (action === 'end') {
-          offsetX = maxOffsetWidth;
-          dragStart = 0;
-          dragEnd = 0;
-          offsetXOnStart = 0;
-          setTimeout(() => {
-            elements.counterTopBar.textContent = Number(elements.counterTopBar.textContent) - 1;
-            elements.counterBottomBar.textContent = Number(elements.counterBottomBar.textContent) - 1;
-            elements.el.classList.add('card-item--animation');
-
-            for (const [index, item] of Object.entries(basketArray)) {
-              /**
-               * Удаляем первое полное совпадение и обязательно выходим из цикла
-               */
-              if (item === productInfo) {
-                basketArray.splice(index, 1);
-                break;
-              }
-            }
-            localStorage.setItem('basket', JSON.stringify(basketArray));
-            counterBasket();
-            checkBasket();
-            container.remove();
-          }, 300);
-        } else if (action === 'move') {
-          offsetX += maxOffsetWidth; // уменьшапем скорость смещения в 2 раза
-        }
-      } else {
-        offsetX = 0;
-      }
-      container.style.transform = `translate3d(${offsetX}px,0,0)`;
-    }
-
-    container.addEventListener('touchstart', (event) => {
-      dragStart = event.touches[0].clientX;
-      container.classList.remove('banner__container--with-animation');
-    }, { passive: false });
-
-    container.addEventListener('touchmove', (event) => {
-      dragEnd = event.touches[0].clientX;
-      offsetX = offsetXOnStart + dragEnd - dragStart;
-      animation('move');
-    }, { passive: false });
-
-    container.addEventListener('touchend', (event) => {
-      // event.preventDefault();
-      // event.stopPropagation();
-      dragEnd = 0;
-      offsetXOnStart = 0;
-      container.classList.add('banner__container--with-animation');
-      animation('end');
-    }, { passive: false });
-  }
-
-  create(productInfo) {
+  create(productInfo, funcCheckBasket) {
     this.element = document.createElement('div');
+    this.energy = `Калорий ${dataProductApi.successData.items[productInfo.id].energy} г`;
+
     this.template = `
-          <img alt="" class="card-item__image card-item__image--size--small">
-          <div class="card-item__content-container">
-            <h3 class="card-item__title card-item__title--text--bold">${dataProductApi.successData.items[productInfo.id].name}</h3>
-            <span class="card-item__info card-item__info--indentation--bottom card-item__info--theme--shadow">Калорий ${dataProductApi.successData.items[productInfo.id].energy || ''} г</span>
-            <ul class="card-item__list"></ul>
-            <span class="card-item__price"></span>
-            <div class="card-item__icon-container">
-              <button class="card-item__button card-item__button--type--minus">
-               <img src="[+chunkWebPath+]/img/icon-remove-circle.svg" alt=""
-                     class="card-item__icon card-item__icon--type--minus">
-              </button>
-              <button class="card-item__button card-item__button--type--plus">
-                <img src="[+chunkWebPath+]/img/icon-add-circle-plus.svg" alt=""
-                     class="card-item__icon card-item__icon--type--plus">
-              </button>
+          <div class="card-item__container--direction--row-small banners__banner">
+            <div class="card-item__image card-item__image--size--small"></div>
+            <div class="card-item__content-container">
+              <h3 class="card-item__title card-item__title--text--bold">${dataProductApi.successData.items[productInfo.id].name}</h3>
+              <span class="card-item__info card-item__info--indentation--bottom card-item__info--theme--shadow card-item__info--type--energy">${this.energy}</span>
+              <ul class="card-item__list"></ul>
+              <span class="card-item__price"></span>
+              <div class="card-item__icon-container">
+                <button class="card-item__button card-item__button--type--minus">
+                 <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-remove-circle.svg]]" alt=""
+                       class="card-item__icon card-item__icon--type--minus">
+                </button>
+                <button class="card-item__button card-item__button--type--plus">
+                  <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-add-circle-plus.svg]]" alt=""
+                       class="card-item__icon card-item__icon--type--plus">
+                </button>
+              </div>
+              <div class="main-card__figure main-card__figure--hide"><span class="main-card__info main-card__info--out-of">Закончилось</span></div>
             </div>
-          </div>`;
+          </div>
+          <div class="card-item__zone card-item__zone--type--delete banners__banner">
+            <img class="card-item__icon card-item__icon--size--big" src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-delete-basket.svg]]" alt="">
+          </div>  
+        `;
     this.element.insertAdjacentHTML('beforeend', this.template);
     this.iconsMinus = this.element.querySelector('.card-item__button--type--minus');
     this.iconsPlus = this.element.querySelector('.card-item__button--type--plus');
     this.price = this.element.querySelector('.card-item__price');
+    this.figure = this.element.querySelector('.main-card__figure');
+    this.energyEl = this.element.querySelector('.card-item__info--type--energy');
+    this.element.setAttribute('id', productInfo.id);
     const el = this.element;
     const counterTopBar = document.querySelector('.top-bar__all-counter-order');
     const counterBottomBar = document.querySelector('.bottom-bar__counter');
+    if (!isEmptyObj(outOfStock) && outOfStock.successData.itemsAndModifiers.length !== 0) {
+      for (const id in outOfStock.successData.itemsAndModifiers) {
+        if (Number(id) === Number(productInfo.id)) {
+          this.figure.classList.remove('main-card__figure--hide');
+          break;
+        }
+      }
+    }
+
+    if (!dataProductApi.successData.items[productInfo.id].energy) {
+      this.energyEl.remove();
+    }
 
     const imgEl = this.element.querySelector('.card-item__image');
     if (!canUseWebP()) {
@@ -464,32 +446,28 @@ class CreateCardItemReviewOrder extends CreateItem {
         this.price.textContent = priceAllModifier + dataProductApi.successData.items[productInfo.id][`price${userStore.store.priceGroup}`];
       }
     }
-    /**
-     * Добавляем события
-     */
 
-    this.swipeDelete(this.element, { el, counterTopBar, counterBottomBar }, productInfo);
-
-    this.iconsMinus.addEventListener('click', () => {
-      counterTopBar.textContent = Number(counterTopBar.textContent) - 1;
-      counterBottomBar.textContent = Number(counterBottomBar.textContent) - 1;
-      el.classList.add('card-item--animation');
-      /**
-       * Проходим корзину
-       */
-      for (const [index, item] of Object.entries(basketArray)) {
-        /**
-         * Удаляем первое полное совпадение и обязательно выходим из цикла
-         */
-        if (item === productInfo) {
-          basketArray.splice(index, 1);
-          break;
+    this.iconsMinus.addEventListener('click', function () {
+      (() => {
+        if (!this.classList.contains('stop-action')) {
+          el.classList.add('card-item--animation');
+          for (const [index, item] of Object.entries(basketArray)) {
+            if (JSON.stringify(item) === JSON.stringify(productInfo)) {
+              basketArray.splice(index, 1);
+              break;
+            }
+          }
+          counterTopBar.textContent = basketArray.length;
+          counterBottomBar.textContent = basketArray.length;
+          localStorage.setItem('basket', JSON.stringify(basketArray));
+          counterBasket();
+          checkBasket();
+          checkEmptyBasket();
+          setTimeout(() => el.remove(), 200);
+          this.classList.add('stop-action');
         }
-      }
-      localStorage.setItem('basket', JSON.stringify(basketArray));
-      counterBasket();
-      checkBasket();
-      setTimeout(() => el.remove(), 200);
+        setTimeout(() => this.classList.remove('stop-action'), 1000);
+      })();
     });
 
     this.iconsPlus.addEventListener('click', () => {
@@ -501,6 +479,7 @@ class CreateCardItemReviewOrder extends CreateItem {
       // this.arrHtml = Array.from(cardItemContainer.children);
       // this.arrHtml.splice(0, this.arrHtml.length).forEach((item) => item.remove());
       cardItemContainer.append(this.create(productInfo));
+      activeBanners(this.element, true);
     });
     return super.create(this.element);
   }
@@ -517,16 +496,8 @@ class CreateCardItemHistory extends CreateItem {
     this.elementWraper = document.createElement('div');
     this.elementWraper.classList.add('history-order');
     let { orderStateName, orderDate } = productInfo;
-    const regExp = /\d+-(\d+)-(\d+)\s(\d+:\d+):\d+/g;
-    const monthNumber = orderDate.replace(regExp, '$1');
-    let monthName;
-    const monthArr = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентяря', 'Октабря', 'Ноября', 'Декбаря'];
-    monthArr.forEach((item, index) => {
-      if (index + 1 === Number(monthNumber)) {
-        monthName = item;
-      }
-    });
-    const date = orderDate.replace(regExp, `$2 ${monthName} $3`);
+    this.date = transformationUtcToLocalDate(orderDate);
+
     if (productInfo.orderStateName === 'Создан' && productInfo.paid !== 0) {
       orderStateName = 'Оплачен';
     }
@@ -536,7 +507,7 @@ class CreateCardItemHistory extends CreateItem {
                               <span class="title-bar__text title-bar__text--theme--shadow">№${productInfo.orderId}</span>
                               <span class="title-bar__text title-bar__text--theme--shadow">${orderStateName}</span>
                             </div>
-                            <span class="title-bar__title title-bar__title--size--small title-bar__title--theme--shadow">${date}</span>
+                            <span class="title-bar__title title-bar__title--size--small title-bar__title--theme--shadow">${this.date}</span>
                             </div>
                             <button class="title-bar__button">Добавить все</button>
                           </div>`;
@@ -558,16 +529,19 @@ class CreateCardItemHistory extends CreateItem {
                 </svg>
               </button>
               <button class="card-item__button card-item__button--type--plus">
-                <img src="[+chunkWebPath+]/img/icon-add-circle-plus.svg" alt=""
+                <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-add-circle-plus.svg]]" alt=""
                      class="card-item__icon card-item__icon--type--plus">
               </button>
             </div>
           </div>`;
       this.element.insertAdjacentHTML('beforeend', this.template);
       this.iconsPlus = this.element.querySelector('.card-item__button--type--plus');
-
+      this.buttonPlus = this.element.querySelector('.card-item__button--type--plus');
       this.price = this.element.querySelector('.card-item__price');
       this.iconsLike = this.element.querySelector('.card-item__icon--type--like');
+      this.buttonLike = this.element.querySelector('.card-item__button--type--like');
+
+      this.element.setAttribute('data-id', item.itemId);
 
       const imgEl = this.element.querySelector('.card-item__image');
       if (!canUseWebP()) {
@@ -576,6 +550,16 @@ class CreateCardItemHistory extends CreateItem {
         loadImg(dataProductApi.successData.items[item.itemId], imgEl, 'webp');
       }
 
+      this.element.addEventListener('click', (e) => {
+        const classArr = ['card-item__image', 'card-item__title', 'card-item__price'];
+        classArr.forEach((classEl) => {
+          if (e.target.classList.contains(classEl)) {
+            toggleFifthPage.closePage();
+            toggleSubPageProductCard.rendering(dataProductApi.successData.items[item.itemId]);
+            toggleFifthPage.deletePage();
+          }
+        });
+      });
 
       let priceAllModifier = 0;
 
@@ -623,7 +607,7 @@ class CreateCardItemHistory extends CreateItem {
 
       this.price.textContent = priceAllModifier + dataProductApi.successData.items[item.itemId].price;
 
-      this.iconsPlus.addEventListener('click', () => {
+      this.buttonPlus.addEventListener('click', () => {
         const basketPopupIcon = document.querySelector('.bottom-bar__icon-popup');
         const basketPopupIconImg = document.querySelector('.bottom-bar__icon-popup-img');
         const modifiersArr = [];
@@ -648,20 +632,37 @@ class CreateCardItemHistory extends CreateItem {
 
 
       this.iconsLike.addEventListener('click', function () {
-        this.classList.toggle('card-item__icon--liked');
-
+        console.log(item, this, productInfo);
         if (this.classList.contains('card-item__icon--liked')) {
-          const modifiersArr = [];
-          item.modifiers.forEach((modif) => {
-            modifiersArr.push({ id: modif.modificationId, count: modif.count });
+          const allIconsLiked = document.querySelectorAll('.card-item__icon--liked');
+          this.classList.remove('card-item__icon--liked');
+          [...allIconsLiked].forEach((like) => {
+            if (like.closest('.card-item').getAttribute('data-id') === String(item.itemId)) {
+              like.classList.remove('card-item__icon--liked');
+            }
           });
-          itemsArray.push({ id: item.itemId, modifiers: modifiersArr });
-        } else {
-          itemsArray.forEach((item, index) => {
-            if (item.id === productInfo.id) {
+          itemsArray.forEach((el, index) => {
+            if (el.id === item.itemId) {
               itemsArray.splice(index, 1);
             }
           });
+        } else {
+          console.log(this);
+          this.classList.add('card-item__icon--liked');
+          const allIconsLikes = document.querySelectorAll('.card-item__icon--type--like');
+          [...allIconsLikes].forEach((like) => {
+            if (like.closest('.card-item').getAttribute('data-id') === String(item.itemId)) {
+              like.classList.add('card-item__icon--liked');
+            }
+          });
+          console.log(doubleFav(item));
+          if (!doubleFav(item)) {
+            const modifiersArr = [];
+            item.modifiers.forEach((modif) => {
+              modifiersArr.push({ id: modif.modificationId, count: modif.count });
+            });
+            itemsArray.push({ id: item.itemId, modifiers: modifiersArr });
+          }
         }
         localStorage.setItem('items', JSON.stringify(itemsArray));
       });
