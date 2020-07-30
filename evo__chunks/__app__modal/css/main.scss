@@ -77,8 +77,10 @@
   &__img {
     margin-bottom: 10px;
     padding-bottom: 75%;
-    background-repeat: no-repeat;
     background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: lightgray;
   }
 
   &__button {

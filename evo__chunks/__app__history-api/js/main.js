@@ -99,7 +99,11 @@ function BindingHistoryApi() {
     const route = routes.find((r) => r.path === window.location.hash);
     // console.log(url, route);
     // Перебираем массив "routes" и ищем роут с "path", равным переменной "url"
-    route.content();
+    try {
+      route.content();
+    } catch (e) {
+      console.log(e);
+    }
 
     // if (isUndefined(route)) {
     //     // И снова перебор

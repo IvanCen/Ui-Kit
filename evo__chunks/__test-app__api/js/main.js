@@ -8,6 +8,7 @@ class Api {
     };
   }
 
+
   productApi() {
     const request = {
       method: 'get-catalog',
@@ -396,7 +397,7 @@ class Api {
       method: 'recharge_the_balance',
       user: userPhone,
       amount,
-      from: 'app', // Доступные варианты: app, site
+      from: 'appWidget', // Доступные варианты: app, site, appWidget
       outputFormat: 'json',
     };
 
@@ -578,7 +579,9 @@ class Api {
         if (res.success === true) {
           togglePage.closePage();
           localStorage.removeItem('user-sign-in');
+          localStorage.removeItem('authorizationCode');
           delete userInfoObj.successData;
+          localStorage.setItem('userInfo', JSON.stringify(userInfoObj));
           renderMainPage.clearPage();
           renderMainPage.rendering();
           renderMainPage.openPage();

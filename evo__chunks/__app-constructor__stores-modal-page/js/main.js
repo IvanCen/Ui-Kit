@@ -15,8 +15,9 @@ class ToggleStores extends ToggleModalPageStores {
       input.addEventListener('click', () => {
         [...radioInputs].forEach((item) => {
           if (item.checked) {
+            const inputId = item.getAttribute('data-id');
             storesDataObj.successData.forEach((el) => {
-              if (el.id === Number(item.id)) {
+              if (el.id === Number(inputId)) {
                 api.getShopOutOfStockItemsAndModifiers(el.id);
                 userStore.store = el;
                 localStorage.setItem('userStore', JSON.stringify(userStore));
@@ -182,6 +183,7 @@ class ToggleStores extends ToggleModalPageStores {
               iconImageSize: [35, 35],
             });
             placemark.properties.set('priceGroup', 'BreadRiots');
+            placemark.properties.set('data-id', store.id);
             console.log(placemark.properties.get('priceGroup', 'BreadRiots'));
           } else {
             placemark = new ymaps.Placemark([store.latitude, store.longitude], {
@@ -193,7 +195,6 @@ class ToggleStores extends ToggleModalPageStores {
           }
 
           myCollection.add(placemark);
-
           placemark.events.add('click', () => {
             for (const day in store) {
               if (Array.isArray(store[day])) {
@@ -237,7 +238,8 @@ class ToggleStores extends ToggleModalPageStores {
       if (!isEmptyObj(userStore)) {
         const radioInputs = document.querySelectorAll('.radio__input');
         [...radioInputs].forEach((item) => {
-          if (userStore.store.id === Number(item.id)) {
+          const inputId = item.getAttribute('data-id');
+          if (userStore.store.id === Number(inputId)) {
             item.checked = true;
           }
         });

@@ -1,28 +1,77 @@
+
 class TogglePageBalanceFill extends TogglePage {
   constructor(parameters) {
     super(parameters);
     this.parameters = parameters;
     this.rendering = this.rendering.bind(this);
+    this.setFillInfo = this.setFillInfo.bind(this);
+    this.getPayLink = this.getPayLink.bind(this);
+  }
+
+  setFillInfo() {
+    this.buttonFill = this.page.querySelector('.button--type--fill');
+    this.topBar = this.page.querySelector('.top-bar');
+    this.buttonSizeBar = this.page.querySelectorAll('.size-bar__button');
+    this.sizeBar = this.page.querySelector('.size-bar');
+    this.loader = document.createElement('img');
+    this.loader.classList.add('spinner');
+    this.loader.src = 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-spinner.svg]]';
+    this.topBar.after(this.loader);
+
+    this.buttonFill.classList.add('button--hide');
+    this.sizeBar.classList.add('size-bar--hide');
+    this.paymentForm = document.createElement('div');
+    this.paymentForm.id = 'payment-form';
+    this.page.append(this.paymentForm);
+
+    [...this.buttonSizeBar].forEach((item) => {
+      if (item.classList.contains('size-bar__button--active')) {
+        this.amount = Number(item.textContent);
+        this.userPhone = userInfoObj.successData.phone;
+        api.rechargeBalanceApi(this.userPhone, this.amount, this.getPayLink);
+      }
+    });
+  }
+
+  getPayLink(payInfo) {
+    console.log(payInfo);
+    this.loader = this.page.querySelector('.spinner');
+    this.loader.classList.add('spinner--hide');
+
+    if (payInfo.success) {
+      // api.sendDebugMessage(`${window.YandexCheckout} info 1`);
+      // Инициализация виджета. Все параметры обязательные.
+      const checkout = new window.YandexCheckout({
+        confirmation_token: payInfo.successData.confirmationToken, // Токен, который перед проведением оплаты нужно получить от Яндекс.Кассы
+        return_url: 'https://xleb.ru/test-app.html', // Ссылка на страницу завершения оплаты
+        embedded_3ds: true,
+        error_callback(error) {
+          toggleModal.rendering(error);
+        },
+      });
+      // api.sendDebugMessage(`${JSON.stringify(checkout)}${window.YandexCheckout} info 2`);
+
+      // Отображение платежной формы в контейнере
+      checkout.render('payment-form');
+    } else {
+      toggleModal.rendering(payInfo.errors[0]);
+    }
   }
 
   rendering() {
     super.rendering();
 
-    const cardTopBar = new CreateTopBarWithBackButton({
+    this.cardTopBar = new CreateTopBarWithBackButton({
       selector: ['div'],
       style: ['top-bar'],
-      modifier: [`${isIos ? '--size--small--ios' : '--size--small'}`, '--indentation--bottom', '--theme--light'],
+      modifier: [`${isIos ? '--size--small--ios' : '--size--small'}`, '--theme--light'],
       textTitle: ['Пополнение баланса'],
       eventBack: [
         { type: 'click', callback: this.closePage },
         { type: 'click', callback: this.deletePage },
       ],
     });
-    const selectItem = new CreateSelectItem({
-      selector: ['div'],
-      style: ['select-item'],
-    });
-    const sizeBar = new CreateSizeBar({
+    this.sizeBar = new CreateSizeBar({
       selector: ['div'],
       style: ['size-bar'],
       modifier: [
@@ -31,7 +80,7 @@ class TogglePageBalanceFill extends TogglePage {
       ],
     });
 
-    const buttonFill = new CreateButton({
+    this.buttonFill = new CreateButton({
       selector: ['button'],
       style: ['button'],
       modifier: [
@@ -43,53 +92,19 @@ class TogglePageBalanceFill extends TogglePage {
       ],
       text: ['Оплатить'],
       eventsOpen: [
-        // { type: 'click', callback: togglePageBalanceFill.rendering },
-      ],
-    });
-
-    const form = new CreateFormGiftCard({
-      selector: ['div'],
-      style: ['form'],
-      modifier: ['--indentation', '--size--full'],
-      events: [
-        { type: 'click', callback: this.closePage },
-        { type: 'click', callback: this.deletePage },
+        {
+          type: 'click',
+          callback: this.setFillInfo,
+        },
       ],
     });
 
     this.page.append(createTopBarIos());
-    this.page.append(cardTopBar.create());
-    // this.page.append(selectItem.create());
-    this.page.append(sizeBar.create());
-    this.page.append(buttonFill.create());
-
-    this.buttonFill = document.querySelector('.button--type--fill');
-    this.buttonSizeBar = document.querySelectorAll('.size-bar__button');
-
-    function getPayLink(payInfo) {
-      if (payInfo.success) {
-        document.location.href = payInfo.successData.payUrl;
-      } else {
-        toggleModal.rendering(payInfo.errors[0]);
-      }
-    }
-
-    this.buttonFill.addEventListener('click', () => {
-      [...this.buttonSizeBar].forEach((item) => {
-        if (item.classList.contains('size-bar__button--active')) {
-          const amount = Number(item.textContent);
-          const userPhone = userInfoObj.successData.phone;
-          api.rechargeBalanceApi(userPhone, amount, getPayLink);
-        }
-      });
-    });
-
+    this.page.append(this.cardTopBar.create());
+    this.page.append(this.sizeBar.create());
+    this.page.append(this.buttonFill.create());
 
     activeSizeBar();
-    /* selectItemActive();
-    inputFlyLabel();
-    inputVisibleTogglePass();
-    validation(); */
     this.openPage();
   }
 }

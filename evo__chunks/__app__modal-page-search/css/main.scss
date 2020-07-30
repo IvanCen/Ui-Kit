@@ -25,5 +25,11 @@
     top: 0;
   }
 
+  &--opened-stores {
+    top: 0;
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+
 
 }

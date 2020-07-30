@@ -1,5 +1,35 @@
 @import "../../__app__head-style-and-script/css/main.scss";
 
+.main-page::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+.main-page {
+  overflow-y: scroll;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+
+  &--loaded {
+    display: none;
+  }
+
+  &--size--small {
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 78px);
+
+  }
+
+  &--type--search {
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 78px);
+    justify-content: space-between;
+  }
+
+}
 
 .main-page__content {
   position: fixed;

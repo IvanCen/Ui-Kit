@@ -32,7 +32,7 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
   }
 
   registrationNumber() {
-    this.inputArea = document.querySelector('.form__input-area--type--phone-sign-in');
+    this.inputArea = this.modalPageSignIn.querySelector('.form__input-area--type--phone-sign-in');
     this.inputArea.classList.add('form__input--focused');
     this.phoneNumber = this.inputArea.value;
     this.parameters.api.signInCodeApi(this.phoneNumber, this.regCall);
@@ -77,19 +77,19 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
   }
 
   regCall(info) {
-    const inputArea = document.querySelector('.form__input-area--type--phone-sign-in');
+    const inputArea = this.modalPageSignIn.querySelector('.form__input-area--type--phone-sign-in');
     const phoneNumber = inputArea.value;
-    const callLink = document.querySelector('.form__link--type--call');
-    const accessButton = document.querySelector('.form__button--type--sign-in');
-    const callContainer = document.querySelector('.form__call-container');
-    const textError = document.querySelector('.form__text--error');
-    const textErrorPhone = document.querySelector('.form__text--error-phone');
-    const numberForRegistrationEl = document.querySelector('.number-for-registration');
-    const numbersElements = document.querySelectorAll('.last-number-input');
+    const callLink = this.modalPageSignIn.querySelector('.form__link--type--call');
+    const accessButton = this.modalPageSignIn.querySelector('.form__button--type--sign-in');
+    const callContainer = this.modalPageSignIn.querySelector('.form__call-container');
+    const textError = this.modalPageSignIn.querySelector('.form__text--error');
+    const textErrorPhone = this.modalPageSignIn.querySelector('.form__text--error-phone');
+    const numberForRegistrationEl = this.modalPageSignIn.querySelector('.number-for-registration');
+    const numbersElements = this.modalPageSignIn.querySelectorAll('.last-number-input');
 
     console.log(info);
     if (info.success === true) {
-      const input = document.querySelector('.form__input');
+      const input = this.modalPageSignIn.querySelector('.form__input');
 
       textErrorPhone.classList.add('form__text--close', 'form__text--hide');
       textError.classList.add('form__text--hide');
@@ -149,8 +149,8 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
   }
 
   regSuccess(infoSuccess) {
-    const textErrorPhone = document.querySelector('.form__text--error-phone');
-    const callContainer = document.querySelector('.form__call-container');
+    const textErrorPhone = this.modalPageSignIn.querySelector('.form__text--error-phone');
+    const callContainer = this.modalPageSignIn.querySelector('.form__call-container');
 
     if (infoSuccess.success === true) {
       textErrorPhone.classList.add('form__text--close', 'form__text--hide');
@@ -168,9 +168,9 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
     if (userInfo.success === true) {
       localStorage.setItem('user-sign-in', 'true');
       const { birthday, email, name } = userInfo.successData;
-      const inputsContainer = document.querySelector('.form__inputs-container');
-      const textSuccess = document.querySelector('.form__text--success');
-      const buttonAgree = document.querySelector('.form__button--type--agree');
+      const inputsContainer = this.modalPageSignIn.querySelector('.form__inputs-container');
+      const textSuccess = this.modalPageSignIn.querySelector('.form__text--success');
+      const buttonAgree = this.modalPageSignIn.querySelector('.form__button--type--agree');
 
       textSuccess.classList.add('form__text--close');
       inputsContainer.classList.remove('form__inputs-container--hide');
@@ -196,7 +196,7 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
   }
 
   showError(info) {
-    const textError = document.querySelector('.form__text--error');
+    const textError = this.modalPageSignIn.querySelector('.form__text--error');
     textError.classList.remove('form__text--close', 'form__text--hide');
     if (info.errors[0] !== undefined) {
       textError.textContent = info.errors[0];
@@ -206,10 +206,10 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
   }
 
   askUserName() {
-    const inputNameContainer = document.querySelector('.form__input-container--name');
-    const inputAreaName = document.querySelector('.form__input-area--type--name');
-    const buttonAgree = document.querySelector('.form__button--type--agree');
-    const textError = document.querySelector('.form__text--error');
+    const inputNameContainer = this.modalPageSignIn.querySelector('.form__input-container--name');
+    const inputAreaName = this.modalPageSignIn.querySelector('.form__input-area--type--name');
+    const buttonAgree = this.modalPageSignIn.querySelector('.form__button--type--agree');
+    const textError = this.modalPageSignIn.querySelector('.form__text--error');
 
     inputNameContainer.classList.remove('form__input-container--hide');
     validation();
@@ -232,10 +232,10 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
   }
 
   askUserBirthday() {
-    const buttonAgree = document.querySelector('.form__button--type--agree');
-    const textError = document.querySelector('.form__text--error');
-    const inputBirthdayContainer = document.querySelector('.form__input-container--birthday');
-    const inputAreaBirthday = document.querySelector('.form__input-area--type--birthday');
+    const buttonAgree = this.modalPageSignIn.querySelector('.form__button--type--agree');
+    const textError = this.modalPageSignIn.querySelector('.form__text--error');
+    const inputBirthdayContainer = this.modalPageSignIn.querySelector('.form__input-container--birthday');
+    const inputAreaBirthday = this.modalPageSignIn.querySelector('.form__input-area--type--birthday');
 
     inputBirthdayContainer.classList.remove('form__input-container--hide');
 
@@ -256,11 +256,11 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
   }
 
   askUserEmail() {
-    const buttonAgree = document.querySelector('.form__button--type--agree');
-    const textError = document.querySelector('.form__text--error');
-    const textSuccess = document.querySelector('.form__text--success');
-    const inputEmailContainer = document.querySelector('.form__input-container--email');
-    const inputAreaEmail = document.querySelector('.form__input-area--type--email');
+    const buttonAgree = this.modalPageSignIn.querySelector('.form__button--type--agree');
+    const textError = this.modalPageSignIn.querySelector('.form__text--error');
+    const textSuccess = this.modalPageSignIn.querySelector('.form__text--success');
+    const inputEmailContainer = this.modalPageSignIn.querySelector('.form__input-container--email');
+    const inputAreaEmail = this.modalPageSignIn.querySelector('.form__input-area--type--email');
 
     inputEmailContainer.classList.remove('form__input-container--hide');
     validation();
@@ -329,7 +329,7 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
     this.modalPageSignIn.append(createTopBarIos());
     this.modalPageSignIn.append(signInTopBar.create());
     this.modalPageSignIn.append(formInputSignIn.create());
-    const inputArea = document.querySelector('.form__input-area--type--phone-sign-in');
+    const inputArea = this.modalPageSignIn.querySelector('.form__input-area--type--phone-sign-in');
     /* inputArea.addEventListener('focusout', () => {
       this.registrationNumber(this);
     }); */

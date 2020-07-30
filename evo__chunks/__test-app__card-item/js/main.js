@@ -97,14 +97,14 @@ class CreateCardItemRewardCard extends CreateItem {
     this.element.addEventListener('click', () => {
       toggleModal.renderingReward({
         title,
-        text: description,
+        description,
         promoCode: null,
-        date: unlockDate,
+        unlockDate,
         image,
       });
     });
     this.template = `
-      <div style="background-image: url('[+chunkWebPath+]/img/img__card-item--reward.jpg')" class="card-item__image-reward"></div>
+      <div style="background-image: url(${icon})" class="card-item__image-reward"></div>
       <div class="card-item__info-container">
         <h3 class="card-item__title card-item__title--text--normal card-item__title--position--center">${title}</h3>
         <span class="card-item__available-info card-item__available-info--show">
@@ -496,7 +496,7 @@ class CreateCardItemHistory extends CreateItem {
     this.elementWraper = document.createElement('div');
     this.elementWraper.classList.add('history-order');
     let { orderStateName, orderDate } = productInfo;
-    const date = getFormattedApiDate(orderDate);
+    this.date = transformationUtcToLocalDate(orderDate);
 
     if (productInfo.orderStateName === 'Создан' && productInfo.paid !== 0) {
       orderStateName = 'Оплачен';
@@ -507,7 +507,7 @@ class CreateCardItemHistory extends CreateItem {
                               <span class="title-bar__text title-bar__text--theme--shadow">№${productInfo.orderId}</span>
                               <span class="title-bar__text title-bar__text--theme--shadow">${orderStateName}</span>
                             </div>
-                            <span class="title-bar__title title-bar__title--size--small title-bar__title--theme--shadow">${date}</span>
+                            <span class="title-bar__title title-bar__title--size--small title-bar__title--theme--shadow">${this.date}</span>
                             </div>
                             <button class="title-bar__button">Добавить все</button>
                           </div>`;

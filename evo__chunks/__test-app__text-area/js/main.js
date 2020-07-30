@@ -106,6 +106,10 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
     }
   }
 
+  countPrice(productInfo) {
+
+  }
+
   renderModifier(modifierName, el, productInfo) {
     const descriptionArea = el.querySelector('.text-area--type--description');
     const element = document.createElement('div');
@@ -127,11 +131,15 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
       const textAreaList = element.querySelector('.text-area__list');
       for (const modifiersUserItem in userDataObj[productInfo.id]) {
         const productItemModif = dataProductApi.successData.modifiers[Number(modifiersUserItem)];
-
         if (productItemModif.category === modifierName) {
           const counter = userDataObj[productInfo.id][modifiersUserItem];
           const textAreaListItem = document.createElement('li');
           if (counter !== 0) {
+            console.log(productItemModif);
+            const priceEl = this.element.querySelector('.text-area__price');
+            let price = Number(priceEl.textContent);
+            price += productItemModif.price * counter;
+            priceEl.textContent = price;
             textAreaListItem.classList.add('text-area__list-item');
             textAreaListItem.id = productItemModif.id;
             textAreaListItem.textContent = `${counter} добав${number_of(counter, ['ка', 'ки', 'ок'])} ${productItemModif.name}`;
@@ -445,6 +453,8 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
       buttonReset.textContent = 'сбросить модификаторы';
       descriptionArea.before(buttonReset);
       [...modifiers].pop().firstElementChild.classList.add('text-area__container--no-border');
+
+      this.countPrice(productInfo);
     }
 
     return super.create(this.element);

@@ -1,1 +1,0 @@
-.main-page::-webkit-scrollbar{width:0;height:0;display:none}.main-page{overflow-y:scroll;scrollbar-width:none;-ms-overflow-style:none}.main-page--loaded{display:none}.main-page--size--small{display:flex;flex-direction:column;height:calc(100% - 78px)}.main-page--type--search{display:flex;flex-direction:column;height:calc(100% - 78px);justify-content:space-between}

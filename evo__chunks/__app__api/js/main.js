@@ -8,6 +8,7 @@ class Api {
     };
   }
 
+
   productApi() {
     const request = {
       method: 'get-catalog',
@@ -396,7 +397,7 @@ class Api {
       method: 'recharge_the_balance',
       user: userPhone,
       amount,
-      from: 'app', // Доступные варианты: app, site
+      from: 'appWidget', // Доступные варианты: app, site, appWidget
       outputFormat: 'json',
     };
 

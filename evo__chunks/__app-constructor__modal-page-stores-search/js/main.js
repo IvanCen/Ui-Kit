@@ -6,20 +6,25 @@ class ToggleModalPageStoresSearch extends ToggleModalPageSearch {
   }
 
   chooseShop(page) {
-    const storesButton = document.querySelector('.bottom-bar__select-item');
+    const storesButtonBottomBar = document.querySelector('.bottom-bar__select-item');
+    const storesButtonTopBar = document.querySelector('.top-bar__select-item--type--stores');
     const radioInputs = page.querySelectorAll('.radio__input');
     const mapItem = page.querySelectorAll('.map__item');
     [...mapItem].forEach((input) => {
       input.addEventListener('click', () => {
         [...radioInputs].forEach((item) => {
           if (item.checked) {
+            const inputId = item.getAttribute('data-id');
             storesDataObj.successData.forEach((el) => {
-              if (el.id === Number(item.id)) {
+              if (el.id === Number(inputId)) {
                 api.getShopOutOfStockItemsAndModifiers(el.id);
                 userStore.store = el;
                 localStorage.setItem('userStore', JSON.stringify(userStore));
-                if (storesButton) {
-                  storesButton.textContent = el.shortTitle;
+                if (storesButtonBottomBar) {
+                  storesButtonBottomBar.textContent = el.shortTitle;
+                }
+                if (storesButtonTopBar) {
+                  storesButtonTopBar.textContent = el.shortTitle;
                 }
                 /* const mapRadioInput = document.querySelectorAll('.map__radio-input');
                 [...mapRadioInput].forEach((radio) => {
