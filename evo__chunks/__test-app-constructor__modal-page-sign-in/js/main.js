@@ -180,8 +180,7 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
     if (infoSuccess.success) {
       textErrorPhone.classList.add('form__text--close', 'form__text--hide');
       callContainer.remove();
-
-      if (infoSuccess.isStartApp) {
+      if (infoSuccess.isStartApp && infoSuccess.name === '') {
         formInput.remove();
         buttonSignIn.remove();
         api.getClientApi(this.askUserInfo);
@@ -292,7 +291,6 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
         }
       });
     }
-
   }
 
   rendering() {

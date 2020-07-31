@@ -5,31 +5,6 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
     this.rendering = this.rendering.bind(this);
     this.makeOrder = this.makeOrder.bind(this);
     this.checkStoreWorkTime = this.checkStoreWorkTime.bind(this);
-    this.backButton = new CreateButton({
-      selector: ['button'],
-      style: ['button'],
-      modifier: ['--size--big',
-        '--theme--tangerin',
-        '--type--fixed-low',
-        '--theme--shadow-big',
-      ],
-      text: ['К меню'],
-      events: [
-        {
-          type: 'click',
-          callback: () => {
-            this.closePage();
-            this.deletePage();
-          },
-        },
-      ],
-    });
-    this.titleBarEmptyBasket = new CreateTitleBar({
-      selector: ['div'],
-      style: ['title-bar'],
-      modifier: ['--indentation--top', '--size--medium'],
-      text: ['Добавьте товары в корзину, чтобы продолжить'],
-    });
   }
 
   makeOrder(info) {
@@ -151,6 +126,31 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
       ],
     });
 
+    const backButton = new CreateButton({
+      selector: ['button'],
+      style: ['button'],
+      modifier: ['--size--big',
+        '--theme--tangerin',
+        '--type--fixed-low',
+        '--theme--shadow-big',
+      ],
+      text: ['К меню'],
+      events: [
+        {
+          type: 'click',
+          callback: () => {
+            this.closePage();
+            this.deletePage();
+          },
+        },
+      ],
+    });
+    const titleBarEmptyBasket = new CreateTitleBar({
+      selector: ['div'],
+      style: ['title-bar'],
+      modifier: ['--indentation--top', '--size--medium'],
+      text: ['Добавьте товары в корзину, чтобы продолжить'],
+    });
 
     this.modalPageOrderReview.append(createTopBarIos());
     this.modalPageOrderReview.append(reviewTopBar.create());
@@ -186,7 +186,7 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
         activeBanners(banner, true);
       });
 
-      //validation();
+      // validation();
       activeAccordion();
       inputFlyLabel();
 
@@ -194,8 +194,8 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
         api.getClientApi(this.checkStoreWorkTime);
       });
     } else {
-      this.modalPageOrderReview.append(this.titleBarEmptyBasket.create());
-      this.modalPageOrderReview.append(this.backButton.create());
+      this.modalPageOrderReview.append(titleBarEmptyBasket.create());
+      this.modalPageOrderReview.append(backButton.create());
     }
 
     this.openPage();

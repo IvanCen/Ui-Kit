@@ -23,6 +23,13 @@
     height: calc(100vh - 133px);
   }
 
+  &--opened--addins {
+    left: 0;
+    height: calc(100vh - 133px);
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+
   &--opened {
 
     left: 0;

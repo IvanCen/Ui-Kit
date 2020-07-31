@@ -395,6 +395,17 @@ class CreateCardItemReviewOrder extends CreateItem {
     this.figure = this.element.querySelector('.main-card__figure');
     this.energyEl = this.element.querySelector('.card-item__info--type--energy');
     this.element.setAttribute('id', productInfo.id);
+    this.element.addEventListener('click', (e) => {
+      if (!e.target.classList.contains('card-item__icon') && !e.target.classList.contains('card-item__button')) {
+        closePages();
+        setTimeout(() => {
+          this.pushRoute = false;
+          toggleSubPageProductCard.rendering(dataProductApi.successData.items[productInfo.id], this.pushRoute);
+          toggleModalPageOrderReview.closePage();
+          toggleModalPageOrderReview.deletePage();
+        }, 300);
+      }
+    });
     const el = this.element;
     const counterTopBar = document.querySelector('.top-bar__all-counter-order');
     const counterBottomBar = document.querySelector('.bottom-bar__counter');

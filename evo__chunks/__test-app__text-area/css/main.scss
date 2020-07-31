@@ -89,6 +89,12 @@
       transition: all 0.1s ease-in;
     }
 
+    &--type--addins {
+      flex-direction: column;
+      overflow-x: hidden;
+      overflow-y: scroll;
+    }
+
     &--open {
       overflow: visible;
       max-height: 100%;

@@ -44,7 +44,6 @@ class ToggleThirdPageAddinsCard extends ToggleThirdPage {
     [...this.titlesModifiers].forEach((title, index) => {
       if (title.textContent === modifierName) {
         title.closest('.text-area__wraper').scrollIntoView({ block: 'start', inline: 'start', behavior: 'smooth' });
-        setTimeout(() => page.scrollTop -= 110, 500);
       }
     });
   }
@@ -82,22 +81,25 @@ class ToggleThirdPageAddinsCard extends ToggleThirdPage {
         { type: 'click', callback: counterBasket },
       ],
     });
+    this.containersModifiersEl = document.createElement('div');
+    this.containersModifiersEl.classList.add('text-area__content-container', 'text-area__content-container--type--addins');
     this.thirdPage.append(createTopBarIos());
     this.thirdPage.append(addinsTopBar.create(productInfo));
-    this.thirdPage.append(addinsTextArea.create(productInfo));
+    this.thirdPage.append(this.containersModifiersEl);
     this.thirdPage.append(addinsButton.create());
 
     this.topBar = this.thirdPage.querySelector('.top-bar');
     this.buttonAdd = this.thirdPage.querySelector('.button--type--add-adds');
-    this.buttonReset = this.thirdPage.querySelector('.text-area__button--type--reset');
 
     this.modifierObjWithTitle = this.getModifiers(productInfo);
     this.modifierArrWithTitle = Object.entries(this.modifierObjWithTitle);
     this.modifierArrWithTitle.forEach((item) => {
-      this.topBar.after(addinTextArea.create(item, productInfo));
+      // this.topBar.after(addinTextArea.create(item, productInfo));
+      this.containersModifiersEl.prepend(addinTextArea.create(item, productInfo));
     });
+    this.containersModifiersEl.append(addinsTextArea.create(productInfo));
 
-
+    this.buttonReset = this.thirdPage.querySelector('.text-area__button--type--reset');
     this.buttonReset.addEventListener('click', () => {
       delete userDataObj[productInfo.id];
       localStorage.setItem('userData', userDataObj);

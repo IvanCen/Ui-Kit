@@ -179,15 +179,6 @@ function isEmptyObj(obj) {
   return true;
 }
 
-function checkBasket() {
-  const iconDot = document.querySelector('.footer__icon-dot');
-  if (basketArray.length !== 0) {
-    iconDot.classList.add('footer__icon-dot--show');
-  } else {
-    iconDot.classList.remove('footer__icon-dot--show');
-  }
-}
-
 function canUseWebP() {
   const elem = document.createElement('canvas');
 
@@ -379,6 +370,15 @@ function loadImgNotSquare(productInfo, imgEl, expansion, timer) {
     load_image_with_correct_extension_and_resolution(productInfo, imgEl, expansion, 1000, aspectRatio);
   })();
   return '';
+}
+
+function checkBasket() {
+  const iconDot = document.querySelector('.footer__icon-dot');
+  if (basketArray.length !== 0) {
+    iconDot.classList.add('footer__icon-dot--show');
+  } else {
+    iconDot.classList.remove('footer__icon-dot--show');
+  }
 }
 
 function checkEmptyBasket() {

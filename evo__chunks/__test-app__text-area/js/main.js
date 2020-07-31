@@ -960,6 +960,7 @@ class CreateTextAreaOrderPayment extends CreateItem {
       }
       localStorage.setItem('basket', JSON.stringify(basketArray));
       counterBasket();
+      checkBasket();
       setTimeout(() => {
         toggleModal.rendering('Спасибо за оплату. Если платеж был успешным, то скоро мы получим его и обновим статус вашего заказа или доставим средства на счет');
       }, 2000);
@@ -974,6 +975,7 @@ class CreateTextAreaOrderPayment extends CreateItem {
       basketArray.splice(0, basketArray.length);
       localStorage.setItem('basket', JSON.stringify(basketArray));
       counterBasket();
+      checkBasket();
       setTimeout(() => {
         togglePage.closePage();
         togglePage.deletePage();
