@@ -139,7 +139,7 @@ class CreateMapItemStores extends CreateItem {
     }
 
     const radioInputEl = this.element.querySelector('.radio__input');
-    if (userStore.store.id === store.id) {
+    if (!isEmptyObj(userStore) && userStore.store.id === store.id) {
       radioInputEl.checked = 'checked';
     }
     this.element.addEventListener('click', (e) => {

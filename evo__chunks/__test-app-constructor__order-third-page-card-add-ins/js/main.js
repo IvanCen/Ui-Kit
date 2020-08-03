@@ -39,9 +39,9 @@ class ToggleThirdPageAddinsCard extends ToggleThirdPage {
     return itemModifierWithTitles;
   }
 
-  scrollToModifier(modifierName, page) {
+  scrollToModifier(modifierName) {
     this.titlesModifiers = this.thirdPage.querySelectorAll('.text-area__title--type--uppercase');
-    [...this.titlesModifiers].forEach((title, index) => {
+    [...this.titlesModifiers].forEach((title) => {
       if (title.textContent === modifierName) {
         title.closest('.text-area__wraper').scrollIntoView({ block: 'start', inline: 'start', behavior: 'smooth' });
       }
@@ -82,7 +82,11 @@ class ToggleThirdPageAddinsCard extends ToggleThirdPage {
       ],
     });
     this.containersModifiersEl = document.createElement('div');
-    this.containersModifiersEl.classList.add('text-area__content-container', 'text-area__content-container--type--addins');
+    this.containersModifiersEl.classList.add(
+      'text-area__content-container',
+      'text-area__content-container--type--addins',
+      `text-area__content-container--type--addins${isIos ? '--ios' : ''}`,
+    );
     this.thirdPage.append(createTopBarIos());
     this.thirdPage.append(addinsTopBar.create(productInfo));
     this.thirdPage.append(this.containersModifiersEl);

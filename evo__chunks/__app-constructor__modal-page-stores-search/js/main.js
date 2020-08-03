@@ -13,8 +13,7 @@ class ToggleModalPageStoresSearch extends ToggleModalPageSearch {
     console.log(page.querySelectorAll('.radio__input'));
     [...radioInputs].forEach((radio) => {
       const radioId = radio.getAttribute('data-id');
-      console.log(`0${userStore.store.id}`, radioId);
-      if (`0${userStore.store.id}` === radioId) {
+      if (!isEmptyObj(userStore) && `0${userStore.store.id}` === radioId) {
         radio.checked = true;
         console.log('checked');
       }
@@ -60,7 +59,7 @@ class ToggleModalPageStoresSearch extends ToggleModalPageSearch {
     for (const store of storesDataObj.successData) {
       if (store.longTitle.toLowerCase().indexOf(this.searchString) > -1) {
         find++;
-        this.mapItemsContainer.append(this.storesMapItem.create(store, undefined, undefined, 0, this.modalPageSearch, classIdentifier));
+        this.mapItemsContainer.append(this.storesMapItem.create(store, undefined, undefined, 0, this.modalPageSearch));
         console.log(this.modalPageSearch);
       }
     }
@@ -72,8 +71,14 @@ class ToggleModalPageStoresSearch extends ToggleModalPageSearch {
       selector: ['div'],
       style: ['top-bar-search'],
       eventCloseIcon: [
-        { type: 'click', callback: this.closePage },
-        { type: 'click', callback: this.deletePage },
+        {
+          type: 'click',
+          callback: () => {
+            this.closePage();
+            this.deletePage();
+            toggleStores.chooseShop(document.querySelector('.modal-page__content'));
+          },
+        },
       ],
     });
     const mapItemStoresSearchWraper = new CreateMapItemStoresSearchWraper({

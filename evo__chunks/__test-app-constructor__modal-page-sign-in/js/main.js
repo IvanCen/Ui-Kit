@@ -338,10 +338,23 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
     this.modalPageSignIn.append(this.formInputSignIn.create());
 
     this.inputArea = this.modalPageSignIn.querySelector('.form__input-area--type--phone-sign-in');
-
+    this.notDoubleSend = true;
     this.inputArea.addEventListener('keydown', (event) => {
       if (event.code === 'Enter' || event.code === 'Go' || event.code === 13) {
+        if (this.notDoubleSend) {
+          this.registrationNumber(this);
+        } else {
+          this.notDoubleSend = !this.notDoubleSend;
+          setTimeout(() => this.notDoubleSend = !this.notDoubleSend, 2000);
+        }
+      }
+    });
+    this.inputArea.addEventListener('focusout', () => {
+      if (this.notDoubleSend) {
         this.registrationNumber(this);
+      } else {
+        this.notDoubleSend = !this.notDoubleSend;
+        setTimeout(() => this.notDoubleSend = !this.notDoubleSend, 2000);
       }
     });
 

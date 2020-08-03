@@ -93,6 +93,10 @@
       flex-direction: column;
       overflow-x: hidden;
       overflow-y: scroll;
+
+      &--ios {
+        margin-top: 35px;
+      }
     }
 
     &--open {

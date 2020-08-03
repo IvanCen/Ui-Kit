@@ -86,7 +86,9 @@ class CreateMapItemStores extends CreateItem {
     }
     this.element = document.createElement('div');
     this.element.classList.add('map__item');
-    this.element.setAttribute('data-id', store.id);
+    this.element.setAttribute('data-id', `${identity()}${store.id}`);
+    console.log(this.element.getAttribute('data-id'));
+    console.log(id);
     let phone;
     if (store.phone !== null) {
       const regExp = /(\+\d)(\d{3})(\d{3})(\d{2})(\d{2})/g;
@@ -139,10 +141,10 @@ class CreateMapItemStores extends CreateItem {
     }
 
     const radioInputEl = this.element.querySelector('.radio__input');
-    /*console.log(radioInputEl, `${identity()}${store.id}`, identity());
+    /* console.log(radioInputEl, `${identity()}${store.id}`, identity());
     if (!isEmptyObj(userStore) && userStore.store.id === Number(`${identity()}${store.id}`)) {
       radioInputEl.checked = 'checked';
-    }*/
+    } */
 
     this.element.addEventListener('click', (e) => {
       if (e.target.classList.contains('map__content--info')
@@ -204,7 +206,7 @@ class CreateMapItemStores extends CreateItem {
             myMap.setZoom(15);
           }); */
           storesDataObj.successData.forEach((el) => {
-            if (el.id === Number(radioInputId)) {
+            if (Number(identity() + el.id) === Number(radioInputId)) {
               api.getShopOutOfStockItemsAndModifiers(el.id);
               userStore.store = el;
               localStorage.setItem('userStore', JSON.stringify(userStore));

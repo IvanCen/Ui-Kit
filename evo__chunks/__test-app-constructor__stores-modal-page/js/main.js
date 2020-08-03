@@ -6,11 +6,75 @@ class ToggleStores extends ToggleModalPageStores {
     this.rendering = this.rendering.bind(this);
   }
 
-  chooseShop() {
+  activeMapTouch(container) {
+    let dragStart = 0;
+    let dragEnd = 0;
+    let offsetY = 0;
+    let offsetYOnStart = 0;
+    let isOpen = false;
+
+    function bannersAnimation(action) {
+      if (offsetY > 50 && !isOpen && action === 'end') {
+        offsetY = container.offsetHeight - 100;
+        offsetYOnStart = container.offsetHeight - 100;
+        isOpen = !isOpen;
+      } else if (offsetY > (container.offsetHeight - 100) && action === 'move' && isOpen) {
+        offsetY = container.offsetHeight - 100;
+        offsetYOnStart = container.offsetHeight - 100;
+      } else if (offsetY < (container.offsetHeight - 150) && action === 'end' && isOpen) {
+        offsetY = 0;
+        offsetYOnStart = 0;
+        isOpen = !isOpen;
+      }
+      console.log(offsetY, container.offsetHeight);
+      const maxOffsetHeight = 0;// container.offsetTop;
+      if (offsetY < 0) {
+        // тут действия, если тянется дальше максимума
+        if (action === 'end') {
+          offsetY = 0;
+          dragStart = 0;
+          dragEnd = 0;
+          offsetYOnStart = 0;
+        } else if (action === 'move') {
+          offsetY = 0;// уменьшапем скорость смещения в 2 раза
+        }
+      }
+      console.log(offsetY, dragStart, dragEnd, offsetYOnStart);
+
+      container.style.transform = `translate3d(0,${offsetY}px,0)`;
+    }
+    const panelTouch = container.querySelector('.top-bar-search--size--small');
+    panelTouch.addEventListener('touchstart', (event) => {
+      dragStart = event.touches[0].clientY;
+      container.classList.add('map--with-animation');
+    }, { passive: false });
+
+    panelTouch.addEventListener('touchmove', (event) => {
+      dragEnd = event.touches[0].clientY;
+      offsetY = offsetYOnStart + dragEnd - dragStart;
+      bannersAnimation('move');
+    }, { passive: false });
+
+    panelTouch.addEventListener('touchend', (event) => {
+      offsetYOnStart = offsetY;
+      container.classList.add('map--with-animation');
+      bannersAnimation('end');
+    }, { passive: false });
+  }
+
+  chooseShop(page) {
     const storesButtonBottomBar = document.querySelector('.bottom-bar__select-item');
     const storesButtonTopBar = document.querySelector('.top-bar__select-item--type--stores');
-    const radioInputs = document.querySelectorAll('.radio__input');
-    const mapItem = document.querySelectorAll('.map__item');
+    const radioInputs = page.querySelectorAll('.radio__input');
+    const mapItem = page.querySelectorAll('.map__item');
+    console.log(radioInputs);
+    [...radioInputs].forEach((radio) => {
+      const radioId = radio.getAttribute('data-id');
+      if (!isEmptyObj(userStore) && userStore.store.id === Number(radioId)) {
+        radio.checked = true;
+        console.log('checked');
+      }
+    });
     [...mapItem].forEach((input) => {
       input.addEventListener('click', () => {
         [...radioInputs].forEach((item) => {
@@ -232,13 +296,15 @@ class ToggleStores extends ToggleModalPageStores {
           }
         });
       }
-      this.chooseShop();
+      this.chooseShop(this.modalPageContent);
     }, 300);
 
     const topBarSearch = this.modalPageContent.querySelector('.top-bar-search--size--small');
+    const map = this.modalPageContent.querySelector('.map');
     const mapList = this.modalPageContent.querySelector('.map');
-    topBarSearch.addEventListener('click', () => {
+    /* topBarSearch.addEventListener('click', () => {
       mapList.classList.toggle('map--hide');
-    });
+    }); */
+    this.activeMapTouch(map);
   }
 }

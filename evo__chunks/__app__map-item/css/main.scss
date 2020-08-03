@@ -5,6 +5,9 @@
   display: flex;
   flex-direction: column;
 
+  &--with-animation {
+    transition: transform 1s ease-in-out;
+  }
 
   &--type--search {
     height: 100%;

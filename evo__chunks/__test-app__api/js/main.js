@@ -580,6 +580,8 @@ class Api {
           togglePage.closePage();
           localStorage.removeItem('user-sign-in');
           localStorage.removeItem('authorizationCode');
+          localStorage.removeItem('userAchievements');
+          delete userAchievements.successData;
           delete userInfoObj.successData;
           localStorage.setItem('userInfo', JSON.stringify(userInfoObj));
           renderMainPage.clearPage();

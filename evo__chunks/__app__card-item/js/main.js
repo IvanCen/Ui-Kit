@@ -62,7 +62,7 @@ class CreateCardItemOrderProductCard extends CreateItem {
       </div>`;
     this.element.insertAdjacentHTML('beforeend', this.template);
     this.stickersContainer = this.element.querySelector('.card-item__stickers-container');
-    if (productInfo.stickers.length !== 0) {
+    if (productInfo.stickers && productInfo.stickers.length !== 0) {
       productInfo.stickers.forEach((stickerName) => {
         const stickerEl = document.createElement('div');
         stickerEl.classList.add('text-area__icon', 'text-area__icon--size--big', `text-area__icon--type--${stickerName}`);

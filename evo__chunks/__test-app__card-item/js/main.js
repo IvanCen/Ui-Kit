@@ -62,7 +62,7 @@ class CreateCardItemOrderProductCard extends CreateItem {
       </div>`;
     this.element.insertAdjacentHTML('beforeend', this.template);
     this.stickersContainer = this.element.querySelector('.card-item__stickers-container');
-    if (productInfo.stickers.length !== 0) {
+    if (productInfo.stickers && productInfo.stickers.length !== 0) {
       productInfo.stickers.forEach((stickerName) => {
         const stickerEl = document.createElement('div');
         stickerEl.classList.add('text-area__icon', 'text-area__icon--size--big', `text-area__icon--type--${stickerName}`);
@@ -89,19 +89,13 @@ class CreateCardItemRewardCard extends CreateItem {
 
   create(rewardInfo) {
     const {
-      description, id, title, image, unlockDate, icon,
+      id, title, icon,
     } = rewardInfo;
     this.element = document.createElement('div');
     this.element.classList.add('card-item');
     this.element.id = id;
     this.element.addEventListener('click', () => {
-      toggleModal.renderingReward({
-        title,
-        description,
-        promoCode: null,
-        unlockDate,
-        image,
-      });
+      toggleModal.renderingReward(rewardInfo);
     });
     this.template = `
       <div style="background-image: url(${icon})" class="card-item__image-reward"></div>
@@ -395,23 +389,12 @@ class CreateCardItemReviewOrder extends CreateItem {
     this.figure = this.element.querySelector('.main-card__figure');
     this.energyEl = this.element.querySelector('.card-item__info--type--energy');
     this.element.setAttribute('id', productInfo.id);
-    this.element.addEventListener('click', (e) => {
-      if (!e.target.classList.contains('card-item__icon') && !e.target.classList.contains('card-item__button')) {
-        closePages();
-        setTimeout(() => {
-          this.pushRoute = false;
-          toggleSubPageProductCard.rendering(dataProductApi.successData.items[productInfo.id], this.pushRoute);
-          toggleModalPageOrderReview.closePage();
-          toggleModalPageOrderReview.deletePage();
-        }, 300);
-      }
-    });
     const el = this.element;
     const counterTopBar = document.querySelector('.top-bar__all-counter-order');
     const counterBottomBar = document.querySelector('.bottom-bar__counter');
     if (!isEmptyObj(outOfStock) && outOfStock.successData.itemsAndModifiers.length !== 0) {
       for (const id in outOfStock.successData.itemsAndModifiers) {
-        if (Number(id) === Number(productInfo.id)) {
+        if (Number(id) === productInfo.id) {
           this.figure.classList.remove('main-card__figure--hide');
           break;
         }
@@ -461,15 +444,15 @@ class CreateCardItemReviewOrder extends CreateItem {
     this.iconsMinus.addEventListener('click', function () {
       (() => {
         if (!this.classList.contains('stop-action')) {
+          counterTopBar.textContent = Number(counterTopBar.textContent) - 1;
+          counterBottomBar.textContent = Number(counterBottomBar.textContent) - 1;
           el.classList.add('card-item--animation');
           for (const [index, item] of Object.entries(basketArray)) {
-            if (JSON.stringify(item) === JSON.stringify(productInfo)) {
+            if (item === productInfo) {
               basketArray.splice(index, 1);
               break;
             }
           }
-          counterTopBar.textContent = basketArray.length;
-          counterBottomBar.textContent = basketArray.length;
           localStorage.setItem('basket', JSON.stringify(basketArray));
           counterBasket();
           checkBasket();
@@ -490,7 +473,7 @@ class CreateCardItemReviewOrder extends CreateItem {
       // this.arrHtml = Array.from(cardItemContainer.children);
       // this.arrHtml.splice(0, this.arrHtml.length).forEach((item) => item.remove());
       cardItemContainer.append(this.create(productInfo));
-      activeBanners(this.element, true);
+      activeBanners(this.element, true, checkEmptyBasket);
     });
     return super.create(this.element);
   }
@@ -507,7 +490,7 @@ class CreateCardItemHistory extends CreateItem {
     this.elementWraper = document.createElement('div');
     this.elementWraper.classList.add('history-order');
     let { orderStateName, orderDate } = productInfo;
-    this.date = transformationUtcToLocalDate(orderDate);
+    const date = transformationUtcToLocalDate(orderDate);
 
     if (productInfo.orderStateName === 'Создан' && productInfo.paid !== 0) {
       orderStateName = 'Оплачен';
@@ -518,7 +501,7 @@ class CreateCardItemHistory extends CreateItem {
                               <span class="title-bar__text title-bar__text--theme--shadow">№${productInfo.orderId}</span>
                               <span class="title-bar__text title-bar__text--theme--shadow">${orderStateName}</span>
                             </div>
-                            <span class="title-bar__title title-bar__title--size--small title-bar__title--theme--shadow">${this.date}</span>
+                            <span class="title-bar__title title-bar__title--size--small title-bar__title--theme--shadow">${date}</span>
                             </div>
                             <button class="title-bar__button">Добавить все</button>
                           </div>`;
