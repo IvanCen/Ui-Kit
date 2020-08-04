@@ -151,6 +151,7 @@ class CreateMapItemStores extends CreateItem {
         || e.target.classList.contains('map__radio-label')
         || e.target.classList.contains('map__content--time')
         || e.target.classList.contains('map__radio-input')
+        || e.target.classList.contains('map__item-text')
       ) {
         radioInputEl.checked = 'checked';
         toggleModalPage.closePage();

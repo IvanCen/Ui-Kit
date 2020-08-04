@@ -21,7 +21,7 @@ class ToggleStores extends ToggleModalPageStores {
       } else if (offsetY > (container.offsetHeight - 100) && action === 'move' && isOpen) {
         offsetY = container.offsetHeight - 100;
         offsetYOnStart = container.offsetHeight - 100;
-      } else if (offsetY < (container.offsetHeight - 150) && action === 'end' && isOpen) {
+      } else if (offsetY < (container.offsetHeight - 200) && action === 'end' && isOpen) {
         offsetY = 0;
         offsetYOnStart = 0;
         isOpen = !isOpen;
@@ -43,6 +43,7 @@ class ToggleStores extends ToggleModalPageStores {
 
       container.style.transform = `translate3d(0,${offsetY}px,0)`;
     }
+
     const panelTouch = container.querySelector('.top-bar-search--size--small');
     panelTouch.addEventListener('touchstart', (event) => {
       dragStart = event.touches[0].clientY;
@@ -142,6 +143,7 @@ class ToggleStores extends ToggleModalPageStores {
     this.modalPageContent.append(storesMap.create());
     this.modalPageContent.append(storesMapItemWraper.create());
 
+
     function renderStores(stores, page) {
       console.log(stores.successData);
 
@@ -169,6 +171,7 @@ class ToggleStores extends ToggleModalPageStores {
           };
 
           function success(pos) {
+
             crd = pos.coords;
             // Дождемся ответа от сервера и получим ближайший и наиболее удаленный
             // объект по отношению к точке.
@@ -228,8 +231,7 @@ class ToggleStores extends ToggleModalPageStores {
           let placemark;
           if (store.priceGroup === 'BreadRiots') {
             console.log(store);
-            placemark = new ymaps.Placemark([store.latitude, store.longitude], {
-            }, {
+            placemark = new ymaps.Placemark([store.latitude, store.longitude], {}, {
               iconLayout: 'default#image',
               iconImageHref: 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-xleb-point.svg]]',
               iconImageSize: [35, 35],
@@ -238,7 +240,32 @@ class ToggleStores extends ToggleModalPageStores {
             placemark.properties.set('data-id', store.id);
             console.log(placemark.properties.get('priceGroup', 'BreadRiots'));
           } else {
+            let phone;
+            if (store.phone !== null) {
+              const regExp = /(\+\d)(\d{3})(\d{3})(\d{2})(\d{2})/g;
+              phone = store.phone.replace(regExp, '$1 ($2) $3-$4-$5');
+            }
             placemark = new ymaps.Placemark([store.latitude, store.longitude], {
+              balloonContentHeader: store.shortTitle,
+              balloonContentBody: `
+                <div class="map__content map__content--position--start map__content--time">
+                 <h3 class="map__item-text map__item-text--indentation--right">${getNowDay().ru}:</h3>
+                 <span class="map__item-text">${store[getNowDay().en]}</span>
+                </div>
+                <div class="map__content map__content--info">
+                  <div class="map__container-phone">
+                    <a class="map__item-phone" href="tel:${store.phone}">
+                     <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-phone.svg]]" alt="" class="text-area__icon text-area__icon--position--center text-area__icon--phone">
+                    </a>
+                    <a href="tel:${store.phone}" class="text-area__title text-area__title--size--small text-area__title--type--bold">${phone || store.phone}</a>
+                  </div>
+                </div>
+                  `,
+              balloonContentFooter: `
+                <div class="map__content map__content--direction--column">
+                  <span class="map__item-text map__item-text--indentation--bottom">Для заказа выбрана эта точка</span>                
+                  <button onclick="closeStores()" class="button button--size--small button--theme--tangerin button--position--right map__button map__button--type--balloon">Закрыть</button>
+                </div>`,
             }, {
               iconLayout: 'default#image',
               iconImageHref: 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-point.svg]]',
@@ -284,6 +311,7 @@ class ToggleStores extends ToggleModalPageStores {
         myMap.controls.remove('geolocationControl');
       });
     }
+
     renderStores(storesDataObj, this.modalPageContent);
 
     setTimeout(() => {
@@ -296,15 +324,17 @@ class ToggleStores extends ToggleModalPageStores {
           }
         });
       }
+      const mapItem = this.modalPageContent.querySelector('.map__item');
+      mapItem.addEventListener('mousedown', () => false);
       this.chooseShop(this.modalPageContent);
     }, 300);
 
     const topBarSearch = this.modalPageContent.querySelector('.top-bar-search--size--small');
-    const map = this.modalPageContent.querySelector('.map');
     const mapList = this.modalPageContent.querySelector('.map');
+
     /* topBarSearch.addEventListener('click', () => {
       mapList.classList.toggle('map--hide');
     }); */
-    this.activeMapTouch(map);
+    this.activeMapTouch(mapList);
   }
 }

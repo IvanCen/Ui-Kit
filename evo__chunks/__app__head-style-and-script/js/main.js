@@ -28,6 +28,40 @@ function createTopBarIos() {
   return el;
 }
 
+function getNowDay() {
+  const date = new Date();
+  const weekday = date.getDay();
+  const daysArr = [
+    {
+      ru: 'Воскресенье',
+      en: 'sunday',
+    },
+    {
+      ru: 'Понедельник',
+      en: 'monday',
+    },
+    {
+      ru: 'Вторник',
+      en: 'tuesday',
+    }, {
+      ru: 'Среда',
+      en: 'wednesday',
+    },
+    {
+      ru: 'Четверг',
+      en: 'thursday',
+    },
+    {
+      ru: 'Пятница',
+      en: 'friday',
+    },
+    {
+      ru: 'Суббота',
+      en: 'saturday',
+    }];
+  return daysArr[weekday];
+}
+
 const transformationUtcToLocalDate = (data) => {
   return new Date(`${data} UTC`).toLocaleString('ru', {
     year: 'numeric',
@@ -144,6 +178,12 @@ function closePages() {
   toggleModalPageOrderReview.deletePage()
   toggleModalPageSearch.closePage()
   toggleModalPageSearch.deletePage()
+}
+
+function closeStores() {
+  toggleModalPage.closePage();
+  toggleModalPage.deletePage();
+  window.history.back()
 }
 
 function stopAction(func) {

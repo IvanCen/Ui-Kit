@@ -161,7 +161,6 @@ class CreateInboxMainCardNews extends CreateItem {
 
     this.date = transformationUtcToLocalDate(timestamp);
 
-
     console.log(this.date);
 
     this.element = document.createElement(this.parameters.selector);
