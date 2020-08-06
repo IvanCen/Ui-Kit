@@ -391,13 +391,13 @@ class Api {
       });
   }
 
-  rechargeBalanceApi(userPhone, amount, func) {
+  rechargeBalanceApi(userPhone, amount, choose, func) {
     console.log(userPhone, amount);
     const request = {
       method: 'recharge_the_balance',
       user: userPhone,
       amount,
-      from: 'appWidget', // Доступные варианты: app, site, appWidget
+      from: choose, // Доступные варианты: app, site, appWidget
       outputFormat: 'json',
     };
 
@@ -579,7 +579,11 @@ class Api {
         if (res.success === true) {
           togglePage.closePage();
           localStorage.removeItem('user-sign-in');
+          localStorage.removeItem('authorizationCode');
+          localStorage.removeItem('userAchievements');
+          delete userAchievements.successData;
           delete userInfoObj.successData;
+          localStorage.setItem('userInfo', JSON.stringify(userInfoObj));
           renderMainPage.clearPage();
           renderMainPage.rendering();
           renderMainPage.openPage();

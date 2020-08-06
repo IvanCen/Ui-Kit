@@ -38,10 +38,12 @@ class ToggleReward extends ToggleMainPage {
     this.mainPageContent = document.querySelector('.main-page__content');
     this.mainPageContent.append(cardItemContainer.create('reward', 'card-item__container--indentation--top'));
 
-    /*this.cardItemContainerEl = this.mainPageContent.querySelector('.card-item__container');
-    for (let i = 1; i < 7; i++) {
-      this.cardItemContainerEl.append(cardItem.create());
-    }*/
+    this.cardItemContainerEl = this.mainPageContent.querySelector('.card-item__container');
+    if (!isEmptyObj(userAchievements)) {
+      for (const rewardInfo in userAchievements.successData) {
+        this.cardItemContainerEl.append(cardItem.create(userAchievements.successData[rewardInfo]));
+      }
+    }
 
     const footerButtonGIft = document.querySelector('.footer__button--type--gift');
     activeFooter(footerButtonGIft);

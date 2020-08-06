@@ -188,17 +188,11 @@ const toggleOrderFavoriteContent = new ToggleOrderFavoriteContent();
 const toggleInboxTabMessagesContent = new ToggleInboxTabMessagesContent();
 const toggleInboxTabLastOffersContent = new ToggleInboxTabLastOffersContent();
 
-const togglePageSeeAll = new TogglePageSeeAll({
-  classOpen: ['page--opened'],
-});
 const toggleModalPageStoresSearch = new ToggleModalPageStoresSearch({
   classOpen: ['modal-page-search--opened-stores'],
 });
 const toggleModalPageOrderSearch = new ToggleModalPageOrderSearch({
   classOpen: ['modal-page-search--opened'],
-});
-const toggleSubPageStoresDetails = new ToggleSubPageStoresDetails({
-  classOpen: ['subpage--opened'],
 });
 const toggleSubPageAccountEditUser = new ToggleSubPageAccountEditUser({
   classOpen: ['subpage--opened'],
@@ -252,7 +246,7 @@ const toggleThirdPageEditUser = new ToggleThirdPageEditUser({
   classOpen: ['third-page--opened'],
 });
 const toggleThirdPageAddinsCard = new ToggleThirdPageAddinsCard({
-  classOpen: ['third-page--opened--bottom-bar'],
+  classOpen: ['third-page--opened--addins'],
 });
 const toggleModalPageReviewOrder = new ToggleModalPageReviewOrder({
   classOpen: ['modal-page-order-review--opened'],
@@ -367,6 +361,8 @@ const mainPageFooter = new CreateFooter({
         toggleOrderHitsContent.rendering();
         toggleOrderHistoryContent.rendering();
         closePages();
+        checkBasket();
+        counterBasket();
       },
     },
   ],
@@ -426,6 +422,10 @@ if (/\?refer=alfa.*/.test(window.location.search)) {
       el.classList.remove('page-order--opened--bottom-bar');
     });
     setRandomPhraseTobBarMain();
+    if (!isEmptyObj(userInfoObj)) {
+      toggleModalPageSignIn.rendering();
+      toggleModalPageSignIn.regSuccess({ success: true, isStartApp: true, name: userInfoObj.successData.name });
+    }
   }, 3000);
 }());
 
@@ -437,3 +437,6 @@ setTimeout(() => {
     loader.remove();
   }
 }, 5000);
+
+
+//api.sendDebugMessage(`${JSON.stringify(basketArray)}`);

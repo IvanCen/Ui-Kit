@@ -39,19 +39,16 @@ class ToggleThirdPageAddinsCard extends ToggleThirdPage {
     return itemModifierWithTitles;
   }
 
-  scrollToModifier(modifierName, page) {
+  scrollToModifier(modifierName) {
     this.titlesModifiers = this.thirdPage.querySelectorAll('.text-area__title--type--uppercase');
-    [...this.titlesModifiers].forEach((title, index) => {
+    [...this.titlesModifiers].forEach((title) => {
       if (title.textContent === modifierName) {
         title.closest('.text-area__wraper').scrollIntoView({ block: 'start', inline: 'start', behavior: 'smooth' });
-        if (isIos) {
-          page.scrollTop -= 40;
-        }
       }
     });
   }
 
-  rendering(productInfo, modifierName, pushRoute) {
+  rendering(productInfo, modifierName, pushRoute = true) {
     super.rendering(pushRoute);
 
     const addinsTopBar = new CreateTopBarDarkWithCloseIcon({
@@ -84,22 +81,29 @@ class ToggleThirdPageAddinsCard extends ToggleThirdPage {
         { type: 'click', callback: counterBasket },
       ],
     });
+    this.containersModifiersEl = document.createElement('div');
+    this.containersModifiersEl.classList.add(
+      'text-area__content-container',
+      'text-area__content-container--type--addins',
+      `text-area__content-container--type--addins${isIos ? '--ios' : ''}`,
+    );
     this.thirdPage.append(createTopBarIos());
     this.thirdPage.append(addinsTopBar.create(productInfo));
-    this.thirdPage.append(addinsTextArea.create(productInfo));
+    this.thirdPage.append(this.containersModifiersEl);
     this.thirdPage.append(addinsButton.create());
 
-    this.addinsContainer = this.thirdPage.querySelector('.text-area__counter-container');
+    this.topBar = this.thirdPage.querySelector('.top-bar');
     this.buttonAdd = this.thirdPage.querySelector('.button--type--add-adds');
-    this.buttonReset = this.thirdPage.querySelector('.text-area__button--type--reset');
 
     this.modifierObjWithTitle = this.getModifiers(productInfo);
     this.modifierArrWithTitle = Object.entries(this.modifierObjWithTitle);
     this.modifierArrWithTitle.forEach((item) => {
-      this.addinsContainer.after(addinTextArea.create(item, productInfo));
+      // this.topBar.after(addinTextArea.create(item, productInfo));
+      this.containersModifiersEl.prepend(addinTextArea.create(item, productInfo));
     });
+    this.containersModifiersEl.append(addinsTextArea.create(productInfo));
 
-
+    this.buttonReset = this.thirdPage.querySelector('.text-area__button--type--reset');
     this.buttonReset.addEventListener('click', () => {
       delete userDataObj[productInfo.id];
       localStorage.setItem('userData', userDataObj);
@@ -123,7 +127,11 @@ class ToggleThirdPageAddinsCard extends ToggleThirdPage {
       }
     });
 
+    this.topBar.classList.add(`top-bar--sticky${isIos ? '--ios' : ''}`);
+
     this.openPage();
-    this.scrollToModifier(modifierName, this.thirdPage);
+    if (pushRoute) {
+      this.scrollToModifier(modifierName, this.thirdPage);
+    }
   }
 }

@@ -7,7 +7,7 @@ class ToggleModalPageStoresSearch extends ToggleModalPageSearch {
 
   chooseShop(page) {
     const storesButtonBottomBar = document.querySelector('.bottom-bar__select-item');
-    const storesButtonTopBar = document.querySelector('.top-bar__select-item--type--stores');
+    const modalPageReview = document.querySelector('.modal-page-order-review');
     const radioInputs = page.querySelectorAll('.radio__input');
     const mapItem = page.querySelectorAll('.map__item');
     console.log(page.querySelectorAll('.radio__input'));
@@ -29,11 +29,12 @@ class ToggleModalPageStoresSearch extends ToggleModalPageSearch {
                 api.getShopOutOfStockItemsAndModifiers(el.id);
                 userStore.store = el;
                 localStorage.setItem('userStore', JSON.stringify(userStore));
+                if (modalPageReview) {
+                  toggleModalPageReviewOrder.deletePage();
+                  setTimeout(() => toggleModalPageReviewOrder.rendering(), 100);
+                }
                 if (storesButtonBottomBar) {
                   storesButtonBottomBar.textContent = el.shortTitle;
-                }
-                if (storesButtonTopBar) {
-                  storesButtonTopBar.textContent = el.shortTitle;
                 }
               }
             });

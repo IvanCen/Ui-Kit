@@ -8,26 +8,18 @@ class ToggleOrderHitsContent extends ToggleOrderTabContent {
   rendering() {
     const cardItemContainer = new CreateCardItemContainerProductCard();
     const orderCardItemHits = new CreateCardItemOrderProductCard();
-    function renderTabHits(dataItems) {
-      if (dataItems && dataItems.success) {
-        const hits = [];
 
-        for (const item of Object.values(dataItems.successData.items)) {
-          if (item.hitFlag === true) {
-            hits.push(item);
-          }
-        }
-        const cardItemContainerEl = document.querySelector('.card-item__container--hits');
-        hits.forEach((el) => {
-          cardItemContainerEl.append(orderCardItemHits.create(el));
-        });
-      }
-    }
     this.mainPageContent = document.querySelector('.main-page__content');
     this.mainPageTabContentHits = document.createElement('div');
     this.mainPageTabContentHits.classList.add('main-page__tab-content', 'main-page__tab-content--hits');
     this.mainPageContent.append(this.mainPageTabContentHits);
     this.mainPageTabContentHits.append(cardItemContainer.create('hits', 'card-item__container--indentation--top'));
-    renderTabHits(dataProductApi);
+    const cardItemContainerEl = document.querySelector('.card-item__container--hits');
+    const { items } = dataProductApi.successData;
+    for (const item in items) {
+      if (items[item].hitFlag === true) {
+        cardItemContainerEl.append(orderCardItemHits.create(items[item]));
+      }
+    }
   }
 }

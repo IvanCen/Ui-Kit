@@ -77,7 +77,7 @@ function createModalInbox(info) {
   const {
     subject, message, timestamp, image,
   } = info;
-
+  this.date = transformationUtcToLocalDate(timestamp);
   this.element = document.createElement('div');
   this.element.classList.add('modal');
 
@@ -86,7 +86,7 @@ function createModalInbox(info) {
       <h2 class="modal__title">${subject}</h2>
       
       <p class="modal__text modal__text--indentation--big modal__text--size--big">${message}</p>
-      <span class="modal__text modal__text--size--small modal__text--theme--shadow modal__text--indentation--big">${timestamp}</span>
+      <span class="modal__text modal__text--size--small modal__text--theme--shadow modal__text--indentation--big">${this.date}</span>
       <div class="modal__button-container">
         <button class="button button--size--small button--theme--tangerin modal__button modal__button-accept">Закрыть</button>
       </div>

@@ -244,9 +244,9 @@ class CreateFormInputSignIn extends CreateItem {
                   <input type="tel" inputmode="numeric" maxlength="1" class="last-number-input" name="third-phone"  autocomplete="off">
                   <input type="tel" inputmode="numeric" maxlength="1" class="last-number-input" name="fourth-phone"  autocomplete="qwe">
               </div>
-              <p class="form__text form__text--indentation--small">Вы ввели номер <span class="number-for-registration"></span>, если вы ошиблись при вводе, то <a href="" type="reset">исправьте номер</a></p>
+              <p class="form__text form__text--indentation--small">Вы ввели номер <span class="number-for-registration"></span>, если вы ошиблись при вводе, то <a class="form__link form__link--type--back" type="reset">исправьте номер</a></p>
           </div>
-          <button class="form__link form__link--type--call">Подтвердить</button>
+          <button class="form__button form__button--type--call">Подтвердить</button>
         </div>
         <p class="form__text form__text--success form__text--hide">Вы авторизованны!</p>
         <p class="form__text form__text--error form__text--hide"></p>
@@ -330,9 +330,6 @@ class CreateFormInput extends CreateItem {
   }
 
   create(textAlert) {
-    if (textAlert !== '') {
-      const text = textAlert;
-    }
     this.element = document.createElement(this.parameters.selector);
     this.template = `
       <div class="form__input">
@@ -340,7 +337,7 @@ class CreateFormInput extends CreateItem {
           <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--${this.parameters.identifier}" type="${this.parameters.inputType}" required>
           <span class="form__input-label">${this.parameters.inputLabelName}</span>
           <ul class="form__input-requirements">
-            <li class="form__input-requirement form__input-requirement--type--${this.parameters.identifier}">Введите корректные данные</li>
+            
           </ul>
           <div class="form__input-icon-container">
             <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-attention-triangle.svg]]" alt="" class="form__input-icon form__input-icon-error">
@@ -352,6 +349,12 @@ class CreateFormInput extends CreateItem {
         </div>
    `;
     this.element.insertAdjacentHTML('beforeend', this.template);
+
+    if (this.parameters.inputType === 'date') {
+      this.inputArea = this.element.querySelector('.form__input-area');
+
+      setTimeout(() => this.inputArea.focus(), 200);
+    }
 
     return super.create(this.element);
   }
@@ -488,15 +491,14 @@ class CreateFormPromoCode extends CreateItem {
     }
 
     this.buttonPromoCode.addEventListener('click', () => {
-      if (!isEmptyObj(userInfoObj)) {
-        const inputArea = this.element.querySelector('.form__input-area');
-        api.promoСodeСheckApi(userInfoObj.successData.phone, inputArea.value, checkPromoCode);
-      } else {
-        toggleSubPage.closePage();
-        toggleThirdPage.closePage();
-        toggleFourthPage.closePage();
-        toggleModalPageSignIn.rendering();
-      }
+      stopAction(() => {
+        if (!isEmptyObj(userInfoObj)) {
+          const inputArea = this.element.querySelector('.form__input-area');
+          api.promoСodeСheckApi(userInfoObj.successData.phone, inputArea.value, checkPromoCode);
+        } else {
+          toggleModalPageSignIn.rendering();
+        }
+      });
     });
 
 
@@ -538,18 +540,20 @@ class CreateFormComment extends CreateItem {
 
     this.error = this.element.querySelector('.form__input-requirement--type--comment');
     this.buttonComment.addEventListener('click', () => {
-      if (this.inputArea.value !== '') {
-        const accordionButton = this.element.querySelector('.accordion');
-        this.error.textContent = `Ваш комментарий: ${this.inputArea.value}`;
-        this.error.classList.add('form__input-requirement--valid');
-        this.error.classList.remove('form__input-requirement--hide');
-        setTimeout(() => accordionButton.click(), 2000);
-        orderComment = this.inputArea.value;
-      } else {
-        this.error.textContent = 'Вы не ввели комментарий';
-        this.error.classList.add('form__input-requirement--invalid');
-        this.error.classList.remove('form__input-requirement--hide');
-      }
+      stopAction(() => {
+        if (this.inputArea.value !== '') {
+          const accordionButton = this.element.querySelector('.accordion');
+          this.error.textContent = `Ваш комментарий: ${this.inputArea.value}`;
+          this.error.classList.add('form__input-requirement--valid');
+          this.error.classList.remove('form__input-requirement--hide');
+          setTimeout(() => accordionButton.click(), 2000);
+          orderComment = this.inputArea.value;
+        } else {
+          this.error.textContent = 'Вы не ввели комментарий';
+          this.error.classList.add('form__input-requirement--invalid');
+          this.error.classList.remove('form__input-requirement--hide');
+        }
+      });
     });
 
 
@@ -582,14 +586,13 @@ class CreateFormFriendPay extends CreateItem {
                   <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--name" minlength="2">
                   <span class="form__input-label">Имя</span>
                   <ul class="form__input-requirements">
-                    <li class="form__input-requirement form__input-requirement--type--name">Имя должно содержать больше двух букв</li>
                   </ul>
                </label>
              </div>
              <ul class="form__input-requirements">
               <li class="form__input-requirement form__input-requirement--type--error"></li>
             </ul>
-            <button class="button button--indentation--top button--theme--tangerin button--size--small form__button button--type--friend" type="submit">Подтвердить</button>
+            <button class="button button--indentation--top button--theme--tangerin button--size--small form__button button--type--friend" type="submit">Отменить</button>
             </div>
           </div>
    `;
@@ -602,23 +605,17 @@ class CreateFormFriendPay extends CreateItem {
     this.inputAreaName = this.element.querySelector('.form__input-area--type--name');
     this.inputAreaPhone = this.element.querySelector('.form__input-area--type--phone-friend');
     this.error = this.element.querySelector('.form__input-requirement--type--error');
+    this.accordionButton = this.element.querySelector('.accordion');
+    this.inputAreaName.addEventListener('keyup', (e) => orderFriendData.friendName = e.target.value);
+    this.inputAreaPhone.addEventListener('keyup', (e) => orderFriendData.friendPhone = e.target.value);
 
     this.buttonFriend.addEventListener('click', () => {
-      if (this.inputAreaName.value !== '' && this.inputAreaPhone.value !== '+7(___)___-__-__') {
-        const accordionButton = this.element.querySelector('.accordion');
-        /*this.error.textContent = `Имя друга: ${this.inputAreaName.value}
-          Телефон: ${this.inputAreaPhone.value}
-          `;
-        this.error.classList.add('form__input-requirement--valid');
-        this.error.classList.remove('form__input-requirement--hide');*/
-        setTimeout(() => accordionButton.click(), 2000);
-        orderFriendData.friendName = this.inputAreaName.value;
-        orderFriendData.friendPhone = this.inputAreaPhone.value;
-      } else {
-        this.error.textContent = 'Вы не заполнили все данные';
-        this.error.classList.add('form__input-requirement--invalid');
-        this.error.classList.remove('form__input-requirement--hide');
-      }
+      stopAction(() => {
+        this.inputAreaName.value = '';
+        this.inputAreaPhone.value = '';
+        this.accordionButton.click();
+        clearFriendDataInfo();
+      });
     });
 
 

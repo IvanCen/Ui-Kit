@@ -89,6 +89,16 @@
       transition: all 0.1s ease-in;
     }
 
+    &--type--addins {
+      flex-direction: column;
+      overflow-x: hidden;
+      overflow-y: scroll;
+
+      &--ios {
+        margin-top: 35px;
+      }
+    }
+
     &--open {
       overflow: visible;
       max-height: 100%;
@@ -116,6 +126,7 @@
 
     &--type--bold {
       font-weight: bold;
+      text-decoration: none;
     }
 
     &--indentation--bottom {
@@ -351,8 +362,8 @@
       height: 45px;
       background-color: $white;
       margin: 20px 0;
-      border-bottom: 1px solid $gainsboroGray;
       border-top: 1px solid $gainsboroGray;
+      border-bottom: 1px solid $gainsboroGray;
     }
   }
 

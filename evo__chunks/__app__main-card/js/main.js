@@ -152,37 +152,37 @@ class CreateInboxMainCardNews extends CreateItem {
   constructor(parameters) {
     super();
     this.parameters = parameters;
+    this.create = this.create.bind(this);
   }
 
-  create(message) {
+  create(messageInfo) {
+    const {
+      id, subject, client, timestamp, wasRead,
+    } = messageInfo;
+
+    this.date = transformationUtcToLocalDate(timestamp);
+
     this.element = document.createElement(this.parameters.selector);
     this.template = `
         <div class="main-card__text-area">
-          <h2 class="main-card__title">${message.subject}</h2>
-          <p class="main-card__text">${message.message}</p>
-          <span class="main-card__info main-card__info--theme--shadow">${message.timestamp}</span>
+          <h2 class="main-card__title">${subject}</h2>
+          <span class="main-card__info main-card__info--theme--shadow">${this.date}</span>
         </div>
         `;
 
-    if (message.image !== null) {
-      this.templateImg = `
-        <div class="main-card__img-container">
-          <div class="main-card__img main-card__img--size--small"></div>
-        </div>`;
-      this.element.insertAdjacentHTML('beforeend', this.templateImg);
-    }
     this.element.insertAdjacentHTML('beforeend', this.template);
-    if (message.wasRead !== null) {
-      this.title = this.element.querySelector('.main-card__title');
-      this.title.classList.add('main-card__title--font-weight--normal');
-    }
-    this.buttonDetails = this.element.querySelector('.main-card__button-details');
-    if (typeof this.parameters.eventOpenDetails === 'object') {
-      for (const event of this.parameters.eventOpenDetails) {
-        this.buttonDetails.addEventListener(event.type, event.callback);
-      }
-    }
+    const title = this.element.querySelector('.main-card__title');
 
+    if (wasRead) {
+      title.classList.add('main-card__title--font-weight--normal');
+    }
+    this.element.addEventListener('click', () => {
+      toggleModal.renderingInbox(messageInfo);
+      if (!wasRead) {
+        api.markMessageRead(client, timestamp, id);
+      }
+      title.classList.add('main-card__title--font-weight--normal');
+    });
     return super.create(this.element);
   }
 }

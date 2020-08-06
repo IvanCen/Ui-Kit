@@ -106,6 +106,10 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
     }
   }
 
+  countPrice(productInfo) {
+
+  }
+
   renderModifier(modifierName, el, productInfo) {
     const descriptionArea = el.querySelector('.text-area--type--description');
     const element = document.createElement('div');
@@ -127,11 +131,15 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
       const textAreaList = element.querySelector('.text-area__list');
       for (const modifiersUserItem in userDataObj[productInfo.id]) {
         const productItemModif = dataProductApi.successData.modifiers[Number(modifiersUserItem)];
-
         if (productItemModif.category === modifierName) {
           const counter = userDataObj[productInfo.id][modifiersUserItem];
           const textAreaListItem = document.createElement('li');
           if (counter !== 0) {
+            console.log(productItemModif);
+            const priceEl = this.element.querySelector('.text-area__price');
+            let price = Number(priceEl.textContent);
+            price += productItemModif.price * counter;
+            priceEl.textContent = price;
             textAreaListItem.classList.add('text-area__list-item');
             textAreaListItem.id = productItemModif.id;
             textAreaListItem.textContent = `${counter} добав${number_of(counter, ['ка', 'ки', 'ок'])} ${productItemModif.name}`;
@@ -303,7 +311,7 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
     this.element.insertAdjacentHTML('beforeend', this.template);
 
     for (const value in productInfo) {
-      if (productInfo[value] === null) {
+      if (productInfo[value] === null || productInfo[value] === 0) {
         if (this.element.querySelector(`.text-area__info-number--${value}`)) {
           this.element.querySelector(`.text-area__info-number--${value}`).parentElement.remove();
         }
@@ -339,7 +347,6 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
     }
 
     this.buttonMore.addEventListener('click', () => {
-      console.log(this.nutritionArea, this.nutritionArea.offsetHeight, this.nutritionArea.scrollHeight);
       this.nutritionArea.classList.remove('text-area__content-container--type--more');
       this.buttonMore.remove();
     });
@@ -446,6 +453,8 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
       buttonReset.textContent = 'сбросить модификаторы';
       descriptionArea.before(buttonReset);
       [...modifiers].pop().firstElementChild.classList.add('text-area__container--no-border');
+
+      this.countPrice(productInfo);
     }
 
     return super.create(this.element);
@@ -469,10 +478,6 @@ class CreateTextAreaAddins extends CreateItem {
     }
 
     this.template = `
-      <div class="text-area__counter-container">
-        <span class="text-area__all-counter-title">У вашего напитка сейчас </span>
-        <span class="text-area__all-counter"><span class="text-area__all-counter-number">${allCountAdds} добавок</span></span>
-      </div>
       <button class="text-area__button text-area__button--type--reset">Очистить добавки</button>
     `;
     this.element.insertAdjacentHTML('beforeend', this.template);
@@ -935,30 +940,22 @@ class CreateTextAreaOrderPayment extends CreateItem {
 
   resPayOrder(payInfo) {
     console.log(payInfo);
-    if (!isEmptyObj(payInfo.successData)) {
+    if (payInfo.success) {
       const link = document.querySelector('.text-area__link');
       document.location.href = payInfo.successData.payUrl;
       link.href = payInfo.successData.payUrl;
       link.click();
-      togglePage.closePage();
-      togglePage.deletePage();
-      toggleSubPage.closePage();
-      toggleSubPage.deletePage();
-      toggleThirdPage.closePage();
-      toggleThirdPage.deletePage();
-      toggleFourthPage.closePage();
-      toggleFourthPage.deletePage();
-      toggleFifthPage.closePage();
-      toggleFifthPage.deletePage();
+      closePages();
       while (basketArray.length > 0) {
         basketArray.pop();
       }
       localStorage.setItem('basket', JSON.stringify(basketArray));
       counterBasket();
+      checkBasket();
       setTimeout(() => {
         toggleModal.rendering('Спасибо за оплату. Если платеж был успешным, то скоро мы получим его и обновим статус вашего заказа или доставим средства на счет');
       }, 2000);
-    } else if (isEmptyObj(payInfo.successData) && payInfo.success) {
+    } /*else if (isEmptyObj(payInfo.successData) && payInfo.success) {
       const textArea = document.querySelector('.text-area--type--balance');
       const fifthPage = document.querySelector('.fifth-page');
       textArea.classList.add('text-area--hide');
@@ -969,19 +966,11 @@ class CreateTextAreaOrderPayment extends CreateItem {
       basketArray.splice(0, basketArray.length);
       localStorage.setItem('basket', JSON.stringify(basketArray));
       counterBasket();
+      checkBasket();
       setTimeout(() => {
-        togglePage.closePage();
-        togglePage.deletePage();
-        toggleSubPage.closePage();
-        toggleSubPage.deletePage();
-        toggleThirdPage.closePage();
-        toggleThirdPage.deletePage();
-        toggleFourthPage.closePage();
-        toggleFourthPage.deletePage();
-        toggleFifthPage.closePage();
-        toggleFifthPage.deletePage();
+        closePages();
       }, 3000);
-    } else {
+    }*/ else {
       toggleModal.rendering(payInfo.errors[0]);
     }
   }

@@ -87,22 +87,20 @@ class CreateCardItemRewardCard extends CreateItem {
     this.parameters = parameters;
   }
 
-  create(productInfo) {
+  create(rewardInfo) {
+    const {
+      id, title, icon,
+    } = rewardInfo;
     this.element = document.createElement('div');
     this.element.classList.add('card-item');
-    // this.element.id = productInfo.id;
+    this.element.id = id;
     this.element.addEventListener('click', () => {
-      toggleModal.renderingReward({
-        title: 'Любитель кофе',
-        text: 'Вы выпили 10 чашек кофе. И куда в вас столько влазит?',
-        promoCode: 'Держите промокод «МЕДОВЫЙРАФ» на еще одну. Пейте на здоровье.',
-        date: 'Получено: 2 июня 2020',
-      });
+      toggleModal.renderingReward(rewardInfo);
     });
     this.template = `
-      <div style="background-image: url('[+chunkWebPath+]/img/img__card-item--reward.jpg')" class="card-item__image-reward"></div>
+      <div style="background-image: url(${icon})" class="card-item__image-reward"></div>
       <div class="card-item__info-container">
-        <h3 class="card-item__title card-item__title--text--normal card-item__title--position--center">Любитель кофе</h3>
+        <h3 class="card-item__title card-item__title--text--normal card-item__title--position--center">${title}</h3>
         <span class="card-item__available-info card-item__available-info--show">
       </div>`;
     this.element.insertAdjacentHTML('beforeend', this.template);
@@ -170,6 +168,7 @@ class CreateCardItemBalance extends CreateItem {
     this.element = document.createElement(this.parameters.selector);
     let state;
     let theme;
+    const date = transformationUtcToLocalDate(info.timestamp);
     if (info.amount < 0) {
       state = 'Списано';
       theme = 'red';
@@ -181,7 +180,7 @@ class CreateCardItemBalance extends CreateItem {
           <div class="card-item__content-container">
             <h3 class="card-item__title card-item__title--text--bold card-item__title--theme--${theme}">${info.amount}</h3>
             <span class="card-item__title card-item__title--text--big">${state}</span>
-            <span class="card-item__info card-item__info--theme--shadow">${info.timestamp}</span>
+            <span class="card-item__info card-item__info--theme--shadow">${date}</span>
           </div>`;
     this.element.insertAdjacentHTML('beforeend', this.template);
 
@@ -355,15 +354,16 @@ class CreateCardItemReviewOrder extends CreateItem {
     this.create.bind(this);
   }
 
-  create(productInfo) {
+  create(productInfo, funcCheckBasket) {
     this.element = document.createElement('div');
+    this.energy = `Калорий ${dataProductApi.successData.items[productInfo.id].energy} г`;
 
     this.template = `
           <div class="card-item__container--direction--row-small banners__banner">
             <div class="card-item__image card-item__image--size--small"></div>
             <div class="card-item__content-container">
               <h3 class="card-item__title card-item__title--text--bold">${dataProductApi.successData.items[productInfo.id].name}</h3>
-              <span class="card-item__info card-item__info--indentation--bottom card-item__info--theme--shadow">Калорий ${dataProductApi.successData.items[productInfo.id].energy || ''} г</span>
+              <span class="card-item__info card-item__info--indentation--bottom card-item__info--theme--shadow card-item__info--type--energy">${this.energy}</span>
               <ul class="card-item__list"></ul>
               <span class="card-item__price"></span>
               <div class="card-item__icon-container">
@@ -388,6 +388,7 @@ class CreateCardItemReviewOrder extends CreateItem {
     this.iconsPlus = this.element.querySelector('.card-item__button--type--plus');
     this.price = this.element.querySelector('.card-item__price');
     this.figure = this.element.querySelector('.main-card__figure');
+    this.energyEl = this.element.querySelector('.card-item__info--type--energy');
     this.element.setAttribute('id', productInfo.id);
     const el = this.element;
     const counterTopBar = document.querySelector('.top-bar__all-counter-order');
@@ -399,6 +400,24 @@ class CreateCardItemReviewOrder extends CreateItem {
           break;
         }
       }
+    }
+    this.element.addEventListener('click', (e) => {
+      if (!e.target.classList.contains('card-item__button') && !e.target.classList.contains('card-item__icon')) {
+        stopAction(() => {
+          toggleSubPageProductCard.closePage();
+          toggleSubPageProductCard.deletePage();
+          toggleThirdPage.closePage();
+          toggleThirdPage.deletePage();
+          setTimeout(() => {
+            toggleSubPageProductCard.rendering(dataProductApi.successData.items[productInfo.id], false);
+            toggleModalPageReviewOrder.closePage();
+            toggleModalPageReviewOrder.deletePage();
+          }, 300);
+        });
+      }
+    });
+    if (!dataProductApi.successData.items[productInfo.id].energy) {
+      this.energyEl.remove();
     }
 
     const imgEl = this.element.querySelector('.card-item__image');
@@ -440,20 +459,19 @@ class CreateCardItemReviewOrder extends CreateItem {
     this.iconsMinus.addEventListener('click', function () {
       (() => {
         if (!this.classList.contains('stop-action')) {
-
+          counterTopBar.textContent = Number(counterTopBar.textContent) - 1;
+          counterBottomBar.textContent = Number(counterBottomBar.textContent) - 1;
           el.classList.add('card-item--animation');
           for (const [index, item] of Object.entries(basketArray)) {
             if (item === productInfo) {
-              console.log(item, productInfo)
               basketArray.splice(index, 1);
               break;
             }
           }
-          counterTopBar.textContent = basketArray.length;
-          counterBottomBar.textContent = basketArray.length;
           localStorage.setItem('basket', JSON.stringify(basketArray));
           counterBasket();
           checkBasket();
+          checkEmptyBasket();
           setTimeout(() => el.remove(), 200);
           this.classList.add('stop-action');
         }
@@ -470,7 +488,7 @@ class CreateCardItemReviewOrder extends CreateItem {
       // this.arrHtml = Array.from(cardItemContainer.children);
       // this.arrHtml.splice(0, this.arrHtml.length).forEach((item) => item.remove());
       cardItemContainer.append(this.create(productInfo));
-      activeBanners(this.element, true);
+      activeBanners(this.element, true, checkEmptyBasket);
     });
     return super.create(this.element);
   }
@@ -487,16 +505,7 @@ class CreateCardItemHistory extends CreateItem {
     this.elementWraper = document.createElement('div');
     this.elementWraper.classList.add('history-order');
     let { orderStateName, orderDate } = productInfo;
-    const regExp = /\d+-(\d+)-(\d+)\s(\d+:\d+):\d+/g;
-    const monthNumber = orderDate.replace(regExp, '$1');
-    let monthName;
-    const monthArr = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентяря', 'Октабря', 'Ноября', 'Декбаря'];
-    monthArr.forEach((item, index) => {
-      if (index + 1 === Number(monthNumber)) {
-        monthName = item;
-      }
-    });
-    const date = orderDate.replace(regExp, `$2 ${monthName} $3`);
+    const date = transformationUtcToLocalDate(orderDate);
     if (productInfo.orderStateName === 'Создан' && productInfo.paid !== 0) {
       orderStateName = 'Оплачен';
     }

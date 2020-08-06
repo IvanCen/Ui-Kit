@@ -11,6 +11,7 @@ class ToggleModalPagePaymentOrder extends ToggleModalPageOrderPaymentRoot {
     const topBar = new CreateTopBarReviewOrder({
       selector: ['div'],
       style: ['top-bar'],
+      withOutAddress: true,
       modifier: ['--theme--dark', `--size--medium${isIos ? '--ios' : ''}`],
       eventClose: [
         {

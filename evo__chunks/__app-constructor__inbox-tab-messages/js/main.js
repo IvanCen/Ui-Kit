@@ -21,15 +21,13 @@ class ToggleInboxTabMessagesContent extends ToggleInboxTabContent {
 
     this.pageContent.append(this.pageTabContent);
 
-
-    if (userMessages.successData.length === 0) {
+    if (!userMessages.success) {
       this.pageTabContent.append(this.inboxMainCards.create());
     } else {
       userMessages.successData.messages.forEach((item) => {
         console.log(item);
-        this.pageTabContent.append(this.inboxMainCardsNews.create(item));
-        if (item.wasRead === null) {
-          api.markMessageRead(item.client, item.timestamp, item.id);
+        if (item.promotion === 0) {
+          this.pageTabContent.append(this.inboxMainCardsNews.create(item));
         }
       });
     }

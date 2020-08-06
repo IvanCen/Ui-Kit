@@ -63,13 +63,15 @@ function getNowDay() {
 }
 
 const transformationUtcToLocalDate = (data) => {
-  return new Date(`${data} UTC`).toLocaleString('ru', {
+   const changeToLocalDate = new Date(`${data.replace(/-/g, '/')} UTC`).toLocaleString('ru', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
     hour: 'numeric',
     minute: 'numeric',
   }).replace('.', '');
+
+  return changeToLocalDate
 };
 
 function switchActive(nodeList, activeClass) {
@@ -467,13 +469,11 @@ function clearFriendDataInfo() {
 function counterBasket() {
   const basket = document.querySelector('.bottom-bar__icon--type--basket');
   const counterIcon = document.querySelector('.bottom-bar__counter');
+  const topBarCounter = document.querySelector('.top-bar__all-counter-order');
   basket.classList.add('bottom-bar__icon--full');
 
   if (basketArray.length === 0) {
-    counterIcon.textContent = '0';
     basket.classList.remove('bottom-bar__icon--full');
-  } else {
-    counterIcon.textContent = basketArray.length;
   }
   if (basketArray.length === 0) {
     counterIcon.style.right = '22px';
@@ -484,6 +484,12 @@ function counterBasket() {
   } else {
     counterIcon.style.right = '23px';
   }
+
+  if(topBarCounter) {
+    topBarCounter.textContent = basketArray.length;
+  }
+  counterIcon.textContent = basketArray.length;
+
 }
 
 class CreateItem {

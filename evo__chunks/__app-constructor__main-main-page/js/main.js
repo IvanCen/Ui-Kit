@@ -148,7 +148,6 @@ class ToggleMain extends ToggleMainPage {
       this.topBarContentContainer = document.querySelector('.top-bar__content-container--theme--dark');
 
       this.mainPageContent.addEventListener('scroll', () => {
-        console.log(this.mainPageContent.scrollTop);
         if (this.mainPageContent.scrollTop < 212) {
           if (this.topBarContentContainer.classList.contains('top-bar__content-container--hide')) {
             this.topBarContentContainer.classList.remove('top-bar__content-container--hide');

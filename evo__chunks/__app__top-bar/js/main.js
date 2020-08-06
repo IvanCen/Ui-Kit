@@ -141,20 +141,31 @@ class CreateTopBarDarkWithCloseIcon extends CreateItem {
   constructor(parameters) {
     super();
     this.parameters = parameters;
+  }
+
+  create(productInfo) {
     this.element = document.createElement(this.parameters.selector);
+
+    let allCountAdds = 0;
+    if (typeof userDataObj[productInfo.id] === 'object') {
+      for (const modifiersUserItem of Object.values(userDataObj[productInfo.id])) {
+        allCountAdds += modifiersUserItem;
+      }
+    }
     this.template = `
       <div class="top-bar__content-container">
-        <div class="top-bar__header top-bar__header--indentation--top">
+        <div class="top-bar__header">
           <button class="top-bar__button">
             <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-close-white.svg]]" alt="Кнопка закрытия" class="top-bar__icon top-bar__icon--type--close">
           </button>
           <h1 class="top-bar__header-title top-bar__header-title--type--uppercase">${this.parameters.textTitle}</h1>
         </div>
-        
+        <div class="text-area__counter-container">
+          <span class="text-area__all-counter-title">У вашего напитка сейчас </span>
+          <span class="text-area__all-counter"><span class="text-area__all-counter-number">${allCountAdds} добавок</span></span>
+        </div>
       </div>`;
-  }
 
-  create(productInfo) {
     this.element.insertAdjacentHTML('beforeend', this.template);
     this.iconClose = this.element.querySelector('.top-bar__icon--type--close');
 
@@ -483,12 +494,14 @@ class CreateTopBarReviewOrder extends CreateItem {
 
     this.counter = this.element.querySelector('.top-bar__all-counter-order');
     this.counter.textContent = basketArray.length.toString();
-    this.buttonFilter = this.element.querySelector('.top-bar__filter-button');
     this.buttonSearch = this.element.querySelector('.top-bar__search-button');
     this.storesButton = this.element.querySelector('.top-bar__select-item--type--stores');
+    this.info = this.element.querySelector('.top-bar__info');
+    this.selectContainer = this.element.querySelector('.top-bar__select-container');
     this.iconClose = this.element.querySelector('.top-bar__button--type--close');
 
     this.iconClose.addEventListener('click', () => window.history.back());
+
 
     if (typeof this.parameters.eventStores === 'object') {
       for (const event of this.parameters.eventStores) {
@@ -500,6 +513,11 @@ class CreateTopBarReviewOrder extends CreateItem {
       for (const event of this.parameters.eventClose) {
         this.iconClose.addEventListener(event.type, event.callback);
       }
+    }
+
+    if (this.parameters.withOutAddress) {
+      this.selectContainer.remove();
+      this.info.remove();
     }
 
     return super.create(this.element);
