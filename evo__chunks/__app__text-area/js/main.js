@@ -941,10 +941,16 @@ class CreateTextAreaOrderPayment extends CreateItem {
   resPayOrder(payInfo) {
     console.log(payInfo);
     if (payInfo.success) {
-      const link = document.querySelector('.text-area__link');
-      document.location.href = payInfo.successData.payUrl;
-      link.href = payInfo.successData.payUrl;
-      link.click();
+      let successText = 'Ваш заказ успешно оплачен';
+      let successTextTimeout = 300;
+      if (typeof payInfo.successData.payUrl !== 'undefined') {
+        successText = 'Если платеж был успешным, то скоро мы получим его и обновим статус вашего заказа или доставим средства на счет';
+        successTextTimeout = 2000;
+        const link = document.querySelector('.text-area__link');
+        document.location.href = payInfo.successData.payUrl;
+        link.href = payInfo.successData.payUrl;
+        link.click();
+      }
       closePages();
       while (basketArray.length > 0) {
         basketArray.pop();
@@ -953,9 +959,9 @@ class CreateTextAreaOrderPayment extends CreateItem {
       counterBasket();
       checkBasket();
       setTimeout(() => {
-        toggleModal.rendering('Спасибо за оплату. Если платеж был успешным, то скоро мы получим его и обновим статус вашего заказа или доставим средства на счет');
-      }, 2000);
-    } /*else if (isEmptyObj(payInfo.successData) && payInfo.success) {
+        toggleModal.rendering(successText);
+      }, successTextTimeout);
+    } /* else if (isEmptyObj(payInfo.successData) && payInfo.success) {
       const textArea = document.querySelector('.text-area--type--balance');
       const fifthPage = document.querySelector('.fifth-page');
       textArea.classList.add('text-area--hide');
@@ -970,9 +976,9 @@ class CreateTextAreaOrderPayment extends CreateItem {
       setTimeout(() => {
         closePages();
       }, 3000);
-    }*/ else {
+    } else {
       toggleModal.rendering(payInfo.errors[0]);
-    }
+    } */
   }
 
   create() {
