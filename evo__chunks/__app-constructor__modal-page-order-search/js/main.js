@@ -48,7 +48,7 @@ class ToggleModalPageOrderSearch extends ToggleModalPageSearch {
       arr.push(el);
     }
     arr.flat().forEach((item) => {
-      cardItemContainerSearchEl.append(cardItem.create({ id: item.id }));
+      cardItemContainerSearchEl.append(cardItem.create({ id: item.id }, true));
     });
   }
 

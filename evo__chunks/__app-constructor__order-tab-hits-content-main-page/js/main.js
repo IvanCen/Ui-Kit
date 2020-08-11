@@ -15,10 +15,12 @@ class ToggleOrderHitsContent extends ToggleOrderTabContent {
     this.mainPageContent.append(this.mainPageTabContentHits);
     this.mainPageTabContentHits.append(cardItemContainer.create('hits', 'card-item__container--indentation--top'));
     const cardItemContainerEl = document.querySelector('.card-item__container--hits');
-    const { items } = dataProductApi.successData;
-    for (const item in items) {
-      if (items[item].hitFlag === true) {
-        cardItemContainerEl.append(orderCardItemHits.create(items[item]));
+    if(typeof dataProductApi.successData.items !== 'undefined') {
+      const { items } = dataProductApi.successData;
+      for (const item in items) {
+        if (items[item].hitFlag === true) {
+          cardItemContainerEl.append(orderCardItemHits.create(items[item]));
+        }
       }
     }
   }
