@@ -149,7 +149,7 @@ const userAchievements = userAchievementsLet;
 
 api.storesApi(); // пока каждый раз вызываем при старте
 
-if (isEmptyObj(applicationDataObj)) {
+if (applicationDataObj && isEmptyObj(applicationDataObj)) {
   api.getPublicDocument('both', 'privacy-policy');
   api.getPublicDocument('both', 'user-agreement');
   api.getPublicDocument('both', 'public-offer');

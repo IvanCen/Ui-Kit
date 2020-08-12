@@ -329,8 +329,8 @@ class CreateCardItemFavAndHisOrder extends CreateItem {
       }, 3000);
       if (isSearch) {
         const cardItem = this.closest('.card-item');
-        cardItem.classList.add('card-item--animation-pulse');
-        setTimeout(() => cardItem.classList.remove('card-item--animation-pulse'), 1000);
+        cardItem.classList.add('animation-pulse');
+        setTimeout(() => cardItem.classList.remove('animation-pulse'), 1000);
       }
       checkBasket();
     });
@@ -682,7 +682,7 @@ class CreateCardItemHistory extends CreateItem {
       this.elementWraper.append(this.element);
     }
     this.buttonAddAll = this.elementWraper.querySelector('.title-bar__button');
-    this.buttonAddAll.addEventListener('click', () => {
+    this.buttonAddAll.addEventListener('click', function () {
       for (const itemEl of Object.values(productInfo.items)) {
         const modifiersArr = [];
         itemEl.modifiers.forEach((modif) => {
@@ -691,6 +691,10 @@ class CreateCardItemHistory extends CreateItem {
         basketArray.push({ id: itemEl.itemId, modifiers: modifiersArr });
       }
       localStorage.setItem('basket', JSON.stringify(basketArray));
+      const wraper = this.closest('.history-order');
+      console.log(wraper)
+      wraper.classList.add('animation-pulse');
+      setTimeout(() => wraper.classList.remove('animation-pulse'), 1000);
       counterBasket();
       checkBasket();
     });

@@ -8,10 +8,6 @@
     transform: translateX(-100%);
   }
 
-  &--animation-pulse {
-    animation: pulse 1s ease-in;
-  }
-
   &--border--bottom {
     border-bottom: 1px solid $gainsboroGray;
     grid-gap: 0 20px;
@@ -350,12 +346,16 @@
 
 }
 
+.animation-pulse {
+  animation: pulseCard 1s ease-in;
+}
+
 @keyframes pulseCard {
   0% {
     transform: scale(1);
   }
   50% {
-    transform: scale(1.1);
+    transform: scale(1.05);
   }
   100% {
     transform: scale(1);

@@ -903,24 +903,7 @@ class CreateTextAreaOrderPayment extends CreateItem {
       setTimeout(() => {
         toggleModal.rendering(successText);
       }, successTextTimeout);
-    } /* else if (isEmptyObj(payInfo.successData) && payInfo.success) {
-      const textArea = document.querySelector('.text-area--type--balance');
-      const fifthPage = document.querySelector('.fifth-page');
-      textArea.classList.add('text-area--hide');
-      const access = document.createElement('div');
-      access.classList.add('text-area__title', 'text-area__title--position--center', 'text-area__title--indentation--big', 'text-area__title--size--big');
-      access.textContent = 'Оплата прошла успешно';
-      fifthPage.append(access);
-      basketArray.splice(0, basketArray.length);
-      localStorage.setItem('basket', JSON.stringify(basketArray));
-      counterBasket();
-      checkBasket();
-      setTimeout(() => {
-        closePages();
-      }, 3000);
-    } else {
-      toggleModal.rendering(payInfo.errors[0]);
-    } */
+    }
   }
 
   create() {
