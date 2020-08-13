@@ -329,8 +329,14 @@ class CreateCardItemFavAndHisOrder extends CreateItem {
       }, 3000);
       if (isSearch) {
         const cardItem = this.closest('.card-item');
+        const iconAdd = cardItem.querySelector('.card-item__icon--type--add');
+        console.log(iconAdd)
         cardItem.classList.add('animation-pulse');
-        setTimeout(() => cardItem.classList.remove('animation-pulse'), 1000);
+        iconAdd.classList.add('card-item__icon--theme--grass');
+        setTimeout(() => {
+          cardItem.classList.remove('animation-pulse');
+          iconAdd.classList.remove('card-item__icon--theme--grass');
+        }, 1000);
       }
       checkBasket();
     });
@@ -692,7 +698,6 @@ class CreateCardItemHistory extends CreateItem {
       }
       localStorage.setItem('basket', JSON.stringify(basketArray));
       const wraper = this.closest('.history-order');
-      console.log(wraper)
       wraper.classList.add('animation-pulse');
       setTimeout(() => wraper.classList.remove('animation-pulse'), 1000);
       counterBasket();

@@ -246,7 +246,7 @@ class CreateFormInputSignIn extends CreateItem {
               </div>
               <p class="form__text form__text--indentation--small">Вы ввели номер <span class="number-for-registration"></span>, если вы ошиблись при вводе, то <a class="form__link form__link--type--back" type="reset">исправьте номер</a></p>
           </div>
-          <button class="form__button form__button--type--call">Подтвердить</button>
+          <button class="button button--theme--tangerin button--size--big button--theme--shadow-big form__button form__button--type--call">Подтвердить</button>
           <button class="button button--size--small button--theme--tangerin-transparent form__button form__button--type--again form__button--hide">Отправить код повторно</button>
         </div>
         <p class="form__text form__text--success form__text--hide">Вы авторизованны!</p>

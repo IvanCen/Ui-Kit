@@ -313,9 +313,17 @@
       background: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-summer.svg]]") no-repeat;
     }
 
+    &--type--add {
+      border-radius: 50%;
+    }
+
     &--size--big {
       width: 30px;
       height: 30px;
+    }
+
+    &--theme--grass {
+      background-color: $seaGreen;
     }
   }
 
