@@ -13,7 +13,9 @@ class ToggleOrder extends ToggleMainPage {
       const elements = document.querySelectorAll('.main-page__tab-content');
       [...elements].forEach((item) => item.classList.remove('main-page__tab-content--open'));
       const element = document.querySelector(`.main-page__tab-content--${tabName}`);
-      element.classList.add('main-page__tab-content--open');
+      if(element) {
+        element.classList.add('main-page__tab-content--open');
+      }
     }
 
     const orderTopBar = new CreateTopBarOrder({

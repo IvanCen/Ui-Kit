@@ -67,6 +67,7 @@ class ToggleBalance extends ToggleMainPage {
       themeButton: ['--theme--tangerin-transparent'],
       identifier: ['score'],
       text: ['Ваши бонусы'],
+      heart: true,
       number() {
         if (!isEmptyObj(userInfoObj)) {
           return userInfoObj.successData.bonus;

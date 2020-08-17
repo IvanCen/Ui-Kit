@@ -23,6 +23,7 @@ class ToggleOrderHistoryContent extends ToggleOrderTabContent {
         }
       }
     }
+
     if (!isEmptyObj(userInfoObj)) {
       this.mainPageContent = document.querySelector('.main-page__content');
       this.mainPageTabContentHistory = document.createElement('div');

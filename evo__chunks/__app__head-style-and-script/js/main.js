@@ -1349,7 +1349,9 @@ class ToggleModalPageSignInRoot {
   openPage() {
     this.modalPageSignIn = document.querySelector('.modal-page-sign-in');
     setTimeout(() => {
-      this.modalPageSignIn.classList.add(this.classOpen);
+      if(this.modalPageSignIn) {
+        this.modalPageSignIn.classList.add(this.classOpen);
+      }
       this.body.classList.add('body');
     }, 100);
     history.pushState({ state: '#modal-page-sign-in' }, null, '#modal-page-sign-in');

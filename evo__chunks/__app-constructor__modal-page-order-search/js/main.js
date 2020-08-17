@@ -24,9 +24,9 @@ class ToggleModalPageOrderSearch extends ToggleModalPageSearch {
       let numberOfHits = 0;
       for (const searchItemTextPart of searchItemTextArray) {
         numberOfHits += (dataProductApi.successData.items[item].name.toLowerCase().split(searchItemTextPart).length - 1);
-        /*if (typeof dataProductApi.successData.items[item].intro !== 'undefined') {
+        /* if (typeof dataProductApi.successData.items[item].intro !== 'undefined') {
           numberOfHits += (dataProductApi.successData.items[item].intro.toLowerCase().split(searchItemTextPart).length - 1);
-        }*/
+        } */
       }
       if (numberOfHits > 0) {
         if (typeof searchItems[numberOfHits] !== 'object') {
@@ -98,9 +98,9 @@ class ToggleModalPageOrderSearch extends ToggleModalPageSearch {
       let numberOfHits = 0;
       for (const searchItemTextPart of searchItemTextArray) {
         numberOfHits += (dataProductApi.successData.items[item].name.toLowerCase().split(searchItemTextPart).length - 1);
-        /*if (typeof dataProductApi.successData.items[item].intro !== 'undefined') {
+        /* if (typeof dataProductApi.successData.items[item].intro !== 'undefined') {
           numberOfHits += (dataProductApi.successData.items[item].intro.toLowerCase().split(searchItemTextPart).length - 1);
-        }*/
+        } */
       }
       if (numberOfHits > 0) {
         if (typeof searchItems[numberOfHits] !== 'object') {
@@ -122,7 +122,7 @@ class ToggleModalPageOrderSearch extends ToggleModalPageSearch {
       arr.push(el);
     }
     arr.flat().forEach((item) => {
-      cardItemContainerSearchEl.append(cardItem.create({ id: item.id }));
+      cardItemContainerSearchEl.append(cardItem.create({ id: item.id },true));
     });
   }
 

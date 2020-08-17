@@ -14,7 +14,6 @@ class ToggleOrderMenuContent extends ToggleOrderTabContent {
   rendering() {
     super.rendering();
 
-
     const orderTitleBarDrinks = new CreateTitleBar({
       selector: ['div'],
       style: ['title-bar'],

@@ -767,7 +767,7 @@ class CreateTextAreaBalance extends CreateItem {
     this.template = `
       <div class="text-area__container text-area__container--indentation--normal">
         <div>
-          <span class="text-area__number text-area__number--type--${this.parameters.identifier}">${this.parameters.number()}</span>
+          <span class="text-area__number text-area__price text-area__price--size--big text-area__number--type--${this.parameters.identifier}">${this.parameters.number()}</span>
           <svg class="text-area__icon text-area__icon--size--small" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M23 8.28003C23 5.10003 20.41 2.53003 17.25 2.53003C14.96 2.53003 12.98 3.87003 12.05 5.82003C12.03 5.86003 11.97 5.86003 11.96 5.82003C11.04 3.88003 9.05 2.53003 6.76 2.53003C3.58 2.53003 1 5.10003 1 8.28003C1 8.95003 1.11 9.59003 1.33 10.19C1.57 10.87 1.94 11.5 2.4 12.03C2.6 12.26 2.81 12.47 3.04 12.67L11.82 21.39C11.87 21.44 11.94 21.47 12.02 21.47C12.1 21.47 12.16 21.45 12.22 21.39L21.33 12.34C21.92 11.75 22.39 11.03 22.67 10.23C22.88 9.62003 23 8.96003 23 8.28003Z" fill="#E3562F"/>
           </svg>
@@ -782,6 +782,7 @@ class CreateTextAreaBalance extends CreateItem {
     this.element.insertAdjacentHTML('beforeend', this.template);
 
     this.button = this.element.querySelector(`.text-area__button--type--${this.parameters.identifier}`);
+    this.price = this.element.querySelector('.text-area__price');
 
     if (typeof this.parameters.eventButton === 'object') {
       for (const event of this.parameters.eventButton) {
@@ -793,6 +794,8 @@ class CreateTextAreaBalance extends CreateItem {
       if (this.parameters.heart === false) {
         this.heart = this.element.querySelector('.text-area__icon');
         this.heart.remove();
+      } else {
+        this.price.classList.remove('text-area__price', 'text-area__price--size--big');
       }
     }
     if (typeof this.parameters.button === 'boolean') {
@@ -812,7 +815,7 @@ class CreateTextAreaBalanceHistory extends CreateItem {
     this.template = `
       <div class="text-area__container text-area__container--indentation--normal">
         <div>
-          <span class="text-area__number">${this.parameters.number}</span>
+          <span class="text-area__number text-area__price text-area__price--size--big">${this.parameters.number}</span>
           <svg class="text-area__icon text-area__icon--size--small" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M23 8.28003C23 5.10003 20.41 2.53003 17.25 2.53003C14.96 2.53003 12.98 3.87003 12.05 5.82003C12.03 5.86003 11.97 5.86003 11.96 5.82003C11.04 3.88003 9.05 2.53003 6.76 2.53003C3.58 2.53003 1 5.10003 1 8.28003C1 8.95003 1.11 9.59003 1.33 10.19C1.57 10.87 1.94 11.5 2.4 12.03C2.6 12.26 2.81 12.47 3.04 12.67L11.82 21.39C11.87 21.44 11.94 21.47 12.02 21.47C12.1 21.47 12.16 21.45 12.22 21.39L21.33 12.34C21.92 11.75 22.39 11.03 22.67 10.23C22.88 9.62003 23 8.96003 23 8.28003Z" fill="#E3562F"/>
           </svg>
@@ -825,10 +828,14 @@ class CreateTextAreaBalanceHistory extends CreateItem {
   create() {
     this.element.insertAdjacentHTML('beforeend', this.template);
 
+    this.price = this.element.querySelector('.text-area__price');
+
     if (typeof this.parameters.heart === 'boolean') {
       if (this.parameters.heart === false) {
         this.heart = this.element.querySelector('.text-area__icon');
         this.heart.remove();
+      } else {
+        this.price.classList.remove('text-area__price', 'text-area__price--size--big');
       }
     }
 

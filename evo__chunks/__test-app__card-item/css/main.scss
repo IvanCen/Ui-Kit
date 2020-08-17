@@ -81,7 +81,10 @@
 
     &--direction--column {
       display: grid;
+    }
 
+    &--display--flex {
+      display: flex;
     }
 
     &--indentation-column--small {
@@ -134,6 +137,10 @@
 
     &--indentation--normal {
       padding-top: 13px;
+    }
+
+    &--indentation--right {
+      margin-right: 5px;
     }
 
     &--theme--green {
@@ -323,7 +330,7 @@
     }
 
     &--theme--grass {
-      background-color: $seaGreen;
+      background-color: #9cff57;
     }
   }
 
