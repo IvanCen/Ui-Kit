@@ -263,6 +263,7 @@
   &--error-phone.form__text {
     color: $alizarinCrimson;
     margin-top: 20px;
+    min-height: 20px;
   }
 
   &--hide {
@@ -320,6 +321,7 @@
   justify-content: space-around;
   min-height: 200px;
   transition: all 0.3s ease-in;
+  flex-shrink: 0;
 
   &--open {
     display: flex;

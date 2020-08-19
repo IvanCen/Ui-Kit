@@ -192,6 +192,9 @@ class CreateCardItemBalance extends CreateItem {
     if (!option.heart) {
       this.heart = this.element.querySelector('.text-area__icon');
       this.heart.remove();
+      this.titleNumber = this.element.querySelector('.card-item__title');
+      console.log(this.titleNumber)
+      this.titleNumber.classList.add('text-area__number', 'text-area__price', 'text-area__price--size--small');
     }
     return super.create(this.element);
   }

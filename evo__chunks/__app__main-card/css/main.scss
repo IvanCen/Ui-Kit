@@ -141,7 +141,10 @@
   }
 
   &__text {
-    @extend %style-6;
+
+    &--size--big {
+      @extend %style-4;
+    }
   }
 
   &__button-container {

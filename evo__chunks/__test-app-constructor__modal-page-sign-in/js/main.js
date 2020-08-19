@@ -130,11 +130,13 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
       });
 
       linkBack.addEventListener('click', () => {
-        textErrorPhone.classList.remove('form__text--close', 'form__text--hide');
-        textError.classList.remove('form__text--hide');
+        textErrorPhone.classList.add('form__text--close', 'form__text--hide');
+        textError.classList.add('form__text--hide');
         callContainer.classList.remove('form__call-container--open');
         input.classList.remove('form__input--close');
         accessButton.classList.remove('form__button--hide');
+        textError.textContent = '';
+        textErrorPhone.textContent = '';
       });
       [...document.querySelectorAll('.form__input-wrapper--last-number-inputs input')].forEach((el, index) => {
         el.addEventListener('focus', (e) => {

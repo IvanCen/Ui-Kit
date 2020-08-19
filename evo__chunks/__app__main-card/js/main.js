@@ -94,14 +94,14 @@ class CreateCardsMainCard extends CreateItem {
 }
 
 
-class CreateCardsBalanceMainCard extends CreateItem {
+class CreateTextMainCard extends CreateItem {
   constructor(parameters) {
     super();
     this.parameters = parameters;
     this.element = document.createElement(this.parameters.selector);
     this.template = `
         <div class="main-card__text-area">
-          <p class="main-card__text">${this.parameters.text}</p>
+          <p class="main-card__text main-card__text--size--big">${this.parameters.text}</p>
         </div>`;
   }
 

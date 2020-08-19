@@ -22,7 +22,7 @@ class ToggleBalance extends ToggleMainPage {
       ],
       textTitle: ['Баланс'],
     });
-    const card = new CreateCardsBalanceMainCard({
+    const card = new CreateTextMainCard({
       selector: ['div'],
       style: ['main-card'],
       modifier: ['--indentation--top'],
