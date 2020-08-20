@@ -87,12 +87,20 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
     if (!/\d/.test(e.key)) e.preventDefault();
   }
 
+  regCallAgain() {
+    const inputArea = this.modalPageSignIn.querySelector('.form__input-area--type--phone-sign-in');
+    const phoneNumber = inputArea.value;
+    const code = localStorage.getItem('authorizationCode');
+    api.authorizeCallInApi(this.regSuccess, code, phoneNumber);
+  }
+
   /* метод показа ввода полей кода и его отправка на сервер */
   regCall(info) {
     const inputArea = this.modalPageSignIn.querySelector('.form__input-area--type--phone-sign-in');
     const textErrorPhone = this.modalPageSignIn.querySelector('.form__text--error-phone');
     const textError = this.modalPageSignIn.querySelector('.form__text--error');
     const callButton = this.modalPageSignIn.querySelector('.form__button--type--call');
+    const againButton = this.modalPageSignIn.querySelector('.form__button--type--again');
     const accessButton = this.modalPageSignIn.querySelector('.form__button--type--sign-in');
     const callContainer = this.modalPageSignIn.querySelector('.form__call-container');
     const numberForRegistrationEl = this.modalPageSignIn.querySelector('.number-for-registration');
@@ -117,15 +125,18 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
         const codeArr = [...numbersElements].map((number) => number.value);
         const code = codeArr.join('');
         localStorage.setItem('authorizationCode', code);
+        setTimeout(() => againButton.classList.remove('form__button--hide'), 10000);
         api.authorizeCallInApi(this.regSuccess, code, phoneNumber);
       });
 
       linkBack.addEventListener('click', () => {
-        textErrorPhone.classList.remove('form__text--close', 'form__text--hide');
-        textError.classList.remove('form__text--hide');
+        textErrorPhone.classList.add('form__text--close', 'form__text--hide');
+        textError.classList.add('form__text--hide');
         callContainer.classList.remove('form__call-container--open');
         input.classList.remove('form__input--close');
         accessButton.classList.remove('form__button--hide');
+        textError.textContent = '';
+        textErrorPhone.textContent = '';
       });
       [...document.querySelectorAll('.form__input-wrapper--last-number-inputs input')].forEach((el, index) => {
         el.addEventListener('focus', (e) => {
@@ -150,6 +161,11 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
           el.value = '';
         });
         el.addEventListener('keyup', (event) => {
+          if (event.keyCode === 8) {
+            try { el.previousElementSibling.focus(); } catch (e) {
+              el.closest('.form__group').querySelector('.button').focus();
+            }
+          }
           const re = /\d/;
           if (event.target.value.match(re)) {
             try {
@@ -327,6 +343,14 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
           callback: () => {
             api.getMessages();
             this.returnPage();
+          },
+        },
+      ],
+      eventAgain: [
+        {
+          type: 'click',
+          callback: () => {
+            this.registrationNumber(this);
           },
         },
       ],

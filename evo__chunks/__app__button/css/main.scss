@@ -118,6 +118,10 @@
     color: $alizarinCrimson;
   }
 
+  &--type--disabled {
+    background: $gainsboroGray;
+  }
+
   &--indentation--top {
     margin-top: 20px;
   }

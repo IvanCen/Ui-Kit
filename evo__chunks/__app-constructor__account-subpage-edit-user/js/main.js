@@ -1,139 +1,127 @@
-class ToggleSubPageAccountEditUser extends ToggleSubPage {
+class ToggleSubPageEditUser extends ToggleSubPage {
   constructor(parameters) {
     super(parameters);
     this.parameters = parameters;
     this.rendering = this.rendering.bind(this);
+    this.closePage = this.closePage.bind(this);
+    this.deletePage = this.deletePage.bind(this);
+  }
+
+  sendData(setName, value) {
+    function showError(info) {
+      const textError = document.querySelector('.form__text--error');
+      if (textError) {
+        textError.classList.remove('form__text--close', 'form__text--hide');
+        if (info.errors[0] !== undefined) {
+          textError.textContent = info.errors[0];
+        } else {
+          api.getClientApi();
+          const textSuccess = document.querySelector('.form__text--success');
+          const textArea = document.querySelector(`.text-area__title--type--${setName}`);
+          textSuccess.textContent = 'Данные изменены';
+          textSuccess.classList.remove('form__text--close', 'form__text--hide');
+          textSuccess.classList.add('form__text--indentation');
+
+          if (setName === 'email') {
+            toggleModal.renderingEmail();
+            toggleModal.openPage();
+            const modal = document.querySelector('.modal');
+            if (!modal) {
+              api.getClientApi();
+              setTimeout(() => {
+                if (textArea) {
+                  textArea.textContent = userInfoObj.successData[setName];
+                }
+                toggleSubPage.closePage();
+                toggleSubPage.deletePage();
+              }, 2000);
+
+              toggleSubPage.closePage();
+              toggleSubPage.deletePage();
+            }
+          } else {
+            setTimeout(() => {
+              if (textArea) {
+                textArea.textContent = userInfoObj.successData[setName];
+              }
+              toggleSubPage.closePage();
+              toggleSubPage.deletePage();
+            }, 2000);
+          }
+        }
+      }
+    }
+    const request = {
+      method: 'set-client',
+      set: setName,
+      outputFormat: 'json',
+    };
+    request[setName] = value;
+    api.setClientApi(request, showError);
   }
 
 
-  rendering() {
+  rendering(parameters) {
     super.rendering();
+
     const topBar = new CreateTopBarWithBackButton({
       selector: ['div'],
       style: ['top-bar'],
-      modifier: [`${isIos ? '--size--small--ios' : '--size--small'}`],
-      textTitle: ['Ваш профиль'],
+      modifier: [`${isIos ? '--size--small--ios' : '--size--small'}`, '--theme--light'],
+      textTitle: parameters.titleTopBar,
       eventBack: [
         { type: 'click', callback: this.closePage },
         { type: 'click', callback: this.deletePage },
       ],
     });
-    const textAreaName = new CreateTextArea({
+    const formInput = new CreateFormInput({
       selector: ['div'],
-      style: ['text-area'],
-      identifier: ['name'],
-      title: userInfoObj.successData.name,
-      text: ['Ваше имя'],
-      isButton: true,
-      eventButton: [
-        {
-          type: 'click',
-          callback: () => {
-            stopAction(() => {
-              toggleThirdPageEditUser.rendering({
-                titleTopBar: 'Редактирование имени',
-                inputLabel: 'Введите новое имя',
-                identifier: 'name',
-                inputType: 'text',
-              });
-            });
-          },
-        },
+      style: ['form'],
+      modifier: [
+        '--indentation--sign-in',
+        '--indentation',
       ],
+      identifier: parameters.identifier,
+      inputLabelName: parameters.inputLabel,
+      inputType: parameters.inputType,
     });
-    let textAreaBirthday;
-    if (userInfoObj.successData.birthday !== '') {
-      textAreaBirthday = new CreateTextArea({
-        selector: ['div'],
-        style: ['text-area'],
-        title: userInfoObj.successData.birthday,
-        text: ['Ваш день рождения'],
-      });
-    } else {
-      textAreaBirthday = new CreateTextArea({
-        selector: ['div'],
-        style: ['text-area'],
-        title: userInfoObj.successData.birthday,
-        text: ['Ваш день рождения'],
-        isButton: true,
-        eventButton: [
-          {
-            type: 'click',
-            callback: () => {
-              stopAction(() => {
-                toggleThirdPageEditUser.rendering({
-                  titleTopBar: 'Редактирование даты рождения',
-                  inputLabel: '',
-                  identifier: 'birthday',
-                  inputType: 'date',
-                });
-              });
-            },
-          },
-        ],
-      });
-    }
-
-    const textAreaPhone = new CreateTextArea({
-      selector: ['div'],
-      style: ['text-area'],
-      title: userInfoObj.successData.phone,
-      text: ['Ваш телефон'],
-    });
-    const textAreaEmail = new CreateTextArea({
-      selector: ['div'],
-      style: ['text-area'],
-      modifier: ['--indentation--bottom'],
-      identifier: ['email'],
-      title: userInfoObj.successData.email,
-      text: ['Ваш email'],
-      isButton: true,
-      eventButton: [
-        {
-          type: 'click',
-          callback: () => {
-            stopAction(() => {
-              toggleThirdPageEditUser.rendering({
-                titleTopBar: 'Редактирование email',
-                inputLabel: 'Введите новый email',
-                identifier: 'email',
-                inputType: 'email',
-                text: 'На ваш email будет отправлена ссылка, пройдите по ней, для подтверждения.',
-              });
-            });
-          },
-        },
-      ],
-    });
-/*    const buttonJoinOrange = new CreateButton({
+    const buttonEdit = new CreateButton({
       selector: ['button'],
       style: ['button'],
       modifier: [
         '--size--big',
         '--theme--tangerin',
-        '--theme--shadow-big',
         '--type--fixed',
+        '--theme--shadow-big',
+        '--type--edit-user',
       ],
-      text: ['Редактировать'],
-      eventsOpen: [
+      text: ['Изменить'],
+      events: [
         {
           type: 'click',
           callback: () => {
-            stopAction(() => {
-              togglePageSignIn.rendering();
-            });
+            const inputArea = document.querySelector(`.form__input-area--type--${parameters.identifier}`);
+
+            if (inputArea.value !== '') {
+              this.sendData(parameters.identifier, inputArea.value);
+            }
           },
         },
       ],
-    });*/
+    });
+
     this.subPage.append(createTopBarIos());
     this.subPage.append(topBar.create());
-    this.subPage.append(textAreaName.create());
-    this.subPage.append(textAreaBirthday.create());
-    this.subPage.append(textAreaPhone.create());
-    this.subPage.append(textAreaEmail.create());
-    //this.subPage.append(buttonJoinOrange.create());
+    this.subPage.append(formInput.create(parameters.text));
+    this.subPage.append(buttonEdit.create());
 
+    this.buttonAgree = this.subPage.querySelector('.button--type--edit-user');
+    this.buttonAgree.classList.add('form__button');
+
+    if (parameters.inputType !== 'date') {
+      validation();
+      inputFlyLabel();
+    }
 
     this.openPage();
   }

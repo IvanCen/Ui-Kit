@@ -246,7 +246,8 @@ class CreateFormInputSignIn extends CreateItem {
               </div>
               <p class="form__text form__text--indentation--small">Вы ввели номер <span class="number-for-registration"></span>, если вы ошиблись при вводе, то <a class="form__link form__link--type--back" type="reset">исправьте номер</a></p>
           </div>
-          <button class="form__button form__button--type--call">Подтвердить</button>
+          <button class="button button--theme--tangerin button--size--big button--theme--shadow-big form__button form__button--type--call">Подтвердить</button>
+          <button class="button button--size--small button--theme--tangerin-transparent form__button form__button--type--again form__button--hide">Отправить код повторно</button>
         </div>
         <p class="form__text form__text--success form__text--hide">Вы авторизованны!</p>
         <p class="form__text form__text--error form__text--hide"></p>
@@ -302,6 +303,7 @@ class CreateFormInputSignIn extends CreateItem {
     this.buttonSignIn = this.element.querySelector('.form__button--type--sign-in');
     this.buttonSkip = this.element.querySelector('.form__button--type--skip');
     this.buttonAgree = this.element.querySelector('.form__button--type--agree');
+    this.buttonAgain = this.element.querySelector('.form__button--type--again');
 
     if (typeof this.parameters.events === 'object') {
       for (const event of this.parameters.events) {
@@ -316,6 +318,19 @@ class CreateFormInputSignIn extends CreateItem {
     if (typeof this.parameters.eventAgree === 'object') {
       for (const event of this.parameters.eventAgree) {
         this.buttonAgree.addEventListener(event.type, event.callback);
+      }
+    }
+    if (typeof this.parameters.eventAgain === 'object') {
+      for (const event of this.parameters.eventAgain) {
+        this.buttonAgain.addEventListener(event.type, () => {
+          event.callback();
+          this.buttonAgain.disabled = true;
+          this.buttonAgain.classList.add('button--type--disabled');
+          setTimeout(() => {
+            this.buttonAgain.disabled = false;
+            this.buttonAgain.classList.remove('button--type--disabled');
+          }, 10000);
+        });
       }
     }
 

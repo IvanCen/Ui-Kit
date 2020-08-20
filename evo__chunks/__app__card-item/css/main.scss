@@ -81,7 +81,10 @@
 
     &--direction--column {
       display: grid;
+    }
 
+    &--display--flex {
+      display: flex;
     }
 
     &--indentation-column--small {
@@ -134,6 +137,10 @@
 
     &--indentation--normal {
       padding-top: 13px;
+    }
+
+    &--indentation--right {
+      margin-right: 5px;
     }
 
     &--theme--green {
@@ -313,9 +320,17 @@
       background: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-summer.svg]]") no-repeat;
     }
 
+    &--type--add {
+      border-radius: 50%;
+    }
+
     &--size--big {
       width: 30px;
       height: 30px;
+    }
+
+    &--theme--grass {
+      background-color: #9cff57;
     }
   }
 
@@ -346,4 +361,18 @@
 
 }
 
+.animation-pulse {
+  animation: pulseCard 1s ease-in;
+}
 
+@keyframes pulseCard {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

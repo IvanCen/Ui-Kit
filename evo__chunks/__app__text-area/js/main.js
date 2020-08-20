@@ -97,10 +97,11 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
       if (obj[nutritionItem] !== null) {
         const nutritionEl = el.querySelector(`.text-area__info-number--${nutritionItem}`);
         if (nutritionEl) {
-          const regExp = /(\d*\.\d*).*/gm;
-          const number = Number(nutritionEl.textContent.replace(regExp, '$1'));
-          console.log(number, obj[nutritionItem], counter);
-          nutritionEl.textContent = `${number + (obj[nutritionItem] * counter)} г`;
+          const regExp = /(\d*\.?\d*).*/gm;
+          const number = Number(nutritionEl.textContent.trim().replace(regExp, '$1'));
+          const finalNumber = (number + (obj[nutritionItem] * counter)).toFixed(1);
+          console.log(number, obj[nutritionItem], counter, nutritionEl.textContent);
+          nutritionEl.textContent = `${finalNumber} г`;
         }
       }
     }
@@ -292,7 +293,7 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
         </div>
     </div>
     <div class="text-area text-area--theme--light">
-      <div class="text-area__container text-area__container--indentation--normal">
+      <div class="text-area__container text-area__container--type--ingredients text-area__container--indentation--normal">
         <div class="text-area__content-container text-area__content-container--direction--column">
           <h2 class="text-area__title text-area__title--size--normal text-area__title--indentation--bottom">Ингредиенты</h2>
           <span class="text-area__text text-area__text--theme--shadow text-area__text--type--ingredients"></span>
@@ -327,6 +328,7 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
     this.introEl = this.element.querySelector('.text-area--type--description');
     this.price = this.element.querySelector('.text-area__price');
     this.stickersContainer = this.element.querySelector('.text-area__icon-container');
+    this.containerIngredients = this.element.querySelector('.text-area__container--type--ingredients');
 
     if (isEmptyObj(userStore)) {
       this.price.classList.add('text-area__price--hide');
@@ -439,6 +441,9 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
     elementIngredients.textContent = arrAllIngredientsProductName.join(', ');
     elementAllergens.textContent = arrAllAllergensProductName.join(', ');
 
+    if (productInfo.ingredients === null) {
+      this.containerIngredients.remove();
+    }
 
     const unicModifName = new Set(arrModifCategoryName);
     [...unicModifName].forEach((name) => {
@@ -585,34 +590,6 @@ class CreateTextAreaAccount extends CreateItem {
   create() {
     this.element = document.createElement(this.parameters.selector);
     this.template = `
-      <div class="text-area text-area--type--balance">
-        <div class="text-area__container text-area__container--indentation--small">
-          <h2 class="text-area__title text-area__title--size--small text-area__title--type--bold">Баланс</h2>
-          <button class="button">
-            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-right.svg]]" alt="" class="text-area__icon text-area__icon--position--center">
-          </button>
-        </div>
-      </div>
-      <div class="text-area text-area--type--order">
-        <div class="text-area__container text-area__container--indentation--small">
-          <div class="text-area__content-container text-area__content-container--direction--column">
-            <h2 class="text-area__title text-area__title--size--small text-area__title--type--bold">Заказы</h2>
-          </div>
-          <button class="button">
-            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-right.svg]]" alt="" class="text-area__icon text-area__icon--position--center">
-          </button>
-      </div>
-      </div>
-      <div class="text-area text-area--type--reward">
-        <div class="text-area__container text-area__container--indentation--small">
-          <div class="text-area__content-container text-area__content-container--direction--column">
-            <h2 class="text-area__title text-area__title--size--small text-area__title--type--bold">Достижения</h2>
-          </div>
-          <button class="button">
-            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-right.svg]]" alt="" class="text-area__icon text-area__icon--position--center">
-          </button>
-      </div>
-      </div>
       <div class="text-area text-area--type--privacy">
         <div class="text-area__container text-area__container--indentation--small">
           <div class="text-area__content-container text-area__content-container--direction--column">
@@ -645,9 +622,6 @@ class CreateTextAreaAccount extends CreateItem {
     this.buttonPrivacy = this.element.querySelector('.text-area--type--privacy');
     this.buttonTerms = this.element.querySelector('.text-area--type--terms');
     this.buttonPublic = this.element.querySelector('.text-area--type--public');
-    this.buttonBalance = this.element.querySelector('.text-area--type--balance');
-    this.buttonOrder = this.element.querySelector('.text-area--type--order');
-    this.buttonReward = this.element.querySelector('.text-area--type--reward');
 
     this.buttonPrivacy.addEventListener('click', () => {
       stopAction(() => {
@@ -662,33 +636,6 @@ class CreateTextAreaAccount extends CreateItem {
     this.buttonPublic.addEventListener('click', () => {
       stopAction(() => {
         toggleSubPageApplication.rendering(this.setData('public-offer'));
-      });
-    });
-    this.buttonBalance.addEventListener('click', () => {
-      stopAction(() => {
-        renderMainPage.closePage();
-        renderMainPage.clearPage();
-        togglePage.closePage();
-        togglePage.deletePage();
-        toggleBalance.rendering();
-        toggleBalance.openPage();
-      });
-    });
-    this.buttonOrder.addEventListener('click', () => {
-      stopAction(() => {
-        togglePage.closePage();
-        togglePage.deletePage();
-        openHistory();
-      });
-    });
-    this.buttonReward.addEventListener('click', () => {
-      stopAction(() => {
-        renderMainPage.closePage();
-        renderMainPage.clearPage();
-        togglePage.closePage();
-        togglePage.deletePage();
-        toggleReward.rendering();
-        toggleReward.openPage();
       });
     });
 
@@ -825,7 +772,7 @@ class CreateTextAreaBalance extends CreateItem {
     this.template = `
       <div class="text-area__container text-area__container--indentation--normal">
         <div>
-          <span class="text-area__number text-area__number--type--${this.parameters.identifier}">${this.parameters.number()}</span>
+          <span class="text-area__number text-area__price text-area__price--size--big text-area__number--type--${this.parameters.identifier}">${this.parameters.number()}</span>
           <svg class="text-area__icon text-area__icon--size--small" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M23 8.28003C23 5.10003 20.41 2.53003 17.25 2.53003C14.96 2.53003 12.98 3.87003 12.05 5.82003C12.03 5.86003 11.97 5.86003 11.96 5.82003C11.04 3.88003 9.05 2.53003 6.76 2.53003C3.58 2.53003 1 5.10003 1 8.28003C1 8.95003 1.11 9.59003 1.33 10.19C1.57 10.87 1.94 11.5 2.4 12.03C2.6 12.26 2.81 12.47 3.04 12.67L11.82 21.39C11.87 21.44 11.94 21.47 12.02 21.47C12.1 21.47 12.16 21.45 12.22 21.39L21.33 12.34C21.92 11.75 22.39 11.03 22.67 10.23C22.88 9.62003 23 8.96003 23 8.28003Z" fill="#E3562F"/>
           </svg>
@@ -840,6 +787,7 @@ class CreateTextAreaBalance extends CreateItem {
     this.element.insertAdjacentHTML('beforeend', this.template);
 
     this.button = this.element.querySelector(`.text-area__button--type--${this.parameters.identifier}`);
+    this.price = this.element.querySelector('.text-area__price');
 
     if (typeof this.parameters.eventButton === 'object') {
       for (const event of this.parameters.eventButton) {
@@ -851,6 +799,8 @@ class CreateTextAreaBalance extends CreateItem {
       if (this.parameters.heart === false) {
         this.heart = this.element.querySelector('.text-area__icon');
         this.heart.remove();
+      } else {
+        this.price.classList.remove('text-area__price', 'text-area__price--size--big');
       }
     }
     if (typeof this.parameters.button === 'boolean') {
@@ -870,7 +820,7 @@ class CreateTextAreaBalanceHistory extends CreateItem {
     this.template = `
       <div class="text-area__container text-area__container--indentation--normal">
         <div>
-          <span class="text-area__number">${this.parameters.number}</span>
+          <span class="text-area__number text-area__price text-area__price--size--big">${this.parameters.number}</span>
           <svg class="text-area__icon text-area__icon--size--small" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M23 8.28003C23 5.10003 20.41 2.53003 17.25 2.53003C14.96 2.53003 12.98 3.87003 12.05 5.82003C12.03 5.86003 11.97 5.86003 11.96 5.82003C11.04 3.88003 9.05 2.53003 6.76 2.53003C3.58 2.53003 1 5.10003 1 8.28003C1 8.95003 1.11 9.59003 1.33 10.19C1.57 10.87 1.94 11.5 2.4 12.03C2.6 12.26 2.81 12.47 3.04 12.67L11.82 21.39C11.87 21.44 11.94 21.47 12.02 21.47C12.1 21.47 12.16 21.45 12.22 21.39L21.33 12.34C21.92 11.75 22.39 11.03 22.67 10.23C22.88 9.62003 23 8.96003 23 8.28003Z" fill="#E3562F"/>
           </svg>
@@ -883,10 +833,14 @@ class CreateTextAreaBalanceHistory extends CreateItem {
   create() {
     this.element.insertAdjacentHTML('beforeend', this.template);
 
+    this.price = this.element.querySelector('.text-area__price');
+
     if (typeof this.parameters.heart === 'boolean') {
       if (this.parameters.heart === false) {
         this.heart = this.element.querySelector('.text-area__icon');
         this.heart.remove();
+      } else {
+        this.price.classList.remove('text-area__price', 'text-area__price--size--big');
       }
     }
 
@@ -961,24 +915,7 @@ class CreateTextAreaOrderPayment extends CreateItem {
       setTimeout(() => {
         toggleModal.rendering(successText);
       }, successTextTimeout);
-    } /* else if (isEmptyObj(payInfo.successData) && payInfo.success) {
-      const textArea = document.querySelector('.text-area--type--balance');
-      const fifthPage = document.querySelector('.fifth-page');
-      textArea.classList.add('text-area--hide');
-      const access = document.createElement('div');
-      access.classList.add('text-area__title', 'text-area__title--position--center', 'text-area__title--indentation--big', 'text-area__title--size--big');
-      access.textContent = 'Оплата прошла успешно';
-      fifthPage.append(access);
-      basketArray.splice(0, basketArray.length);
-      localStorage.setItem('basket', JSON.stringify(basketArray));
-      counterBasket();
-      checkBasket();
-      setTimeout(() => {
-        closePages();
-      }, 3000);
-    } else {
-      toggleModal.rendering(payInfo.errors[0]);
-    } */
+    }
   }
 
   create() {

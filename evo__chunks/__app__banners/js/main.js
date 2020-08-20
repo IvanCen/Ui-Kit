@@ -34,6 +34,7 @@ function activeBanners(containerBanners, isSwipe, funcCheckBasket = () => {}) {
         if (!containerBanners.classList.contains('stop-action')) {
           setTimeout(() => {
             for (const [index, item] of Object.entries(basketArray)) {
+              console.log(item.id, Number(containerBanners.getAttribute('id')), item.id === Number(containerBanners.getAttribute('id')));
               if (item.id === Number(containerBanners.getAttribute('id'))) {
                 basketArray.splice(index, 1);
                 break;

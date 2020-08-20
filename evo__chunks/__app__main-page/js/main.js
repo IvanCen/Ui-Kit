@@ -194,9 +194,6 @@ const toggleModalPageStoresSearch = new ToggleModalPageStoresSearch({
 const toggleModalPageOrderSearch = new ToggleModalPageOrderSearch({
   classOpen: ['modal-page-search--opened'],
 });
-const toggleSubPageAccountEditUser = new ToggleSubPageAccountEditUser({
-  classOpen: ['subpage--opened'],
-});
 const togglePageStoresFilter = new TogglePageStoresFilter({
   classOpen: ['page--opened'],
 });
@@ -242,8 +239,8 @@ const toggleSubPageGiftCard = new ToggleSubPageGiftCard({
 const toggleSubPageApplication = new ToggleSubPageApplication({
   classOpen: ['subpage--opened'],
 });
-const toggleThirdPageEditUser = new ToggleThirdPageEditUser({
-  classOpen: ['third-page--opened'],
+const toggleSubPageEditUser = new ToggleSubPageEditUser({
+  classOpen: ['subpage--opened'],
 });
 const toggleThirdPageAddinsCard = new ToggleThirdPageAddinsCard({
   classOpen: ['third-page--opened--addins'],
@@ -414,6 +411,10 @@ if (/\?refer=alfa.*/.test(window.location.search)) {
   });
   setTimeout(() => {
     buttonMain.dispatchEvent(new Event('click')); // рендерит страницу
+    if (!isEmptyObj(userInfoObj)) {
+      toggleModalPageSignIn.rendering();
+      toggleModalPageSignIn.regSuccess({ success: true, isStartApp: true, name: userInfoObj.successData.name });
+    }
   }, 2000);
 
   setTimeout(() => {
@@ -422,10 +423,6 @@ if (/\?refer=alfa.*/.test(window.location.search)) {
       el.classList.remove('page-order--opened--bottom-bar');
     });
     setRandomPhraseTobBarMain();
-    if (!isEmptyObj(userInfoObj)) {
-      toggleModalPageSignIn.rendering();
-      toggleModalPageSignIn.regSuccess({ success: true, isStartApp: true, name: userInfoObj.successData.name });
-    }
   }, 3000);
 }());
 
@@ -439,4 +436,4 @@ setTimeout(() => {
 }, 5000);
 
 
-//api.sendDebugMessage(`${JSON.stringify(basketArray)}`);
+// api.sendDebugMessage(`${JSON.stringify(basketArray)}`);

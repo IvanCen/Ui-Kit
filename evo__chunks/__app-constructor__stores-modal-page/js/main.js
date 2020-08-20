@@ -12,12 +12,20 @@ class ToggleStores extends ToggleModalPageStores {
     let offsetY = 0;
     let offsetYOnStart = 0;
     let isOpen = false;
+    const isMapOpen = localStorage.getItem('isMapListOpen');
+
+    if (isMapOpen === 'false') {
+      offsetY = container.offsetHeight - 43;
+      offsetYOnStart = container.offsetHeight - 43;
+      container.style.transform = `translate3d(0,${offsetY}px,0)`;
+    }
 
     function mapAnimation(action) {
       if (offsetY > 50 && !isOpen && action === 'end') {
         offsetY = container.offsetHeight - 43;
         offsetYOnStart = container.offsetHeight - 43;
         isOpen = !isOpen;
+        localStorage.setItem('isMapListOpen', 'false');
       } else if (offsetY > (container.offsetHeight - 43) && action === 'move' && isOpen) {
         offsetY = container.offsetHeight - 43;
         offsetYOnStart = container.offsetHeight - 43;
@@ -25,6 +33,7 @@ class ToggleStores extends ToggleModalPageStores {
         offsetY = 0;
         offsetYOnStart = 0;
         isOpen = !isOpen;
+        localStorage.setItem('isMapListOpen', 'true');
       }
       if (offsetY < 0) {
         // тут действия, если тянется дальше максимума
@@ -37,7 +46,7 @@ class ToggleStores extends ToggleModalPageStores {
           offsetY = 0;// уменьшапем скорость смещения в 2 раза
         }
       }
-      //console.log(offsetY, dragStart, dragEnd, offsetYOnStart);
+      // console.log(offsetY, dragStart, dragEnd, offsetYOnStart);
 
       container.style.transform = `translate3d(0,${offsetY}px,0)`;
     }

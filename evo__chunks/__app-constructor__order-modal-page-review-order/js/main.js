@@ -95,7 +95,6 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
       selector: ['div'],
       style: ['card-item__container'],
       modifier: [
-        '--direction--column',
         '--indentation--top',
         '--indentation--bottom',
         '--type--review',

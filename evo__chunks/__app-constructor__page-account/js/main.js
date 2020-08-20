@@ -71,28 +71,6 @@ class TogglePageAccount extends TogglePage {
         ],
       },
     );
-    const accountButtonEditUserTangerin = new CreateButton(
-      {
-        selector: ['button'],
-        style: ['button'],
-        modifier: ['--size--small',
-          '--theme--tangerin-transparent',
-          '--indentation--left',
-          '--indentation--bottom',
-        ],
-        text: ['Профиль'],
-        events: [
-          {
-            type: 'click',
-            callback: () => {
-              stopAction(() => {
-                toggleSubPageAccountEditUser.rendering();
-              });
-            },
-          },
-        ],
-      },
-    );
     const accountButtonJoinTangerinTransparent = new CreateButton(
       {
         selector: ['button'],
@@ -119,6 +97,92 @@ class TogglePageAccount extends TogglePage {
         ],
       },
     );
+    const textAreaName = new CreateTextArea({
+      selector: ['div'],
+      style: ['text-area'],
+      identifier: ['name'],
+      title: userInfoObj.successData.name,
+      text: ['Ваше имя'],
+      isButton: true,
+      eventButton: [
+        {
+          type: 'click',
+          callback: () => {
+            stopAction(() => {
+              toggleSubPageEditUser.rendering({
+                titleTopBar: 'Редактирование имени',
+                inputLabel: 'Введите новое имя',
+                identifier: 'name',
+                inputType: 'text',
+              });
+            });
+          },
+        },
+      ],
+    });
+    let textAreaBirthday;
+    if (userInfoObj.successData.birthday !== '') {
+      textAreaBirthday = new CreateTextArea({
+        selector: ['div'],
+        style: ['text-area'],
+        title: userInfoObj.successData.birthday,
+        text: ['Ваш день рождения'],
+      });
+    } else {
+      textAreaBirthday = new CreateTextArea({
+        selector: ['div'],
+        style: ['text-area'],
+        title: userInfoObj.successData.birthday,
+        text: ['Ваш день рождения'],
+        isButton: true,
+        eventButton: [
+          {
+            type: 'click',
+            callback: () => {
+              stopAction(() => {
+                toggleSubPageEditUser.rendering({
+                  titleTopBar: 'Редактирование даты рождения',
+                  inputLabel: '',
+                  identifier: 'birthday',
+                  inputType: 'date',
+                });
+              });
+            },
+          },
+        ],
+      });
+    }
+
+    const textAreaPhone = new CreateTextArea({
+      selector: ['div'],
+      style: ['text-area'],
+      title: userInfoObj.successData.phone,
+      text: ['Ваш телефон'],
+    });
+    const textAreaEmail = new CreateTextArea({
+      selector: ['div'],
+      style: ['text-area'],
+      identifier: ['email'],
+      title: userInfoObj.successData.email,
+      text: ['Ваш email'],
+      isButton: true,
+      eventButton: [
+        {
+          type: 'click',
+          callback: () => {
+            stopAction(() => {
+              toggleSubPageEditUser.rendering({
+                titleTopBar: 'Редактирование email',
+                inputLabel: 'Введите новый email',
+                identifier: 'email',
+                inputType: 'email',
+                text: 'На ваш email будет отправлена ссылка, пройдите по ней, для подтверждения.',
+              });
+            });
+          },
+        },
+      ],
+    });
 
     const accountTextArea = new CreateTextAreaAccount({
       selector: ['div'],
@@ -133,9 +197,12 @@ class TogglePageAccount extends TogglePage {
       this.buttonContainer.append(accountButtonJoinTangerinTransparent.create());
     } else {
       this.buttonContainer.append(accountButtonLogoutTangerin.create());
-      this.buttonContainer.append(accountButtonEditUserTangerin.create());
     }
     this.page.append(this.buttonContainer);
+    this.page.append(textAreaName.create());
+    this.page.append(textAreaBirthday.create());
+    this.page.append(textAreaPhone.create());
+    this.page.append(textAreaEmail.create());
     this.page.append(accountTextArea.create());
 
     this.openPage();
