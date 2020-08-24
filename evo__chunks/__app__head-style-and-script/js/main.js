@@ -1475,6 +1475,8 @@ class ToggleModal {
     this.parameters = parameters;
 
     this.modal = document.querySelector('.modal');
+    this.mainPage = document.querySelector('.main-page');
+    this.body = document.querySelector('body');
 
     this.closePage = this.closePage.bind(this);
     this.deletePage = this.deletePage.bind(this);
@@ -1507,13 +1509,11 @@ class ToggleModal {
   }
 
   rendering(text) {
-    this.body = document.querySelector('body');
     this.body.append(createModal(text));
     this.openPage();
   }
 
   renderingReward(info) {
-    this.body = document.querySelector('body');
     this.body.append(createModalReward(info));
     this.openPage();
   }
@@ -1525,80 +1525,16 @@ class ToggleModal {
   }
 
   renderingPost(modalInfo) {
-    this.mainPage = document.querySelector('.main-page');
     this.mainPage.append(createModalPost(modalInfo));
   }
 
   renderingEmail() {
-    this.mainPage = document.querySelector('.main-page');
     this.mainPage.append(createModalEmail());
   }
-}
 
-/*
-const favourites = itemsArray;
-if (typeof userLastOrdersObj.successData.orders === 'object') {
-  for (const order of Object.values(userLastOrdersObj.successData.orders)) {
-    if (typeof order === 'object') {
-      for (const el of Object.values(order.items)) {
-        /!**
-         * Код для определения находится ли товар в избранном
-         *!/
-
-        /!**
-         * Делаем переменную для товара, которую мы заполним аналогично товару в избранном, чтобы их можно было сравнить
-         *!/
-        let itemForCompare = {
-          id: el.itemId,
-          modifiers: [], // нужно раскомментировать, если модификаторы, хотя бы пустые обязательны в избранном
-        };
-        /!**
-         * Заполняем данные о модификаторах, если они есть
-         *!/
-        if (typeof el.modifiers === 'object') {
-          const modifierArray = [];
-          for (const modifierEl of Object.values(el.modifiers)) {
-            modifierArray.push({
-              id: modifierEl.modificationId,
-              count: modifierEl.count,
-            });
-          }
-          itemForCompare.modifiers = modifierArray;
-        }
-        // console.log(itemForCompare);
-        /!**
-         * Ставим флаг нахождения комбинации товара и модификаторов в false
-         *!/
-        let favouriteItemFlag = false;
-
-        /!**
-         * Преобразуем объект товара из заказа в строку, чтобы можно было легко сравнить
-         *!/
-        itemForCompare = JSON.stringify(itemForCompare);
-        /!**
-         * Проходим массив избранного
-         * to do: стоит вытащить преобразование массива избранного в строки(в отдельный массив) чуть выше начала перебора заказов в истории, тогда нам не придется каждый раз преобразовывать объекты избранного в строки, достаточно будет пройтись по новому мессиву сравнить с их с товаром
-         *!/
-        for (let itemOfFavourites of Object.values(favourites)) {
-          /!**
-           * Преобразуем объекты комбинаций товара и модификаторов избранного в строку, чтобы можно было сравнивать
-           *!/
-          itemOfFavourites = JSON.stringify(itemOfFavourites);
-          // console.log(itemForCompare, itemOfFavourites);
-          /!**
-           * Сравниваем строки,
-           * если совпадение найдено меняем статус в флаг
-           * и перестаем перебирать комбинации избранного
-           *!/
-          if (itemForCompare === itemOfFavourites) {
-            favouriteItemFlag = true;
-
-            console.log(order, 'find!');
-            break;
-          }
-        }
-      }
-    }
+  renderingPromoCodeClose(callback) {
+    this.mainPage.append(createModalPromoCodeClose(callback));
+    this.openPage();
   }
-} */
+}
 

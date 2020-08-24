@@ -30,7 +30,7 @@
 }
 
 @mixin checkbox-textslide-appearance(
-  $checkbox-textslide-width: 300px,
+  $checkbox-textslide-width: 290px,
   $checkbox-textslide-height: 32px,
   $checkbox-textslide-border-radius: 50px,
   $checkbox-textslide-offset: 0px,
@@ -96,7 +96,7 @@
           $checkbox-textslide-switch-font-size: 12px,);
 
   @media (max-width: 374px) {
-    max-width: 300px;
+    max-width: 290px;
     @include checkbox-textslide-appearance();
   }
 

@@ -500,8 +500,9 @@ class CreateTopBarReviewOrder extends CreateItem {
     this.selectContainer = this.element.querySelector('.top-bar__select-container');
     this.iconClose = this.element.querySelector('.top-bar__button--type--close');
 
-    this.iconClose.addEventListener('click', () => window.history.back());
-
+    if (this.parameters.isClose) {
+      this.iconClose.addEventListener('click', () => window.history.back());
+    }
 
     if (typeof this.parameters.eventStores === 'object') {
       for (const event of this.parameters.eventStores) {

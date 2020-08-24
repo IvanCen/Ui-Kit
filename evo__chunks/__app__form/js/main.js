@@ -442,7 +442,7 @@ class CreateFormPromoCode extends CreateItem {
     this.parameters = parameters;
     this.element = document.createElement(this.parameters.selector);
     this.template = `
-          <button class="accordion">Есть промокод?
+          <button class="accordion accordion--type--promo-code">Есть промокод?
             <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-bottom.svg]]" alt="" class="accordion__icon-arrow">
           </button>
           <div class="accordion__content">
@@ -458,8 +458,8 @@ class CreateFormPromoCode extends CreateItem {
               </label>
             </div>
             <ul class="form__input-requirements">
-                  <li class="form__input-requirement form__input-requirement--type--promo-code"></li>
-                </ul>
+              <li class="form__input-requirement form__input-requirement--type--promo-code"></li>
+            </ul>
             <button class="button button--indentation--top button--theme--tangerin button--size--small button--type--promo-code" type="submit">Подтвердить</button>
             </div>
           </div>
@@ -476,27 +476,30 @@ class CreateFormPromoCode extends CreateItem {
 
       if (info.success) {
         const cardItemContainer = document.querySelector('.card-item__container--type--review');
-        const accordionButton = document.querySelector('.accordion');
+        const accordionButton = document.querySelector('.accordion--type--promo-code');
+        console.log(accordionButton);
 
         error.textContent = '';
         error.classList.add('form__input-requirement--hide');
 
-
         toggleModal.rendering(info.successData.promoCode.description);
         const reviewCardItem = new CreateCardItemReviewOrder({
-          style: ['card-item'],
+          style: ['banner__container'],
           modifier: [
-            '--direction--row',
+            '--type--swipe',
             '--border--bottom',
           ],
         });
         info.successData.promoCode.presentItems.forEach((item) => {
-          for (const el of Object.values(dataProductApi.successData.items)) {
-            if (item.id === el.id) {
-              cardItemContainer.append(reviewCardItem.create(item));
-            }
+          if (typeof dataProductApi.successData.items[item.id] !== 'undefined') {
+            cardItemContainer.append(reviewCardItem.create(item));
           }
         });
+        const banners = document.querySelectorAll('.banner__container');
+        banners.forEach((banner) => {
+          activeBanners(banner, true);
+        });
+        promoCode = info.successData.promoCode.name;
         accordionButton.click();
       } else {
         error.textContent = info.errors[0];

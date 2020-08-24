@@ -968,12 +968,17 @@ class CreateTextAreaOrderPayment extends CreateItem {
     this.button.addEventListener('click', () => {
       [...this.radioInput].forEach((item) => {
         if (item.checked) {
+          const checkboxSelect = document.querySelector('.checkbox-textslide__input');
+          /*
+          if (checkboxSelect.checked) { тут если выбрано с собой
+
+          }*/
           api.payOrderApi(item.id, orderInfo.successData, this.resPayOrder);
         }
       });
     });
 
-    if (orderComment !== undefined) {
+    if (orderComment !== undefined && orderComment !== '') {
       const textAreaComment = document.createElement('div');
       textAreaComment.classList.add('text-area__container', 'text-area__container--indentation--normal');
       const templateComment = `
@@ -984,6 +989,19 @@ class CreateTextAreaOrderPayment extends CreateItem {
       `;
       textAreaComment.insertAdjacentHTML('beforeend', templateComment);
       this.button.before(textAreaComment);
+    }
+
+    if (promoCode !== undefined && promoCode !== '') {
+      const textAreaPromoCode = document.createElement('div');
+      textAreaPromoCode.classList.add('text-area__container', 'text-area__container--indentation--normal');
+      const templateComment = `
+        <div>
+          <p class="text-area__text text-area__text--theme--shadow">Ваш промокод:</p>
+          <span class="text-area__title text-area__title--size--normal">${promoCode}</span>
+        </div>
+      `;
+      textAreaPromoCode.insertAdjacentHTML('beforeend', templateComment);
+      this.button.before(textAreaPromoCode);
     }
 
     return super.create(this.element);

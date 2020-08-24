@@ -300,26 +300,10 @@ class Api {
       });
   }
 
-  makeOrderApi(phone, orderArrItems, shopId, orderComment, orderFriendData, func) {
-    let comment;
-    let replaceName;
-    let replacePhone;
-    const { friendName, friendPhone } = orderFriendData;
+  makeOrderApi(phone, orderArrItems, shopId, orderComment = '', orderFriendData, promoCode = '', func) {
+    const { friendName = '', friendPhone = '' } = orderFriendData;
 
-    if (friendName !== '' && friendPhone !== '') {
-      replaceName = friendName;
-      replacePhone = friendPhone;
-    } else {
-      replaceName = '';
-      replacePhone = '';
-    }
-    if (orderComment !== '') {
-      comment = orderComment;
-    } else {
-      comment = '';
-    }
-    console.log(comment);
-    console.log(phone, orderArrItems, shopId, orderComment, replaceName, replacePhone, func);
+    console.log(phone, orderArrItems, shopId, orderComment, friendName, friendPhone, func);
     let store = JSON.parse(localStorage.getItem('userStore'));
     store = store.store;
     const request = {
@@ -327,10 +311,10 @@ class Api {
       user: phone,
       cart: orderArrItems,
       shopId: store.id,
-      promoCode: '',
-      comment,
-      replaceName,
-      replacePhone,
+      promoCode,
+      comment: orderComment,
+      replaceName: friendName,
+      replacePhone: friendPhone,
       outputFormat: 'json',
     };
 

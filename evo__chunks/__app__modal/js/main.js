@@ -135,3 +135,27 @@ function createModalEmail() {
 
   return element;
 }
+
+function createModalPromoCodeClose(callback) {
+  const element = document.createElement('div');
+  element.classList.add('modal');
+  const template = `
+    <div class="modal__content-container modal__content-container--visible">
+    Вы уверены, что хотите покинуть страницу оплаты? Введенный промокод, возможно, нельзя будет использовать повторно.
+      <div class="modal__button-container">
+        <button class="button button--size--small button--theme--tangerin modal__button modal__button-close modal__button--indentation--top">Закрыть страницу</button>
+        <button class="button button--size--small button--theme--tangerin modal__button modal__button-accept modal__button--indentation--top">Остаться</button>
+      </div>
+    </div>`;
+
+  element.innerHTML = template;
+
+  const buttonClose = element.querySelector('.modal__button-close');
+  buttonClose.addEventListener('click', () => {
+    callback();
+    toggleModal.closePage();
+    toggleModal.deletePage();
+  });
+
+  return element;
+}

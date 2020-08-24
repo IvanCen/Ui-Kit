@@ -17,7 +17,7 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
           const { phone } = userInfoObj.successData;
           const { id } = userStore.store;
 
-          api.makeOrderApi(phone, basketArray, id, orderComment, orderFriendData, this.renderPayOrderPage);
+          api.makeOrderApi(phone, basketArray, id, orderComment, orderFriendData, promoCode, this.renderPayOrderPage);
         } else {
           toggleModal.rendering(info.successData.timeStatePickUp);
         }
@@ -43,7 +43,6 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
   }
 
   renderPayOrderPage(info) {
-    console.log(info);
     if (info.success) {
       toggleModalPagePaymentOrder.rendering(info);
     } else {
@@ -69,6 +68,7 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
           },
         },
       ],
+      isClose: true,
       eventStores: [
         {
           type: 'click',

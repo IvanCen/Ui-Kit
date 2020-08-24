@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="demo.xleb.ru" autoUploadExternalChanges="true">
+  <component name="PublishConfigData" autoUpload="Always" serverName="test-app.xleb.ru" autoUploadExternalChanges="true">
     <serverData>
       <paths name="demo.xleb.ru">
         <serverdata>
           <mappings>
             <mapping deploy="/home/admin/web/demo.xleb.ru/public_html/assets/chunks" local="$PROJECT_DIR$/evo__chunks" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="test-app.xleb.ru">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/" local="$PROJECT_DIR$/evo__chunks" web="/" />
           </mappings>
         </serverdata>
       </paths>
