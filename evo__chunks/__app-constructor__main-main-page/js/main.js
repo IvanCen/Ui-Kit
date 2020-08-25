@@ -115,7 +115,7 @@ class ToggleMain extends ToggleMainPage {
           loader.remove();
         }
       }, 1000);
-      if (!isEmptyObj(userDataObj)) {
+      if (!isEmptyObj(userInfoObj)) {
         rateLastOrder();
       }
     }

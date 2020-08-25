@@ -51,7 +51,6 @@ class TogglePageBalanceHistory extends TogglePage {
     this.parameters.userLog.successData.forEach((item) => {
       this.сardItemsContainer.append(сardItem.create(item, option));
     });
-    this.сardItemsContainer.append(сardItem.create({ timestamp: '2020-08-06 11:26:36', amount: 100 }, option));
 
     this.openPage();
   }
