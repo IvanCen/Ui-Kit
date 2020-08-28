@@ -910,8 +910,8 @@ class CreateTextAreaOrderPayment extends CreateItem {
         basketArray.pop();
       }
       localStorage.setItem('basket', JSON.stringify(basketArray));
-      counterBasket();
-      checkBasket();
+      emitter.emit('event:counter-changed');
+      
       setTimeout(() => {
         toggleModal.rendering(successText);
       }, successTextTimeout);
@@ -927,6 +927,10 @@ class CreateTextAreaOrderPayment extends CreateItem {
           <div class="radio">
             <input type="radio" class="radio__input" id="creditCard" name="radio"/>
             <label class="radio__label radio__label--default radio__label--available" for="creditCard">Банковская карта</label>
+          </div>
+          <div class="radio">
+            <input type="radio" class="radio__input" id="applePay" name="radio"/>
+            <label class="radio__label radio__label--disable radio__label--default" for="applePay">Apple Pay</label>
           </div>
           <div class="radio">
             <input type="radio" class="radio__input" id="balance" name="radio"/>
@@ -972,7 +976,7 @@ class CreateTextAreaOrderPayment extends CreateItem {
           /*
           if (checkboxSelect.checked) { тут если выбрано с собой
 
-          }*/
+          } */
           api.payOrderApi(item.id, orderInfo.successData, this.resPayOrder);
         }
       });
@@ -1002,6 +1006,11 @@ class CreateTextAreaOrderPayment extends CreateItem {
       `;
       textAreaPromoCode.insertAdjacentHTML('beforeend', templateComment);
       this.button.before(textAreaPromoCode);
+    }
+
+    if (!isIos) {
+      const applePayRadio = this.element.querySelector('#applePay').closest('.radio');
+      applePayRadio.remove();
     }
 
     return super.create(this.element);

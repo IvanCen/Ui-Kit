@@ -55,10 +55,7 @@ class CreateBottomBarOrder extends CreateItem {
       }
     });
 
-    this.counter.textContent = basketArray.length;
-    if (basketArray.length > 0) {
-      this.basketIcon.classList.add('bottom-bar__icon--full');
-    }
+    emitter.emit('event:counter-changed');
 
     return super.create(this.element);
   }

@@ -176,6 +176,14 @@
       @extend %style-4;
       color: $white;
     }
+
+    &--have-litle {
+      position: absolute;
+      top: 74px;
+      left: -92px;
+      transform: rotate(-46deg);
+      color: $black;
+    }
   }
 
 
@@ -193,8 +201,22 @@
     right: 0;
     width: 0;
     height: 0;
-    border-bottom: 100px solid $alizarinCrimson;
-    border-left: 100px solid transparent;
+
+    &--size--big {
+      border-left: 125px solid transparent;
+    }
+
+    &--size--normal {
+      border-left: 100px solid transparent;
+    }
+
+    &--theme--sun {
+      border-bottom: 125px solid $sun;
+    }
+
+    &--theme--blood {
+      border-bottom: 100px solid $alizarinCrimson;
+    }
 
     &--hide {
       display: none;

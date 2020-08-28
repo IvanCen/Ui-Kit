@@ -181,8 +181,8 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
           localStorage.setItem('basket', JSON.stringify(basketArray));
         }
       });
-      checkBasket();
-      counterBasket();
+      
+      emitter.emit('event:counter-changed');
       const banners = document.querySelectorAll('.banner__container');
       banners.forEach((banner) => {
         activeBanners(banner, true);

@@ -43,8 +43,8 @@ function activeBanners(containerBanners, isSwipe, funcCheckBasket = () => {}) {
             counterTopBar.textContent = basketArray.length;
             counterBottomBar.textContent = basketArray.length;
             localStorage.setItem('basket', JSON.stringify(basketArray));
-            counterBasket();
-            checkBasket();
+            emitter.emit('event:counter-changed');
+
             checkEmptyBasket();
             containerBanners.remove();
           }, 300);
