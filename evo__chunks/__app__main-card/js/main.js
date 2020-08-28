@@ -221,7 +221,7 @@ class CreateOrderProductMainCard extends CreateItem {
         <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-close.svg]]" alt="" class="main-card__icon main-card__icon-close">
         <div class="main-card__content-img"></div>
         <h2 class="main-card__content-title main-card__content-title">${this.parameters.title}</h2>
-        <div class="main-card__figure main-card__figure--hide"><span class="main-card__info main-card__info--out-of">Закончилось</span></div>
+        <div class="main-card__figure main-card__figure--theme--blood main-card__figure--size--normal main-card__figure--hide"><span class="main-card__info main-card__info--out-of">Закончилось</span></div>
       </div>`;
     this.element.insertAdjacentHTML('beforeend', this.template);
     this.iconClose = this.element.querySelector('.main-card__icon-close');

@@ -3,7 +3,7 @@ mainPage.classList.add('main-page--loaded');
 const body = document.querySelector('body');
 
 window.onerror = (message, url, lineNo) => {
-  api.sendDebugMessage(`App-main. Error: ${message} Line Number: ${lineNo}`);
+  api.sendDebugMessage(`App-test. Error: ${message} Line Number: ${lineNo}`);
 };
 
 const api = new Api();
@@ -359,8 +359,8 @@ const mainPageFooter = new CreateFooter({
         toggleOrderHitsContent.rendering();
         toggleOrderHistoryContent.rendering();
         closePages();
-        checkBasket();
-        counterBasket();
+
+        emitter.emit('event:counter-changed');
       },
     },
   ],
@@ -392,7 +392,7 @@ const mainPageFooter = new CreateFooter({
 
 mainPage.after(mainPageFooter.create());
 switchActiveFooter();
-checkBasket();
+emitter.emit('event:counter-changed');
 
 if (/\?refer=alfa.*/.test(window.location.search)) {
   const win = window.open('about:blank', '_self');

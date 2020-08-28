@@ -8,7 +8,6 @@ class Api {
     };
   }
 
-
   productApi() {
     const request = {
       method: 'get-catalog',

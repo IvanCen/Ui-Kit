@@ -91,7 +91,7 @@ class ToggleOrder extends ToggleMainPage {
     this.mainPageContent.prepend(orderTopBar.create());
     const footer = document.querySelector('.footer');
     footer.before(orderBottomBar.create());
-    counterBasket();
+    emitter.emit('event:counter-changed');
     const footerButtonOrder = document.querySelector('.footer__button--type--order');
     activeFooter(footerButtonOrder);
     const topBarTabs = document.querySelectorAll('.top-bar__tab');

@@ -328,7 +328,7 @@ class CreateCardItemFavAndHisOrder extends CreateItem {
       }
       basketArray.push({ id: productInfo.id, modifiers: modifiersArr });
       localStorage.setItem('basket', JSON.stringify(basketArray));
-      counterBasket();
+      emitter.emit('event:counter-changed');
       if (!canUseWebP()) {
         loadImg(dataProductApi.successData.items[productInfo.id], basketPopupIconImg, 'jpg');
       } else {
@@ -350,7 +350,7 @@ class CreateCardItemFavAndHisOrder extends CreateItem {
           iconAdd.classList.remove('card-item__icon--theme--grass');
         }, 1000);
       }
-      checkBasket();
+      
     });
 
     return super.create(this.element);
@@ -399,7 +399,7 @@ class CreateCardItemReviewOrder extends CreateItem {
                        class="card-item__icon card-item__icon--type--plus">
                 </button>
               </div>
-              <div class="main-card__figure main-card__figure--hide"><span class="main-card__info main-card__info--out-of">Закончилось</span></div>
+              <div class="main-card__figure main-card__figure--theme--blood main-card__figure--size--normal main-card__figure--hide"><span class="main-card__info main-card__info--out-of">Закончилось</span></div>
             </div>
           </div>
           <div class="card-item__zone card-item__zone--type--delete banners__banner">
@@ -493,8 +493,8 @@ class CreateCardItemReviewOrder extends CreateItem {
             }
           }
           localStorage.setItem('basket', JSON.stringify(basketArray));
-          counterBasket();
-          checkBasket();
+          emitter.emit('event:counter-changed');
+          
           checkEmptyBasket();
           setTimeout(() => el.remove(), 200);
           this.classList.add('stop-action');
@@ -508,7 +508,7 @@ class CreateCardItemReviewOrder extends CreateItem {
       counterBottomBar.textContent = basketArray.length;
       basketArray.push(productInfo);
       localStorage.setItem('basket', JSON.stringify(basketArray));
-      counterBasket();
+      emitter.emit('event:counter-changed');
       const cardItemContainer = document.querySelector('.card-item__container--type--review');
       cardItemContainer.append(this.create(productInfo));
       activeBanners(this.element, true, checkEmptyBasket);
@@ -647,7 +647,7 @@ class CreateCardItemHistory extends CreateItem {
         });
         basketArray.push({ id: item.itemId, modifiers: modifiersArr });
         localStorage.setItem('basket', JSON.stringify(basketArray));
-        counterBasket();
+        emitter.emit('event:counter-changed');
         if (!canUseWebP()) {
           loadImg(dataProductApi.successData.items[item.itemId], basketPopupIconImg, 'jpg');
         } else {
@@ -658,7 +658,7 @@ class CreateCardItemHistory extends CreateItem {
           basketPopupIcon.classList.remove('bottom-bar__icon-popup--open');
           basketPopupIconImg.style.backgroundImage = '';
         }, 3000);
-        checkBasket();
+        
       });
 
 
@@ -712,8 +712,8 @@ class CreateCardItemHistory extends CreateItem {
       const wraper = this.closest('.history-order');
       wraper.classList.add('animation-pulse');
       setTimeout(() => wraper.classList.remove('animation-pulse'), 1000);
-      counterBasket();
-      checkBasket();
+      emitter.emit('event:counter-changed');
+      
     });
 
     return this.elementWraper;
