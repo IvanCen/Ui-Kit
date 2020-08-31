@@ -34,6 +34,7 @@ function activeBanners(containerBanners, isSwipe, funcCheckBasket = () => {}) {
         if (!containerBanners.classList.contains('stop-action')) {
           setTimeout(() => {
             for (const [index, item] of Object.entries(basketArray)) {
+              console.log(item.id, Number(containerBanners.getAttribute('id')), item.id === Number(containerBanners.getAttribute('id')));
               if (item.id === Number(containerBanners.getAttribute('id'))) {
                 basketArray.splice(index, 1);
                 break;
@@ -42,8 +43,8 @@ function activeBanners(containerBanners, isSwipe, funcCheckBasket = () => {}) {
             counterTopBar.textContent = basketArray.length;
             counterBottomBar.textContent = basketArray.length;
             localStorage.setItem('basket', JSON.stringify(basketArray));
-            counterBasket();
-            checkBasket();
+            emitter.emit('event:counter-changed');
+
             checkEmptyBasket();
             containerBanners.remove();
           }, 300);

@@ -5,6 +5,14 @@
   &--indentation--bottom {
     margin-bottom: 100px;
   }
+
+  &--indentation--top {
+    padding-top: 80px;
+
+    &--ios {
+      padding-top: 120px;
+    }
+  }
 }
 
 .text-area {
@@ -89,6 +97,16 @@
       transition: all 0.1s ease-in;
     }
 
+    &--type--addins {
+      flex-direction: column;
+      overflow-x: hidden;
+      overflow-y: scroll;
+
+      &--ios {
+        margin-top: 35px;
+      }
+    }
+
     &--open {
       overflow: visible;
       max-height: 100%;
@@ -116,6 +134,7 @@
 
     &--type--bold {
       font-weight: bold;
+      text-decoration: none;
     }
 
     &--indentation--bottom {
@@ -351,8 +370,8 @@
       height: 45px;
       background-color: $white;
       margin: 20px 0;
-      border-bottom: 1px solid $gainsboroGray;
       border-top: 1px solid $gainsboroGray;
+      border-bottom: 1px solid $gainsboroGray;
     }
   }
 
@@ -389,7 +408,7 @@
         background-size: cover;
         position: absolute;
         right: -13px;
-        top: 4px;
+        top: 5px;
         width: 11px;
         height: 11px;
       }

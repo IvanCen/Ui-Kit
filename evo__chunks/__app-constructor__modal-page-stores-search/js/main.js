@@ -7,32 +7,35 @@ class ToggleModalPageStoresSearch extends ToggleModalPageSearch {
 
   chooseShop(page) {
     const storesButtonBottomBar = document.querySelector('.bottom-bar__select-item');
-    const storesButtonTopBar = document.querySelector('.top-bar__select-item--type--stores');
+    const modalPageReview = document.querySelector('.modal-page-order-review');
     const radioInputs = page.querySelectorAll('.radio__input');
     const mapItem = page.querySelectorAll('.map__item');
+    console.log(page.querySelectorAll('.radio__input'));
+    [...radioInputs].forEach((radio) => {
+      const radioId = radio.getAttribute('data-id');
+      if (!isEmptyObj(userStore) && `0${userStore.store.id}` === radioId) {
+        radio.checked = true;
+        console.log('checked');
+      }
+    });
     [...mapItem].forEach((input) => {
       input.addEventListener('click', () => {
         [...radioInputs].forEach((item) => {
+          const inputId = item.getAttribute('data-id');
+
           if (item.checked) {
-            const inputId = item.getAttribute('data-id');
             storesDataObj.successData.forEach((el) => {
               if (el.id === Number(inputId)) {
                 api.getShopOutOfStockItemsAndModifiers(el.id);
                 userStore.store = el;
                 localStorage.setItem('userStore', JSON.stringify(userStore));
+                if (modalPageReview) {
+                  toggleModalPageReviewOrder.deletePage();
+                  setTimeout(() => toggleModalPageReviewOrder.rendering(), 100);
+                }
                 if (storesButtonBottomBar) {
                   storesButtonBottomBar.textContent = el.shortTitle;
                 }
-                if (storesButtonTopBar) {
-                  storesButtonTopBar.textContent = el.shortTitle;
-                }
-                /* const mapRadioInput = document.querySelectorAll('.map__radio-input');
-                [...mapRadioInput].forEach((radio) => {
-                  console.log(radio.id, item.id)
-                  if (radio.id === item.id) {
-                    radio.checked = true;
-                  }
-                }); */
               }
             });
           }
@@ -47,7 +50,7 @@ class ToggleModalPageStoresSearch extends ToggleModalPageSearch {
     this.mapItemsContainer = this.modalPageSearch.querySelector('.map__container--type--search');
     this.searchString = this.inputSearch.value.toLowerCase().trim();
     let find = 0;
-
+    const classIdentifier = 'radio__input-search';
     if (this.mapItemsContainer !== null) {
       if (this.mapItemsContainer.childNodes.length !== 0) {
         this.arrHtml = Array.from(this.mapItemsContainer.children);
@@ -57,7 +60,8 @@ class ToggleModalPageStoresSearch extends ToggleModalPageSearch {
     for (const store of storesDataObj.successData) {
       if (store.longTitle.toLowerCase().indexOf(this.searchString) > -1) {
         find++;
-        this.mapItemsContainer.append(this.storesMapItem.create(store, undefined, undefined, 0));
+        this.mapItemsContainer.append(this.storesMapItem.create(store, undefined, undefined, 0, this.modalPageSearch));
+        console.log(this.modalPageSearch);
       }
     }
   }
@@ -68,8 +72,14 @@ class ToggleModalPageStoresSearch extends ToggleModalPageSearch {
       selector: ['div'],
       style: ['top-bar-search'],
       eventCloseIcon: [
-        { type: 'click', callback: this.closePage },
-        { type: 'click', callback: this.deletePage },
+        {
+          type: 'click',
+          callback: () => {
+            this.closePage();
+            this.deletePage();
+            toggleStores.chooseShop(document.querySelector('.modal-page__content'));
+          },
+        },
       ],
     });
     const mapItemStoresSearchWraper = new CreateMapItemStoresSearchWraper({

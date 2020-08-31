@@ -48,11 +48,14 @@ class CreateBottomBarOrder extends CreateItem {
       }
     });
 
+    basketArray.forEach((item, index) => {
+      if (typeof dataProductApi.successData.items[Number(item.id)] === 'undefined' || isEmptyObj(item)) {
+        basketArray.splice(index, 1);
+        localStorage.setItem('basket', JSON.stringify(basketArray));
+      }
+    });
 
-    this.counter.textContent = basketArray.length.toString();
-    if (basketArray.length > 0) {
-      this.basketIcon.classList.add('bottom-bar__icon--full');
-    }
+    emitter.emit('event:counter-changed');
 
     return super.create(this.element);
   }

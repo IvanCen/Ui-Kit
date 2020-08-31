@@ -28,15 +28,92 @@ function createTopBarIos() {
   return el;
 }
 
+function getNowDay() {
+  const date = new Date();
+  const weekday = date.getDay();
+  const daysArr = [
+    {
+      ru: 'Воскресенье',
+      en: 'sunday',
+    },
+    {
+      ru: 'Понедельник',
+      en: 'monday',
+    },
+    {
+      ru: 'Вторник',
+      en: 'tuesday',
+    }, {
+      ru: 'Среда',
+      en: 'wednesday',
+    },
+    {
+      ru: 'Четверг',
+      en: 'thursday',
+    },
+    {
+      ru: 'Пятница',
+      en: 'friday',
+    },
+    {
+      ru: 'Суббота',
+      en: 'saturday',
+    }];
+  return daysArr[weekday];
+}
+
 const transformationUtcToLocalDate = (data) => {
-  return new Date(`${data} UTC`).toLocaleString('ru', {
+   const changeToLocalDate = new Date(`${data.replace(/-/g, '/')} UTC`).toLocaleString('ru', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
     hour: 'numeric',
     minute: 'numeric',
   }).replace('.', '');
+
+  return changeToLocalDate
 };
+
+function counterBasket() {
+  const counter = basketArray.length
+  const counterEl = document.querySelector('.bottom-bar__counter');
+  const basketIcon = document.querySelector('.bottom-bar__icon--type--basket');
+  const topBarCounters = document.querySelectorAll('.top-bar__all-counter-order');
+  const iconDot = document.querySelector('.footer__icon-dot');
+
+  if (counter > 0) {
+    iconDot.classList.add('footer__icon-dot--show');
+  } else  {
+    iconDot.classList.remove('footer__icon-dot--show');
+  }
+
+  if(counterEl) {
+    counterEl.textContent = counter
+
+    if (counter > 0) {
+      basketIcon.classList.add('bottom-bar__icon--full');
+
+    } else  {
+      basketIcon.classList.remove('bottom-bar__icon--full');
+    }
+
+    if (counter === 0) {
+      counterEl.style.right = '22px';
+    } else if (counter >= 20) {
+      counterEl.style.right = '18px';
+    } else if (counter >= 10) {
+      counterEl.style.right = '19px';
+    } else {
+      counterEl.style.right = '23px';
+    }
+
+  }
+
+  if(topBarCounters) {
+    [...topBarCounters].forEach(el => el.textContent = counter)
+  }
+
+}
 
 function switchActive(nodeList, activeClass) {
   [...nodeList].forEach((item) => {
@@ -93,7 +170,7 @@ function addProductToBasket(productInfo) {
     }
     basketArray.push({ id: productInfo.id, modifiers: modifiersArr });
     localStorage.setItem('basket', JSON.stringify(basketArray));
-    counterBasket();
+    emitter.emit('event:counter-changed');
   }
   if (!canUseWebP()) {
     loadImg(productInfo, basketPopupIconImg, 'jpg');
@@ -105,7 +182,8 @@ function addProductToBasket(productInfo) {
     basketPopupIcon.classList.remove('bottom-bar__icon-popup--open');
     basketPopupIconImg.style.backgroundImage = '';
   }, 3000);
-  checkBasket();
+
+  emitter.emit('event:counter-changed', { counter: basketArray.length });
 }
 
 function checkMessageInbox() {
@@ -146,6 +224,12 @@ function closePages() {
   toggleModalPageSearch.deletePage()
 }
 
+function closeStores() {
+  toggleModalPage.closePage();
+  toggleModalPage.deletePage();
+  window.history.back()
+}
+
 function stopAction(func) {
   const body = document.querySelector('body');
   if (!body.classList.contains('stop-action')) {
@@ -177,15 +261,6 @@ function isEmptyObj(obj) {
     return false;
   }
   return true;
-}
-
-function checkBasket() {
-  const iconDot = document.querySelector('.footer__icon-dot');
-  if (basketArray.length !== 0) {
-    iconDot.classList.add('footer__icon-dot--show');
-  } else {
-    iconDot.classList.remove('footer__icon-dot--show');
-  }
 }
 
 function canUseWebP() {
@@ -422,28 +497,6 @@ function checkEmptyBasket() {
 function clearFriendDataInfo() {
   delete orderFriendData.friendName;
   delete orderFriendData.friendPhone;
-}
-
-function counterBasket() {
-  const basket = document.querySelector('.bottom-bar__icon--type--basket');
-  const counterIcon = document.querySelector('.bottom-bar__counter');
-  basket.classList.add('bottom-bar__icon--full');
-
-  if (basketArray.length === 0) {
-    counterIcon.textContent = '0';
-    basket.classList.remove('bottom-bar__icon--full');
-  } else {
-    counterIcon.textContent = basketArray.length;
-  }
-  if (basketArray.length === 0) {
-    counterIcon.style.right = '22px';
-  } else if (basketArray.length >= 20) {
-    counterIcon.style.right = '18px';
-  } else if (basketArray.length >= 10) {
-    counterIcon.style.right = '19px';
-  } else {
-    counterIcon.style.right = '23px';
-  }
 }
 
 class CreateItem {
@@ -1303,7 +1356,9 @@ class ToggleModalPageSignInRoot {
   openPage() {
     this.modalPageSignIn = document.querySelector('.modal-page-sign-in');
     setTimeout(() => {
-      this.modalPageSignIn.classList.add(this.classOpen);
+      if(this.modalPageSignIn) {
+        this.modalPageSignIn.classList.add(this.classOpen);
+      }
       this.body.classList.add('body');
     }, 100);
     history.pushState({ state: '#modal-page-sign-in' }, null, '#modal-page-sign-in');
@@ -1427,6 +1482,8 @@ class ToggleModal {
     this.parameters = parameters;
 
     this.modal = document.querySelector('.modal');
+    this.mainPage = document.querySelector('.main-page');
+    this.body = document.querySelector('body');
 
     this.closePage = this.closePage.bind(this);
     this.deletePage = this.deletePage.bind(this);
@@ -1459,13 +1516,11 @@ class ToggleModal {
   }
 
   rendering(text) {
-    this.body = document.querySelector('body');
     this.body.append(createModal(text));
     this.openPage();
   }
 
   renderingReward(info) {
-    this.body = document.querySelector('body');
     this.body.append(createModalReward(info));
     this.openPage();
   }
@@ -1477,80 +1532,18 @@ class ToggleModal {
   }
 
   renderingPost(modalInfo) {
-    this.mainPage = document.querySelector('.main-page');
     this.mainPage.append(createModalPost(modalInfo));
   }
 
   renderingEmail() {
-    this.mainPage = document.querySelector('.main-page');
     this.mainPage.append(createModalEmail());
+  }
+
+  renderingPromoCodeClose(callback) {
+    this.mainPage.append(createModalPromoCodeClose(callback));
+    this.openPage();
   }
 }
 
-/*
-const favourites = itemsArray;
-if (typeof userLastOrdersObj.successData.orders === 'object') {
-  for (const order of Object.values(userLastOrdersObj.successData.orders)) {
-    if (typeof order === 'object') {
-      for (const el of Object.values(order.items)) {
-        /!**
-         * Код для определения находится ли товар в избранном
-         *!/
 
-        /!**
-         * Делаем переменную для товара, которую мы заполним аналогично товару в избранном, чтобы их можно было сравнить
-         *!/
-        let itemForCompare = {
-          id: el.itemId,
-          modifiers: [], // нужно раскомментировать, если модификаторы, хотя бы пустые обязательны в избранном
-        };
-        /!**
-         * Заполняем данные о модификаторах, если они есть
-         *!/
-        if (typeof el.modifiers === 'object') {
-          const modifierArray = [];
-          for (const modifierEl of Object.values(el.modifiers)) {
-            modifierArray.push({
-              id: modifierEl.modificationId,
-              count: modifierEl.count,
-            });
-          }
-          itemForCompare.modifiers = modifierArray;
-        }
-        // console.log(itemForCompare);
-        /!**
-         * Ставим флаг нахождения комбинации товара и модификаторов в false
-         *!/
-        let favouriteItemFlag = false;
-
-        /!**
-         * Преобразуем объект товара из заказа в строку, чтобы можно было легко сравнить
-         *!/
-        itemForCompare = JSON.stringify(itemForCompare);
-        /!**
-         * Проходим массив избранного
-         * to do: стоит вытащить преобразование массива избранного в строки(в отдельный массив) чуть выше начала перебора заказов в истории, тогда нам не придется каждый раз преобразовывать объекты избранного в строки, достаточно будет пройтись по новому мессиву сравнить с их с товаром
-         *!/
-        for (let itemOfFavourites of Object.values(favourites)) {
-          /!**
-           * Преобразуем объекты комбинаций товара и модификаторов избранного в строку, чтобы можно было сравнивать
-           *!/
-          itemOfFavourites = JSON.stringify(itemOfFavourites);
-          // console.log(itemForCompare, itemOfFavourites);
-          /!**
-           * Сравниваем строки,
-           * если совпадение найдено меняем статус в флаг
-           * и перестаем перебирать комбинации избранного
-           *!/
-          if (itemForCompare === itemOfFavourites) {
-            favouriteItemFlag = true;
-
-            console.log(order, 'find!');
-            break;
-          }
-        }
-      }
-    }
-  }
-} */
 

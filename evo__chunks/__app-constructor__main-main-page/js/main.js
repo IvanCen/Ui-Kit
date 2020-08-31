@@ -115,7 +115,7 @@ class ToggleMain extends ToggleMainPage {
           loader.remove();
         }
       }, 1000);
-      if (!isEmptyObj(userDataObj)) {
+      if (!isEmptyObj(userInfoObj)) {
         rateLastOrder();
       }
     }
@@ -152,13 +152,13 @@ class ToggleMain extends ToggleMainPage {
           if (this.topBarContentContainer.classList.contains('top-bar__content-container--hide')) {
             this.topBarContentContainer.classList.remove('top-bar__content-container--hide');
             this.topBar.classList.remove(`top-bar--fixed${isIos ? '--ios' : ''}`);
-            this.promoContainer.classList.remove('main-card__container-promo--indentation--top');
+            this.promoContainer.classList.remove(`main-card__container-promo--indentation--top${isIos ? '--ios' : ''}`);
           }
         } if (this.mainPageContent.scrollTop > 212) {
           if (!this.topBarContentContainer.classList.contains('top-bar__content-container--hide')) {
             this.topBarContentContainer.classList.add('top-bar__content-container--hide');
             this.topBar.classList.add(`top-bar--fixed${isIos ? '--ios' : ''}`);
-            this.promoContainer.classList.add('main-card__container-promo--indentation--top');
+            this.promoContainer.classList.add(`main-card__container-promo--indentation--top${isIos ? '--ios' : ''}`);
           }
         }
       });

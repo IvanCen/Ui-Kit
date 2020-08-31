@@ -6,18 +6,31 @@ class ToggleModalPagePaymentOrder extends ToggleModalPageOrderPaymentRoot {
     this.rendering = this.rendering.bind(this);
   }
 
+  closePaymentPage() {
+    if (promoCode !== '' && promoCode !== undefined) {
+      toggleModal.renderingPromoCodeClose(() => {
+        window.history.back();
+      });
+    } else {
+      this.closePage();
+      this.deletePage();
+    }
+  }
+
   rendering(info) {
     super.rendering();
     const topBar = new CreateTopBarReviewOrder({
       selector: ['div'],
       style: ['top-bar'],
+      withOutAddress: true,
       modifier: ['--theme--dark', `--size--medium${isIos ? '--ios' : ''}`],
       eventClose: [
         {
           type: 'click',
           callback: () => {
-            this.closePage();
-            this.deletePage();
+            stopAction(() => {
+              this.closePaymentPage();
+            });
           },
         },
       ],
@@ -34,11 +47,6 @@ class ToggleModalPagePaymentOrder extends ToggleModalPageOrderPaymentRoot {
       ],
     });
 
-    const cardItemsPrice = document.querySelectorAll('.card-item__price');
-    let counterPrice = 0;
-    [...cardItemsPrice].forEach((item) => {
-      counterPrice += Number(item.textContent);
-    });
     const textArea = new CreateTextAreaOrderPayment({
       selector: ['div'],
       style: ['text-area'],
@@ -51,9 +59,15 @@ class ToggleModalPagePaymentOrder extends ToggleModalPageOrderPaymentRoot {
       comment: [info.successData.orderComment],
     });
 
+    const checkboxSelect = new CreateCheckboxTextSlide({
+      selector: ['div'],
+      style: ['checkbox-textslide'],
+    });
+
     this.modalPageOrderPayment.append(createTopBarIos());
     this.modalPageOrderPayment.append(topBar.create());
     this.modalPageOrderPayment.append(textArea.create());
+    this.modalPageOrderPayment.append(checkboxSelect.create());
 
     this.openPage();
   }

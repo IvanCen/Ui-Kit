@@ -21,10 +21,11 @@ class CreateMapItemStoresWraper extends CreateItem {
     this.parameters = parameters;
     this.element = document.createElement(this.parameters.selector);
     this.template = `
-        <div class="top-bar-search top-bar-search--size--small">
-          <span class="top-bar-search__info">Поблизости</span>
+        <div class="top-bar-search top-bar-search--size--small top-bar-search--theme--dark">
+        <div class="top-bar-search__icon top-bar-search__icon--type--touch"></div>
+          <span class="top-bar-search__info">пекарни рядом</span>
         </div>
-        <div class="map__container">
+        <div class="map__container map__container--theme--light">
         </div>`;
   }
 
@@ -77,7 +78,7 @@ class CreateMapItemStores extends CreateItem {
     return this.daysArr[this.weekday];
   }
 
-  create(store, placemark, myMap, id) {
+  create(store, placemark, myMap, id, page = document) {
     function identity() {
       if (id !== undefined) {
         return id;
@@ -86,7 +87,9 @@ class CreateMapItemStores extends CreateItem {
     }
     this.element = document.createElement('div');
     this.element.classList.add('map__item');
-    this.element.setAttribute('data-id', store.id);
+    this.element.setAttribute('data-id', `${identity()}${store.id}`);
+    console.log(this.element.getAttribute('data-id'));
+    console.log(id);
     let phone;
     if (store.phone !== null) {
       const regExp = /(\+\d)(\d{3})(\d{3})(\d{2})(\d{2})/g;
@@ -139,14 +142,17 @@ class CreateMapItemStores extends CreateItem {
     }
 
     const radioInputEl = this.element.querySelector('.radio__input');
-    if (userStore.store.id === store.id) {
+    /* console.log(radioInputEl, `${identity()}${store.id}`, identity());
+    if (!isEmptyObj(userStore) && userStore.store.id === Number(`${identity()}${store.id}`)) {
       radioInputEl.checked = 'checked';
-    }
+    } */
+
     this.element.addEventListener('click', (e) => {
       if (e.target.classList.contains('map__content--info')
         || e.target.classList.contains('map__radio-label')
         || e.target.classList.contains('map__content--time')
         || e.target.classList.contains('map__radio-input')
+        || e.target.classList.contains('map__item-text')
       ) {
         radioInputEl.checked = 'checked';
         toggleModalPage.closePage();
@@ -189,10 +195,10 @@ class CreateMapItemStores extends CreateItem {
       placemark.events
         .add('click', (e) => {
           e.get('target').options.set('iconImageHref', 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-point-select.svg]]');
-          const radioInput = document.querySelector(`.radio__input[data-id="${store.id}"]`);
+          const radioInput = document.querySelector(`.radio__input[data-id="${identity()}${store.id}"]`);
           const radioInputId = radioInput.getAttribute('data-id');
           const storesButtonBottomBar = document.querySelector('.bottom-bar__select-item');
-          const storesButtonTopBar = document.querySelector('.top-bar__select-item--type--stores');
+          const storesButtonTopBar = page.querySelector('.top-bar__select-item--type--stores');
           const mapItem = radioInput.closest('.map__item');
           mapItem.scrollIntoView({ block: 'end', behavior: 'smooth' }); // на маленьких экранах только режим block: 'end' работает корректно
           radioInput.checked = 'checked';
@@ -202,7 +208,7 @@ class CreateMapItemStores extends CreateItem {
             myMap.setZoom(15);
           }); */
           storesDataObj.successData.forEach((el) => {
-            if (el.id === Number(radioInputId)) {
+            if (Number(identity() + el.id) === Number(radioInputId)) {
               api.getShopOutOfStockItemsAndModifiers(el.id);
               userStore.store = el;
               localStorage.setItem('userStore', JSON.stringify(userStore));

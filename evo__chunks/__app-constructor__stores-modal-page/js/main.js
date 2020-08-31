@@ -6,11 +6,83 @@ class ToggleStores extends ToggleModalPageStores {
     this.rendering = this.rendering.bind(this);
   }
 
-  chooseShop() {
+  activeMapTouch(container) {
+    let dragStart = 0;
+    let dragEnd = 0;
+    let offsetY = 0;
+    let offsetYOnStart = 0;
+    let isOpen = false;
+    const isMapOpen = localStorage.getItem('isMapListOpen');
+
+    if (isMapOpen === 'false') {
+      offsetY = container.offsetHeight - 43;
+      offsetYOnStart = container.offsetHeight - 43;
+      container.style.transform = `translate3d(0,${offsetY}px,0)`;
+    }
+
+    function mapAnimation(action) {
+      if (offsetY > 50 && !isOpen && action === 'end') {
+        offsetY = container.offsetHeight - 43;
+        offsetYOnStart = container.offsetHeight - 43;
+        isOpen = !isOpen;
+        localStorage.setItem('isMapListOpen', 'false');
+      } else if (offsetY > (container.offsetHeight - 43) && action === 'move' && isOpen) {
+        offsetY = container.offsetHeight - 43;
+        offsetYOnStart = container.offsetHeight - 43;
+      } else if (offsetY < (container.offsetHeight - 100) && action === 'end' && isOpen) {
+        offsetY = 0;
+        offsetYOnStart = 0;
+        isOpen = !isOpen;
+        localStorage.setItem('isMapListOpen', 'true');
+      }
+      if (offsetY < 0) {
+        // тут действия, если тянется дальше максимума
+        if (action === 'end') {
+          offsetY = 0;
+          dragStart = 0;
+          dragEnd = 0;
+          offsetYOnStart = 0;
+        } else if (action === 'move') {
+          offsetY = 0;// уменьшапем скорость смещения в 2 раза
+        }
+      }
+      // console.log(offsetY, dragStart, dragEnd, offsetYOnStart);
+
+      container.style.transform = `translate3d(0,${offsetY}px,0)`;
+    }
+
+    const panelTouch = container.querySelector('.top-bar-search--size--small');
+    panelTouch.addEventListener('touchstart', (event) => {
+      dragStart = event.touches[0].clientY;
+      container.classList.add('map--with-animation');
+    }, { passive: false });
+
+    panelTouch.addEventListener('touchmove', (event) => {
+      dragEnd = event.touches[0].clientY;
+      offsetY = offsetYOnStart + dragEnd - dragStart;
+      mapAnimation('move');
+    }, { passive: false });
+
+    panelTouch.addEventListener('touchend', (event) => {
+      offsetYOnStart = offsetY;
+      container.classList.add('map--with-animation');
+      mapAnimation('end');
+    }, { passive: false });
+  }
+
+  chooseShop(page) {
     const storesButtonBottomBar = document.querySelector('.bottom-bar__select-item');
-    const storesButtonTopBar = document.querySelector('.top-bar__select-item--type--stores');
-    const radioInputs = document.querySelectorAll('.radio__input');
-    const mapItem = document.querySelectorAll('.map__item');
+    const modalPageReview = document.querySelector('.modal-page-order-review');
+    const radioInputs = page.querySelectorAll('.radio__input');
+    const mapItem = page.querySelectorAll('.map__item');
+    console.log(radioInputs);
+    [...radioInputs].forEach((radio) => {
+      const radioId = radio.getAttribute('data-id');
+      if (!isEmptyObj(userStore) && userStore.store.id === Number(radioId)) {
+        radio.checked = true;
+        console.log('checked');
+      }
+    });
     [...mapItem].forEach((input) => {
       input.addEventListener('click', () => {
         [...radioInputs].forEach((item) => {
@@ -21,11 +93,12 @@ class ToggleStores extends ToggleModalPageStores {
                 api.getShopOutOfStockItemsAndModifiers(el.id);
                 userStore.store = el;
                 localStorage.setItem('userStore', JSON.stringify(userStore));
+                if (modalPageReview) {
+                  toggleModalPageReviewOrder.deletePage();
+                  setTimeout(() => toggleModalPageReviewOrder.rendering(), 100);
+                }
                 if (storesButtonBottomBar) {
                   storesButtonBottomBar.textContent = el.shortTitle;
-                }
-                if (storesButtonTopBar) {
-                  storesButtonTopBar.textContent = el.shortTitle;
                 }
               }
             });
@@ -42,10 +115,6 @@ class ToggleStores extends ToggleModalPageStores {
       selector: ['div'],
       style: ['top-bar'],
       modifier: [`--size--medium${isIos ? '--ios' : ''}`],
-      /* eventOpenFilter: [
-        { type: 'click', callback: togglePageStoresFilter.rendering },
-        { type: 'click', callback: togglePageStoresFilter.openPage },
-      ], */
       eventOpenSearch: [
         {
           type: 'click',
@@ -66,17 +135,6 @@ class ToggleStores extends ToggleModalPageStores {
       style: ['maps'],
       modifier: [`${isIos ? '--ios' : ''}`],
     });
-    const storesButtonChoiceOrange = new CreateButton({
-      selector: ['button'],
-      style: ['button'],
-      modifier: ['--size--big',
-        '--theme--tangerin',
-        '--type--fixed',
-        '--theme--shadow-big',
-        '--type--choose',
-      ],
-      text: ['Выбрать'],
-    });
 
     const storesMapItemWraper = new CreateMapItemStoresWraper({
       selector: ['div'],
@@ -93,7 +151,8 @@ class ToggleStores extends ToggleModalPageStores {
     this.modalPageContent.append(storesMap.create());
     this.modalPageContent.append(storesMapItemWraper.create());
 
-    function renderStores(stores) {
+
+    function renderStores(stores, page) {
       console.log(stores.successData);
 
       ymaps.ready(() => {
@@ -133,6 +192,9 @@ class ToggleStores extends ToggleModalPageStores {
                 iconImageSize: [20, 20],
                 iconImageOffset: [-10, -10],
               });
+            myMap.panTo([crd.latitude, crd.longitude], {
+              delay: 1000,
+            });
             userLocation.add(crd.placemark);
             const storesElems = document.querySelectorAll('.map__item');
             let order;
@@ -176,8 +238,7 @@ class ToggleStores extends ToggleModalPageStores {
           let placemark;
           if (store.priceGroup === 'BreadRiots') {
             console.log(store);
-            placemark = new ymaps.Placemark([store.latitude, store.longitude], {
-            }, {
+            placemark = new ymaps.Placemark([store.latitude, store.longitude], {}, {
               iconLayout: 'default#image',
               iconImageHref: 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-xleb-point.svg]]',
               iconImageSize: [35, 35],
@@ -186,7 +247,32 @@ class ToggleStores extends ToggleModalPageStores {
             placemark.properties.set('data-id', store.id);
             console.log(placemark.properties.get('priceGroup', 'BreadRiots'));
           } else {
+            let phone;
+            if (store.phone !== null) {
+              const regExp = /(\+\d)(\d{3})(\d{3})(\d{2})(\d{2})/g;
+              phone = store.phone.replace(regExp, '$1 ($2) $3-$4-$5');
+            }
             placemark = new ymaps.Placemark([store.latitude, store.longitude], {
+              balloonContentHeader: store.shortTitle,
+              balloonContentBody: `
+                <div class="map__content map__content--position--start map__content--time">
+                 <h3 class="map__item-text map__item-text--indentation--right">${getNowDay().ru}:</h3>
+                 <span class="map__item-text">${store[getNowDay().en]}</span>
+                </div>
+                <div class="map__content map__content--info">
+                  <div class="map__container-phone">
+                    <a class="map__item-phone" href="tel:${store.phone}">
+                     <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-phone.svg]]" alt="" class="text-area__icon text-area__icon--position--center text-area__icon--phone">
+                    </a>
+                    <a href="tel:${store.phone}" class="text-area__title text-area__title--size--small text-area__title--type--bold">${phone || store.phone}</a>
+                  </div>
+                </div>
+                  `,
+              balloonContentFooter: `
+                <div class="map__content map__content--direction--column">
+                  <span class="map__item-text map__item-text--indentation--bottom">Для заказа выбрана эта точка</span>                
+                  <button onclick="closeStores()" class="button button--size--small button--theme--tangerin button--position--right map__button map__button--type--balloon">Закрыть</button>
+                </div>`,
             }, {
               iconLayout: 'default#image',
               iconImageHref: 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-point.svg]]',
@@ -203,7 +289,7 @@ class ToggleStores extends ToggleModalPageStores {
             }
             api.checkWorkTimeStore(store);
           });
-
+          const classIdentifier = 'radio__input-default';
           mainPageContainer.append(storesMapItem.create(store, placemark, myMap));
         });
 
@@ -229,14 +315,15 @@ class ToggleStores extends ToggleModalPageStores {
         /* myMap.events.add('click', (event) => {
           myCollection.getClosestTo(event.get('coords'));
         }); */
+        myMap.controls.remove('geolocationControl');
       });
     }
-    renderStores(storesDataObj);
 
-    // this.modalPageContent.append(storesButtonChoiceOrange.create());
+    renderStores(storesDataObj, this.modalPageContent);
+
     setTimeout(() => {
       if (!isEmptyObj(userStore)) {
-        const radioInputs = document.querySelectorAll('.radio__input');
+        const radioInputs = this.modalPageContent.querySelectorAll('.radio__input');
         [...radioInputs].forEach((item) => {
           const inputId = item.getAttribute('data-id');
           if (userStore.store.id === Number(inputId)) {
@@ -244,7 +331,17 @@ class ToggleStores extends ToggleModalPageStores {
           }
         });
       }
-      this.chooseShop();
+      const mapItem = this.modalPageContent.querySelector('.map__item');
+      mapItem.addEventListener('mousedown', () => false);
+      this.chooseShop(this.modalPageContent);
     }, 300);
+
+    const topBarSearch = this.modalPageContent.querySelector('.top-bar-search--size--small');
+    const mapList = this.modalPageContent.querySelector('.map');
+
+    /* topBarSearch.addEventListener('click', () => {
+      mapList.classList.toggle('map--hide');
+    }); */
+    this.activeMapTouch(mapList);
   }
 }

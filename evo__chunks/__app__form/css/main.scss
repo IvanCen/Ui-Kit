@@ -40,16 +40,19 @@
       margin-top: 20px;
     }
 
-    &--type--sign-in.button {
-      position: absolute;
-      bottom: 16px;
-      right: 16px;
-      width: auto;
-    }
-
-    &--type--call {
-      align-self: center;
-    }
+    /*&--type--call {
+      display: block;
+      color: $white;
+      text-decoration: none;
+      width: 150px;
+      height: 50px;
+      min-height: 50px;
+      background-color: $orange;
+      border-radius: 50px;
+      text-align: center;
+      @extend %style-3;
+      box-shadow: 0 8px 10px rgba(0, 0, 0, .25);
+    }*/
 
     &--type--agree {
       position: fixed;
@@ -260,10 +263,12 @@
   &--error-phone.form__text {
     color: $alizarinCrimson;
     margin-top: 20px;
+    min-height: 20px;
   }
 
   &--hide {
     opacity: 0;
+    display: none;
   }
 
   &--close {
@@ -301,6 +306,7 @@
   &--hide {
     opacity: 0;
     visibility: hidden;
+    display: none;
   }
 
   &--close {
@@ -309,12 +315,13 @@
 }
 
 .form__call-container {
-  display: flex;
+  display: none;
   opacity: 0;
   flex-direction: column;
   justify-content: space-around;
   min-height: 200px;
   transition: all 0.3s ease-in;
+  flex-shrink: 0;
 
   &--open {
     display: flex;
@@ -322,22 +329,6 @@
   }
 }
 
-.form__link {
-  display: block;
-  position: absolute;
-  bottom: 16px;
-  right: 16px;
-  color: $white;
-  text-decoration: none;
-  width: 150px;
-  height: 50px;
-  background-color: $orange;
-  border-radius: 50px;
-  margin: 0;
-  text-align: center;
-  @extend %style-3;
-  box-shadow: 0 8px 10px rgba(0, 0, 0, .25);
-}
 
 .form__title {
   @extend %style-4;
@@ -370,3 +361,9 @@
     border-bottom: none;
   }
 }
+
+.date-input {
+  display: inline-block;
+  position: relative;
+}
+

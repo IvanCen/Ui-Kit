@@ -10,7 +10,7 @@ class ToggleThirdPageEditUser extends ToggleThirdPage {
   sendData(setName, value) {
     function showError(info) {
       const textError = document.querySelector('.form__text--error');
-      if(textError) {
+      if (textError) {
         textError.classList.remove('form__text--close', 'form__text--hide');
         if (info.errors[0] !== undefined) {
           textError.textContent = info.errors[0];
@@ -21,7 +21,7 @@ class ToggleThirdPageEditUser extends ToggleThirdPage {
           textSuccess.textContent = 'Данные изменены';
           textSuccess.classList.remove('form__text--close', 'form__text--hide');
           textSuccess.classList.add('form__text--indentation');
-  
+
           if (setName === 'email') {
             toggleModal.renderingEmail();
             toggleModal.openPage();
@@ -29,24 +29,27 @@ class ToggleThirdPageEditUser extends ToggleThirdPage {
             if (!modal) {
               api.getClientApi();
               setTimeout(() => {
-                textArea.textContent = userInfoObj.successData[setName];
+                if (textArea) {
+                  textArea.textContent = userInfoObj.successData[setName];
+                }
                 toggleThirdPage.closePage();
                 toggleThirdPage.deletePage();
               }, 2000);
-  
+
               toggleThirdPage.closePage();
               toggleThirdPage.deletePage();
             }
           } else {
             setTimeout(() => {
-              textArea.textContent = userInfoObj.successData[setName];
+              if (textArea) {
+                textArea.textContent = userInfoObj.successData[setName];
+              }
               toggleThirdPage.closePage();
               toggleThirdPage.deletePage();
             }, 2000);
           }
         }
       }
-      
     }
     const request = {
       method: 'set-client',
@@ -98,14 +101,8 @@ class ToggleThirdPageEditUser extends ToggleThirdPage {
           type: 'click',
           callback: () => {
             const inputArea = document.querySelector(`.form__input-area--type--${parameters.identifier}`);
-            const textError = document.querySelector('.form__text--error');
 
-            if (inputArea.value === '') {
-              textError.classList.remove('form__text--close', 'form__text--hide');
-              textError.textContent = 'Вы ничего не ввели';
-            }
             if (inputArea.value !== '') {
-              textError.classList.add('form__text--close', 'form__text--hide');
               this.sendData(parameters.identifier, inputArea.value);
             }
           },
@@ -125,7 +122,7 @@ class ToggleThirdPageEditUser extends ToggleThirdPage {
       validation();
       inputFlyLabel();
     }
-    
+
     this.openPage();
   }
 }

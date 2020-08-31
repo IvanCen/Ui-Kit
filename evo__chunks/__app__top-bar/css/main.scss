@@ -18,6 +18,27 @@
       z-index: 1;
       background: white;
     }
+
+    &--ios-small {
+      position: fixed;
+      top: 10px;
+      left: 0;
+      z-index: 1;
+    }
+  }
+
+  &--sticky {
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 1;
+
+    &--ios {
+      position: sticky;
+      top: 38px;
+      left: 0;
+      z-index: 1;
+    }
   }
 
   &--ios {
@@ -68,9 +89,9 @@
       padding-right: 16px;
       padding-left: 16px;
 
-      @media (max-width:374px) {
+      /*@media (max-width: 374px) {
         padding-top: 40px;
-      }
+      }*/
     }
   }
 

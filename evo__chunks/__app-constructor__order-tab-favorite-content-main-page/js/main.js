@@ -43,7 +43,7 @@ class ToggleOrderFavoriteContent extends ToggleOrderTabContent {
     const productsItems = dataProductApi.successData.items;
     itemsArray.forEach((item) => {
       if (productsItems[item.id] !== undefined && !isEmptyObj(item) && item.id === productsItems[item.id].id) {
-        this.cardItemContainer.append(favoriteCardItem.create(item));
+        this.cardItemContainer.prepend(favoriteCardItem.create(item));
       }
     });
   }

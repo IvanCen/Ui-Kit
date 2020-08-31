@@ -10,7 +10,11 @@ class ToggleSubPageApplication extends ToggleSubPage {
     const applicationTopBar = new CreateTopBarWithBackButton({
       selector: ['div'],
       style: ['top-bar'],
-      modifier: [`--size--medium${isIos ? '--ios' : ''}`, '--indentation--bottom', '--theme--light'],
+      modifier: [
+        `--size--medium${isIos ? '--ios' : ''}`,
+        `--fixed${isIos ? '--ios-small' : ''}`,
+        '--indentation--bottom',
+        '--theme--light'],
       textTitle: [''],
       eventBack: [
         { type: 'click', callback: this.closePage },
@@ -20,8 +24,8 @@ class ToggleSubPageApplication extends ToggleSubPage {
     const applicationTextArea = new CreateTextAreaApplication({
       selector: ['div'],
       style: ['text-area-wraper'],
+      modifier: [`--indentation--top${isIos ? '--ios' : ''}`],
     });
-
 
     this.subPage.append(createTopBarIos());
     this.subPage.append(applicationTopBar.create());

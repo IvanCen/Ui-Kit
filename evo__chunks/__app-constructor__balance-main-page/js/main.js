@@ -22,7 +22,7 @@ class ToggleBalance extends ToggleMainPage {
       ],
       textTitle: ['Баланс'],
     });
-    const card = new CreateCardsBalanceMainCard({
+    const card = new CreateTextMainCard({
       selector: ['div'],
       style: ['main-card'],
       modifier: ['--indentation--top'],
@@ -67,6 +67,7 @@ class ToggleBalance extends ToggleMainPage {
       themeButton: ['--theme--tangerin-transparent'],
       identifier: ['score'],
       text: ['Ваши бонусы'],
+      heart: true,
       number() {
         if (!isEmptyObj(userInfoObj)) {
           return userInfoObj.successData.bonus;

@@ -9,32 +9,13 @@ class ToggleOrder extends ToggleMainPage {
     super.rendering('order');
     this.mainPageContent.classList.add('main-page__content--with--bottom-bar');
 
-    function switchTabHits() {
+    function switchTab(tabName) {
       const elements = document.querySelectorAll('.main-page__tab-content');
       [...elements].forEach((item) => item.classList.remove('main-page__tab-content--open'));
-      const element = document.querySelector('.main-page__tab-content--hits');
-      element.classList.add('main-page__tab-content--open');
-    }
-
-    function switchTabMain() {
-      const elements = document.querySelectorAll('.main-page__tab-content');
-      [...elements].forEach((item) => item.classList.remove('main-page__tab-content--open'));
-      const element = document.querySelector('.main-page__tab-content--main');
-      element.classList.add('main-page__tab-content--open');
-    }
-
-    function switchTabHistory() {
-      const elements = document.querySelectorAll('.main-page__tab-content');
-      [...elements].forEach((item) => item.classList.remove('main-page__tab-content--open'));
-      const element = document.querySelector('.main-page__tab-content--history');
-      element.classList.add('main-page__tab-content--open');
-    }
-
-    function switchTabFavorite() {
-      const elements = document.querySelectorAll('.main-page__tab-content');
-      [...elements].forEach((item) => item.classList.remove('main-page__tab-content--open'));
-      const element = document.querySelector('.main-page__tab-content--favorite');
-      element.classList.add('main-page__tab-content--open');
+      const element = document.querySelector(`.main-page__tab-content--${tabName}`);
+      if(element) {
+        element.classList.add('main-page__tab-content--open');
+      }
     }
 
     const orderTopBar = new CreateTopBarOrder({
@@ -42,23 +23,40 @@ class ToggleOrder extends ToggleMainPage {
       style: ['top-bar'],
       modifier: [`${isIos ? '--indentation--top' : ''}`],
       eventToggleMenu: [
-        { type: 'click', callback: switchTabMain },
+        {
+          type: 'click',
+          callback: () => {
+            switchTab('main');
+          },
+        },
       ],
       eventToggleHits: [
-        { type: 'click', callback: switchTabHits },
+        {
+          type: 'click',
+          callback: () => {
+            switchTab('hits');
+          },
+        },
       ],
       eventToggleHistory: [
         {
           type: 'click',
           callback: () => {
-            switchTabHistory();
+            api.getClientOrdersApi(() => {
+              switchTab('history');
+            });
           },
         },
       ],
       eventToggleFavorite: [
-        { type: 'click', callback: toggleOrderFavoriteContent.clearTab },
-        { type: 'click', callback: toggleOrderFavoriteContent.rendering },
-        { type: 'click', callback: switchTabFavorite },
+        {
+          type: 'click',
+          callback: () => {
+            toggleOrderFavoriteContent.clearTab();
+            toggleOrderFavoriteContent.rendering();
+            switchTab('favorite');
+          },
+        },
       ],
       eventOpenSearch: [
         {
@@ -93,7 +91,7 @@ class ToggleOrder extends ToggleMainPage {
     this.mainPageContent.prepend(orderTopBar.create());
     const footer = document.querySelector('.footer');
     footer.before(orderBottomBar.create());
-    counterBasket();
+    emitter.emit('event:counter-changed');
     const footerButtonOrder = document.querySelector('.footer__button--type--order');
     activeFooter(footerButtonOrder);
     const topBarTabs = document.querySelectorAll('.top-bar__tab');

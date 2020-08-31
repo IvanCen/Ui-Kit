@@ -1,0 +1,24 @@
+@import "../../__app__head-style-and-script/css/main.scss";
+
+.main-page {
+  overflow-y: scroll;
+
+  &--loaded {
+    display: none;
+  }
+
+  &--size--small {
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 78px);
+
+  }
+
+  &--type--search {
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 78px);
+    justify-content: space-between;
+  }
+
+}

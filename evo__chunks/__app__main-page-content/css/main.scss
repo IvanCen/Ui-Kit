@@ -56,7 +56,7 @@
 
   &--opened--bottom-bar {
     left: 0;
-    height: calc(100vh - 133px);
+    height: calc(100vh - 132px);
   }
 
   &--size--small {
@@ -72,7 +72,7 @@
   &--with--bottom-bar {
     overflow-x: hidden;
     overflow-y: scroll;
-    max-height: calc(100vh - 133px);
+    max-height: calc(100vh - 132px);
   }
 }
 

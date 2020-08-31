@@ -32,16 +32,24 @@ class ToggleReward extends ToggleMainPage {
 
     const cardItemContainer = new CreateCardItemContainerProductCard();
     const cardItem = new CreateCardItemRewardCard();
+    const cardText = new CreateTextMainCard({
+      selector: ['div'],
+      style: ['main-card'],
+      text: ['У вас пока нет достижений, но всё еще впереди!'],
+    });
 
     this.mainPageContent.append(createTopBarIos());
     this.mainPageContent.append(topBar.create());
-    this.mainPageContent = document.querySelector('.main-page__content');
-    this.mainPageContent.append(cardItemContainer.create('reward', 'card-item__container--indentation--top'));
 
-    /*this.cardItemContainerEl = this.mainPageContent.querySelector('.card-item__container');
-    for (let i = 1; i < 7; i++) {
-      this.cardItemContainerEl.append(cardItem.create());
-    }*/
+    this.cardItemContainerEl = this.mainPageContent.querySelector('.card-item__container');
+    if (!isEmptyObj(userAchievements) && userAchievements.successData.length !== 0) {
+      this.mainPageContent.append(cardItemContainer.create('reward', 'card-item__container--indentation--top'));
+      for (const rewardInfo in userAchievements.successData) {
+        this.cardItemContainerEl.append(cardItem.create(userAchievements.successData[rewardInfo]));
+      }
+    } else {
+      this.mainPageContent.append(cardText.create());
+    }
 
     const footerButtonGIft = document.querySelector('.footer__button--type--gift');
     activeFooter(footerButtonGIft);

@@ -3,7 +3,7 @@ mainPage.classList.add('main-page--loaded');
 const body = document.querySelector('body');
 
 window.onerror = (message, url, lineNo) => {
-  api.sendDebugMessage(`App-main. Error: ${message} Line Number: ${lineNo}`);
+  api.sendDebugMessage(`App-test. Error: ${message} Line Number: ${lineNo}`);
 };
 
 const api = new Api();
@@ -17,6 +17,7 @@ let orderInfo;
 let orderPayInfo;
 let orderComment;
 let userMessages;
+let promoCode;
 
 let authorizationCodeLet;
 let itemsArrayLet;
@@ -149,7 +150,7 @@ const userAchievements = userAchievementsLet;
 
 api.storesApi(); // пока каждый раз вызываем при старте
 
-if (isEmptyObj(applicationDataObj)) {
+if (applicationDataObj && isEmptyObj(applicationDataObj)) {
   api.getPublicDocument('both', 'privacy-policy');
   api.getPublicDocument('both', 'user-agreement');
   api.getPublicDocument('both', 'public-offer');
@@ -188,20 +189,11 @@ const toggleOrderFavoriteContent = new ToggleOrderFavoriteContent();
 const toggleInboxTabMessagesContent = new ToggleInboxTabMessagesContent();
 const toggleInboxTabLastOffersContent = new ToggleInboxTabLastOffersContent();
 
-const togglePageSeeAll = new TogglePageSeeAll({
-  classOpen: ['page--opened'],
-});
 const toggleModalPageStoresSearch = new ToggleModalPageStoresSearch({
   classOpen: ['modal-page-search--opened-stores'],
 });
 const toggleModalPageOrderSearch = new ToggleModalPageOrderSearch({
   classOpen: ['modal-page-search--opened'],
-});
-const toggleSubPageStoresDetails = new ToggleSubPageStoresDetails({
-  classOpen: ['subpage--opened'],
-});
-const toggleSubPageAccountEditUser = new ToggleSubPageAccountEditUser({
-  classOpen: ['subpage--opened'],
 });
 const togglePageStoresFilter = new TogglePageStoresFilter({
   classOpen: ['page--opened'],
@@ -248,11 +240,11 @@ const toggleSubPageGiftCard = new ToggleSubPageGiftCard({
 const toggleSubPageApplication = new ToggleSubPageApplication({
   classOpen: ['subpage--opened'],
 });
-const toggleThirdPageEditUser = new ToggleThirdPageEditUser({
-  classOpen: ['third-page--opened'],
+const toggleSubPageEditUser = new ToggleSubPageEditUser({
+  classOpen: ['subpage--opened'],
 });
 const toggleThirdPageAddinsCard = new ToggleThirdPageAddinsCard({
-  classOpen: ['third-page--opened--bottom-bar'],
+  classOpen: ['third-page--opened--addins'],
 });
 const toggleModalPageReviewOrder = new ToggleModalPageReviewOrder({
   classOpen: ['modal-page-order-review--opened'],
@@ -367,6 +359,8 @@ const mainPageFooter = new CreateFooter({
         toggleOrderHitsContent.rendering();
         toggleOrderHistoryContent.rendering();
         closePages();
+
+        emitter.emit('event:counter-changed');
       },
     },
   ],
@@ -398,7 +392,7 @@ const mainPageFooter = new CreateFooter({
 
 mainPage.after(mainPageFooter.create());
 switchActiveFooter();
-checkBasket();
+emitter.emit('event:counter-changed');
 
 if (/\?refer=alfa.*/.test(window.location.search)) {
   const win = window.open('about:blank', '_self');
@@ -418,6 +412,10 @@ if (/\?refer=alfa.*/.test(window.location.search)) {
   });
   setTimeout(() => {
     buttonMain.dispatchEvent(new Event('click')); // рендерит страницу
+    if (!isEmptyObj(userInfoObj)) {
+      toggleModalPageSignIn.rendering();
+      toggleModalPageSignIn.regSuccess({ success: true, isStartApp: true, name: userInfoObj.successData.name });
+    }
   }, 2000);
 
   setTimeout(() => {
@@ -437,3 +435,6 @@ setTimeout(() => {
     loader.remove();
   }
 }, 5000);
+
+
+// api.sendDebugMessage(`${JSON.stringify(basketArray)}`);

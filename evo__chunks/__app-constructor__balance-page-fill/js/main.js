@@ -1,4 +1,3 @@
-
 class TogglePageBalanceFill extends TogglePage {
   constructor(parameters) {
     super(parameters);
@@ -28,18 +27,31 @@ class TogglePageBalanceFill extends TogglePage {
       if (item.classList.contains('size-bar__button--active')) {
         this.amount = Number(item.textContent);
         this.userPhone = userInfoObj.successData.phone;
-        api.rechargeBalanceApi(this.userPhone, this.amount, this.getPayLink);
+        if (this.userPhone === '+79522655566') {
+          api.rechargeBalanceApi(this.userPhone, this.amount, 'appWidget', this.getPayLinkYandex);
+        } else {
+          api.rechargeBalanceApi(this.userPhone, this.amount, 'app', this.getPayLink);
+        }
       }
     });
   }
 
   getPayLink(payInfo) {
+    this.loader = this.page.querySelector('.spinner');
+    this.loader.classList.add('spinner--hide');
+    if (payInfo.success) {
+      document.location.href = payInfo.successData.payUrl;
+    } else {
+      toggleModal.rendering(payInfo.errors[0]);
+    }
+  }
+
+  getPayLinkYandex(payInfo) {
     console.log(payInfo);
     this.loader = this.page.querySelector('.spinner');
     this.loader.classList.add('spinner--hide');
 
     if (payInfo.success) {
-      // api.sendDebugMessage(`${window.YandexCheckout} info 1`);
       // Инициализация виджета. Все параметры обязательные.
       const checkout = new window.YandexCheckout({
         confirmation_token: payInfo.successData.confirmationToken, // Токен, который перед проведением оплаты нужно получить от Яндекс.Кассы
@@ -49,7 +61,6 @@ class TogglePageBalanceFill extends TogglePage {
           toggleModal.rendering(error);
         },
       });
-      // api.sendDebugMessage(`${JSON.stringify(checkout)}${window.YandexCheckout} info 2`);
 
       // Отображение платежной формы в контейнере
       checkout.render('payment-form');
@@ -64,7 +75,7 @@ class TogglePageBalanceFill extends TogglePage {
     this.cardTopBar = new CreateTopBarWithBackButton({
       selector: ['div'],
       style: ['top-bar'],
-      modifier: [`${isIos ? '--size--small--ios' : '--size--small'}`, '--theme--light'],
+      modifier: [`${isIos ? '--size--small--ios' : '--size--small'}`, '--indentation--bottom', '--theme--light'],
       textTitle: ['Пополнение баланса'],
       eventBack: [
         { type: 'click', callback: this.closePage },

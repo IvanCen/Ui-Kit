@@ -8,7 +8,6 @@ class Api {
     };
   }
 
-
   productApi() {
     const request = {
       method: 'get-catalog',
@@ -300,26 +299,10 @@ class Api {
       });
   }
 
-  makeOrderApi(phone, orderArrItems, shopId, orderComment, orderFriendData, func) {
-    let comment;
-    let replaceName;
-    let replacePhone;
-    const { friendName, friendPhone } = orderFriendData;
+  makeOrderApi(phone, orderArrItems, shopId, orderComment = '', orderFriendData, promoCode = '', func) {
+    const { friendName = '', friendPhone = '' } = orderFriendData;
 
-    if (friendName !== '' && friendPhone !== '') {
-      replaceName = friendName;
-      replacePhone = friendPhone;
-    } else {
-      replaceName = '';
-      replacePhone = '';
-    }
-    if (orderComment !== '') {
-      comment = orderComment;
-    } else {
-      comment = '';
-    }
-    console.log(comment);
-    console.log(phone, orderArrItems, shopId, orderComment, replaceName, replacePhone, func);
+    console.log(phone, orderArrItems, shopId, orderComment, friendName, friendPhone, func);
     let store = JSON.parse(localStorage.getItem('userStore'));
     store = store.store;
     const request = {
@@ -327,10 +310,10 @@ class Api {
       user: phone,
       cart: orderArrItems,
       shopId: store.id,
-      promoCode: '',
-      comment,
-      replaceName,
-      replacePhone,
+      promoCode,
+      comment: orderComment,
+      replaceName: friendName,
+      replacePhone: friendPhone,
       outputFormat: 'json',
     };
 
@@ -391,13 +374,13 @@ class Api {
       });
   }
 
-  rechargeBalanceApi(userPhone, amount, func) {
+  rechargeBalanceApi(userPhone, amount, choose, func) {
     console.log(userPhone, amount);
     const request = {
       method: 'recharge_the_balance',
       user: userPhone,
       amount,
-      from: 'appWidget', // Доступные варианты: app, site, appWidget
+      from: choose, // Доступные варианты: app, site, appWidget
       outputFormat: 'json',
     };
 
@@ -579,7 +562,11 @@ class Api {
         if (res.success === true) {
           togglePage.closePage();
           localStorage.removeItem('user-sign-in');
+          localStorage.removeItem('authorizationCode');
+          localStorage.removeItem('userAchievements');
+          delete userAchievements.successData;
           delete userInfoObj.successData;
+          localStorage.setItem('userInfo', JSON.stringify(userInfoObj));
           renderMainPage.clearPage();
           renderMainPage.rendering();
           renderMainPage.openPage();
