@@ -67,6 +67,7 @@ class Api {
               return true;
             });
           }
+
           if (isOldStore()) {
             delete userStore.store;
             localStorage.setItem('userStore', JSON.stringify(userStore));
@@ -299,10 +300,10 @@ class Api {
       });
   }
 
-  makeOrderApi(phone, orderArrItems, shopId, orderComment = '', orderFriendData, promoCode = '', func) {
+  makeOrderApi(phone, orderArrItems, shopId, orderComment = '', orderFriendData, promoCode = '', isToGo, func) {
     const { friendName = '', friendPhone = '' } = orderFriendData;
 
-    console.log(phone, orderArrItems, shopId, orderComment, friendName, friendPhone, func);
+    console.log(phone, orderArrItems, shopId, orderComment, friendName, friendPhone, isToGo, func);
     let store = JSON.parse(localStorage.getItem('userStore'));
     store = store.store;
     const request = {
@@ -311,6 +312,7 @@ class Api {
       cart: orderArrItems,
       shopId: store.id,
       promoCode,
+      takeAway: isToGo,
       comment: orderComment,
       replaceName: friendName,
       replacePhone: friendPhone,
@@ -774,6 +776,34 @@ class Api {
           localStorage.setItem('userAchievements', JSON.stringify(userAchievements));
         }
 
+        return res;
+      })
+      .then(func)
+      .catch((err) => {
+        console.log('Ошибка. Запрос не выполнен: ', err);
+      });
+  }
+
+  getDefaultBagItemForOrder(func) {
+    const request = {
+      method: 'get-default-bag-item-for-order',
+      outputFormat: 'json',
+    };
+
+    fetch(this.options.baseUrl, {
+      method: 'POST',
+      headers: this.options.headers,
+      body: JSON.stringify(request),
+
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+      .then((res) => {
+        console.log(res);
         return res;
       })
       .then(func)

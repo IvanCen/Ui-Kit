@@ -5,6 +5,56 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
     this.rendering = this.rendering.bind(this);
     this.makeOrder = this.makeOrder.bind(this);
     this.checkStoreWorkTime = this.checkStoreWorkTime.bind(this);
+    this.createCheckbox = this.createCheckbox.bind(this);
+    this.checkToGo = this.checkToGo.bind(this);
+    this.deleteItem = this.deleteItem.bind(this);
+    this.modalPageOrderReview = document.querySelector('.modal-page-order-review');
+  }
+
+  createCheckbox(info) {
+    if (info.success) {
+      const { name, price, id } = info.successData;
+      const checkboxText = new CreateCheckboxSlide({
+        selector: ['label'],
+        style: ['checkbox-slide'],
+        modifier: [
+          '--indentation--top',
+          '--indentation--bottom-big',
+        ],
+        name,
+        price,
+        id,
+      });
+      this.modalPageOrderReview.append(checkboxText.create());
+      this.checkToGo();
+    }
+  }
+
+  deleteItem(id) {
+    basketArray.every((item, index) => {
+      if (item.id === id) {
+        basketArray.splice(index, 1);
+        return false;
+      }
+      return true;
+    });
+  }
+
+  checkToGo() {
+    this.checkboxSelect = this.modalPageOrderReview.querySelector('.checkbox-textslide__input');
+    this.checkboxCheckboxTextslide = this.modalPageOrderReview.querySelector('.checkbox-textslide');
+    this.checkboxSlide = this.modalPageOrderReview.querySelector('.checkbox-slide');
+    this.checkboxSlideInput = this.modalPageOrderReview.querySelector('.checkbox-slide__input');
+    this.checkboxSelect.addEventListener('click', () => {
+      if (this.checkboxSelect.checked) {
+        this.checkboxSlide.classList.add('checkbox-slide--hide');
+        this.checkboxCheckboxTextslide.classList.add('checkbox-textslide--indentation--bottom-big');
+        this.checkboxSlideInput.checked = false;
+      } else {
+        this.checkboxSlide.classList.remove('checkbox-slide--hide');
+        this.checkboxCheckboxTextslide.classList.remove('checkbox-textslide--indentation--bottom-big');
+      }
+    });
   }
 
   makeOrder(info) {
@@ -14,10 +64,31 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
     } else if (info.success === true) {
       if (!isEmptyObj(basketArray)) {
         if (info.successData.timeStateBool === true) {
+          this.checkboxSelect = this.modalPageOrderReview.querySelector('.checkbox-textslide__input');
+          this.checkboxSlideInput = this.modalPageOrderReview.querySelector('.checkbox-slide__input');
           const { phone } = userInfoObj.successData;
           const { id } = userStore.store;
+          let isToGo;
+          const idPackage = Number(this.checkboxSlideInput.getAttribute('data-id'));
+          if (this.checkboxSlideInput.checked) {
+            this.deleteItem(idPackage);
+            basketArray.push({ id: idPackage, modifier: [] });
+          } else {
+            this.deleteItem(idPackage);
+          }
 
-          api.makeOrderApi(phone, basketArray, id, orderComment, orderFriendData, promoCode, this.renderPayOrderPage);
+          console.log(this.checkboxSelect.checked);
+          isToGo = !this.checkboxSelect.checked;
+          api.makeOrderApi(
+            phone,
+            basketArray,
+            id,
+            orderComment,
+            orderFriendData,
+            promoCode,
+            isToGo,
+            this.renderPayOrderPage,
+          );
         } else {
           toggleModal.rendering(info.successData.timeStatePickUp);
         }
@@ -96,7 +167,6 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
       style: ['card-item__container'],
       modifier: [
         '--indentation--top',
-        '--indentation--bottom',
         '--type--review',
       ],
     });
@@ -150,6 +220,10 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
       modifier: ['--indentation--top', '--size--medium'],
       text: ['Добавьте товары в корзину, чтобы продолжить'],
     });
+    const checkboxSelect = new CreateCheckboxTextSlide({
+      selector: ['div'],
+      style: ['checkbox-textslide'],
+    });
 
     this.modalPageOrderReview.append(createTopBarIos());
     this.modalPageOrderReview.append(reviewTopBar.create());
@@ -168,6 +242,8 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
       );
       this.modalPageOrderReview.append(reviewCardItemContainer.create());
       this.modalPageOrderReview.append(reviewButton.create());
+      this.modalPageOrderReview.append(checkboxSelect.create());
+      api.getDefaultBagItemForOrder(this.createCheckbox);
 
       this.cardItemContainer = document.querySelector('.card-item__container--type--review');
       this.reviewButton = document.querySelector('.button--type--make-order');
@@ -181,7 +257,7 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
           localStorage.setItem('basket', JSON.stringify(basketArray));
         }
       });
-      
+
       emitter.emit('event:counter-changed');
       const banners = document.querySelectorAll('.banner__container');
       banners.forEach((banner) => {

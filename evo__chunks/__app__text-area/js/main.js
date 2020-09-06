@@ -911,7 +911,7 @@ class CreateTextAreaOrderPayment extends CreateItem {
       }
       localStorage.setItem('basket', JSON.stringify(basketArray));
       emitter.emit('event:counter-changed');
-      
+
       setTimeout(() => {
         toggleModal.rendering(successText);
       }, successTextTimeout);
@@ -972,11 +972,6 @@ class CreateTextAreaOrderPayment extends CreateItem {
     this.button.addEventListener('click', () => {
       [...this.radioInput].forEach((item) => {
         if (item.checked) {
-          const checkboxSelect = document.querySelector('.checkbox-textslide__input');
-          /*
-          if (checkboxSelect.checked) { тут если выбрано с собой
-
-          } */
           api.payOrderApi(item.id, orderInfo.successData, this.resPayOrder);
         }
       });

@@ -7,6 +7,7 @@ window.onerror = (message, url, lineNo) => {
 };
 
 const api = new Api();
+api.getDefaultBagItemForOrder();
 
 const returnPageObj = {
   returnMainPageAfterSignIn: false,

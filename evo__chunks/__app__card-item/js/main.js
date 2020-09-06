@@ -350,7 +350,6 @@ class CreateCardItemFavAndHisOrder extends CreateItem {
           iconAdd.classList.remove('card-item__icon--theme--grass');
         }, 1000);
       }
-      
     });
 
     return super.create(this.element);
@@ -494,7 +493,7 @@ class CreateCardItemReviewOrder extends CreateItem {
           }
           localStorage.setItem('basket', JSON.stringify(basketArray));
           emitter.emit('event:counter-changed');
-          
+
           checkEmptyBasket();
           setTimeout(() => el.remove(), 200);
           this.classList.add('stop-action');
@@ -575,22 +574,13 @@ class CreateCardItemHistory extends CreateItem {
       this.element.setAttribute('data-id', item.itemId);
 
       const imgEl = this.element.querySelector('.card-item__image');
-      if (!canUseWebP()) {
-        loadImg(dataProductApi.successData.items[item.itemId], imgEl, 'jpg');
-      } else {
-        loadImg(dataProductApi.successData.items[item.itemId], imgEl, 'webp');
+      if (dataProductApi.successData.items[item.itemId]) {
+        if (!canUseWebP()) {
+          loadImg(dataProductApi.successData.items[item.itemId], imgEl, 'jpg');
+        } else {
+          loadImg(dataProductApi.successData.items[item.itemId], imgEl, 'webp');
+        }
       }
-
-      this.element.addEventListener('click', (e) => {
-        const classArr = ['card-item__image', 'card-item__title', 'card-item__price'];
-        classArr.forEach((classEl) => {
-          if (e.target.classList.contains(classEl)) {
-            toggleFifthPage.closePage();
-            toggleSubPageProductCard.rendering(dataProductApi.successData.items[item.itemId]);
-            toggleFifthPage.deletePage();
-          }
-        });
-      });
 
       let priceAllModifier = 0;
 
@@ -636,7 +626,7 @@ class CreateCardItemHistory extends CreateItem {
         }
       }
 
-      this.price.textContent = priceAllModifier + dataProductApi.successData.items[item.itemId].price;
+      this.price.textContent = priceAllModifier + item.itemPrice;
 
       this.buttonPlus.addEventListener('click', () => {
         const basketPopupIcon = document.querySelector('.bottom-bar__icon-popup');
@@ -658,7 +648,6 @@ class CreateCardItemHistory extends CreateItem {
           basketPopupIcon.classList.remove('bottom-bar__icon-popup--open');
           basketPopupIconImg.style.backgroundImage = '';
         }, 3000);
-        
       });
 
 
@@ -697,6 +686,22 @@ class CreateCardItemHistory extends CreateItem {
         }
         localStorage.setItem('items', JSON.stringify(itemsArray));
       });
+
+      if (typeof dataProductApi.successData.items[item.itemId] === 'undefined') {
+        this.iconsLike.remove();
+        this.buttonPlus.remove();
+      } else {
+        this.element.addEventListener('click', (e) => {
+          const classArr = ['card-item__image', 'card-item__title', 'card-item__price'];
+          classArr.forEach((classEl) => {
+            if (e.target.classList.contains(classEl)) {
+              toggleFifthPage.closePage();
+              toggleSubPageProductCard.rendering(dataProductApi.successData.items[item.itemId]);
+              toggleFifthPage.deletePage();
+            }
+          });
+        });
+      }
       this.elementWraper.append(this.element);
     }
     this.buttonAddAll = this.elementWraper.querySelector('.title-bar__button');
@@ -713,7 +718,6 @@ class CreateCardItemHistory extends CreateItem {
       wraper.classList.add('animation-pulse');
       setTimeout(() => wraper.classList.remove('animation-pulse'), 1000);
       emitter.emit('event:counter-changed');
-      
     });
 
     return this.elementWraper;

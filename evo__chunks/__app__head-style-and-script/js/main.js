@@ -487,8 +487,10 @@ function checkEmptyBasket() {
     const buttonOrder = document.querySelector('.button--type--make-order');
     const modalPageOrderReview = document.querySelector('.modal-page-order-review');
     const cardItemContainer = document.querySelector('.card-item__container--type--review');
+    const checkboxTextslide = document.querySelector('.checkbox-textslide');
+    const checkboxSlide = document.querySelector('.checkbox-slide');
 
-    [...accordionContainer, cardItemContainer, buttonOrder].forEach((el) => el.remove());
+    [...accordionContainer, cardItemContainer, buttonOrder,checkboxTextslide, checkboxSlide].forEach((el) => el.remove());
     modalPageOrderReview.append(titleBarEmptyBasket.create());
     modalPageOrderReview.append(backButton.create());
   }

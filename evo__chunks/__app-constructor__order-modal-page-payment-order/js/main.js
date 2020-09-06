@@ -1,9 +1,9 @@
-
 class ToggleModalPagePaymentOrder extends ToggleModalPageOrderPaymentRoot {
   constructor(parameters) {
     super(parameters);
     this.parameters = parameters;
     this.rendering = this.rendering.bind(this);
+    this.modalPageOrderPayment = document.querySelector('.modal-page-order-payment');
   }
 
   closePaymentPage() {
@@ -59,15 +59,10 @@ class ToggleModalPagePaymentOrder extends ToggleModalPageOrderPaymentRoot {
       comment: [info.successData.orderComment],
     });
 
-    const checkboxSelect = new CreateCheckboxTextSlide({
-      selector: ['div'],
-      style: ['checkbox-textslide'],
-    });
 
     this.modalPageOrderPayment.append(createTopBarIos());
     this.modalPageOrderPayment.append(topBar.create());
     this.modalPageOrderPayment.append(textArea.create());
-    this.modalPageOrderPayment.append(checkboxSelect.create());
 
     this.openPage();
   }
