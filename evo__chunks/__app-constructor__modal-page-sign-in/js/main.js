@@ -45,8 +45,6 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
     inputArea.classList.add('form__input--focused');
     const phoneNumber = inputArea.value;
     api.signInCodeApi(phoneNumber, this.regCall);
-    /* const info = {success: true};
-    this.regCall(info); */
   }
 
   sendData(setName, value) {
@@ -138,7 +136,8 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
         textError.textContent = '';
         textErrorPhone.textContent = '';
       });
-      [...document.querySelectorAll('.form__input-wrapper--last-number-inputs input')].forEach((el, index) => {
+      setTimeout(() => numbersElements[0].focus(), 200);
+      [...numbersElements].forEach((el) => {
         el.addEventListener('focus', (e) => {
           e.currentTarget.closest('.form__group').classList.add('form__group--focused');
           const tips = e.currentTarget.closest('.form__group').querySelectorAll('.form__tips');
@@ -162,7 +161,9 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
         });
         el.addEventListener('keyup', (event) => {
           if (event.keyCode === 8) {
-            try { el.previousElementSibling.focus(); } catch (e) {
+            try {
+              el.previousElementSibling.focus();
+            } catch (e) {
               el.closest('.form__group').querySelector('.button').focus();
             }
           }
@@ -350,6 +351,9 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
         {
           type: 'click',
           callback: () => {
+            const inputsNumber = this.modalPageSignIn.querySelectorAll('.last-number-input');
+            inputsNumber.forEach((item) => item.value = '');
+            inputsNumber[0].focus();
             this.registrationNumber(this);
           },
         },
@@ -378,6 +382,9 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
     );
 
     inputFlyLabel();
+    setTimeout(() => {
+      this.inputArea.focus();
+    }, 200);
 
     this.openPage();
   }

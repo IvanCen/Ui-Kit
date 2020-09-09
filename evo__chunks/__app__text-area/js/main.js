@@ -191,6 +191,11 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
     }
 
     this.template = `
+      <button class="button text-area__button text-area__button--type--like text-area__button--position--absolute">
+        <svg class="text-area__icon text-area__icon--type--like" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M1.8 9.80005C1.6 9.25005 1.5 8.67005 1.5 8.05005C1.5 5.15005 3.86 2.80005 6.75 2.80005C8.84 2.80005 10.66 4.03005 11.5 5.80005C11.7 6.22005 12.29 6.22005 12.5 5.80005C13.35 4.02005 15.16 2.80005 17.25 2.80005C20.14 2.80005 22.5 5.15005 22.5 8.05005C22.5 8.67005 22.39 9.27005 22.19 9.83005C21.93 10.56 21.51 11.21 20.97 11.76L12.02 20.66L3.4 12.09L3.39 12.08L3.38 12.07C3.17 11.89 2.98 11.7 2.8 11.49C2.35 10.99 2.02 10.42 1.8 9.80005Z"/>
+        </svg>
+      </button>
       <div class="text-area text-area--theme--light">
         <div class="text-area__container text-area__container--indentation--normal text-area__container--indentation--normal">
           <span class="text-area__price text-area__price--size--big">${price}</span>
@@ -202,11 +207,6 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
           <div class="text-area__content-container text-area__content-container--direction--column">
             <p class="text-area__text text-area__text--theme--shadow">${productInfo.intro}</p>
             <div class="text-area__button-container">
-              <button class="button text-area__button text-area__button--type--like text-area__button--position--absolute">
-                <svg class="text-area__icon text-area__icon--type--like" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M1.8 9.80005C1.6 9.25005 1.5 8.67005 1.5 8.05005C1.5 5.15005 3.86 2.80005 6.75 2.80005C8.84 2.80005 10.66 4.03005 11.5 5.80005C11.7 6.22005 12.29 6.22005 12.5 5.80005C13.35 4.02005 15.16 2.80005 17.25 2.80005C20.14 2.80005 22.5 5.15005 22.5 8.05005C22.5 8.67005 22.39 9.27005 22.19 9.83005C21.93 10.56 21.51 11.21 20.97 11.76L12.02 20.66L3.4 12.09L3.39 12.08L3.38 12.07C3.17 11.89 2.98 11.7 2.8 11.49C2.35 10.99 2.02 10.42 1.8 9.80005Z"/>
-                </svg>
-              </button>
               <button class="button text-area__button text-area__button--type--share">
                 <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-upload.svg]]" alt=""
                      class="text-area__icon text-area__icon--position--center">
@@ -232,7 +232,7 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
             <span class="text-area__info text-area__info--text-size--normal text-area__info--text-bold">
               Калорий
               <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--left text-area__info-number--energy">
-              ${productInfo.energy || ''} г</span>
+              ${productInfo.energy || ''}</span>
             </span>
             <span class="text-area__info text-area__info--text-size--normal text-area__info--text-bold">
               Жиров
@@ -367,11 +367,11 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
         if (productInfo.modifiers !== null) {
           const modifiersArr = [];
           for (const modif in userDataObj[productInfo.id]) {
-            modifiersArr.push({ id: Number(modif), count: userDataObj[productInfo.id][modif] });
+            modifiersArr.push({id: Number(modif), count: userDataObj[productInfo.id][modif]});
           }
-          itemsArray.push({ id: productInfo.id, modifiers: modifiersArr });
+          itemsArray.push({id: productInfo.id, modifiers: modifiersArr});
         } else {
-          itemsArray.push({ id: productInfo.id, modifiers: [] });
+          itemsArray.push({id: productInfo.id, modifiers: []});
         }
         localStorage.setItem('items', JSON.stringify(itemsArray));
       } else {
@@ -918,6 +918,11 @@ class CreateTextAreaOrderPayment extends CreateItem {
     }
   }
 
+  /* <div class="radio">
+            <input type="radio" class="radio__input" id="applePay" name="radio"/>
+            <label class="radio__label radio__label--disable radio__label--default" for="applePay">Apple Pay</label>
+          </div> */
+
   create() {
     this.element = document.createElement(this.parameters.selector);
     this.template = `
@@ -928,10 +933,7 @@ class CreateTextAreaOrderPayment extends CreateItem {
             <input type="radio" class="radio__input" id="creditCard" name="radio"/>
             <label class="radio__label radio__label--default radio__label--available" for="creditCard">Банковская карта</label>
           </div>
-          <div class="radio">
-            <input type="radio" class="radio__input" id="applePay" name="radio"/>
-            <label class="radio__label radio__label--disable radio__label--default" for="applePay">Apple Pay</label>
-          </div>
+          
           <div class="radio">
             <input type="radio" class="radio__input" id="balance" name="radio"/>
             <label class="radio__label radio__label--default" for="balance">Баланс (Доступно ${userInfoObj.successData.balance})</label>
@@ -1003,10 +1005,10 @@ class CreateTextAreaOrderPayment extends CreateItem {
       this.button.before(textAreaPromoCode);
     }
 
-    if (!isIos) {
+    /* if (!isIos) {
       const applePayRadio = this.element.querySelector('#applePay').closest('.radio');
       applePayRadio.remove();
-    }
+    } */
 
     return super.create(this.element);
   }

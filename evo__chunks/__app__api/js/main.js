@@ -1,3 +1,5 @@
+createMainEl();
+
 class Api {
   constructor() {
     this.options = {

@@ -378,7 +378,7 @@ class CreateCardItemReviewOrder extends CreateItem {
 
   create(productInfo, funcCheckBasket) {
     this.element = document.createElement('div');
-    this.energy = `Калорий ${dataProductApi.successData.items[productInfo.id].energy} г`;
+    this.energy = `Калорий ${dataProductApi.successData.items[productInfo.id].energy}`;
 
     this.template = `
           <div class="card-item__container--direction--row-small banners__banner">

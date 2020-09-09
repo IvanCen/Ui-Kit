@@ -19,6 +19,12 @@ Modernizr.on('webp', function(result) {
   }
 });
 
+function createMainEl() {
+  const mainPageEl = document.createElement('div');
+  mainPageEl.classList.add('main-page');
+  document.body.prepend(mainPageEl);
+}
+
 function createTopBarIos() {
   const el = document.createElement('div');
   if (isIos) {
@@ -1475,7 +1481,9 @@ class ToggleInboxTabContent {
 
   clearPage() {
     this.pageTabContent = document.querySelector('.page__tab-content');
-    this.pageTabContent.remove();
+    if(this.pageTabContent) {
+      this.pageTabContent.remove();
+    }
   }
 }
 
