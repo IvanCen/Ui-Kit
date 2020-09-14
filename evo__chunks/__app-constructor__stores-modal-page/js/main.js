@@ -153,108 +153,109 @@ class ToggleStores extends ToggleModalPageStores {
 
 
     function renderStores(stores, page) {
-      console.log(stores.successData);
-
-      ymaps.ready(() => {
-        const myMap = new ymaps.Map('map', {
-          center: [59.938, 30.3],
-          zoom: 11,
-          controls: ['geolocationControl'],
-        });
-
-        const myCollection = new ymaps.GeoObjectCollection();
-        const userLocation = new ymaps.GeoObjectCollection(null, {
-          preset: 'user',
-        });
-        const mainPageContainer = document.querySelector('.map__container');
-
-        // Сравним положение, вычисленное по ip пользователя и
-        // положение, вычисленное средствами браузера.
-        function createUserPosition() {
-          let crd;
-          const options = {
-            enableHighAccuracy: true,
-            timeout: 5000,
-            maximumAge: 0,
-          };
-
-          function success(pos) {
-            crd = pos.coords;
-            // Дождемся ответа от сервера и получим ближайший и наиболее удаленный
-            // объект по отношению к точке.
-            crd.placemark = new ymaps.Placemark([crd.latitude, crd.longitude],
-              {
-                balloonContent: 'Вы находитесь здесь',
-              }, {
-                iconLayout: 'default#image',
-                iconImageHref: '/assets/chunks/map/img/loc.svg',
-                // iconContentLayout: MyIconContentLayout,
-                iconImageSize: [20, 20],
-                iconImageOffset: [-10, -10],
-              });
-            myMap.panTo([crd.latitude, crd.longitude], {
-              delay: 1000,
+      try {
+        console.log(stores.successData);
+        if (ymaps) {
+          ymaps.ready(() => {
+            const myMap = new ymaps.Map('map', {
+              center: [59.938, 30.3],
+              zoom: 11,
+              controls: ['geolocationControl'],
             });
-            userLocation.add(crd.placemark);
-            const storesElems = document.querySelectorAll('.map__item');
-            let order;
-            myCollection.each((item, index) => {
-              const distance = ymaps.coordSystem.geo.getDistance([item.geometry._coordinates[0], item.geometry._coordinates[1]], [crd.latitude, crd.longitude]);
-              if (storesElems[index]) {
-                order = Math.round(distance / 100);
-                storesElems[index].style.order = order;
-                const distEl = storesElems[index].querySelector('.map__item-dist');
-                const regExp = /(\d+\.?\d)\D+\d+;(\D+)/gi;
-                distEl.textContent = ymaps.formatter.distance(distance).replace(regExp, '$1 $2');
+
+            const myCollection = new ymaps.GeoObjectCollection();
+            const userLocation = new ymaps.GeoObjectCollection(null, {
+              preset: 'user',
+            });
+            const mainPageContainer = document.querySelector('.map__container');
+
+            // Сравним положение, вычисленное по ip пользователя и
+            // положение, вычисленное средствами браузера.
+            function createUserPosition() {
+              let crd;
+              const options = {
+                enableHighAccuracy: true,
+                timeout: 5000,
+                maximumAge: 0,
+              };
+
+              function success(pos) {
+                crd = pos.coords;
+                // Дождемся ответа от сервера и получим ближайший и наиболее удаленный
+                // объект по отношению к точке.
+                crd.placemark = new ymaps.Placemark([crd.latitude, crd.longitude],
+                  {
+                    balloonContent: 'Вы находитесь здесь',
+                  }, {
+                    iconLayout: 'default#image',
+                    iconImageHref: '/assets/chunks/map/img/loc.svg',
+                    // iconContentLayout: MyIconContentLayout,
+                    iconImageSize: [20, 20],
+                    iconImageOffset: [-10, -10],
+                  });
+                myMap.panTo([crd.latitude, crd.longitude], {
+                  delay: 1000,
+                });
+                userLocation.add(crd.placemark);
+                const storesElems = document.querySelectorAll('.map__item');
+                let order;
+                myCollection.each((item, index) => {
+                  const distance = ymaps.coordSystem.geo.getDistance([item.geometry._coordinates[0], item.geometry._coordinates[1]], [crd.latitude, crd.longitude]);
+                  if (storesElems[index]) {
+                    order = Math.round(distance / 100);
+                    storesElems[index].style.order = order;
+                    const distEl = storesElems[index].querySelector('.map__item-dist');
+                    const regExp = /(\d+\.?\d)\D+\d+;(\D+)/gi;
+                    distEl.textContent = ymaps.formatter.distance(distance).replace(regExp, '$1 $2');
+                  }
+
+
+                  // console.log(storesElems[index], index, item, order);
+                  /* console.log(ymaps.formatter.distance(distance));
+                  console.log(distance); */
+                });
+
+                console.log('Ваше текущее метоположение:');
+                console.log(`Широта: ${crd.latitude}`);
+                console.log(`Долгота: ${crd.longitude}`);
+                console.log(`Плюс-минус ${crd.accuracy} метров.`);
               }
 
+              function error(err) {
+                console.log(`ERROR(${err.code}): ${err.message}`);
+              }
 
-              // console.log(storesElems[index], index, item, order);
-              /* console.log(ymaps.formatter.distance(distance));
-              console.log(distance); */
-            });
-
-            console.log('Ваше текущее метоположение:');
-            console.log(`Широта: ${crd.latitude}`);
-            console.log(`Долгота: ${crd.longitude}`);
-            console.log(`Плюс-минус ${crd.accuracy} метров.`);
-          }
-
-          function error(err) {
-            console.log(`ERROR(${err.code}): ${err.message}`);
-          }
-
-          navigator.geolocation.getCurrentPosition(success, error, options);
-        }
-
-        if ('geolocation' in navigator) {
-          console.log('местоположение доступно');
-          createUserPosition(myCollection);
-        } else {
-          console.log('местоположение НЕ доступно');
-        }
-        let activePlacemark;
-        stores.successData.forEach((store) => {
-          let placemark;
-          if (store.priceGroup === 'BreadRiots') {
-            console.log(store);
-            placemark = new ymaps.Placemark([store.latitude, store.longitude], {}, {
-              iconLayout: 'default#image',
-              iconImageHref: 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-xleb-point.svg]]',
-              iconImageSize: [35, 35],
-            });
-            placemark.properties.set('priceGroup', 'BreadRiots');
-            placemark.properties.set('data-id', store.id);
-            console.log(placemark.properties.get('priceGroup', 'BreadRiots'));
-          } else {
-            let phone;
-            if (store.phone !== null) {
-              const regExp = /(\+\d)(\d{3})(\d{3})(\d{2})(\d{2})/g;
-              phone = store.phone.replace(regExp, '$1 ($2) $3-$4-$5');
+              navigator.geolocation.getCurrentPosition(success, error, options);
             }
-            placemark = new ymaps.Placemark([store.latitude, store.longitude], {
-              balloonContentHeader: store.shortTitle,
-              balloonContentBody: `
+
+            if ('geolocation' in navigator) {
+              console.log('местоположение доступно');
+              createUserPosition(myCollection);
+            } else {
+              console.log('местоположение НЕ доступно');
+            }
+            let activePlacemark;
+            stores.successData.forEach((store) => {
+              let placemark;
+              if (store.priceGroup === 'BreadRiots') {
+                console.log(store);
+                placemark = new ymaps.Placemark([store.latitude, store.longitude], {}, {
+                  iconLayout: 'default#image',
+                  iconImageHref: 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-xleb-point.svg]]',
+                  iconImageSize: [35, 35],
+                });
+                placemark.properties.set('priceGroup', 'BreadRiots');
+                placemark.properties.set('data-id', store.id);
+                console.log(placemark.properties.get('priceGroup', 'BreadRiots'));
+              } else {
+                let phone;
+                if (store.phone !== null) {
+                  const regExp = /(\+\d)(\d{3})(\d{3})(\d{2})(\d{2})/g;
+                  phone = store.phone.replace(regExp, '$1 ($2) $3-$4-$5');
+                }
+                placemark = new ymaps.Placemark([store.latitude, store.longitude], {
+                  balloonContentHeader: store.shortTitle,
+                  balloonContentBody: `
                 <div class="map__content map__content--position--start map__content--time">
                  <h3 class="map__item-text map__item-text--indentation--right">${getNowDay().ru}:</h3>
                  <span class="map__item-text">${store[getNowDay().en]}</span>
@@ -268,57 +269,64 @@ class ToggleStores extends ToggleModalPageStores {
                   </div>
                 </div>
                   `,
-              balloonContentFooter: `
+                  balloonContentFooter: `
                 <div class="map__content map__content--direction--column">
-                  <span class="map__item-text map__item-text--indentation--bottom">Для заказа выбрана эта точка</span>                
+                  <span class="map__item-text map__item-text--indentation--bottom">Для заказа выбрана эта точка</span>
                   <button onclick="closeStores()" class="button button--size--small button--theme--tangerin button--position--right map__button map__button--type--balloon">Закрыть</button>
                 </div>`,
-            }, {
-              iconLayout: 'default#image',
-              iconImageHref: 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-point.svg]]',
-              iconImageSize: [25, 25],
-            });
-          }
-
-          myCollection.add(placemark);
-          placemark.events.add('click', () => {
-            for (const day in store) {
-              if (Array.isArray(store[day])) {
-                store[day] = store[day].join(', ');
+                }, {
+                  iconLayout: 'default#image',
+                  iconImageHref: 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-point.svg]]',
+                  iconImageSize: [25, 25],
+                });
               }
-            }
-            api.checkWorkTimeStore(store);
-          });
-          const classIdentifier = 'radio__input-default';
-          mainPageContainer.append(storesMapItem.create(store, placemark, myMap));
-        });
 
-        myCollection.events.add('click', (e) => {
-          activePlacemark = e.get('target');
-          myCollection.each((item) => {
-            if (item.properties.get('priceGroup') === 'BreadRiots') {
-              item.options.set('iconImageHref', 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-xleb-point.svg]]');
-            } else {
-              item.options.set('iconImageHref', 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-point.svg]]');
-            }
-          });
-          if (activePlacemark.properties.get('priceGroup') === 'BreadRiots') {
-            activePlacemark.options.set('iconImageHref', 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-xleb-point-select.svg]]');
-          } else {
-            activePlacemark.options.set('iconImageHref', 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-point-select.svg]]');
-          }
-        });
+              myCollection.add(placemark);
+              placemark.events.add('click', () => {
+                for (const day in store) {
+                  if (Array.isArray(store[day])) {
+                    store[day] = store[day].join(', ');
+                  }
+                }
+                api.checkWorkTimeStore(store);
+              });
+              const classIdentifier = 'radio__input-default';
+              mainPageContainer.append(storesMapItem.create(store, placemark, myMap));
+            });
 
-        console.log(userLocation);
-        myMap.geoObjects.add(myCollection);
-        myMap.geoObjects.add(userLocation);
-        /* myMap.events.add('click', (event) => {
-          myCollection.getClosestTo(event.get('coords'));
-        }); */
-        myMap.controls.remove('geolocationControl');
-      });
+            myCollection.events.add('click', (e) => {
+              activePlacemark = e.get('target');
+              myCollection.each((item) => {
+                if (item.properties.get('priceGroup') === 'BreadRiots') {
+                  item.options.set('iconImageHref', 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-xleb-point.svg]]');
+                } else {
+                  item.options.set('iconImageHref', 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-point.svg]]');
+                }
+              });
+              if (activePlacemark.properties.get('priceGroup') === 'BreadRiots') {
+                activePlacemark.options.set('iconImageHref', 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-xleb-point-select.svg]]');
+              } else {
+                activePlacemark.options.set('iconImageHref', 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-point-select.svg]]');
+              }
+            });
+
+            console.log(userLocation);
+            myMap.geoObjects.add(myCollection);
+            myMap.geoObjects.add(userLocation);
+            /* myMap.events.add('click', (event) => {
+              myCollection.getClosestTo(event.get('coords'));
+            }); */
+            myMap.controls.remove('geolocationControl');
+          });
+        }
+      } catch (e) {
+        console.log(e);
+        stores.successData.forEach((store) => {
+          const mainPageContainer = document.querySelector('.map__container');
+          mainPageContainer.append(storesMapItem.create(store));
+        });
+      }
     }
-
     renderStores(storesDataObj, this.modalPageContent);
 
     setTimeout(() => {
@@ -332,7 +340,10 @@ class ToggleStores extends ToggleModalPageStores {
         });
       }
       const mapItem = this.modalPageContent.querySelector('.map__item');
-      mapItem.addEventListener('mousedown', () => false);
+      if (mapItem) {
+        mapItem.addEventListener('mousedown', () => false);
+      }
+
       this.chooseShop(this.modalPageContent);
     }, 300);
 

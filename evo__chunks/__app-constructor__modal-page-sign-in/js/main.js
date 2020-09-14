@@ -98,7 +98,6 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
     const textErrorPhone = this.modalPageSignIn.querySelector('.form__text--error-phone');
     const textError = this.modalPageSignIn.querySelector('.form__text--error');
     const callButton = this.modalPageSignIn.querySelector('.form__button--type--call');
-    const againButton = this.modalPageSignIn.querySelector('.form__button--type--again');
     const accessButton = this.modalPageSignIn.querySelector('.form__button--type--sign-in');
     const callContainer = this.modalPageSignIn.querySelector('.form__call-container');
     const numberForRegistrationEl = this.modalPageSignIn.querySelector('.number-for-registration');
@@ -123,7 +122,6 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
         const codeArr = [...numbersElements].map((number) => number.value);
         const code = codeArr.join('');
         localStorage.setItem('authorizationCode', code);
-        setTimeout(() => againButton.classList.remove('form__button--hide'), 10000);
         api.authorizeCallInApi(this.regSuccess, code, phoneNumber);
       });
 
@@ -193,6 +191,7 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
     const callContainer = this.modalPageSignIn.querySelector('.form__call-container');
     const formInput = this.modalPageSignIn.querySelector('.form__input');
     const buttonSignIn = this.modalPageSignIn.querySelector('.form__button--type--sign-in');
+    const againButton = this.modalPageSignIn.querySelector('.form__button--type--again');
 
     if (infoSuccess.success) {
       textErrorPhone.classList.add('form__text--close', 'form__text--hide');
@@ -207,6 +206,7 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
     } else {
       textErrorPhone.innerHTML = infoSuccess.errors[0];
       textErrorPhone.classList.remove('form__text--close', 'form__text--hide');
+      againButton.classList.remove('form__button--hide');
     }
   }
 

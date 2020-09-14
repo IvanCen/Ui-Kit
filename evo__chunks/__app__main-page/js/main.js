@@ -35,6 +35,8 @@ let dataProductApiLet;
 let userFavoriteStoreLet;
 let outOfStockLet;
 let userAchievementsLet;
+let dataPostsLet;
+let dataPromoLet;
 
 try {
   authorizationCodeLet = localStorage.getItem('authorizationCode') || '';
@@ -126,6 +128,18 @@ try {
   userAchievementsLet = {};
   api.sendDebugMessage(e);
 }
+try {
+  dataPostsLet = JSON.parse(localStorage.getItem('dataPosts')) || {};
+} catch (e) {
+  dataPostsLet = {};
+  api.sendDebugMessage(e);
+}
+try {
+  dataPromoLet = JSON.parse(localStorage.getItem('dataPromo')) || {};
+} catch (e) {
+  dataPromoLet = {};
+  api.sendDebugMessage(e);
+}
 const authorizationCode = authorizationCodeLet;
 const itemsArray = itemsArrayLet;
 const basketArray = basketArrayLet;
@@ -141,6 +155,8 @@ const dataProductApi = dataProductApiLet;
 const userFavoriteStore = userFavoriteStoreLet;
 const outOfStock = outOfStockLet;
 const userAchievements = userAchievementsLet;
+const dataPromo = dataPromoLet;
+const dataPosts = dataPostsLet;
 
 
 /* if (isEmptyObj(storesDataObj)) {
@@ -181,6 +197,8 @@ api.productApi();
 api.getClientAchievements();
 api.getClientOrdersApi();
 api.getMessages();
+api.promoApi();
+api.postsApi();
 
 const toggleOrderMenuContent = new ToggleOrderMenuContent({ api });
 const toggleOrderHitsContent = new ToggleOrderHitsContent({ api });

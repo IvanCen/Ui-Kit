@@ -13,12 +13,6 @@ function number_of(number, suffix) {
 }
 
 function switchAdd(productInfo) {
-  let allCountAdds = 0;
-  if (typeof userDataObj[productInfo.id] === 'object') {
-    for (const modifiersUserItem of Object.values(userDataObj[productInfo.id])) {
-      allCountAdds += modifiersUserItem;
-    }
-  }
   const textAreaButtonAdd = document.querySelectorAll('.text-area__button--type--add');
   [...textAreaButtonAdd].forEach((item) => {
     const textArea = item.closest('.text-area');
@@ -32,13 +26,16 @@ function switchAdd(productInfo) {
     const titleName = replaceWord.trim().replace(regexp, '$2');
 
     let counter = 0;
+    let allCountAdds = 0;
 
     if (typeof userDataObj[productInfo.id] === 'object') {
-      for (const modifiersUserItem in userDataObj[productInfo.id]) {
-        if (String(textArea.id) === modifiersUserItem) {
-          counter += Number(userDataObj[productInfo.id][modifiersUserItem]);
+      Object.entries(userDataObj[productInfo.id]).forEach(([key, value]) => {
+        allCountAdds += value;
+
+        if (String(textArea.id) === key) {
+          counter += Number(value);
         }
-      }
+      });
     }
 
     function setUserDataObj() {
@@ -46,7 +43,11 @@ function switchAdd(productInfo) {
       if (typeof userDataObj[productInfo.id] !== 'object') {
         userDataObj[productInfo.id] = {};
       }
-      userDataObj[productInfo.id][textArea.id] = counter;
+      if (counter === 0) {
+        delete userDataObj[productInfo.id][textArea.id];
+      } else {
+        userDataObj[productInfo.id][textArea.id] = counter;
+      }
       localStorage.setItem('userData', JSON.stringify(userDataObj));
     }
 
@@ -93,29 +94,39 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
   }
 
   countNutrition(obj, el, counter) {
-    for (const nutritionItem in obj) {
-      if (obj[nutritionItem] !== null) {
-        const nutritionEl = el.querySelector(`.text-area__info-number--${nutritionItem}`);
+    Object.entries(obj).forEach(([key, value]) => {
+      if (value !== null) {
+        const nutritionEl = el.querySelector(`.text-area__info-number--${key}`);
         if (nutritionEl) {
           const regExp = /(\d*\.?\d*).*/gm;
           const number = Number(nutritionEl.textContent.trim().replace(regExp, '$1'));
-          const finalNumber = (number + (obj[nutritionItem] * counter)).toFixed(1);
-          console.log(number, obj[nutritionItem], counter, nutritionEl.textContent);
+          const finalNumber = (number + (value * counter)).toFixed(1);
           nutritionEl.textContent = `${finalNumber} г`;
         }
       }
-    }
+    });
   }
 
-  countPrice(productInfo) {
+  countPrice(productInfo, productItemModif, counter) {
+    const priceEl = this.element.querySelector('.text-area__price');
+    let price = Number(priceEl.textContent);
+    price += productItemModif.price * counter;
+    priceEl.textContent = price;
+  }
 
+  createModif(el, productItemModif, counter) {
+    const textAreaListItem = document.createElement('li');
+    const textAreaList = el.querySelector('.text-area__list');
+    textAreaListItem.classList.add('text-area__list-item');
+    textAreaListItem.id = productItemModif.id;
+    textAreaListItem.textContent = `${counter} добав${number_of(counter, ['ка', 'ки', 'ок'])} ${productItemModif.name}`;
+    textAreaList.append(textAreaListItem);
   }
 
   renderModifier(modifierName, el, productInfo) {
     const descriptionArea = el.querySelector('.text-area--type--description');
     const element = document.createElement('div');
     element.classList.add('text-area', 'text-area--theme--light', 'text-area--type--modifier');
-    // element.setAttribute('modifiers-id')
     const template = `
             <div class="text-area__container text-area__container--indentation--small">
               <div class="text-area__content-container text-area__content-container--direction--column">
@@ -129,45 +140,37 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
     element.insertAdjacentHTML('beforeend', template);
 
     if (typeof userDataObj === 'object' && userDataObj[productInfo.id] !== undefined && typeof userDataObj[productInfo.id] === 'object') {
-      const textAreaList = element.querySelector('.text-area__list');
-      for (const modifiersUserItem in userDataObj[productInfo.id]) {
+      Object.keys(userDataObj[productInfo.id]).forEach((modifiersUserItem) => {
         const productItemModif = dataProductApi.successData.modifiers[Number(modifiersUserItem)];
-        if (productItemModif.category === modifierName) {
-          const counter = userDataObj[productInfo.id][modifiersUserItem];
-          const textAreaListItem = document.createElement('li');
-          if (counter !== 0) {
-            console.log(productItemModif);
-            const priceEl = this.element.querySelector('.text-area__price');
-            let price = Number(priceEl.textContent);
-            price += productItemModif.price * counter;
-            priceEl.textContent = price;
-            textAreaListItem.classList.add('text-area__list-item');
-            textAreaListItem.id = productItemModif.id;
-            textAreaListItem.textContent = `${counter} добав${number_of(counter, ['ка', 'ки', 'ок'])} ${productItemModif.name}`;
-            textAreaList.append(textAreaListItem);
-            const {
-              caffeine, carbon, cholesterol, energy, energyFatValue, fats, fiber, netWeight, protein, saturatedFats, sodium, sugar, transFats, volume,
-            } = productItemModif;
-
-            this.countNutrition({
-              caffeine,
-              carbon,
-              cholesterol,
-              energy,
-              energyFatValue,
-              fats,
-              fiber,
-              netWeight,
-              protein,
-              saturatedFats,
-              sodium,
-              sugar,
-              transFats,
-              volume,
-            }, el, counter);
-          }
+        const counter = userDataObj[productInfo.id][modifiersUserItem];
+        if (productItemModif.category === modifierName && counter !== 0) {
+          const {
+            caffeine, carbon, cholesterol,
+            energy, energyFatValue, fats,
+            fiber, netWeight, protein,
+            saturatedFats, sodium, sugar,
+            transFats, volume,
+          } = productItemModif;
+          this.countPrice(productInfo, productItemModif, counter);
+          this.countNutrition({
+            caffeine,
+            carbon,
+            cholesterol,
+            energy,
+            energyFatValue,
+            fats,
+            fiber,
+            netWeight,
+            protein,
+            saturatedFats,
+            sodium,
+            sugar,
+            transFats,
+            volume,
+          }, el, counter);
+          this.createModif(element, productItemModif, counter);
         }
-      }
+      });
     }
     element.addEventListener('click', () => {
       stopAction(() => {
@@ -175,6 +178,15 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
       });
     });
     descriptionArea.after(element);
+  }
+
+  removeEmptyNutrition(productInfo) {
+    Object.entries(productInfo).forEach(([key, value]) => {
+      const modifEl = this.element.querySelector(`.text-area__info-number--${key}`);
+      if ((value === null || value === 0) && modifEl) {
+        modifEl.parentElement.remove();
+      }
+    });
   }
 
   create(productInfo) {
@@ -311,13 +323,7 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
     `;
     this.element.insertAdjacentHTML('beforeend', this.template);
 
-    for (const value in productInfo) {
-      if (productInfo[value] === null || productInfo[value] === 0) {
-        if (this.element.querySelector(`.text-area__info-number--${value}`)) {
-          this.element.querySelector(`.text-area__info-number--${value}`).parentElement.remove();
-        }
-      }
-    }
+    this.removeEmptyNutrition(productInfo);
 
     this.buttonShare = this.element.querySelector('.text-area__button--type--share');
     this.iconsLike = this.element.querySelector('.text-area__icon--type--like');
@@ -367,11 +373,11 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
         if (productInfo.modifiers !== null) {
           const modifiersArr = [];
           for (const modif in userDataObj[productInfo.id]) {
-            modifiersArr.push({id: Number(modif), count: userDataObj[productInfo.id][modif]});
+            modifiersArr.push({ id: Number(modif), count: userDataObj[productInfo.id][modif] });
           }
-          itemsArray.push({id: productInfo.id, modifiers: modifiersArr});
+          itemsArray.push({ id: productInfo.id, modifiers: modifiersArr });
         } else {
-          itemsArray.push({id: productInfo.id, modifiers: []});
+          itemsArray.push({ id: productInfo.id, modifiers: [] });
         }
         localStorage.setItem('items', JSON.stringify(itemsArray));
       } else {
@@ -458,8 +464,6 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
       buttonReset.textContent = 'сбросить модификаторы';
       descriptionArea.before(buttonReset);
       [...modifiers].pop().firstElementChild.classList.add('text-area__container--no-border');
-
-      this.countPrice(productInfo);
     }
 
     return super.create(this.element);
@@ -474,13 +478,6 @@ class CreateTextAreaAddins extends CreateItem {
 
   create(productInfo) {
     this.element = document.createElement(this.parameters.selector);
-
-    let allCountAdds = 0;
-    if (typeof userDataObj[productInfo.id] === 'object') {
-      for (const modifiersUserItem of Object.values(userDataObj[productInfo.id])) {
-        allCountAdds += modifiersUserItem;
-      }
-    }
 
     this.template = `
       <button class="text-area__button text-area__button--type--reset">Очистить добавки</button>
