@@ -31,6 +31,7 @@ class CreateMainCard extends CreateItem {
     });
     const imgEl = this.element.querySelector('.main-card__img');
     const infoImg = { mainPhoto: { name: postInfo.mainPhoto, edit: postInfo.mainPhotoEdit } };
+
     if (!canUseWebP()) {
       loadImgNotSquare(infoImg, imgEl, 'jpg');
     } else {
@@ -48,7 +49,7 @@ class CreateOurHistoryMainCard extends CreateItem {
     this.element = document.createElement(this.parameters.selector);
     this.template = `
         <div class="main-card__img-container">
-          <div style="background-image: url('/assets/images/docs/381/love.jpg')" class="main-card__img"></div>
+          <div style="background-image: url('https://app.xleb.ru/assets/images/docs/381/love.jpg')"  class="main-card__img"></div>
         </div>
         <div class="main-card__text-area">
           <h2 class="main-card__title">${this.parameters.title}</h2>
@@ -70,6 +71,7 @@ class CreateOurHistoryMainCard extends CreateItem {
     this.imgContainer.addEventListener('click', () => {
       togglePageOurHistory.rendering();
     });
+
     return super.create(this.element);
   }
 }

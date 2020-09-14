@@ -100,7 +100,11 @@ class Api {
         }
         return Promise.reject(`Ошибка: ${res.status}`);
       })
-      .then((promoInfo) => promoInfo)
+      .then((promoInfo) => {
+        dataPromo.successData = promoInfo.successData;
+        localStorage.setItem('dataPromo', JSON.stringify(dataPromo));
+        return promoInfo;
+      })
       .then(func)
       .catch((err) => {
         console.log('Ошибка. Запрос не выполнен: ', err);
@@ -126,7 +130,11 @@ class Api {
         }
         return Promise.reject(`Ошибка: ${res.status}`);
       })
-      .then((postsInfo) => postsInfo)
+      .then((postsInfo) => {
+        dataPosts.successData = postsInfo.successData;
+        localStorage.setItem('dataPosts', JSON.stringify(dataPosts));
+        return postsInfo;
+      })
       .then(func)
       .catch((err) => {
         console.log('Ошибка. Запрос не выполнен: ', err);

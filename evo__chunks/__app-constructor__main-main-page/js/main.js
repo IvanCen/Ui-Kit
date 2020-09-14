@@ -131,8 +131,8 @@ class ToggleMain extends ToggleMainPage {
     this.mainPageContent.append(this.promoContainer);
     this.mainPageContent.append(this.postContainer);
 
-    this.parameters.api.promoApi(renderPromo);
-    this.parameters.api.postsApi(renderPosts);
+    renderPromo(dataPromo);
+    renderPosts(dataPosts);
     this.promoContainer.append(ourHistoryMainCard.create());
 
     if (isEmptyObj(userInfoObj)) {

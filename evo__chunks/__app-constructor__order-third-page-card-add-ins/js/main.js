@@ -77,7 +77,7 @@ class ToggleThirdPageAddinsCard extends ToggleThirdPage {
         '--type--add-adds',
       ],
       text: ['В корзину'],
-      
+
     });
     this.containersModifiersEl = document.createElement('div');
     this.containersModifiersEl.classList.add(

@@ -18,6 +18,31 @@ Modernizr.on('webp', function(result) {
     isIos = true
   }
 });
+try {
+  let link = document.createElement('link');
+  link.rel = "manifest";
+  link.href = '/manifest.json';
+  document.head.append(link);
+} catch (e) {
+  console.log(e)
+}
+try {
+  let script = document.createElement('script');
+  script.src = "https://api-maps.yandex.ru/2.1/?apikey=b8801b33-2904-4455-b052-0bda91f01270&lang=ru_RU";
+  script.type = "text/javascript";
+  script.crossorigin = "anonymous";
+  script.onload = () => {
+    console.log('loadYM')
+
+  }
+  script.onerror  = function(message, url, line, col, errorObj) {
+    console.log(`${message}\n${url}, ${line}:${col}`);
+  };
+  document.head.append(script);
+} catch (e) {
+  console.log(e)
+}
+
 
 function createMainEl() {
   const mainPageEl = document.createElement('div');
@@ -339,7 +364,7 @@ async function load_image_with_correct_extension_and_resolution(productInfo, img
   let regExp = /(assets\/images\/docs)(\/\d*\/)([\d\D]*\.)(\D+)/g;
   let productName = image.name.replace(regExp, '$3');
 
-  let source = `/${image.name}_cache/${image.edit}/${imageBlockWidth}x${imageBlockHeight}/${productName}${extension}`;
+  let source = `https://app.xleb.ru/${image.name}_cache/${image.edit}/${imageBlockWidth}x${imageBlockHeight}/${productName}${extension}`;
 
 
   if(aspectRatio === 1 && document.location.hash !== 'debug' && document.location.hash !== '#debug'){
@@ -352,9 +377,10 @@ async function load_image_with_correct_extension_and_resolution(productInfo, img
       /**
        * Если картинка уже лежит в локальном кеше, то получаем url из ее blob данных и подстваляем в адрес(реального выполнения запроса со всеми накладными расходами тут нет)
        */
+
       let request = {
         method: 'HEAD', // *GET, POST, PUT, DELETE, etc.
-        mode: 'cors', // no-cors, *cors, same-origin
+        mode: 'no-cors', // no-cors, *cors, same-origin
         cache: 'only-if-cached', // *default, no-cache, reload, force-cache, only-if-cached
         credentials: 'same-origin', // include, *same-origin, omit
         headers: {
@@ -366,6 +392,7 @@ async function load_image_with_correct_extension_and_resolution(productInfo, img
         // body: JSON.stringify(data) // body data type must match "Content-Type" header
       };
       let rawResponse = await fetch(source, request);
+      console.log(rawResponse);
       if (rawResponse.ok) {
         let responseBlob = await rawResponse.blob();
         imgEl.style.backgroundImage = `url(${window.URL.createObjectURL(responseBlob)})`;
@@ -377,7 +404,7 @@ async function load_image_with_correct_extension_and_resolution(productInfo, img
        */
       let request = {
         method: 'HEAD', // *GET, POST, PUT, DELETE, etc.
-        mode: 'cors', // no-cors, *cors, same-origin
+        mode: 'no-cors', // no-cors, *cors, same-origin
         cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
         credentials: 'same-origin', // include, *same-origin, omit
         headers: {
@@ -390,7 +417,13 @@ async function load_image_with_correct_extension_and_resolution(productInfo, img
       };
       let rawResponse = await fetch(source, request);
       let responseBlob = await rawResponse.blob();
-      if (rawResponse.ok) {
+      try {
+        const responseJson = await rawResponse.json();
+        if (responseJson.ok) {
+          imgEl.style.backgroundImage = `url(${window.URL.createObjectURL(responseBlob)})`;
+
+        }
+      } catch {
         imgEl.style.backgroundImage = `url(${source})`;
         imageWasSet = true;
       }
@@ -408,22 +441,32 @@ async function load_image_with_correct_extension_and_resolution(productInfo, img
           sizeY: `${imageBlockHeight}`,
           src: source,
         };
-        let rawResponse = await fetch('[~30~]', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'text/html'
-          },
-          body: JSON.stringify(request)
-        });
-        let responseJson = await rawResponse.json();
+        console.log(request)
+        let responseJson
+        try {
+          let rawResponse = await fetch('[~30~]', {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+              'Content-Type': 'text/html'
+            },
+            body: JSON.stringify(request)
+          });
+          responseJson = await rawResponse.json();
+        } catch {
+          imgEl.style.backgroundImage = `url(${source})`;
+          responseJson = {success: true}
+        }
+
+        console.log(responseJson, `[~30~]`);
         /**
          * Если кеш уже создан, то перезагружаем картинки и помещаем ее в кеш, а из полученных данных строим url и подставляем его
          */
-        if (responseJson.success === true) {
+        if (responseJson && responseJson.success === true) {
 
           let request = {
             method: 'GET', // *GET, POST, PUT, DELETE, etc.
-            mode: 'cors', // no-cors, *cors, same-origin
+            mode: 'no-cors', // no-cors, *cors, same-origin
             cache: 'reload', // *default, no-cache, reload, force-cache, only-if-cached
             credentials: 'same-origin', // include, *same-origin, omit
             headers: {
@@ -436,6 +479,7 @@ async function load_image_with_correct_extension_and_resolution(productInfo, img
           };
           let rawResponse = await fetch(source, request);
           let responseBlob = await rawResponse.blob();
+          console.log(rawResponse);
           if (rawResponse.ok) {
             imgEl.style.backgroundImage = `url(${window.URL.createObjectURL(responseBlob)})`;
 
