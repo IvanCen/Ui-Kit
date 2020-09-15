@@ -114,7 +114,10 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
   }
 
   renderPayOrderPage(info) {
-    if (info.success) {
+    const pagePay = document.querySelector('.modal-page-order-payment');
+    if (pagePay) {
+      return null;
+    } if (info.success) {
       toggleModalPagePaymentOrder.rendering(info);
     } else {
       toggleModal.rendering(info.errors[0]);
@@ -144,8 +147,10 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
         {
           type: 'click',
           callback: () => {
-            toggleStores.rendering();
-            toggleStores.openPage();
+            stopAction(() => {
+              toggleStores.rendering();
+              toggleStores.openPage();
+            });
           },
         },
       ],
@@ -232,7 +237,7 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
       this.modalPageOrderReview.append(formPromoCode.create());
       this.modalPageOrderReview.append(formComment.create());
       this.modalPageOrderReview.append(formFriendPay.create());
-      const phoneMaskFriend = IMask(
+      IMask(
         document.querySelector('.form__input-area--type--phone'), {
           mask: '+{7}(000)000-00-00',
           lazy: false,
@@ -278,7 +283,9 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
       inputFlyLabel();
 
       this.reviewButton.addEventListener('click', () => {
-        api.getClientApi(this.checkStoreWorkTime);
+        stopAction(() => {
+          api.getClientApi(this.checkStoreWorkTime);
+        });
       });
     } else {
       this.modalPageOrderReview.append(titleBarEmptyBasket.create());

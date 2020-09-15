@@ -222,11 +222,10 @@ class Api {
         console.log(userInfo);
         if (userInfo.success === true) {
           userInfoObj.successData = userInfo.successData;
-          localStorage.setItem('userInfo', JSON.stringify(userInfoObj));
         } else {
           delete userInfoObj.successData;
-          localStorage.setItem('userInfo', JSON.stringify(userInfoObj));
         }
+        localStorage.setItem('userInfo', JSON.stringify(userInfoObj));
         return userInfo;
       })
       .then(func)

@@ -19,6 +19,7 @@ let orderPayInfo;
 let orderComment;
 let userMessages;
 let promoCode;
+let timeRequest;
 
 let authorizationCodeLet;
 let itemsArrayLet;

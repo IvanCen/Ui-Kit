@@ -335,7 +335,14 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
         {
           type: 'click',
           callback: () => {
-            this.registrationNumber(this);
+            stopAction(() => {
+              if (timeRequest > (Date.now() - 3000)) {
+                console.log('nothing!');
+              } else {
+                this.registrationNumber(this);
+                timeRequest = Date.now();
+              }
+            });
           },
         },
       ],
@@ -343,8 +350,10 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
         {
           type: 'click',
           callback: () => {
-            api.getMessages();
-            this.returnPage();
+            stopAction(() => {
+              api.getMessages();
+              this.returnPage();
+            });
           },
         },
       ],
@@ -352,10 +361,12 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
         {
           type: 'click',
           callback: () => {
-            const inputsNumber = this.modalPageSignIn.querySelectorAll('.last-number-input');
-            inputsNumber.forEach((item) => item.value = '');
-            inputsNumber[0].focus();
-            this.registrationNumber(this);
+            stopAction(() => {
+              const inputsNumber = this.modalPageSignIn.querySelectorAll('.last-number-input');
+              inputsNumber.forEach((item) => item.value = '');
+              inputsNumber[0].focus();
+              this.registrationNumber(this);
+            });
           },
         },
       ],

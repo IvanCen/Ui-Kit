@@ -83,8 +83,10 @@ class ToggleMain extends ToggleMainPage {
       events: [{
         type: 'click',
         callback: () => {
-          returnPageObj.returnMainPageAfterSignIn = true;
-          toggleModalPageSignIn.rendering();
+          stopAction(() => {
+            returnPageObj.returnMainPageAfterSignIn = true;
+            toggleModalPageSignIn.rendering();
+          });
         },
       }],
     });
