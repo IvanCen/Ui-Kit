@@ -153,6 +153,13 @@
     z-index: 1;
   }
 
+  &--type--fixed-hight {
+    position: fixed;
+    bottom: 160px;
+    right: 16px;
+    z-index: 1;
+  }
+
   &--type--fixed-low {
     position: fixed;
     bottom: 20px;

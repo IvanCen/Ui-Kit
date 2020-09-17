@@ -51,6 +51,8 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
     const request = {
       method: 'set-client',
       set: setName,
+      phone: authorizationPhone,
+      code: authorizationCode,
       outputFormat: 'json',
     };
     request[setName] = value;
@@ -110,6 +112,8 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
     console.log(info);
 
     if (info.success === true) {
+      localStorage.setItem('authorizationPhone', info.successData.phone);
+      authorizationPhone = info.successData.phone;
       textErrorPhone.classList.add('form__text--close', 'form__text--hide');
       textError.classList.add('form__text--hide');
       callContainer.classList.add('form__call-container--open');
@@ -122,6 +126,7 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
         const codeArr = [...numbersElements].map((number) => number.value);
         const code = codeArr.join('');
         localStorage.setItem('authorizationCode', code);
+        authorizationCode = code;
         api.authorizeCallInApi(this.regSuccess, code, phoneNumber);
       });
 
@@ -396,7 +401,7 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
     inputFlyLabel();
     setTimeout(() => {
       this.inputArea.focus();
-    }, 200);
+    }, 400);
 
     this.openPage();
   }

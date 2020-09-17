@@ -35,7 +35,7 @@ try {
     console.log('loadYM')
 
   }
-  script.onerror  = function(message, url, line, col, errorObj) {
+  script.onerror  = (message, url, line, col, errorObj) => {
     console.log(`${message}\n${url}, ${line}:${col}`);
   };
   document.head.append(script);
@@ -219,7 +219,7 @@ function addProductToBasket(productInfo) {
 
 function checkMessageInbox() {
   const dotMessage = document.querySelector('.top-bar__icon-dot');
-  if(!isEmptyObj(userMessages) && userMessages.success !== false && userMessages.successData.messages.length !== 0) {
+  if(dotMessage && !isEmptyObj(userMessages) && userMessages.success !== false && userMessages.successData.messages.length !== 0) {
     userMessages.successData.messages.every((message) => {
       if (message.wasRead === null) {
         dotMessage.classList.remove('top-bar__icon-dot--hide');

@@ -116,6 +116,7 @@ class ToggleMain extends ToggleMainPage {
           loader.classList.add('loader--hide');
           loader.remove();
         }
+        api.getMessages();
       }, 1000);
       if (!isEmptyObj(userInfoObj)) {
         rateLastOrder();
@@ -166,6 +167,5 @@ class ToggleMain extends ToggleMainPage {
       });
     }
 
-    checkMessageInbox();
   }
 }

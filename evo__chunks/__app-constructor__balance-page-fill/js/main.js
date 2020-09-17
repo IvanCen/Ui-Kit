@@ -5,6 +5,7 @@ class TogglePageBalanceFill extends TogglePage {
     this.rendering = this.rendering.bind(this);
     this.setFillInfo = this.setFillInfo.bind(this);
     this.getPayLink = this.getPayLink.bind(this);
+    this.setFillInfoApplePay = this.setFillInfoApplePay.bind(this);
   }
 
   setFillInfo() {
@@ -31,6 +32,80 @@ class TogglePageBalanceFill extends TogglePage {
           api.rechargeBalanceApi(this.userPhone, this.amount, 'appWidget', this.getPayLinkYandex);
         } else {
           api.rechargeBalanceApi(this.userPhone, this.amount, 'app', this.getPayLink);
+        }
+      }
+    });
+  }
+
+  setFillInfoApplePay() {
+    this.buttonFillApplePay = this.page.querySelector('.button--type--fill-apple-pay');
+    this.topBar = this.page.querySelector('.top-bar');
+    this.buttonSizeBar = this.page.querySelectorAll('.size-bar__button');
+    this.sizeBar = this.page.querySelector('.size-bar');
+
+    [...this.buttonSizeBar].forEach((item) => {
+      if (item.classList.contains('size-bar__button--active')) {
+        this.amount = Number(item.textContent);
+        this.userPhone = userInfoObj.successData.phone;
+        if (typeof ApplePay !== 'undefined' && typeof ApplePay.makePaymentRequest === 'function') {
+          ApplePay.makePaymentRequest(
+            {
+              items: [
+
+                {
+                  label: `Balance recharge ${this.amount}`,
+                  amount: this.amount,
+                },
+              ],
+              shippingMethods: [
+              ],
+              supportedNetworks: ['visa', 'masterCard', 'discover'],
+              merchantCapabilities: ['3ds', 'debit', 'credit'],
+              merchantIdentifier: 'merchant.ru.xleb.app',
+              currencyCode: 'RUB',
+              countryCode: 'RU',
+              billingAddressRequirement: 'none',
+              shippingAddressRequirement: 'none',
+              shippingType: 'shipping',
+            },
+          )
+            .then((paymentResponse) => {
+              // alert('OKDATA:'+JSON.stringify(token.paymentData));
+              (async () => {
+                const request = {
+                  method: 'recharge_the_balance',
+                  user: this.userPhone,
+                  phone: authorizationPhone,
+                  code: authorizationCode,
+                  amount: this.amount,
+                  creditCardProvider: 'AlfaApplePay',
+                  paymentToken: token.paymentData,
+                  outputFormat: 'json',
+                };
+                const rawResponse = await fetch('[~30~]', {
+                  method: 'POST',
+                  mode: 'no-cors',
+                  headers: {
+                    'Content-Type': 'text/html',
+                  },
+                  body: JSON.stringify(request),
+                });
+                const textResponse = await rawResponse.text();
+                // alert(textResponse);
+                const jsResponse = JSON.parse(textResponse);
+                if (jsResponse.success) {
+                  ApplePay.completeLastTransaction('success');
+                } else {
+                  ApplePay.completeLastTransaction('failure');
+                }
+                //   console.log(JSON.parse(await rawResponse.text()));
+              })();
+            })
+            .catch((e) => {
+              alert('Не удалось пополнить баланс с помощью apple pay');
+            });
+        } else {
+          this.setFillInfo();
         }
       }
     });
@@ -114,6 +189,26 @@ class TogglePageBalanceFill extends TogglePage {
     this.page.append(this.cardTopBar.create());
     this.page.append(this.sizeBar.create());
     this.page.append(this.buttonFill.create());
+    if (isIos) {
+      this.buttonFillApplePay = new CreateButton({
+        selector: ['button'],
+        style: ['button'],
+        modifier: [
+          '--size--medium',
+          '--theme--dark-transparent',
+          '--type--fixed-hight',
+          '--type--fill-apple-pay',
+        ],
+        text: ['Оплатить через Apple Pay'],
+        eventsOpen: [
+          {
+            type: 'click',
+            callback: this.setFillInfoApplePay,
+          },
+        ],
+      });
+      this.page.append(this.buttonFillApplePay.create());
+    }
 
     activeSizeBar();
     this.openPage();

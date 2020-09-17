@@ -18,10 +18,12 @@ let orderInfo;
 let orderPayInfo;
 let orderComment;
 let userMessages;
+let lastUserMessagesIdLet;
 let promoCode;
 let timeRequest;
 
 let authorizationCodeLet;
+let authorizationPhoneLet;
 let itemsArrayLet;
 let basketArrayLet;
 let userDataObjLet;
@@ -40,9 +42,21 @@ let dataPostsLet;
 let dataPromoLet;
 
 try {
+  lastUserMessagesIdLet = localStorage.getItem('lastUserMessagesId') || '';
+} catch (e) {
+  lastUserMessagesIdLet = '0';
+  api.sendDebugMessage(e);
+}
+try {
   authorizationCodeLet = localStorage.getItem('authorizationCode') || '';
 } catch (e) {
   authorizationCodeLet = '';
+  api.sendDebugMessage(e);
+}
+try {
+  authorizationPhoneLet = localStorage.getItem('authorizationPhone') || '';
+} catch (e) {
+  authorizationPhoneLet = '';
   api.sendDebugMessage(e);
 }
 try {
@@ -141,7 +155,12 @@ try {
   dataPromoLet = {};
   api.sendDebugMessage(e);
 }
-const authorizationCode = authorizationCodeLet;
+// eslint-disable-next-line prefer-const
+let lastUserMessagesId = lastUserMessagesIdLet;
+// eslint-disable-next-line prefer-const
+let authorizationCode = authorizationCodeLet;
+// eslint-disable-next-line prefer-const
+let authorizationPhone = authorizationPhoneLet;
 const itemsArray = itemsArrayLet;
 const basketArray = basketArrayLet;
 const userDataObj = userDataObjLet;
@@ -186,18 +205,21 @@ function getUserInfo(info) {
     api.getClientApi();
   } else {
     delete userInfoObj.successData;
+    authorizationCode = '';
+    authorizationPhone = '';
+    localStorage.setItem('authorizationCode', authorizationCode);
+    localStorage.setItem('authorizationPhone', authorizationPhone);
     localStorage.setItem('userInfo', JSON.stringify(userInfoObj));
   }
 }
 
-if (authorizationCode !== '' && !isEmptyObj(userInfoObj)) {
-  api.authorizeCallInApi(getUserInfo, authorizationCode, userInfoObj.successData.phone);
+if (authorizationCode !== '' && authorizationPhone !== '') {
+  api.authorizeCallInApi(getUserInfo, authorizationCode, authorizationPhone);
 }
 
 api.productApi();
 api.getClientAchievements();
 api.getClientOrdersApi();
-api.getMessages();
 api.promoApi();
 api.postsApi();
 

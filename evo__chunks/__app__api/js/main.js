@@ -145,11 +145,11 @@ class Api {
     const request = {
       method: 'sign-in',
       sendCodeMethod: 'callIn',
-      phone: `+${phoneSend}`,
+      phone: `${phoneSend}`,
       outputFormat: 'json',
     };
 
-    fetch(this.options.baseUrl, {
+    fetch('[~30~]', {
       method: 'POST',
       headers: this.options.headers,
       body: JSON.stringify(request),
@@ -203,6 +203,8 @@ class Api {
   getClientApi(func) {
     const request = {
       method: 'get-client',
+      phone: authorizationPhone,
+      code: authorizationCode,
       outputFormat: 'json',
     };
 
@@ -220,7 +222,7 @@ class Api {
       })
       .then((userInfo) => {
         console.log(userInfo);
-        if (userInfo.success === true) {
+        if (userInfo.success) {
           userInfoObj.successData = userInfo.successData;
         } else {
           delete userInfoObj.successData;
@@ -360,6 +362,8 @@ class Api {
       from: 'app', // Доступные варианты: app, site, обязательный для атрибута payForm: creditCard
       payFrom, // Доступные варианты: balance, creditCard, bonus
       orderId: orderInfo.orderId, // Номер заказа полученный при его создании
+      phone: authorizationPhone,
+      code: authorizationCode,
       outputFormat: 'json',
     };
 
@@ -422,6 +426,8 @@ class Api {
       method: 'get-client-orders',
       // lastOrder: '900313', // необязательное поле, позволяет указать последний номер заказа в кеше
       lastCount: 10, // необязательное поле, позволяет указать сколько последних заказов вернуть
+      phone: authorizationPhone,
+      code: authorizationCode,
       outputFormat: 'json',
     };
 
@@ -486,6 +492,8 @@ class Api {
       method: 'get-client-bonus-log',
       // lastLogId: '100', // необязательное поле, позволяет указать последний номер заказа в кеше
       lastCount: 10, // необязательное поле, позволяет указать сколько последних заказов вернуть
+      phone: authorizationPhone,
+      code: authorizationCode,
       outputFormat: 'json',
     };
 
@@ -519,6 +527,8 @@ class Api {
       method: 'get-client-balance-log',
       // lastLogId: '100', // необязательное поле, позволяет указать последний номер заказа в кеше
       lastCount: 10, // необязательное поле, позволяет указать сколько последних заказов вернуть
+      phone: authorizationPhone,
+      code: authorizationCode,
       outputFormat: 'json',
     };
 
@@ -628,6 +638,8 @@ class Api {
       method: 'get-messages',
       // lastId: '100', // необязательное поле, позволяет указать последний идентификатор сообщения в кеше
       // lastCount: 10, // необязательное поле, позволяет указать сколько последних заказов вернуть
+      phone: authorizationPhone,
+      code: authorizationCode,
       outputFormat: 'json',
     };
 
@@ -647,7 +659,25 @@ class Api {
       })
       .then((res) => {
         console.log(res);
+        let needVibrate = false;
+
+        res.successData.messages.forEach((mess) => {
+          if (mess.id > Number(lastUserMessagesId)) {
+            lastUserMessagesId = mess.id;
+            if (!mess.wasRead) {
+              needVibrate = true;
+            }
+          }
+        });
+        localStorage.setItem('lastUserMessagesId', lastUserMessagesId);
+        if (needVibrate) {
+          if (typeof navigator.vibrate === 'function') {
+            navigator.vibrate(3000);
+          }
+        }
+
         userMessages = res;
+        checkMessageInbox();
         return res;
       })
       .then(func)
@@ -763,6 +793,8 @@ class Api {
   getClientAchievements(func) {
     const request = {
       method: 'get-client-achievements',
+      phone: authorizationPhone,
+      code: authorizationCode,
       outputFormat: 'json',
     };
 

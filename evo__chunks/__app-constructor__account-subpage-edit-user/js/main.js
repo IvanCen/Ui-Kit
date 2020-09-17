@@ -54,6 +54,8 @@ class ToggleSubPageEditUser extends ToggleSubPage {
     const request = {
       method: 'set-client',
       set: setName,
+      phone: authorizationPhone,
+      code: authorizationCode,
       outputFormat: 'json',
     };
     request[setName] = value;
