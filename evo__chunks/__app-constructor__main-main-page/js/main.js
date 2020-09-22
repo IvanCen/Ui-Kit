@@ -112,7 +112,7 @@ class ToggleMain extends ToggleMainPage {
         const mainPage = document.querySelector('.main-page');
         const loader = document.querySelector('.loader');
         if (loader) {
-          mainPage.classList.remove('main-page--loaded');
+          
           loader.classList.add('loader--hide');
           loader.remove();
         }

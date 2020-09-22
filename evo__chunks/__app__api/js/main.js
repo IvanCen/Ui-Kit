@@ -21,7 +21,6 @@ class Api {
       method: 'POST',
       headers: this.options.headers,
       body: JSON.stringify(request),
-
     })
       .then((res) => {
         if (res.ok) {
@@ -69,7 +68,6 @@ class Api {
               return true;
             });
           }
-
           if (isOldStore()) {
             delete userStore.store;
             localStorage.setItem('userStore', JSON.stringify(userStore));
@@ -224,6 +222,8 @@ class Api {
         console.log(userInfo);
         if (userInfo.success) {
           userInfoObj.successData = userInfo.successData;
+          api.getClientAchievements();
+          api.getMessages();
         } else {
           delete userInfoObj.successData;
         }

@@ -220,9 +220,7 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
   askUserInfo(userInfo) {
     console.log(userInfo);
 
-    if (userInfo.success === true) {
-      api.getClientAchievements();
-      api.getMessages();
+    if (userInfo.success) {
       api.getClientApi();
 
       localStorage.setItem('user-sign-in', 'true');

@@ -50,7 +50,9 @@ class ToggleStores extends ToggleModalPageStores {
 
       container.style.transform = `translate3d(0,${offsetY}px,0)`;
     }
-
+    /**
+ * Панель за которую тянется весь контейнер panelTouch
+ * */
     const panelTouch = container.querySelector('.top-bar-search--size--small');
     panelTouch.addEventListener('touchstart', (event) => {
       dragStart = event.touches[0].clientY;

@@ -13,22 +13,6 @@ class ToggleReward extends ToggleMainPage {
       modifier: [`--size--medium${isIos ? '--ios' : ''}`, '--indentation--bottom'],
       textTitle: ['Достижения'],
     });
-    /* const giftTitleBarOther = new CreateTitleBarWithButton({
-      selector: ['div'],
-      style: ['title-bar'],
-      title: ['Ваши достижения'],
-      titleSize: ['small'],
-      buttonText: ['Посмотреть все'],
-      eventButton: [
-        { type: 'click', callback: togglePageSeeAll.rendering },
-        { type: 'click', callback: togglePageSeeAll.openPage },
-      ],
-    });
-    const cardBannersContainer = new CreateBannersContainerOrder();
-    const bannersReward = new CreateBannerRectangle({
-      bannerSize: ['small'],
-    }); */
-
 
     const cardItemContainer = new CreateCardItemContainerProductCard();
     const cardItem = new CreateCardItemRewardCard();
@@ -40,10 +24,9 @@ class ToggleReward extends ToggleMainPage {
 
     this.mainPageContent.append(createTopBarIos());
     this.mainPageContent.append(topBar.create());
-
-    this.cardItemContainerEl = this.mainPageContent.querySelector('.card-item__container');
     if (!isEmptyObj(userAchievements) && userAchievements.successData.length !== 0) {
       this.mainPageContent.append(cardItemContainer.create('reward', 'card-item__container--indentation--top'));
+      this.cardItemContainerEl = this.mainPageContent.querySelector('.card-item__container');
       for (const rewardInfo in userAchievements.successData) {
         this.cardItemContainerEl.append(cardItem.create(userAchievements.successData[rewardInfo]));
       }

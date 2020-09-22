@@ -1,5 +1,4 @@
 const mainPage = document.querySelector('.main-page');
-mainPage.classList.add('main-page--loaded');
 const body = document.querySelector('body');
 
 window.onerror = (message, url, lineNo) => {
@@ -472,7 +471,7 @@ if (/\?refer=alfa.*/.test(window.location.search)) {
 setTimeout(() => {
   const loader = document.querySelector('.loader');
   if (loader) {
-    mainPage.classList.remove('main-page--loaded');
+
     loader.classList.add('loader--hide');
     loader.remove();
   }
