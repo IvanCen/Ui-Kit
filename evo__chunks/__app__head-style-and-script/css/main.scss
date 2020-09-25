@@ -15,6 +15,7 @@ $lightGrey: #D1D1D1;
 $whitelight: #EEEEEF;
 $birch: #3E3B34;
 $nero: #141414;
+$blackPerl: #221D18;
 $SuvaGrey: #939393;
 $pattensBlue: #D8DCDE;
 $dimGray: #6B6B6B;
@@ -43,6 +44,14 @@ $dodgerBlue: #2F80ED;
   font-size: 17px;
   line-height: 22px;
   letter-spacing: 0.02em;
+}
+
+%style-3-5 {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: 0.25px;
 }
 
 %style-4 {

@@ -229,6 +229,8 @@ const toggleOrderFavoriteContent = new ToggleOrderFavoriteContent();
 
 const toggleInboxTabMessagesContent = new ToggleInboxTabMessagesContent();
 const toggleInboxTabLastOffersContent = new ToggleInboxTabLastOffersContent();
+const toggleSubscriptionTabActual = new ToggleSubscriptionTabActual();
+const toggleSubscriptionTabMy = new ToggleSubscriptionTabMy();
 
 const toggleModalPageStoresSearch = new ToggleModalPageStoresSearch({
   classOpen: ['modal-page-search--opened-stores'],
@@ -279,6 +281,9 @@ const toggleSubPageGiftCard = new ToggleSubPageGiftCard({
   classOpen: ['subpage--opened'],
 });
 const toggleSubPageApplication = new ToggleSubPageApplication({
+  classOpen: ['subpage--opened'],
+});
+const toggleModalPageSubscription = new ToggleModalPageSubscription({
   classOpen: ['subpage--opened'],
 });
 const toggleSubPageEditUser = new ToggleSubPageEditUser({
@@ -471,7 +476,6 @@ if (/\?refer=alfa.*/.test(window.location.search)) {
 setTimeout(() => {
   const loader = document.querySelector('.loader');
   if (loader) {
-
     loader.classList.add('loader--hide');
     loader.remove();
   }

@@ -68,6 +68,7 @@ class Api {
               return true;
             });
           }
+
           if (isOldStore()) {
             delete userStore.store;
             localStorage.setItem('userStore', JSON.stringify(userStore));
@@ -179,7 +180,7 @@ class Api {
 
     fetch('[~30~]', {
       method: 'POST',
-      headers: { 'Content-Type': 'text/html' },
+      headers: {'Content-Type': 'text/html'},
       body: JSON.stringify(request),
     })
       .then((res) => {
@@ -259,7 +260,7 @@ class Api {
   imageCacheQueueApi(request, func) {
     fetch('[~30~]', {
       method: 'POST',
-      headers: { 'Content-Type': 'text/html' },
+      headers: {'Content-Type': 'text/html'},
       body: JSON.stringify(request),
 
     })
@@ -312,7 +313,7 @@ class Api {
   }
 
   makeOrderApi(phone, orderArrItems, shopId, orderComment = '', orderFriendData, promoCode = '', isToGo, func) {
-    const { friendName = '', friendPhone = '' } = orderFriendData;
+    const {friendName = '', friendPhone = ''} = orderFriendData;
 
     console.log(phone, orderArrItems, shopId, orderComment, friendName, friendPhone, isToGo, func);
     let store = JSON.parse(localStorage.getItem('userStore'));
@@ -853,3 +854,16 @@ class Api {
       });
   }
 }
+
+const scriptPromise = new Promise((resolve, reject) => {
+  const script = document.createElement('script');
+  document.body.appendChild(script);
+  script.onload = resolve;
+  script.onerror = reject;
+  script.async = true;
+  script.src = 'https://kassa.yandex.ru/checkout-ui/v2.js';
+});
+
+scriptPromise.then((res) => {
+  console.log(res);
+});

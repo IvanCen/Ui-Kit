@@ -613,12 +613,21 @@ class CreateTextAreaAccount extends CreateItem {
           </button>
          </div>
        </div>  
+       <div class="text-area text-area--type--subscription">
+        <div class="text-area__container text-area__container--indentation--small">
+          <h2 class="text-area__title text-area__title--size--small text-area__title--type--bold">Абонименты</h2>
+          <button class="button">
+            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-right.svg]]" alt="" class="text-area__icon text-area__icon--position--center">
+          </button>
+         </div>
+       </div>
     `;
     this.element.insertAdjacentHTML('beforeend', this.template);
 
     this.buttonPrivacy = this.element.querySelector('.text-area--type--privacy');
     this.buttonTerms = this.element.querySelector('.text-area--type--terms');
     this.buttonPublic = this.element.querySelector('.text-area--type--public');
+    this.buttonSubscription = this.element.querySelector('.text-area--type--subscription');
 
     this.buttonPrivacy.addEventListener('click', () => {
       stopAction(() => {
@@ -633,6 +642,11 @@ class CreateTextAreaAccount extends CreateItem {
     this.buttonPublic.addEventListener('click', () => {
       stopAction(() => {
         toggleSubPageApplication.rendering(this.setData('public-offer'));
+      });
+    });
+    this.buttonSubscription.addEventListener('click', () => {
+      stopAction(() => {
+        toggleModalPageSubscription.rendering();
       });
     });
 

@@ -1531,6 +1531,32 @@ class ToggleInboxTabContent {
   }
 }
 
+class ToggleSubscriptionTabContent {
+  constructor(parameters) {
+    this.parameters = parameters;
+    this.body = document.querySelector('body');
+    this.subPage = document.querySelector('.subpage');
+
+    this.clearPage = this.clearPage.bind(this);
+    if (typeof this.parameters !== 'object') {
+      this.parameters = {};
+    }
+  }
+
+  rendering() {
+    this.subPageTabContent = document.createElement('div');
+    this.subPageTabContent.classList.add('subpage__tab-content');
+    this.subPageContent = document.querySelector('.subpage__content');
+  }
+
+  clearPage() {
+    this.subPageContent = document.querySelector('.subpage__tab-content');
+    if(this.subPageTabContent) {
+      this.subPageTabContent.remove();
+    }
+  }
+}
+
 class ToggleModal {
   constructor(parameters) {
     this.parameters = parameters;

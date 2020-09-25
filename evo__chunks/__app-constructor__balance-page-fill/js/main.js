@@ -5,36 +5,42 @@ class TogglePageBalanceFill extends TogglePage {
     this.rendering = this.rendering.bind(this);
     this.setFillInfo = this.setFillInfo.bind(this);
     this.getPayLink = this.getPayLink.bind(this);
+    this.getPayLinkYandex = this.getPayLinkYandex.bind(this);
     this.setFillInfoApplePay = this.setFillInfoApplePay.bind(this);
   }
 
   setFillInfo() {
-    this.buttonFill = this.page.querySelector('.button--type--fill');
-    this.topBar = this.page.querySelector('.top-bar');
-    this.buttonSizeBar = this.page.querySelectorAll('.size-bar__button');
-    this.sizeBar = this.page.querySelector('.size-bar');
-    this.loader = document.createElement('img');
-    this.loader.classList.add('spinner');
-    this.loader.src = 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-spinner.svg]]';
-    this.topBar.after(this.loader);
+    try {
+      this.page = document.querySelector('.page');
+      this.buttonFill = this.page.querySelector('.button--type--fill');
+      this.topBar = this.page.querySelector('.top-bar');
+      this.buttonSizeBar = this.page.querySelectorAll('.size-bar__button');
+      this.sizeBar = this.page.querySelector('.size-bar');
+      this.loader = document.createElement('img');
+      this.loader.classList.add('spinner');
+      this.loader.src = 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-spinner.svg]]';
+      this.topBar.after(this.loader);
 
-    this.buttonFill.classList.add('button--hide');
-    this.sizeBar.classList.add('size-bar--hide');
-    this.paymentForm = document.createElement('div');
-    this.paymentForm.id = 'payment-form';
-    this.page.append(this.paymentForm);
+      this.buttonFill.classList.add('button--hide');
+      this.sizeBar.classList.add('size-bar--hide');
+      this.paymentForm = document.createElement('div');
+      this.paymentForm.id = 'payment-form';
+      this.page.append(this.paymentForm);
 
-    [...this.buttonSizeBar].forEach((item) => {
-      if (item.classList.contains('size-bar__button--active')) {
-        this.amount = Number(item.textContent);
-        this.userPhone = userInfoObj.successData.phone;
-        if (this.userPhone === '+79522655566') {
-          api.rechargeBalanceApi(this.userPhone, this.amount, 'appWidget', this.getPayLinkYandex);
-        } else {
-          api.rechargeBalanceApi(this.userPhone, this.amount, 'app', this.getPayLink);
+      [...this.buttonSizeBar].forEach((item) => {
+        if (item.classList.contains('size-bar__button--active')) {
+          this.amount = Number(item.textContent);
+          this.userPhone = userInfoObj.successData.phone;
+          if (this.userPhone === '+79522655566' || this.userPhone === '+79818380415') {
+            api.rechargeBalanceApi(this.userPhone, this.amount, 'appWidget', this.getPayLinkYandex);
+          } else {
+            api.rechargeBalanceApi(this.userPhone, this.amount, 'app', this.getPayLink);
+          }
         }
-      }
-    });
+      });
+    } catch (e) {
+      alert(e);
+    }
   }
 
   setFillInfoApplePay() {
@@ -112,6 +118,7 @@ class TogglePageBalanceFill extends TogglePage {
   }
 
   getPayLink(payInfo) {
+    this.page = document.querySelector('.page');
     this.loader = this.page.querySelector('.spinner');
     this.loader.classList.add('spinner--hide');
     if (payInfo.success) {
@@ -123,24 +130,32 @@ class TogglePageBalanceFill extends TogglePage {
 
   getPayLinkYandex(payInfo) {
     console.log(payInfo);
-    this.loader = this.page.querySelector('.spinner');
-    this.loader.classList.add('spinner--hide');
+    try {
+      this.page = document.querySelector('.page');
+      this.loader = this.page.querySelector('.spinner');
+      this.loader.classList.add('spinner--hide');
+      this.buttonFillApplePay = this.page.querySelector('.button--type--fill-apple-pay');
 
-    if (payInfo.success) {
-      // Инициализация виджета. Все параметры обязательные.
-      const checkout = new window.YandexCheckout({
-        confirmation_token: payInfo.successData.confirmationToken, // Токен, который перед проведением оплаты нужно получить от Яндекс.Кассы
-        return_url: 'https://xleb.ru/test-app.html', // Ссылка на страницу завершения оплаты
-        embedded_3ds: true,
-        error_callback(error) {
-          toggleModal.rendering(error);
-        },
-      });
+      if (payInfo.success) {
+        //this.buttonFillApplePay.classList('button--hide');
+        // Инициализация виджета. Все параметры обязательные.
+        const checkout = new window.YandexCheckout({
+          confirmation_token: payInfo.successData.confirmationToken, // Токен, который перед проведением оплаты нужно получить от Яндекс.Кассы
+          return_url: 'https://xleb.ru/test-app.html', // Ссылка на страницу завершения оплаты
+          embedded_3ds: true,
+          newDesign: true,
+          error_callback(error) {
+            toggleModal.rendering(error);
+          },
+        });
 
-      // Отображение платежной формы в контейнере
-      checkout.render('payment-form');
-    } else {
-      toggleModal.rendering(payInfo.errors[0]);
+        // Отображение платежной формы в контейнере
+        checkout.render('payment-form');
+      } else {
+        toggleModal.rendering(payInfo.errors[0]);
+      }
+    } catch (e) {
+      alert(e);
     }
   }
 
