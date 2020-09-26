@@ -137,7 +137,6 @@ class TogglePageBalanceFill extends TogglePage {
       this.buttonFillApplePay = this.page.querySelector('.button--type--fill-apple-pay');
 
       if (payInfo.success) {
-        //this.buttonFillApplePay.classList('button--hide');
         // Инициализация виджета. Все параметры обязательные.
         const checkout = new window.YandexCheckout({
           confirmation_token: payInfo.successData.confirmationToken, // Токен, который перед проведением оплаты нужно получить от Яндекс.Кассы
