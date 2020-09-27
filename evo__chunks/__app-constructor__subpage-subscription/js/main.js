@@ -27,7 +27,7 @@ class ToggleModalPageSubscription extends ToggleSubPage {
         {
           type: 'click',
           callback: () => {
-            toggleSubscriptionTabActual.clearPage();
+            toggleSubscriptionTabMy.clearPage();
             toggleSubscriptionTabActual.rendering();
           },
         },
@@ -36,7 +36,7 @@ class ToggleModalPageSubscription extends ToggleSubPage {
         {
           type: 'click',
           callback: () => {
-            toggleSubscriptionTabMy.clearPage();
+            toggleSubscriptionTabActual.clearPage();
             toggleSubscriptionTabMy.rendering();
           },
         },
@@ -48,7 +48,7 @@ class ToggleModalPageSubscription extends ToggleSubPage {
 
     const topBarTabs = this.subPage.querySelectorAll('.top-bar__tab');
     switchActive(topBarTabs, 'top-bar__tab--active-light');
-
+    toggleSubscriptionTabActual.rendering();
     this.openPage();
   }
 }

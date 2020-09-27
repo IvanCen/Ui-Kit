@@ -12,7 +12,7 @@ class CreateMainCard extends CreateItem {
         <div class="main-card__img"></div>
       </div>
       <div class="main-card__text-area">
-        <h2 class="main-card__title">${postInfo.title}</h2>
+        <h2 class="main-card__title main-card__title--size--normal">${postInfo.title}</h2>
         <p class="main-card__text">${postInfo.intro}</p>
       </div>
       <div class="main-card__button-container main-card__button-container--indentation--left main-card__button-container--indentation--bottom">
@@ -52,7 +52,7 @@ class CreateOurHistoryMainCard extends CreateItem {
           <div style="background-image: url('https://app.xleb.ru/assets/images/docs/381/love.jpg')"  class="main-card__img"></div>
         </div>
         <div class="main-card__text-area">
-          <h2 class="main-card__title">${this.parameters.title}</h2>
+          <h2 class="main-card__title main-card__title--size--normal">${this.parameters.title}</h2>
           <p class="main-card__text">${this.parameters.text}</p>
         </div>
         <div class="main-card__button-container main-card__button-container--indentation--left main-card__button-container--indentation--bottom">
@@ -95,6 +95,56 @@ class CreateCardsMainCard extends CreateItem {
   }
 }
 
+class CreateNoSubscriptionsMainCard extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+    this.element = document.createElement(this.parameters.selector);
+    this.template = `
+        <div class="main-card__img-container">
+          <div style="background-image: url('[+chunkWebPath+]/img/no-subscriptions.png')" class="main-card__img"></div>
+        </div>
+        <div class="main-card__text-area main-card__text-area--pisition--center">
+        <h2 class="main-card__title main-card__title--size--normal">У вас еще нет активных абонементов</h2>
+          <p class="main-card__text main-card__text--size--small main-card__text--theme--shadow">Приобрести их вы можете в любом магазине сети Хлебник</p>
+        </div>`;
+  }
+
+  create() {
+    this.element.insertAdjacentHTML('beforeend', this.template);
+
+    return super.create(this.element);
+  }
+}
+
+class CreateSubscriptionsMainCard extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+    this.element = document.createElement(this.parameters.selector);
+    this.template = `
+        <div class="main-card__img-container">
+          <div style="background-image: url('[+chunkWebPath+]/img/subscriptions.jpg')" class="main-card__img main-card__img--size--small"></div>
+        </div>
+        <div class="main-card__text-area">
+        <h2 class="main-card__title main-card__title--indentation--small main-card__title--size--big">Абонемент на кофе</h2>
+        <p class="main-card__text main-card__text--size--small main-card__text--theme--shadow main-card__text--indentation--bottom">Действителен 2 недели</p>
+        <span class="main-card__text main-card__text--text--bold main-card__text--indentation--bottom-small">Условия:</span>
+        <ul class="main-card__list">
+          <li class="main-card__list-item">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do</li>
+          <li class="main-card__list-item">eiusmod tempor incididunt ut</li>
+          <li class="main-card__list-item">labore et dolore magna aliqua.</li>
+        </ul>
+        </div>`;
+  }
+
+  create() {
+    this.element.insertAdjacentHTML('beforeend', this.template);
+
+    return super.create(this.element);
+  }
+}
+
 
 class CreateTextMainCard extends CreateItem {
   constructor(parameters) {
@@ -122,7 +172,7 @@ class CreateOrderMainCard extends CreateItem {
     this.template = `
         <img src="[+chunkWebPath+]/img/main-card-noimg.jpg" alt="" class="main-card__img">
         <div class="main-card__text-area">
-          <h2 class="main-card__title">${this.parameters.title}</h2>
+          <h2 class="main-card__title main-card__title--size--normal">${this.parameters.title}</h2>
           <p class="main-card__text">${this.parameters.text}</p>
         </div>
         <div class="main-card__button-container main-card__button-container--indentation--left main-card__button-container--indentation--bottom">
@@ -167,7 +217,7 @@ class CreateInboxMainCardNews extends CreateItem {
     this.element = document.createElement(this.parameters.selector);
     this.template = `
         <div class="main-card__text-area">
-          <h2 class="main-card__title">${subject}</h2>
+          <h2 class="main-card__title main-card__title--size--normal">${subject}</h2>
           <span class="main-card__info main-card__info--theme--shadow">${this.date}</span>
         </div>
         `;
@@ -198,7 +248,7 @@ class CreateInboxMainCard extends CreateItem {
     this.template = `
        
         <div class="main-card__text-area">
-          <h2 class="main-card__title main-card__title--indentation--top">${this.parameters.title}</h2>
+          <h2 class="main-card__title main-card__title--size--normal main-card__title--indentation--top">${this.parameters.title}</h2>
           <p class="main-card__text">${this.parameters.text}</p>
         </div>`;
   }
@@ -261,7 +311,7 @@ class CreateGiftMainCard extends CreateItem {
     this.element = document.createElement(this.parameters.selector);
     this.template = `
       <img src="[+chunkWebPath+]/img/main-card-noimg.jpg" alt="" class="main-card__img main-card__img--theme--shadow">
-      <h2 class="main-card__title">${this.parameters.title}</h2>`;
+      <h2 class="main-card__title main-card__title--size--normal">${this.parameters.title}</h2>`;
   }
 
   create() {

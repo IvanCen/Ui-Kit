@@ -7,18 +7,16 @@ class ToggleSubscriptionTabActual extends ToggleSubscriptionTabContent {
 
   rendering() {
     super.rendering();
-    this.inboxMainCards = new CreateInboxMainCard({
+    this.mainCardSubsription = new CreateSubscriptionsMainCard({
       selector: ['div'],
       style: ['main-card'],
-      title: ['Сейчас сообщений нет'],
-      text: [''],
+      modifier: [
+        '--theme--shadow',
+        '--type--border',
+        '--indentation--top',
+      ],
     });
-    this.inboxMainCardsNews = new CreateInboxMainCardNews({
-      selector: ['div'],
-      style: ['main-card'],
-      modifier: ['--border--bottom'],
-    });
-
     this.subPageContent.append(this.subPageTabContent);
+    this.subPageTabContent.append(this.mainCardSubsription.create());
   }
 }
