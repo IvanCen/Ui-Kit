@@ -73,6 +73,7 @@ class Api {
             delete userStore.store;
             localStorage.setItem('userStore', JSON.stringify(userStore));
           }
+          api.getShopOutOfStockItemsAndModifiers(userStore.store.id);
         }
       })
       .catch((err) => {
@@ -180,7 +181,7 @@ class Api {
 
     fetch('[~30~]', {
       method: 'POST',
-      headers: {'Content-Type': 'text/html'},
+      headers: { 'Content-Type': 'text/html' },
       body: JSON.stringify(request),
     })
       .then((res) => {
@@ -260,7 +261,7 @@ class Api {
   imageCacheQueueApi(request, func) {
     fetch('[~30~]', {
       method: 'POST',
-      headers: {'Content-Type': 'text/html'},
+      headers: { 'Content-Type': 'text/html' },
       body: JSON.stringify(request),
 
     })
@@ -313,7 +314,7 @@ class Api {
   }
 
   makeOrderApi(phone, orderArrItems, shopId, orderComment = '', orderFriendData, promoCode = '', isToGo, func) {
-    const {friendName = '', friendPhone = ''} = orderFriendData;
+    const { friendName = '', friendPhone = '' } = orderFriendData;
 
     console.log(phone, orderArrItems, shopId, orderComment, friendName, friendPhone, isToGo, func);
     let store = JSON.parse(localStorage.getItem('userStore'));
@@ -846,6 +847,72 @@ class Api {
       })
       .then((res) => {
         console.log(res);
+        return res;
+      })
+      .then(func)
+      .catch((err) => {
+        console.log('Ошибка. Запрос не выполнен: ', err);
+      });
+  }
+
+  getSeasons(func) {
+    const request = {
+      method: 'get-seasons',
+      outputFormat: 'json',
+    };
+
+    fetch(this.options.baseUrl, {
+      method: 'POST',
+      headers: this.options.headers,
+      body: JSON.stringify(request),
+
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+      .then((res) => {
+        console.log(res);
+        if (res.success) {
+          dataSeasons.successData = res.successData;
+          localStorage.setItem('dataSeasons', JSON.stringify(dataSeasons));
+        }
+        return res;
+      })
+      .then(func)
+      .catch((err) => {
+        console.log('Ошибка. Запрос не выполнен: ', err);
+      });
+  }
+
+  getClientSeasons(func) {
+    const request = {
+      method: 'get-client-seasons',
+      phone: authorizationPhone,
+      code: authorizationCode,
+      outputFormat: 'json',
+    };
+
+    fetch(this.options.baseUrl, {
+      method: 'POST',
+      headers: this.options.headers,
+      body: JSON.stringify(request),
+
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+      .then((res) => {
+        console.log(res);
+        if (res.success) {
+          dataUserSeasons.successData = res.successData;
+          localStorage.setItem('dataUserSeasons', JSON.stringify(dataUserSeasons));
+        }
         return res;
       })
       .then(func)

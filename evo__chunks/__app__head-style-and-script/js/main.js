@@ -93,16 +93,14 @@ function getNowDay() {
   return daysArr[weekday];
 }
 
-const transformationUtcToLocalDate = (data) => {
-   const changeToLocalDate = new Date(`${data.replace(/-/g, '/')} UTC`).toLocaleString('ru', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric',
-  }).replace('.', '');
-
-  return changeToLocalDate
+const transformationUtcToLocalDate = (data, options = {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  hour: 'numeric',
+  minute: 'numeric',
+}) => {
+  return new Date(`${data.replace(/-/g, '/')} UTC`).toLocaleString('ru', options).replace('.', '')
 };
 
 function counterBasket() {

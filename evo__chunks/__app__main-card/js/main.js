@@ -121,26 +121,104 @@ class CreateSubscriptionsMainCard extends CreateItem {
   constructor(parameters) {
     super();
     this.parameters = parameters;
-    this.element = document.createElement(this.parameters.selector);
-    this.template = `
-        <div class="main-card__img-container">
-          <div style="background-image: url('[+chunkWebPath+]/img/subscriptions.jpg')" class="main-card__img main-card__img--size--small"></div>
-        </div>
-        <div class="main-card__text-area">
-        <h2 class="main-card__title main-card__title--indentation--small main-card__title--size--big">Абонемент на кофе</h2>
-        <p class="main-card__text main-card__text--size--small main-card__text--theme--shadow main-card__text--indentation--bottom">Действителен 2 недели</p>
-        <span class="main-card__text main-card__text--text--bold main-card__text--indentation--bottom-small">Условия:</span>
-        <ul class="main-card__list">
-          <li class="main-card__list-item">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do</li>
-          <li class="main-card__list-item">eiusmod tempor incididunt ut</li>
-          <li class="main-card__list-item">labore et dolore magna aliqua.</li>
-        </ul>
-        </div>`;
   }
 
-  create() {
+  create(subscriptionInfo, subscriptionUserInfo) {
+    const {
+      title, image, duration, id, description,
+    } = subscriptionInfo;
+    let date = `Действителен ${duration} дней`;
+
+    const dateNowLocal = (new Date().toLocaleString('ru', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+    }).replace('.', '').replace(' г.', ''));
+    let templateAddress;
+    if (subscriptionUserInfo) {
+      date = `Действителен до ${transformationUtcToLocalDate(subscriptionUserInfo.endDate, {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+      }).replace('г.', '')}`;
+      const shopName = storesDataObj.successData[subscriptionUserInfo.shopId].longTitle;
+      templateAddress = `<div class="main-card__address-container">
+          <div style="background-image: url('data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-point.svg]]')" class="main-card__icon--type--point"></div>
+          <span class="main-card__address">${shopName}</span>
+        </div>`;
+    }
+
+    this.element = document.createElement(this.parameters.selector);
+    this.template = `
+    <div class="main-card__content-container main-card__content-container--subscription">
+      <div class="main-card__img-container">
+        <div style="background-image: url('${image}')" class="main-card__img main-card__img--size--small"></div>
+      </div>
+      <div class="main-card__text-area main-card__text-area--type--subscription">
+        <h2 class="main-card__title main-card__title--indentation--small main-card__title--size--big">${title}</h2>
+        <p class="main-card__text main-card__date main-card__text--size--small main-card__text--theme--shadow main-card__text--indentation--bottom">${date}</p>
+        
+        <span class="main-card__text main-card__text--text--bold main-card__text--indentation--bottom-small">Условия:</span>
+      </div>
+    </div>
+     <div class="main-card__content-container main-card__content-container--qr main-card__content-container--hide">
+        <div class="main-card__text-area main-card__text-area--position--center">
+          <h2 class="main-card__title main-card__title--indentation--small main-card__title--size--big">Отсканируйте код, чтобы получить скидку</h2>
+        </div>
+        <div class="main-card__img-container">
+          <div class="main-card__img-qr"></div>
+        </div>
+        <div class="main-card__text-area main-card__text-area--position--center">
+          <span class="main-card__text main-card__text--type--address main-card__text--indentation--bottom-small">г. Санкт-Петербург, проспект Металлистов, д 110</span>
+          <span class="main-card__text main-card__text--size--small main-card__text--theme--shadow main-card__text--indentation--bottom-small">${dateNowLocal}</span>
+        </div>
+      </div>`;
     this.element.insertAdjacentHTML('beforeend', this.template);
 
+    this.textArea = this.element.querySelector('.main-card__text-area--type--subscription');
+    this.textArea.insertAdjacentHTML('beforeend', description);
+    if (this.parameters.qr) {
+      this.date = this.element.querySelector('.main-card__date');
+      this.date.insertAdjacentHTML('afterend', templateAddress);
+      this.contentContainer = this.element.querySelector('.main-card__content-container');
+      /* eslint-disable-next-line */
+      this.qrTemplate = `<div style="background-image: url('data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-qr.svg]]')" class="main-card__icon main-card__icon--type--qr"></div>`;
+      this.contentContainer.insertAdjacentHTML('afterend', this.qrTemplate);
+      this.qr = this.element.querySelector('.main-card__icon--type--qr');
+      this.qrImage = this.element.querySelector('.main-card__img-qr');
+      const qr = new QRCode(this.qrImage,
+        {
+          text: authorizationPhone,
+          colorDark: '#000000',
+          colorLight: '#ffffff',
+          correctLevel: QRCode.CorrectLevel.H,
+        });
+      this.qr.addEventListener('click', () => {
+        this.conentContainerQr = this.element.querySelector('.main-card__content-container--qr');
+        this.conentContainerSubscription = this.element.querySelector('.main-card__content-container--subscription');
+        if (this.qr.classList.contains('main-card__icon--type--qr')) {
+          this.qr.classList.remove('main-card__icon--type--qr');
+          this.conentContainerSubscription.classList.add('main-card__content-container--hide');
+          this.conentContainerQr.classList.remove('main-card__content-container--hide');
+          this.qr.classList.add('main-card__icon--type--close');
+          this.qr.style.backgroundImage = "url('data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-close-white.svg]]')";
+        } else {
+          this.conentContainerSubscription.classList.remove('main-card__content-container--hide');
+          this.conentContainerQr.classList.add('main-card__content-container--hide');
+          this.qr.classList.add('main-card__icon--type--qr');
+          this.qr.classList.remove('main-card__icon--type--close');
+          this.qr.style.backgroundImage = "url('data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-qr.svg]]')";
+        }
+      });
+    }
+    /* const imgEl = this.element.querySelector('.main-card__img');
+    if (!canUseWebP()) {
+      loadImg(productInfo, imgEl, 'jpg');
+    } else {
+      loadImg(productInfo, imgEl, 'webp');
+    } */
     return super.create(this.element);
   }
 }

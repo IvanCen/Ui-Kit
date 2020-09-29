@@ -14,9 +14,15 @@ class ToggleSubscriptionTabActual extends ToggleSubscriptionTabContent {
         '--theme--shadow',
         '--type--border',
         '--indentation--top',
+        '--indentation--bottom',
       ],
     });
     this.subPageContent.append(this.subPageTabContent);
-    this.subPageTabContent.append(this.mainCardSubsription.create());
+
+    if (!isEmptyObj(dataSeasons)) {
+      Object.values(dataSeasons.successData).forEach((item) => {
+        this.subPageTabContent.append(this.mainCardSubsription.create(item));
+      });
+    }
   }
 }

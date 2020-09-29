@@ -1,0 +1,116 @@
+document.addEventListener("DOMContentLoaded", onDOMContentLoaded);
+window.addEventListener("resize", test);
+let cardOpened = false;
+function onDOMContentLoaded() {
+    let container = document.querySelector(".card");
+    activeTouch(container);
+
+    let images = document.querySelectorAll(".card__modifiers-section-list-element-image");
+    images.forEach(img=>{
+        img.style.backgroundImage = "url(" + img.dataset["img"] + ")";
+    });
+
+    let sectionGroupTriggers = document.querySelectorAll(".card__info-section-name");
+    sectionGroupTriggers.forEach(trigger=>{
+        trigger.addEventListener("click", function (e){
+            let container = trigger.parentElement.querySelector(".card__info-section-list");
+            trigger.parentElement.classList.toggle('card__info-section--opened');
+            if (container.style.maxHeight) {
+                container.style.maxHeight = null;
+            } else {
+                container.style.maxHeight = `${container.scrollHeight}px`;
+            }
+        });
+    });
+
+    let offersFromCatalog = document.querySelectorAll(".catalog__list-element");
+    offersFromCatalog.forEach(offer=>{
+        offer.addEventListener("click", function(){
+            window.cardAnimation("open");
+        });
+    })
+}
+function test() {
+    let container = document.querySelector(".card");
+    activeTouch(container);
+}
+
+function activeTouch(container) {
+    let dragStart = 0;
+    let dragEnd = 0;
+    let offsetY = 0;
+    let offsetYOnStart = 0;
+    let isOpen = false;
+    const isMapOpen = cardOpened;
+
+    if (isMapOpen === false) {
+        offsetY = container.clientHeight;
+        offsetYOnStart = container.clientHeight;
+        container.style.transform = `translate3d(0,${offsetY}px,0)`;
+    }
+    window.cardAnimation = cardAnimation;
+    function cardAnimation(action) {
+        if (offsetY > (container.clientHeight/5) && !isOpen && action === 'end') {
+            offsetY = container.clientHeight;
+            offsetYOnStart = container.clientHeight;
+            isOpen = !isOpen;
+            cardOpened = false;
+        } else if (offsetY > (container.clientHeight/5) && action === 'move' && isOpen) {
+            offsetY = container.clientHeight;
+            offsetYOnStart = container.clientHeight;
+        } else if (offsetY < (container.clientHeight) && action === 'end' && isOpen) {
+            offsetY = 0;
+            offsetYOnStart = 0;
+            isOpen = !isOpen;
+            cardOpened = true;
+        }
+        if (offsetY < 0) {
+            // тут действия, если тянется дальше максимума
+            if (action === 'end') {
+                offsetY = 0;
+                dragStart = 0;
+                dragEnd = 0;
+                offsetYOnStart = 0;
+            } else if (action === 'move') {
+                offsetY = 0;// уменьшапем скорость смещения в 2 раза
+            }
+        }
+        if(action === 'open'){
+            container.classList.add("card--animation");
+            offsetY = 0;
+            dragStart = 0;
+            dragEnd = 0;
+            offsetYOnStart = 0;
+            container.style.transform = `translate3d(0,${offsetY}px,0)`;
+            setTimeout(function(){
+                container.classList.remove("card--animation");
+            }, 300);
+            return;
+        }
+        console.log(offsetY, dragStart, dragEnd, offsetYOnStart);
+        container.style.transform = `translate3d(0,${offsetY}px,0)`;
+        let s = document.querySelector(".card__name")
+        // s.textContent = "offsetY - " + offsetY +"; container.clientHeight - " + container.clientHeight + "; container.scrollHeight - " + container.scrollHeight;
+    }
+
+    const panelTouch = container.querySelector('.card__touch');
+    panelTouch.addEventListener('touchstart', (event) => {
+        container.classList.remove("card--animation");
+        event.preventDefault();
+        dragStart = event.touches[0].clientY;
+    }, { passive: false });
+
+    panelTouch.addEventListener('touchmove', (event) => {
+        event.preventDefault();
+        dragEnd = event.touches[0].clientY;
+        offsetY = offsetYOnStart + dragEnd - dragStart;
+        cardAnimation('move');
+    }, { passive: false });
+
+    panelTouch.addEventListener('touchend', (event) => {
+        event.preventDefault();
+        offsetYOnStart = offsetY;
+        container.classList.add("card--animation");
+        cardAnimation('end');
+    }, { passive: false });
+}

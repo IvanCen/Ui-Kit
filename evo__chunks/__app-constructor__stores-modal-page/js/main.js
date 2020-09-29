@@ -90,7 +90,7 @@ class ToggleStores extends ToggleModalPageStores {
         [...radioInputs].forEach((item) => {
           if (item.checked) {
             const inputId = item.getAttribute('data-id');
-            storesDataObj.successData.forEach((el) => {
+            Object.values(storesDataObj.successData).forEach((el) => {
               if (el.id === Number(inputId)) {
                 api.getShopOutOfStockItemsAndModifiers(el.id);
                 userStore.store = el;
@@ -237,7 +237,7 @@ class ToggleStores extends ToggleModalPageStores {
               console.log('местоположение НЕ доступно');
             }
             let activePlacemark;
-            stores.successData.forEach((store) => {
+            Object.values(stores.successData).forEach((store) => {
               let placemark;
               if (store.priceGroup === 'BreadRiots') {
                 console.log(store);
@@ -323,7 +323,7 @@ class ToggleStores extends ToggleModalPageStores {
         }
       } catch (e) {
         console.log(e);
-        stores.successData.forEach((store) => {
+        Object.values(stores.successData).forEach((store) => {
           const mainPageContainer = document.querySelector('.map__container');
           mainPageContainer.append(storesMapItem.create(store));
         });

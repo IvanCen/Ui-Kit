@@ -1,0 +1,61 @@
+//colors
+
+//comment
+$color: #E6551E;
+$color-1: #ffffff;
+$color-2: #008248;
+$color-3: #000000;
+$color-4: #33433d;
+$basic: #006241;
+$black: rgba(0,0,0);
+$black50: rgba(0,0,0,.56);
+$white50: rgba(255,255,255,.56);
+$btn: #008248;
+$separator: rgba(0,0,0,.1);
+$btn-border: $color;
+$border: rgba(0,0,0,.1);
+$ceramic: #edebe9;
+$grey: #f7f7f7;
+
+//gutters
+$g1: .6rem;
+$g2: .8rem;
+$g6: 1.6rem;
+$g10: 2.4rem;
+$g14: 3.2rem;
+
+//font styles
+$fs8: .8rem;
+$fs1: 1rem;
+$fs12: 1.2rem;
+$fs14: 1.4rem;
+$fs16: 1.6rem;
+$fs18: 1.8rem;
+
+
+@mixin for-size($size) {
+  @if $size == tablet-portrait-up {
+    @media (min-width: 768px) { @content; }
+  } @else if $size == mobile {
+    @media (min-width: 556px) { @content; }
+  } @else if $size == tablet-landscape-up {
+    @media (min-width: 1024px) { @content; }
+  } @else if $size == desktop-up {
+    @media (min-width: 1440px) { @content; }
+  } @else if $size == big-desktop-up {
+    @media (min-width: 1515px) { @content; }
+  } @else if $size == biggest-desktop-up {
+    @media (min-width: 1700px) { @content; }
+  }
+}
+
+@mixin max-width1440() {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1440px;
+}
+@mixin max-width60() {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 60%;
+}

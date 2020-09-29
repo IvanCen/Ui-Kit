@@ -24,7 +24,7 @@ class ToggleModalPageStoresSearch extends ToggleModalPageSearch {
           const inputId = item.getAttribute('data-id');
 
           if (item.checked) {
-            storesDataObj.successData.forEach((el) => {
+            Object.values(storesDataObj.successData).forEach((el) => {
               if (el.id === Number(inputId)) {
                 api.getShopOutOfStockItemsAndModifiers(el.id);
                 userStore.store = el;

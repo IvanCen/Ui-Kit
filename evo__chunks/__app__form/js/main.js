@@ -451,7 +451,7 @@ class CreateFormPromoCode extends CreateItem {
               <label class="form__input-underlined">
                 <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--text" type="text" required>
                 <span class="form__input-label accordion__input-label">Введите промокод</span>
-                
+
                 <div class="form__input-icon-container">
                   <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-barcode.svg]]" alt="" class="form__input-icon">
                 </div>
@@ -464,6 +464,17 @@ class CreateFormPromoCode extends CreateItem {
             </div>
           </div>
    `;
+    /*this.template = `
+          <div class="basket__header basket__header--dark accordion__trigger accordion--type--promo-code" data-id="4">
+              <div class="basket__title">Есть промокод?</div>
+          </div>
+          <section class="basket__payment accordion__container" data-id="4">
+              <div class="form__group form__group--float form__group--bordered">
+                  <label class="form__label">Промокод</label>
+                  <input class="form__input .form__input-requirement--type--promo-code" type="text">
+              </div>
+          </section>
+   `;*/
   }
 
   create() {

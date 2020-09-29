@@ -1,0 +1,71 @@
+@import "../../_ui-kit/css/main";
+
+
+.profile{
+  overflow: hidden;
+  background-color: #fafafa;
+  &__header{
+    padding: 23px 16px 16px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    color: #909090;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  &__data{
+    background-color: white;
+    padding: 0 16px;
+  }
+  &__info{
+    background-color: white;
+    padding: 0 16px;
+    color: black;
+  }
+  &__group{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height: 48px;
+    position: relative;
+    padding-right: 28px;
+    & > .profile__form-label{
+      font-weight: 400;
+      color: #909090;
+      font-size: 16px;
+      flex-grow: 1;
+      flex-shrink: 0;
+      padding-right: 24px;
+    }
+    & > .profile__form-input{
+      text-align: end;
+      font-weight: 500;
+      font-size: 16px;
+      flex-grow: 0;
+      flex-shrink: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+    }
+    &::after{
+      display: block;
+      content: "";
+      background-repeat: no-repeat;
+      background-position: right center;
+      width: 24px;
+      position: absolute;
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+      height: 24px;
+      background-image: url("[+chunkWebPath+]/img/arrow.svg");
+    }
+  }
+  &__logout{
+    display: flex;
+    padding: 23px 16px 16px;
+    color: $color;
+    font-weight: 500;
+  }
+}

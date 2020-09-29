@@ -39,6 +39,8 @@ let outOfStockLet;
 let userAchievementsLet;
 let dataPostsLet;
 let dataPromoLet;
+let dataSeasonsLet;
+let dataUserSeasonsLet;
 
 try {
   lastUserMessagesIdLet = localStorage.getItem('lastUserMessagesId') || '';
@@ -154,6 +156,18 @@ try {
   dataPromoLet = {};
   api.sendDebugMessage(e);
 }
+try {
+  dataSeasonsLet = JSON.parse(localStorage.getItem('dataSeasons')) || {};
+} catch (e) {
+  dataSeasonsLet = {};
+  api.sendDebugMessage(e);
+}
+try {
+  dataUserSeasonsLet = JSON.parse(localStorage.getItem('dataUserSeasons')) || {};
+} catch (e) {
+  dataUserSeasonsLet = {};
+  api.sendDebugMessage(e);
+}
 // eslint-disable-next-line prefer-const
 let lastUserMessagesId = lastUserMessagesIdLet;
 // eslint-disable-next-line prefer-const
@@ -176,6 +190,8 @@ const outOfStock = outOfStockLet;
 const userAchievements = userAchievementsLet;
 const dataPromo = dataPromoLet;
 const dataPosts = dataPostsLet;
+const dataSeasons = dataSeasonsLet;
+const dataUserSeasons = dataUserSeasonsLet;
 
 
 /* if (isEmptyObj(storesDataObj)) {
@@ -221,6 +237,8 @@ api.getClientAchievements();
 api.getClientOrdersApi();
 api.promoApi();
 api.postsApi();
+api.getSeasons();
+api.getClientSeasons();
 
 const toggleOrderMenuContent = new ToggleOrderMenuContent({ api });
 const toggleOrderHitsContent = new ToggleOrderHitsContent({ api });

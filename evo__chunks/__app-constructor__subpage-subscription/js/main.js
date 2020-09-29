@@ -28,6 +28,7 @@ class ToggleModalPageSubscription extends ToggleSubPage {
           type: 'click',
           callback: () => {
             toggleSubscriptionTabMy.clearPage();
+            toggleSubscriptionTabActual.clearPage();
             toggleSubscriptionTabActual.rendering();
           },
         },
@@ -37,6 +38,7 @@ class ToggleModalPageSubscription extends ToggleSubPage {
           type: 'click',
           callback: () => {
             toggleSubscriptionTabActual.clearPage();
+            toggleSubscriptionTabMy.clearPage();
             toggleSubscriptionTabMy.rendering();
           },
         },

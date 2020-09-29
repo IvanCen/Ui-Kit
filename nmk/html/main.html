@@ -1,0 +1,76 @@
+<div class="main page page--show" data-page="main">
+    <div class="header">
+        <div class="header__top-bar">
+            <button class="header__menu">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 12C4 11.4477 4.44772 11 5 11H15C15.5523 11 16 11.4477 16 12C16 12.5523 15.5523 13 15 13H5C4.44772 13 4 12.5523 4 12ZM4 7C4 6.44772 4.44772 6 5 6H19C19.5523 6 20 6.44772 20 7C20 7.55228 19.5523 8 19 8H5C4.44772 8 4 7.55228 4 7Z" fill="white"/>
+                    <line x1="5" y1="17" x2="10" y2="17" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </button>
+            <div class="header__status">Главная</div>
+            <div class="header__basket">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 21C9.55228 21 10 20.5523 10 20C10 19.4477 9.55228 19 9 19C8.44772 19 8 19.4477 8 20C8 20.5523 8.44772 21 9 21Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M19 21C19.5523 21 20 20.5523 20 20C20 19.4477 19.5523 19 19 19C18.4477 19 18 19.4477 18 20C18 20.5523 18.4477 21 19 21Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 2H5.63636L8.07273 14.497C8.15586 14.9267 8.38355 15.3127 8.71595 15.5874C9.04835 15.8621 9.46427 16.0081 9.89091 15.9997H18.7273C19.1539 16.0081 19.5698 15.8621 19.9022 15.5874C20.2346 15.3127 20.4623 14.9267 20.5455 14.497L22 6.66655H6.54545" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle r="4" cx="90%" cy="22%"
+                            fill="#FF6000" stroke="#35302B" stroke-width="2"
+                    />
+                </svg>
+            </div>
+        </div>
+    </div>
+    <section class="shares">
+        <div class="shares__header">
+            <div class="shares__title">Акции</div>
+        </div>
+        <div class="shares__list">
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <div class="shares__list-element">
+                            <div class="shares__list-element-image"></div>
+                            <div class="shares__list-element-desc">
+                                <div class="shares__list-element-title">Зимнее меню</div>
+                                <div class="shares__list-element-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidi...</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="shares__list-element">
+                            <div class="shares__list-element-image"></div>
+                            <div class="shares__list-element-desc">
+                                <div class="shares__list-element-title">Зимнее меню</div>
+                                <div class="shares__list-element-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidi...</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="shares__list-element">
+                            <div class="shares__list-element-image"></div>
+                            <div class="shares__list-element-desc">
+                                <div class="shares__list-element-title">Зимнее меню</div>
+                                <div class="shares__list-element-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidi...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="balance-section">
+        <div class="balance-section__header">
+            <div class="balance-section__title">Баланс</div>
+            <div class="balance-section__date">сегодня, 10:11</div>
+        </div>
+        <div class="balance-section__content">
+            <div class="balance-section__container">
+                <div class="balance-section__fiat">82,50 ₽</div>
+            </div>
+            <button class="button button--color-2">Пополнить</button>
+        </div>
+    </section>
+
+    [[render-chunk? &chunk=`nmk__catalog`]]
+</div>

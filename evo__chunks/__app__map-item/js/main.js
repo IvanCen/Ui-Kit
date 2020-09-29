@@ -183,7 +183,7 @@ class CreateMapItemStores extends CreateItem {
         }
       } else {
         icon.classList.add('map__icon--liked');
-        storesDataObj.successData.forEach((item) => {
+        Object.values(storesDataObj.successData).forEach((item) => {
           if (item.id === store.id) {
             userFavoriteStore[store.id] = item;
             localStorage.setItem('userFavoriteStore', JSON.stringify(userFavoriteStore));
@@ -207,7 +207,7 @@ class CreateMapItemStores extends CreateItem {
           });/* .then(() => {
             myMap.setZoom(15);
           }); */
-          storesDataObj.successData.forEach((el) => {
+          Object.values(storesDataObj.successData).forEach((el) => {
             if (Number(identity() + el.id) === Number(radioInputId)) {
               api.getShopOutOfStockItemsAndModifiers(el.id);
               userStore.store = el;

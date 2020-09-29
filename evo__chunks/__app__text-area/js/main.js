@@ -202,6 +202,18 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
       price = 0;
     }
 
+    if (!isEmptyObj(dataUserSeasons)) {
+      Object.values(dataUserSeasons.successData).forEach((item) => {
+        if (dataSeasons.successData[item.id]) {
+          Object.values(dataSeasons.successData[item.id].items).forEach((el) => {
+            if (el === productInfo.id) {
+              price = dataSeasons.successData[item.id].price;
+            }
+          });
+        }
+      });
+    }
+
     this.template = `
       <button class="button text-area__button text-area__button--type--like text-area__button--position--absolute">
         <svg class="text-area__icon text-area__icon--type--like" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -615,7 +627,7 @@ class CreateTextAreaAccount extends CreateItem {
        </div>  
        <div class="text-area text-area--type--subscription">
         <div class="text-area__container text-area__container--indentation--small">
-          <h2 class="text-area__title text-area__title--size--small text-area__title--type--bold">Абонименты</h2>
+          <h2 class="text-area__title text-area__title--size--small text-area__title--type--bold">Абонементы</h2>
           <button class="button">
             <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-right.svg]]" alt="" class="text-area__icon text-area__icon--position--center">
           </button>

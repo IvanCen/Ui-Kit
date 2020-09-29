@@ -478,6 +478,18 @@ class CreateCardItemReviewOrder extends CreateItem {
       }
     }
 
+    if (!isEmptyObj(dataUserSeasons)) {
+      Object.values(dataUserSeasons.successData).forEach((item) => {
+        if (dataSeasons.successData[item.id]) {
+          Object.values(dataSeasons.successData[item.id].items).forEach((el) => {
+            if (el === productInfo.id) {
+              this.price.textContent = priceAllModifier + dataSeasons.successData[item.id].price;
+            }
+          });
+        }
+      });
+    }
+
     this.iconsMinus.addEventListener('click', function () {
       (() => {
         if (!this.classList.contains('stop-action')) {
