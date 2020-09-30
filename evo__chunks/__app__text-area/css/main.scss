@@ -15,6 +15,10 @@
   }
 }
 
+.text-area-container {
+  padding: 0 16px 20px;
+}
+
 .text-area {
   padding-left: 16px;
 
@@ -55,7 +59,7 @@
     }
 
     &--indentation--top-bottom {
-      padding: 10px 0 ;
+      padding: 10px 0;
     }
 
     &--direction--column {
@@ -413,6 +417,7 @@
         height: 11px;
       }
     }
+
     &--size--smallest {
       @extend %style-5;
       font-weight: bold;

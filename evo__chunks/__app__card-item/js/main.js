@@ -48,8 +48,8 @@ class CreateCardItemOrderProductCard extends CreateItem {
     this.element.id = productInfo.id;
     this.element.addEventListener('click', () => {
       stopAction(() => {
-        toggleSubPageProductCard.rendering(productInfo);
-        toggleSubPageProductCard.openPage();
+        toggleModalPageCard.rendering(productInfo);
+        toggleModalPageCard.openPage();
       });
     });
     this.template = `
@@ -240,7 +240,7 @@ class CreateCardItemFavAndHisOrder extends CreateItem {
       console.log(e.target.classList.contains('card-item__icon'))
       if (!e.target.classList.contains('card-item__button') || !e.target.classList.contains('card-item__icon')) {
         toggleFifthPage.closePage();
-        toggleSubPageProductCard.rendering(dataProductApi.successData.items[productInfo.id]);
+        toggleModalPageCard.rendering(dataProductApi.successData.items[productInfo.id]);
         toggleFifthPage.deletePage();
       }
     }); */
@@ -250,7 +250,7 @@ class CreateCardItemFavAndHisOrder extends CreateItem {
         if (e.target.classList.contains(classEl)) {
           toggleModalPageSearch.closePage();
           toggleModalPageSearch.deletePage();
-          toggleSubPageProductCard.rendering(dataProductApi.successData.items[productInfo.id]);
+          toggleModalPageCard.rendering(dataProductApi.successData.items[productInfo.id]);
         }
       });
     });
@@ -368,6 +368,191 @@ class CreateCardItemContainerFavAndHisOrder extends CreateItem {
   }
 }
 
+class CreateCardItemReviewContainer extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+  }
+
+  create() {
+    this.element = document.createElement(this.parameters.selector);
+    this.template = `
+          <div class="basket__header accordion__trigger basket__header-should-open basket__header-review" data-id="8">
+              <div class="basket__title basket__title-products">Товаров (${basketArray.length})</div>
+          </div>
+          <section class="basket__offers accordion__container accordion__container-review" data-id="8">
+              
+          </section>`;
+    this.element.insertAdjacentHTML('beforeend', this.template);
+    return super.create(this.element);
+  }
+}
+
+class CreateCardItemReview extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+    this.create.bind(this);
+  }
+
+  create(productInfo, funcCheckBasket) {
+    this.element = document.createElement('div');
+    console.log(productInfo);
+
+    /* this.template = `
+          <div class="card-item__container--direction--row-small banners__banner">
+            <div class="card-item__image card-item__image--size--small"></div>
+            <div class="card-item__content-container">
+              <h3 class="card-item__title card-item__title--text--bold">${dataProductApi.successData.items[productInfo.id].name}</h3>
+              <span class="card-item__info card-item__info--indentation--bottom card-item__info--theme--shadow card-item__info--type--energy">${this.energy}</span>
+              <ul class="card-item__list"></ul>
+              <span class="card-item__price"></span>
+              <div class="card-item__icon-container">
+                <button class="card-item__button card-item__button--type--minus">
+                 <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-remove-circle.svg]]" alt=""
+                       class="card-item__icon card-item__icon--type--minus">
+                </button>
+                <button class="card-item__button card-item__button--type--plus">
+                  <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-add-circle-plus.svg]]" alt=""
+                       class="card-item__icon card-item__icon--type--plus">
+                </button>
+              </div>
+              <div class="main-card__figure main-card__figure--theme--blood main-card__figure--size--normal main-card__figure--hide"><span class="main-card__info main-card__info--out-of">Закончилось</span></div>
+            </div>
+          </div>
+          <div class="card-item__zone card-item__zone--type--delete banners__banner">
+            <img class="card-item__icon card-item__icon--size--big" src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-delete-basket.svg]]" alt="">
+          </div>
+        `; */
+    this.template = `
+          <div class="basket__offers-element banners__banner">
+            <div class="basket__offers-element-image"></div>
+            <div class="basket__offers-element-detail">
+                <div class="basket__offers-element-title">
+                    <div class="basket__offers-element-name">${dataProductApi.successData.items[productInfo.id].name}</div>
+                    <div class="basket__offers-element-price">${dataProductApi.successData.items[productInfo.id].price} ₽</div>
+                </div>
+                <div class="basket__offers-element-additional">
+                    <div class="basket__offers-element-name">${dataProductApi.successData.items[productInfo.id].volume} мл</div>
+                    <div class="basket__offers-element-count">
+                        <div class="basket__offers-element-plus">
+                            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-plus.svg]]" alt="" class="basket__offers-element-plus-icon">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="basket__offers-element-additional basket__offers-element-additional-end">
+                    <button class="basket__offers-element-change-btn">Изменить</button>
+                </div>
+            </div>
+        </div>
+        <div class="card-item__zone card-item__zone--type--delete banners__banner">
+          <img class="card-item__icon card-item__icon--size--big" src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-delete-basket.svg]]" alt="">
+        </div>
+        `;
+    this.element.insertAdjacentHTML('beforeend', this.template);
+    this.iconsPlus = this.element.querySelector('.basket__offers-element-plus');
+    this.price = this.element.querySelector('.basket__offers-element-price');
+    // this.figure = this.element.querySelector('.main-card__figure');
+    this.element.setAttribute('id', productInfo.id);
+    /* if (!isEmptyObj(outOfStock) && outOfStock.successData.itemsAndModifiers.length !== 0) {
+      for (const id in outOfStock.successData.itemsAndModifiers) {
+        if (Number(id) === productInfo.id) {
+          this.figure.classList.remove('main-card__figure--hide');
+          break;
+        }
+      }
+    } */
+    this.element.addEventListener('click', (e) => {
+      console.log(e.target);
+      if (!e.target.classList.contains('basket__offers-element-plus') && !e.target.classList.contains('basket__offers-element-plus-icon')) {
+        stopAction(() => {
+          toggleModalPageCard.closePage();
+          toggleModalPageCard.deletePage();
+          toggleThirdPage.closePage();
+          toggleThirdPage.deletePage();
+          setTimeout(() => {
+            toggleModalPageCard.rendering(dataProductApi.successData.items[productInfo.id], false);
+            toggleModalPageReviewOrder.closePage();
+            toggleModalPageReviewOrder.deletePage();
+          }, 300);
+        });
+      }
+    });
+
+    const imgEl = this.element.querySelector('.basket__offers-element-image');
+    if (!canUseWebP()) {
+      loadImg(dataProductApi.successData.items[productInfo.id], imgEl, 'jpg');
+    } else {
+      loadImg(dataProductApi.successData.items[productInfo.id], imgEl, 'webp');
+    }
+
+    let priceAllModifier = 0;
+
+    if (typeof dataProductApi.successData.items[productInfo.id] === 'object' && typeof productInfo.modifiers === 'object' && productInfo.modifiers.length !== 0) {
+      const additionals = this.element.querySelector('.basket__offers-element-additional-end');
+      const templateModif = `<div class="basket__offers-element-modifiers">
+                    <div class="basket__offers-element-modifiers-title">Модификаторы</div>
+                    <ul class="basket__offers-element-modifiers-list">
+                    
+                    </ul>
+                </div>`;
+      additionals.insertAdjacentHTML('beforebegin', templateModif);
+      const cardItemList = this.element.querySelector('.basket__offers-element-modifiers-list');
+      /**
+       * Перебераем их
+       */
+      for (const modifier of productInfo.modifiers) {
+        /**
+         * Если у модификатора есть идентификатор и такой модификатор существует в каталоге, и количество модификаторов определено и больше 0, то добавляем модификаторы к описанию
+         */
+        if (typeof modifier.id === 'number' && typeof dataProductApi.successData.modifiers[modifier.id] !== 'undefined' && typeof modifier.count === 'number' && modifier.count > 0) {
+          priceAllModifier += dataProductApi.successData.modifiers[modifier.id].price * modifier.count;
+          const cardItemListItem = document.createElement('li');
+          const template = `
+                            <div class="basket__offers-element-modifiers-list-name">${dataProductApi.successData.modifiers[modifier.id].name}</div>
+                            <div class="basket__offers-element-modifiers-list-element-price">+${dataProductApi.successData.modifiers[modifier.id].price} ₽</div>
+                        `;
+          cardItemListItem.insertAdjacentHTML('beforeend', template);
+          cardItemListItem.classList.add('basket__offers-element-modifiers-list-element');
+          cardItemListItem.id = modifier.id;
+          cardItemList.append(cardItemListItem);
+        }
+      }
+    }
+    if (!isEmptyObj(userStore)) {
+      if (userStore.store.priceGroup === null) {
+        this.price.textContent = `${dataProductApi.successData.items[productInfo.id].price} ₽`;
+      } else {
+        this.price.textContent = dataProductApi.successData.items[productInfo.id][`price${userStore.store.priceGroup}`];
+      }
+    }
+
+    if (!isEmptyObj(dataUserSeasons)) {
+      Object.values(dataUserSeasons.successData).forEach((item) => {
+        if (dataSeasons.successData[item.id]) {
+          Object.values(dataSeasons.successData[item.id].items).forEach((el) => {
+            if (el === productInfo.id) {
+              this.price.textContent = `${dataProductApi.successData.items[productInfo.id].price} ₽`;
+            }
+          });
+        }
+      });
+    }
+
+    this.iconsPlus.addEventListener('click', () => {
+      basketArray.push(productInfo);
+      localStorage.setItem('basket', JSON.stringify(basketArray));
+      emitter.emit('event:counter-changed');
+      const cardItemContainer = document.querySelector('.accordion__container-review');
+      const title = document.querySelector('.basket__title-products');
+      title.textContent = `Товаров (${basketArray.length})`;
+      cardItemContainer.append(this.create(productInfo));
+      activeBanners(this.element, true, checkEmptyBasket);
+    });
+    return super.create(this.element);
+  }
+}
 
 class CreateCardItemReviewOrder extends CreateItem {
   constructor(parameters) {
@@ -426,12 +611,12 @@ class CreateCardItemReviewOrder extends CreateItem {
     this.element.addEventListener('click', (e) => {
       if (!e.target.classList.contains('card-item__button') && !e.target.classList.contains('card-item__icon')) {
         stopAction(() => {
-          toggleSubPageProductCard.closePage();
-          toggleSubPageProductCard.deletePage();
+          toggleModalPageCard.closePage();
+          toggleModalPageCard.deletePage();
           toggleThirdPage.closePage();
           toggleThirdPage.deletePage();
           setTimeout(() => {
-            toggleSubPageProductCard.rendering(dataProductApi.successData.items[productInfo.id], false);
+            toggleModalPageCard.rendering(dataProductApi.successData.items[productInfo.id], false);
             toggleModalPageReviewOrder.closePage();
             toggleModalPageReviewOrder.deletePage();
           }, 300);
@@ -708,7 +893,7 @@ class CreateCardItemHistory extends CreateItem {
           classArr.forEach((classEl) => {
             if (e.target.classList.contains(classEl)) {
               toggleFifthPage.closePage();
-              toggleSubPageProductCard.rendering(dataProductApi.successData.items[item.itemId]);
+              toggleModalPageCard.rendering(dataProductApi.successData.items[item.itemId]);
               toggleFifthPage.deletePage();
             }
           });

@@ -847,6 +847,7 @@ class Api {
       })
       .then((res) => {
         console.log(res);
+        dataPackage.successData = res.successData
         return res;
       })
       .then(func)

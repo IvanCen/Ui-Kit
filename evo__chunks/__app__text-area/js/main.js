@@ -482,6 +482,683 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
   }
 }
 
+class CreateTextAreaProductCard extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+    this.element = document.createElement(this.parameters.selector);
+  }
+
+  countNutrition(obj, el, counter) {
+    Object.entries(obj).forEach(([key, value]) => {
+      if (value !== null) {
+        const nutritionEl = el.querySelector(`.text-area__info-number--${key}`);
+        if (nutritionEl) {
+          const regExp = /(\d*\.?\d*).*/gm;
+          const number = Number(nutritionEl.textContent.trim().replace(regExp, '$1'));
+          const finalNumber = (number + (value * counter)).toFixed(1);
+          nutritionEl.textContent = `${finalNumber} г`;
+        }
+      }
+    });
+  }
+
+  countPrice(productInfo, productItemModif, counter) {
+    const priceEl = this.element.querySelector('.text-area__price');
+    let price = Number(priceEl.textContent);
+    price += productItemModif.price * counter;
+    priceEl.textContent = price;
+  }
+
+  createModif(el, productItemModif, counter) {
+    const textAreaListItem = document.createElement('li');
+    const textAreaList = el.querySelector('.text-area__list');
+    textAreaListItem.classList.add('text-area__list-item');
+    textAreaListItem.id = productItemModif.id;
+    textAreaListItem.textContent = `${counter} добав${number_of(counter, ['ка', 'ки', 'ок'])} ${productItemModif.name}`;
+    textAreaList.append(textAreaListItem);
+  }
+
+  renderModifier(modifierName, el, productInfo) {
+    const descriptionArea = el.querySelector('.text-area--type--description');
+    const element = document.createElement('div');
+    element.classList.add('text-area', 'text-area--theme--light', 'text-area--type--modifier');
+    const template = `
+            <div class="text-area__container text-area__container--indentation--small">
+              <div class="text-area__content-container text-area__content-container--direction--column">
+                <h2 class="text-area__title text-area__title--size--small text-area__title--type--bold">${modifierName}</h2>
+                <ul class="text-area__list"></ul>
+              </div>
+              <button class="button">
+                <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-right.svg]]" alt="" class="text-area__icon text-area__icon--position--center">
+              </button>
+            </div>`;
+    element.insertAdjacentHTML('beforeend', template);
+
+    if (typeof userDataObj === 'object' && userDataObj[productInfo.id] !== undefined && typeof userDataObj[productInfo.id] === 'object') {
+      Object.keys(userDataObj[productInfo.id]).forEach((modifiersUserItem) => {
+        const productItemModif = dataProductApi.successData.modifiers[Number(modifiersUserItem)];
+        const counter = userDataObj[productInfo.id][modifiersUserItem];
+        if (productItemModif.category === modifierName && counter !== 0) {
+          const {
+            caffeine, carbon, cholesterol,
+            energy, energyFatValue, fats,
+            fiber, netWeight, protein,
+            saturatedFats, sodium, sugar,
+            transFats, volume,
+          } = productItemModif;
+          this.countPrice(productInfo, productItemModif, counter);
+          this.countNutrition({
+            caffeine,
+            carbon,
+            cholesterol,
+            energy,
+            energyFatValue,
+            fats,
+            fiber,
+            netWeight,
+            protein,
+            saturatedFats,
+            sodium,
+            sugar,
+            transFats,
+            volume,
+          }, el, counter);
+          this.createModif(element, productItemModif, counter);
+        }
+      });
+    }
+    element.addEventListener('click', () => {
+      stopAction(() => {
+        toggleThirdPageAddinsCard.rendering(productInfo, modifierName);
+      });
+    });
+    descriptionArea.after(element);
+  }
+
+  removeEmptyNutrition(productInfo) {
+    Object.entries(productInfo).forEach(([key, value]) => {
+      const modifEl = this.element.querySelector(`.text-area__info-number--${key}`);
+      if ((value === null || value === 0) && modifEl) {
+        modifEl.parentElement.remove();
+      }
+    });
+  }
+
+  create(productInfo) {
+    console.log(productInfo);
+    let price;
+    if (!isEmptyObj(userStore)) {
+      if (userStore.store.priceGroup === null) {
+        price = productInfo.price;
+      } else {
+        price = productInfo[`price${userStore.store.priceGroup}`];
+      }
+    } else {
+      price = 0;
+    }
+
+    if (!isEmptyObj(dataUserSeasons)) {
+      Object.values(dataUserSeasons.successData).forEach((item) => {
+        if (dataSeasons.successData[item.id]) {
+          Object.values(dataSeasons.successData[item.id].items).forEach((el) => {
+            if (el === productInfo.id) {
+              price = dataSeasons.successData[item.id].price;
+            }
+          });
+        }
+      });
+    }
+
+    this.template = `
+      <div class="card__touch"></div>
+        <div class="card__container">
+            <div class="card__image">
+                <div class="card__stickers">
+                </div>
+            </div>
+            <div class="card__title">
+                <div class="card__name">${productInfo.name}</div>
+                <div class="card__bookmark">
+                    <svg class="card__bookmark-icon" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M17 3H6.99997C5.89997 3 5.00997 3.9 5.00997 5L4.99997 21L12 18L19 21V5C19 3.9 18.1 3 17 3ZM17 18L12 15.82L6.99997 18V5H17V18Z"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="card__add-info">
+                <div class="card__price">${price} ₽</div>
+                <div class="card__count">
+                    <div class="card__count-plus">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle opacity="0.12" cx="12.0001" cy="12" r="12" fill="#E6551E"/>
+                            <path d="M12.0001 6.75V17.25" stroke="#E6551E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M6.75006 12H17.2501" stroke="#E6551E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <div class="card__description">
+                ${productInfo.intro}
+            </div>
+            <div class="card__modifiers">
+                <div class="card__modifiers-header">
+                    <div class="card__modifiers-header-title">Добавки</div>
+                    <div class="card__modifiers-reset">Сбросить</div>
+                </div>
+                <div class="card__modifiers-section">
+                    <div class="card__modifiers-section-name">Молоко</div>
+                    <div class="card__modifiers-section-list">
+                        <div class="card__modifiers-section-list-element">
+                            <div class="card__modifiers-section-list-element-promo">
+                                <div class="card__modifiers-section-list-element-image" data-img="[+chunkWebPath+]/img/mod1.png"></div>
+                                <div class="card__modifiers-section-list-element-count">
+                                    <div class="card__modifiers-section-list-element-count-minus card__modifiers-section-list-element-count-minus--hidden"></div>
+                                    <div class="card__modifiers-section-list-element-count-plus"></div>
+                                </div>
+                            </div>
+                            <div class="card__modifiers-section-list-element-title">
+                                <div class="card__modifiers-section-list-element-name">Соевое</div>
+                                <div class="card__modifiers-section-list-element-price">+49 ₽</div>
+                            </div>
+                        </div>
+                        <div class="card__modifiers-section-list-element">
+                            <div class="card__modifiers-section-list-element-promo">
+                                <div class="card__modifiers-section-list-element-image" data-img="[+chunkWebPath+]/img/mod1.png"></div>
+                                <div class="card__modifiers-section-list-element-count">
+                                    <div class="card__modifiers-section-list-element-count-minus"></div>
+                                    <div class="card__modifiers-section-list-element-count-plus"></div>
+                                </div>
+                            </div>
+                            <div class="card__modifiers-section-list-element-title">
+                                <div class="card__modifiers-section-list-element-name">Кокосовое</div>
+                                <div class="card__modifiers-section-list-element-price">+49 ₽</div>
+                            </div>
+                        </div>
+                        <div class="card__modifiers-section-list-element">
+                            <div class="card__modifiers-section-list-element-promo">
+                                <div class="card__modifiers-section-list-element-image" data-img="[+chunkWebPath+]/img/mod1.png"></div>
+                                <div class="card__modifiers-section-list-element-count">
+                                    <div class="card__modifiers-section-list-element-count-minus"></div>
+                                    <div class="card__modifiers-section-list-element-count-plus"></div>
+                                </div>
+                            </div>
+                            <div class="card__modifiers-section-list-element-title">
+                                <div class="card__modifiers-section-list-element-name">Миндальное</div>
+                                <div class="card__modifiers-section-list-element-price">+49 ₽</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card__modifiers-section">
+                    <div class="card__modifiers-section-name">Сиропы</div>
+                    <div class="card__modifiers-section-list">
+                        <div class="card__modifiers-section-list-element">
+                            <div class="card__modifiers-section-list-element-promo">
+                                <div class="card__modifiers-section-list-element-image" data-img="[+chunkWebPath+]/img/mod2.png"></div>
+                                <div class="card__modifiers-section-list-element-count">
+                                    <div class="card__modifiers-section-list-element-count-minus"></div>
+                                    <div class="card__modifiers-section-list-element-count-plus"></div>
+                                </div>
+                            </div>
+                            <div class="card__modifiers-section-list-element-title">
+                                <div class="card__modifiers-section-list-element-name">Мята перечная</div>
+                                <div class="card__modifiers-section-list-element-price">+15 ₽</div>
+                            </div>
+                        </div>
+                        <div class="card__modifiers-section-list-element">
+                            <div class="card__modifiers-section-list-element-promo">
+                                <div class="card__modifiers-section-list-element-image" data-img="[+chunkWebPath+]/img/mod2.png"></div>
+                                <div class="card__modifiers-section-list-element-count">
+                                    <div class="card__modifiers-section-list-element-count-minus"></div>
+                                    <div class="card__modifiers-section-list-element-count-plus"></div>
+                                </div>
+                            </div>
+                            <div class="card__modifiers-section-list-element-title">
+                                <div class="card__modifiers-section-list-element-name">Шоколад</div>
+                                <div class="card__modifiers-section-list-element-price">+15 ₽</div>
+                            </div>
+                        </div>
+                        <div class="card__modifiers-section-list-element">
+                            <div class="card__modifiers-section-list-element-promo">
+                                <div class="card__modifiers-section-list-element-image" data-img="[+chunkWebPath+]/img/mod2.png"></div>
+                                <div class="card__modifiers-section-list-element-count">
+                                    <div class="card__modifiers-section-list-element-count-minus"></div>
+                                    <div class="card__modifiers-section-list-element-count-plus"></div>
+                                </div>
+                            </div>
+                            <div class="card__modifiers-section-list-element-title">
+                                <div class="card__modifiers-section-list-element-name">Карамель</div>
+                                <div class="card__modifiers-section-list-element-price">+15 ₽</div>
+                            </div>
+                        </div>
+                        <div class="card__modifiers-section-list-element">
+                            <div class="card__modifiers-section-list-element-promo">
+                                <div class="card__modifiers-section-list-element-image" data-img="[+chunkWebPath+]/img/mod2.png"></div>
+                                <div class="card__modifiers-section-list-element-count">
+                                    <div class="card__modifiers-section-list-element-count-minus"></div>
+                                    <div class="card__modifiers-section-list-element-count-plus"></div>
+                                </div>
+                            </div>
+                            <div class="card__modifiers-section-list-element-title">
+                                <div class="card__modifiers-section-list-element-name">Мята перечная</div>
+                                <div class="card__modifiers-section-list-element-price">+15 ₽</div>
+                            </div>
+                        </div>
+                        <div class="card__modifiers-section-list-element">
+                            <div class="card__modifiers-section-list-element-promo">
+                                <div class="card__modifiers-section-list-element-image" data-img="[+chunkWebPath+]/img/mod2.png"></div>
+                                <div class="card__modifiers-section-list-element-count">
+                                    <div class="card__modifiers-section-list-element-count-minus"></div>
+                                    <div class="card__modifiers-section-list-element-count-plus"></div>
+                                </div>
+                            </div>
+                            <div class="card__modifiers-section-list-element-title">
+                                <div class="card__modifiers-section-list-element-name">Шоколад</div>
+                                <div class="card__modifiers-section-list-element-price">+15 ₽</div>
+                            </div>
+                        </div>
+                        <div class="card__modifiers-section-list-element">
+                            <div class="card__modifiers-section-list-element-promo">
+                                <div class="card__modifiers-section-list-element-image" data-img="[+chunkWebPath+]/img/mod2.png"></div>
+                                <div class="card__modifiers-section-list-element-count">
+                                    <div class="card__modifiers-section-list-element-count-minus"></div>
+                                    <div class="card__modifiers-section-list-element-count-plus"></div>
+                                </div>
+                            </div>
+                            <div class="card__modifiers-section-list-element-title">
+                                <div class="card__modifiers-section-list-element-name">Карамель</div>
+                                <div class="card__modifiers-section-list-element-price">+15 ₽</div>
+                            </div>
+                        </div>
+                        <div class="card__modifiers-section-list-element">
+                            <div class="card__modifiers-section-list-element-promo">
+                                <div class="card__modifiers-section-list-element-image" data-img="[+chunkWebPath+]/img/mod2.png"></div>
+                                <div class="card__modifiers-section-list-element-count">
+                                    <div class="card__modifiers-section-list-element-count-minus"></div>
+                                    <div class="card__modifiers-section-list-element-count-plus"></div>
+                                </div>
+                            </div>
+                            <div class="card__modifiers-section-list-element-title">
+                                <div class="card__modifiers-section-list-element-name">Мята перечная</div>
+                                <div class="card__modifiers-section-list-element-price">+15 ₽</div>
+                            </div>
+                        </div>
+                        <div class="card__modifiers-section-list-element">
+                            <div class="card__modifiers-section-list-element-promo">
+                                <div class="card__modifiers-section-list-element-image" data-img="[+chunkWebPath+]/img/mod2.png"></div>
+                                <div class="card__modifiers-section-list-element-count">
+                                    <div class="card__modifiers-section-list-element-count-minus"></div>
+                                    <div class="card__modifiers-section-list-element-count-plus"></div>
+                                </div>
+                            </div>
+                            <div class="card__modifiers-section-list-element-title">
+                                <div class="card__modifiers-section-list-element-name">Шоколад</div>
+                                <div class="card__modifiers-section-list-element-price">+15 ₽</div>
+                            </div>
+                        </div>
+                        <div class="card__modifiers-section-list-element">
+                            <div class="card__modifiers-section-list-element-promo">
+                                <div class="card__modifiers-section-list-element-image" data-img="[+chunkWebPath+]/img/mod2.png"></div>
+                                <div class="card__modifiers-section-list-element-count">
+                                    <div class="card__modifiers-section-list-element-count-minus"></div>
+                                    <div class="card__modifiers-section-list-element-count-plus"></div>
+                                </div>
+                            </div>
+                            <div class="card__modifiers-section-list-element-title">
+                                <div class="card__modifiers-section-list-element-name">Карамель</div>
+                                <div class="card__modifiers-section-list-element-price">+15 ₽</div>
+                            </div>
+                        </div>
+                    </div>
+                </div><div class="card__modifiers-section">
+                    <div class="card__modifiers-section-name">Разное</div>
+                    <div class="card__modifiers-section-list">
+                        <div class="card__modifiers-section-list-element">
+                            <div class="card__modifiers-section-list-element-promo">
+                                <div class="card__modifiers-section-list-element-image" data-img="[+chunkWebPath+]/img/mod2.png"></div>
+                                <div class="card__modifiers-section-list-element-count">
+                                    <div class="card__modifiers-section-list-element-count-minus"></div>
+                                    <div class="card__modifiers-section-list-element-count-plus"></div>
+                                </div>
+                            </div>
+                            <div class="card__modifiers-section-list-element-title">
+                                <div class="card__modifiers-section-list-element-name">Шот эспрессо</div>
+                                <div class="card__modifiers-section-list-element-price">+15 ₽</div>
+                            </div>
+                        </div>
+                        <div class="card__modifiers-section-list-element">
+                            <div class="card__modifiers-section-list-element-promo">
+                                <div class="card__modifiers-section-list-element-image" data-img="[+chunkWebPath+]/img/mod2.png"></div>
+                                <div class="card__modifiers-section-list-element-count">
+                                    <div class="card__modifiers-section-list-element-count-minus"></div>
+                                    <div class="card__modifiers-section-list-element-count-plus"></div>
+                                </div>
+                            </div>
+                            <div class="card__modifiers-section-list-element-title">
+                                <div class="card__modifiers-section-list-element-name">Взбитые сливки</div>
+                                <div class="card__modifiers-section-list-element-price">+15 ₽</div>
+                            </div>
+                        </div>
+                        <div class="card__modifiers-section-list-element">
+                            <div class="card__modifiers-section-list-element-promo">
+                                <div class="card__modifiers-section-list-element-image" data-img="[+chunkWebPath+]/img/mod2.png"></div>
+                                <div class="card__modifiers-section-list-element-count">
+                                    <div class="card__modifiers-section-list-element-count-minus"></div>
+                                    <div class="card__modifiers-section-list-element-count-plus"></div>
+                                </div>
+                            </div>
+                            <div class="card__modifiers-section-list-element-title">
+                                <div class="card__modifiers-section-list-element-name">Маршмеллоу</div>
+                                <div class="card__modifiers-section-list-element-price">+20 ₽</div>
+                            </div>
+                        </div>
+                        <div class="card__modifiers-section-list-element">
+                            <div class="card__modifiers-section-list-element-promo">
+                                <div class="card__modifiers-section-list-element-image" data-img="[+chunkWebPath+]/img/mod2.png"></div>
+                                <div class="card__modifiers-section-list-element-count">
+                                    <div class="card__modifiers-section-list-element-count-minus"></div>
+                                    <div class="card__modifiers-section-list-element-count-plus"></div>
+                                </div>
+                            </div>
+                            <div class="card__modifiers-section-list-element-title">
+                                <div class="card__modifiers-section-list-element-name">Ассорти специй</div>
+                                <div class="card__modifiers-section-list-element-price">+15 ₽</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card__info">
+                <div class="card__info-section">
+                    <div class="card__info-section-name">Подробная информация</div>
+                    <div class="card__info-section-list">
+                        <div class="card__info-components">
+                            <div class="card__info-components-name">Масса нетто</div>
+                            <div class="card__info-components-value">${productInfo.volume || ''}</div>
+                        </div>
+                        <div class="card__info-components">
+                            <div class="card__info-components-name">Калорий</div>
+                            <div class="card__info-components-value">${productInfo.energy || ''} </div>
+                        </div>
+                        <div class="card__info-components">
+                            <div class="card__info-components-name">Б/Ж/У</div>
+                            <div class="card__info-components-value">${productInfo.protein || ''}/${productInfo.fats || ''}/${productInfo.carbon || ''} г</div>
+                        </div>
+                        <div class="card__info-text">
+                            КБЖУ блюда рассчитывается автоматически. Модификация товара приведет к перерассчету информации на этой странице. Если модификации не выбраны - будет показана информация основного рецепта.
+                        </div>
+                    </div>
+                </div>
+                <div class="card__info-section card__info-section--ingredients">
+                    <div class="card__info-section-name">Ингридиенты</div>
+                    <div class="card__info-section-list">
+                        <div class="card__info-text card__info-text-ingredients">
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="card__info-section">
+                    <div class="card__info-section-name">Аллергены</div>
+                    <div class="card__info-section-list">
+                        <div class="card__info-text card__info-text-allergens">
+                        </div><div class="card__info-text">
+                            Мы не можем гарантировать отсутствие следов продуктов, которые могут вызвать аллергию в наших блюдах, так как мы используем общее оборудование для хранения.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="button button--color-5 card__button">В корзину</button>
+        </div>
+    `;
+    this.element.insertAdjacentHTML('beforeend', this.template);
+
+    /* this.buttonShare = this.element.querySelector('.text-area__button--type--share');
+    this.iconsLike = this.element.querySelector('.text-area__icon--type--like');
+    this.blockLike = document.querySelector('.main-card__content-img');
+    this.buttonMore = this.element.querySelector('.text-area__button--type--more');
+    this.nutritionArea = this.element.querySelector('.text-area__content-container--type--more');
+    this.introEl = this.element.querySelector('.text-area--type--description');
+    this.price = this.element.querySelector('.text-area__price');
+    this.stickersContainer = this.element.querySelector('.text-area__icon-container');
+    this.containerIngredients = this.element.querySelector('.text-area__container--type--ingredients'); */
+
+    /* if (isEmptyObj(userStore)) {
+      this.price.classList.add('text-area__price--hide');
+    } else {
+      this.price.classList.remove('text-area__price--hide');
+    }
+
+    if (productInfo.intro === '') {
+      this.introEl.remove();
+    }
+
+    if (productInfo.stickers && productInfo.stickers.length !== 0) {
+      productInfo.stickers.forEach((stickerName) => {
+        const stickerEl = document.createElement('div');
+        stickerEl.classList.add('text-area__icon', 'text-area__icon--size--big', `text-area__icon--type--${stickerName}`);
+        this.stickersContainer.prepend(stickerEl);
+      });
+    }
+
+    this.buttonMore.addEventListener('click', () => {
+      this.nutritionArea.classList.remove('text-area__content-container--type--more');
+      this.buttonMore.remove();
+    });
+    itemsArray.forEach((item) => {
+      if (item.id === productInfo.id) {
+        this.iconsLike.classList.add('text-area__icon--liked');
+      }
+    });
+    this.iconsLike.addEventListener('click', () => {
+      this.blockLike.click();
+    });
+    this.blockLike.addEventListener('click', () => {
+      this.iconsLike.classList.toggle('text-area__icon--liked');
+      if (this.iconsLike.classList.contains('text-area__icon--liked')) {
+        console.log(productInfo);
+        if (productInfo.modifiers !== null) {
+          const modifiersArr = [];
+          for (const modif in userDataObj[productInfo.id]) {
+            modifiersArr.push({ id: Number(modif), count: userDataObj[productInfo.id][modif] });
+          }
+          itemsArray.push({ id: productInfo.id, modifiers: modifiersArr });
+        } else {
+          itemsArray.push({ id: productInfo.id, modifiers: [] });
+        }
+        localStorage.setItem('items', JSON.stringify(itemsArray));
+      } else {
+        itemsArray.every((item, index) => {
+          if (item.id === dataProductApi.successData.items[productInfo.id].id) {
+            itemsArray.splice(index, 1);
+            return false;
+          }
+          return true;
+        });
+        localStorage.setItem('items', JSON.stringify(itemsArray));
+      }
+    });
+
+    this.buttonAdd.addEventListener('click', () => {
+      addProductToBasket(productInfo);
+    });
+
+    const shareData = {
+      title: productInfo.name,
+      text: productInfo.intro,
+      url: productInfo.shareLink.replace('//app.', '//'),
+    };
+    if (typeof navigator.canShare !== 'undefined' && navigator.canShare(shareData)) {
+      this.buttonShare.addEventListener('click', () => {
+        navigator.share(shareData);
+      });
+    } else {
+      this.buttonShare.style.display = 'none';
+    }
+
+    const arrModifCategoryName = [];
+    const arrModifProduct = [];
+    const arrIngredientsProduct = [];
+    const arrModifIngredients = [];
+    const arrAllIngredientsProductName = [];
+    const arrAllAllergensProductName = [];
+
+    if (productInfo.modifiers !== null) {
+      productInfo.modifiers.forEach((modifier) => {
+        arrModifCategoryName.push(dataProductApi.successData.modifiers[modifier].category);
+        arrModifProduct.push(dataProductApi.successData.modifiers[modifier]);
+        if (dataProductApi.successData.modifiers[modifier].ingredients !== null) {
+          dataProductApi.successData.modifiers[modifier].ingredients.forEach((modifierIngredient) => {
+            arrModifIngredients.push(dataProductApi.successData.ingredients[Number(modifierIngredient)]);
+          });
+        }
+      });
+    }
+    if (productInfo.ingredients !== null) {
+      productInfo.ingredients.forEach((ingredient) => {
+        arrIngredientsProduct.push(dataProductApi.successData.ingredients[ingredient]);
+      });
+    }
+
+    arrIngredientsProduct.forEach((ingredient) => {
+      if (ingredient) {
+        arrAllIngredientsProductName.push(ingredient.name);
+        if (ingredient.allergenFlag) {
+          arrAllAllergensProductName.push(ingredient.name);
+        }
+      }
+    });
+
+    const elementIngredients = this.element.querySelector('.text-area__text--type--ingredients');
+    const elementAllergens = this.element.querySelector('.text-area__text--type--allergens');
+    elementIngredients.textContent = arrAllIngredientsProductName.join(', ');
+    elementAllergens.textContent = arrAllAllergensProductName.join(', ');
+
+    if (productInfo.ingredients === null) {
+      this.containerIngredients.remove();
+    }
+
+    const unicModifName = new Set(arrModifCategoryName);
+    [...unicModifName].forEach((name) => {
+      this.renderModifier(name, this.element, productInfo);
+    });
+
+    const descriptionArea = this.element.querySelector('.text-area--description-wraper');
+    const modifiers = this.element.querySelectorAll('.text-area--type--modifier');
+    if (typeof userDataObj === 'object' && userDataObj[productInfo.id] !== undefined && !isEmptyObj(userDataObj[productInfo.id])) {
+      const buttonReset = document.createElement('button');
+      buttonReset.classList.add('text-area__button', 'text-area__button--type--reset');
+      buttonReset.textContent = 'сбросить модификаторы';
+      descriptionArea.before(buttonReset);
+      [...modifiers].pop().firstElementChild.classList.add('text-area__container--no-border');
+    } */
+
+    this.buttonAdd = this.element.querySelector('.card__button');
+    this.iconAdd = this.element.querySelector('.card__count-plus');
+    this.introEl = this.element.querySelector('.card__description');
+    this.price = this.element.querySelector('.card__price');
+    this.stickersContainer = this.element.querySelector('.card__stickers');
+    this.containerIngredients = this.element.querySelector('.card__info-section--ingredients');
+    this.iconsLike = this.element.querySelector('.card__bookmark-icon');
+
+    this.buttonAdd.addEventListener('click', () => {
+      addProductToBasket(productInfo);
+    });
+
+    this.iconAdd.addEventListener('click', () => {
+      addProductToBasket(productInfo);
+    });
+
+    if (isEmptyObj(userStore)) {
+      this.price.classList.add('text-area__price--hide');
+    } else {
+      this.price.classList.remove('text-area__price--hide');
+    }
+
+    if (productInfo.intro === '') {
+      this.introEl.remove();
+    }
+
+    if (productInfo.stickers && productInfo.stickers.length !== 0) {
+      productInfo.stickers.forEach((stickerName) => {
+        const stickerEl = document.createElement('div');
+        stickerEl.classList.add('card__stickers-element', `card__stickers-element--${stickerName}`);
+        this.stickersContainer.prepend(stickerEl);
+      });
+    }
+
+    const arrIngredientsProduct = [];
+    const arrAllIngredientsProductName = [];
+    const arrAllAllergensProductName = [];
+
+    if (productInfo.ingredients !== null) {
+      productInfo.ingredients.forEach((ingredient) => {
+        arrIngredientsProduct.push(dataProductApi.successData.ingredients[ingredient]);
+      });
+    }
+
+    arrIngredientsProduct.forEach((ingredient) => {
+      if (ingredient) {
+        arrAllIngredientsProductName.push(ingredient.name);
+        if (ingredient.allergenFlag) {
+          arrAllAllergensProductName.push(ingredient.name);
+        }
+      }
+    });
+
+    const elementIngredients = this.element.querySelector('.card__info-text-ingredients');
+    const elementAllergens = this.element.querySelector('.card__info-text-allergens');
+    elementIngredients.textContent = arrAllIngredientsProductName.join(', ');
+    elementAllergens.textContent = arrAllAllergensProductName.join(', ');
+
+    if (productInfo.ingredients === null) {
+      this.containerIngredients.remove();
+    }
+
+    itemsArray.forEach((item) => {
+      if (item.id === productInfo.id) {
+        this.iconsLike.classList.add('card__bookmark-icon--liked');
+      }
+    });
+
+    this.iconsLike.addEventListener('click', () => {
+      this.iconsLike.classList.toggle('card__bookmark-icon--liked');
+      if (this.iconsLike.classList.contains('card__bookmark-icon--liked')) {
+        console.log(productInfo);
+        if (productInfo.modifiers !== null) {
+          const modifiersArr = [];
+          for (const modif in userDataObj[productInfo.id]) {
+            modifiersArr.push({ id: Number(modif), count: userDataObj[productInfo.id][modif] });
+          }
+          itemsArray.push({ id: productInfo.id, modifiers: modifiersArr });
+        } else {
+          itemsArray.push({ id: productInfo.id, modifiers: [] });
+        }
+        localStorage.setItem('items', JSON.stringify(itemsArray));
+      } else {
+        itemsArray.every((item, index) => {
+          if (item.id === dataProductApi.successData.items[productInfo.id].id) {
+            itemsArray.splice(index, 1);
+            return false;
+          }
+          return true;
+        });
+        localStorage.setItem('items', JSON.stringify(itemsArray));
+      }
+    });
+
+    const imgEl = this.element.querySelector('.card__image');
+    // const infoImg = { mainPhoto: { name: productInfo.mainPhoto, edit: productInfo.mainPhotoEdit } };
+
+    if (!canUseWebP()) {
+      loadImgNotSquare(productInfo, imgEl, 'jpg');
+    } else {
+      loadImgNotSquare(productInfo, imgEl, 'webp');
+    }
+
+    return super.create(this.element);
+  }
+}
+
 class CreateTextAreaAddins extends CreateItem {
   constructor(parameters) {
     super();
@@ -905,6 +1582,69 @@ class CreateTextArea extends CreateItem {
       }
     }
 
+    return super.create(this.element);
+  }
+}
+
+class CreateTextAreaResult extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+    this.element = document.createElement(this.parameters.selector);
+    this.template = `
+      <section class="basket__result">
+          <span class="basket__result-title">Итого</span>
+          <span class="basket__result-price">${this.parameters.sumPrice || ''} ₽</span>
+      </section>
+      <button type="submit" class="button button--type--make-order button--color-5">Оплатить</button>
+    `;
+  }
+
+  create() {
+    this.element.insertAdjacentHTML('beforeend', this.template);
+
+    if (this.parameters.isButton) {
+      this.textAreaContainer = this.element.querySelector('.text-area__container');
+      this.button = document.createElement('button');
+      this.button.classList.add('button');
+      this.buttonTemplate = `
+        <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-right.svg]]" alt="" class="text-area__icon text-area__icon--position--center">`;
+      this.button.insertAdjacentHTML('beforeend', this.buttonTemplate);
+      this.textAreaContainer.append(this.button);
+      if (typeof this.parameters.eventButton === 'object') {
+        for (const event of this.parameters.eventButton) {
+          this.element.addEventListener(event.type, event.callback);
+        }
+      }
+    }
+
+    return super.create(this.element);
+  }
+}
+
+class CreateTextAreaNoBasket extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+    this.element = document.createElement(this.parameters.selector);
+  }
+
+  create() {
+    this.template = `
+      <div class="basket__empty-section">
+        <img src="[+chunkWebPath+]/img/empty-basket.svg" class="basket__empty-section-img" alt="">
+        <div class="basket__empty-section-title">У вас еще нет товаров в корзине</div>
+        <div class="basket__empty-section-text">Переходите в меню, делайте заказ и наслаждайтесь</div>
+        <button class="basket__empty-section-button button button--color-5">${this.parameters.textButton}</button>
+    </img>
+    `;
+    this.element.insertAdjacentHTML('beforeend', this.template);
+    this.button = this.element.querySelector('.basket__empty-section-button');
+    if (typeof this.parameters.eventsButton === 'object') {
+      for (const event of this.parameters.eventsButton) {
+        this.button.addEventListener(event.type, event.callback);
+      }
+    }
     return super.create(this.element);
   }
 }

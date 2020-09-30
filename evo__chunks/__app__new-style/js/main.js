@@ -1,4 +1,4 @@
-let allItems; let
+/*let allItems; let
   shop;
 
 document.addEventListener('DOMContentLoaded', onDOMContentLoaded);
@@ -152,14 +152,4 @@ function initImages() {
     console.log(image);
     image.style.backgroundImage = `url(${image.dataset.image})`;
   });
-}
-
-function isEmptyObj(obj) {
-  let prop;
-  for (prop in obj) {
-    if (obj.hasOwnProperty(prop)) {
-      return false;
-    }
-  }
-  return true;
-}
+}*/

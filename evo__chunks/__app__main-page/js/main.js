@@ -20,6 +20,7 @@ let userMessages;
 let lastUserMessagesIdLet;
 let promoCode;
 let timeRequest;
+const dataPackage = {};
 
 let authorizationCodeLet;
 let authorizationPhoneLet;
@@ -255,6 +256,9 @@ const toggleModalPageStoresSearch = new ToggleModalPageStoresSearch({
 });
 const toggleModalPageOrderSearch = new ToggleModalPageOrderSearch({
   classOpen: ['modal-page-search--opened'],
+});
+const toggleModalPageCard = new ToggleModalPageCard({
+  classOpen: ['modal-page-card--opened'],
 });
 const togglePageStoresFilter = new TogglePageStoresFilter({
   classOpen: ['page--opened'],

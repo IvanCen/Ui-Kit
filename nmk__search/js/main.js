@@ -1,139 +1,140 @@
-let AllItemsForSearch, AllModifiersForSearch;
+let AllItemsForSearch; let
+  AllModifiersForSearch;
 
-document.addEventListener("DOMContentLoaded", onDOMContentLoaded);
+document.addEventListener('DOMContentLoaded', onDOMContentLoaded);
 
 function onDOMContentLoaded() {
-    console.log("onDOMContentLoaded", allItems);
-    let searchBtn = document.querySelector(".catalog__categories-element--search");
-    if(!searchBtn) return;
-    let search = document.querySelector(".search");
-    let closeBtn = document.querySelector(".search__close");
-    let clearBtn = document.querySelector(".search__form-input-clear");
-    let searchField = document.querySelector(".search__form-input");
-    let searchResult = document.querySelector(".search__result");
-    let searchCount = document.querySelector(".search__result-count");
-    searchBtn.addEventListener("click", function(){
-        showSearch();
-        search.classList.add("search--opened");
+  console.log('onDOMContentLoaded', allItems);
+  const searchBtn = document.querySelector('.catalog__categories-element--search');
+  if (!searchBtn) return;
+  const search = document.querySelector('.search');
+  const closeBtn = document.querySelector('.search__close');
+  const clearBtn = document.querySelector('.search__form-input-clear');
+  const searchField = document.querySelector('.search__form-input');
+  const searchResult = document.querySelector('.search__result');
+  const searchCount = document.querySelector('.search__result-count');
+  searchBtn.addEventListener('click', () => {
+    showSearch();
+    search.classList.add('search--opened');
+  });
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+      search.classList.remove('search--opened');
     });
-    if(closeBtn){
-        closeBtn.addEventListener("click", function(){
-            search.classList.remove("search--opened");
-        });
-    }
-    if(clearBtn){
-        clearBtn.addEventListener("click", function(){
-            clearBtn.parentElement.querySelector("input").value = "";
-            searchResult.querySelector(".search__result-container").innerHTML = "";
-            searchResult.classList.add("search__result--empty");
-        });
-    }
-    if(searchField){
-        searchField.addEventListener("input", function(){
-            let founded = {};
-            for(let id in AllItemsForSearch){
-                console.log(searchField.value.toLowerCase(), id, id.indexOf(searchField.value))
-                if(id.indexOf(searchField.value.toLowerCase()) != -1){
-                    founded[id] = AllItemsForSearch[id];
-                }
-            }
-            if(isEmptyObj(founded) || searchField.value == ""){
-                searchResult.querySelector(".search__result-container").innerHTML = "";
-                searchResult.classList.add("search__result--empty");
-            }else{
-                searchResult.classList.remove("search__result--empty");
-                let count = 0;
-                for(let id in AllItemsForSearch){
-                    if(id.indexOf(searchField.value) != -1){
-                        count++;
-                        founded[id] = AllItemsForSearch[id];
-                    }
-                }
-                searchCount.textContent = count + " товаров";
-                console.log(founded);
-                searchResult.querySelector(".search__result-container").innerHTML = "";
-                createFoundedElements(founded);
-            }
-        });
-    }
+  }
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      clearBtn.parentElement.querySelector('input').value = '';
+      searchResult.querySelector('.search__result-container').innerHTML = '';
+      searchResult.classList.add('search__result--empty');
+    });
+  }
+  if (searchField) {
+    searchField.addEventListener('input', () => {
+      const founded = {};
+      for (const id in AllItemsForSearch) {
+        console.log(searchField.value.toLowerCase(), id, id.indexOf(searchField.value));
+        if (id.indexOf(searchField.value.toLowerCase()) != -1) {
+          founded[id] = AllItemsForSearch[id];
+        }
+      }
+      if (isEmptyObj(founded) || searchField.value == '') {
+        searchResult.querySelector('.search__result-container').innerHTML = '';
+        searchResult.classList.add('search__result--empty');
+      } else {
+        searchResult.classList.remove('search__result--empty');
+        let count = 0;
+        for (const id in AllItemsForSearch) {
+          if (id.indexOf(searchField.value) != -1) {
+            count++;
+            founded[id] = AllItemsForSearch[id];
+          }
+        }
+        searchCount.textContent = `${count} товаров`;
+        console.log(founded);
+        searchResult.querySelector('.search__result-container').innerHTML = '';
+        createFoundedElements(founded);
+      }
+    });
+  }
 }
 
 function createFoundedElements(founded) {
-    let container = document.querySelector(".search__result-container");
-    for (let id in founded){
-        let item = founded[id];
-        console.log(item);
+  const container = document.querySelector('.search__result-container');
+  for (const id in founded) {
+    const item = founded[id];
+    console.log(item);
 
-        let element = document.createElement("div");
-        element.classList.add("search__list-element");
+    const element = document.createElement('div');
+    element.classList.add('search__list-element');
 
-        let image = document.createElement("div");
-        image.classList.add("search__list-element-image");
-        image.style.backgroundImage = "url("+item.mainPhoto.name+")";
+    const image = document.createElement('div');
+    image.classList.add('search__list-element-image');
+    image.style.backgroundImage = `url(${item.mainPhoto.name})`;
 
-        let detail = document.createElement("div");
-        detail.classList.add("search__list-element-detail");
+    const detail = document.createElement('div');
+    detail.classList.add('search__list-element-detail');
 
-        element.append(image,detail);
+    element.append(image, detail);
 
-        let title = document.createElement("div");
-        title.classList.add("search__list-element-title");
-        let name = document.createElement("div");
-        name.classList.add("search__list-element-name");
-        name.textContent = item.name;
-        let price = document.createElement("div");
-        price.classList.add("search__list-element-price");
-        price.textContent = item.price + " ₽";
-        title.append(name, price);
+    const title = document.createElement('div');
+    title.classList.add('search__list-element-title');
+    const name = document.createElement('div');
+    name.classList.add('search__list-element-name');
+    name.textContent = item.name;
+    const price = document.createElement('div');
+    price.classList.add('search__list-element-price');
+    price.textContent = `${item.price} ₽`;
+    title.append(name, price);
 
-        let additional = document.createElement("div");
-        additional.classList.add("search__list-element-additional");
-        let weight = document.createElement("div");
-        weight.classList.add("search__list-element-name");
-        if(item.volume || item.netWeight) weight.textContent = item.volume ? item.volume + " мл" : item.netWeight +" г";
-        let plus = document.createElement("div");
-        plus.classList.add("search__list-element-plus");
-        plus.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    const additional = document.createElement('div');
+    additional.classList.add('search__list-element-additional');
+    const weight = document.createElement('div');
+    weight.classList.add('search__list-element-name');
+    if (item.volume || item.netWeight) weight.textContent = item.volume ? `${item.volume} мл` : `${item.netWeight} г`;
+    const plus = document.createElement('div');
+    plus.classList.add('search__list-element-plus');
+    plus.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle opacity="0.12" cx="12.0001" cy="12" r="12" fill="#E6551E"></circle>
                             <path d="M12.0001 6.75V17.25" stroke="#E6551E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                             <path d="M6.75006 12H17.2501" stroke="#E6551E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                         </svg>`;
-        additional.append(weight, plus);
+    additional.append(weight, plus);
 
-        detail.append(title,additional);
+    detail.append(title, additional);
 
-        container.append(element);
-    }
+    container.append(element);
+  }
 }
 
 function showSearch() {
-    (async () => {
-        if (allItems) {
-            AllItemsForSearch = {...allItems};
-            AllModifiersForSearch = {...allMidifiers};
-        } else {
-            let request = {
-                method: 'get-catalog',
-                view: 'tree',
-                outputFormat: 'json'
-            };
-            let rawResponse = await fetch('[~30~]', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'text/html'
-                },
-                body: JSON.stringify(request)
-            });
-            let successData = JSON.parse(await rawResponse.text()).successData;
-            AllItemsForSearch = await successData.items;
-            AllModifiersForSearch = await successData.modifiers;
-        }
-        let newAllItemsForSearch = {}
-        for(let id in AllItemsForSearch){
-            newAllItemsForSearch[AllItemsForSearch[id].name.toLowerCase()] = AllItemsForSearch[id];
-        }
-        AllItemsForSearch = newAllItemsForSearch;
-    })();
+  (async () => {
+    if (allItems) {
+      AllItemsForSearch = { ...allItems };
+      AllModifiersForSearch = { ...allMidifiers };
+    } else {
+      const request = {
+        method: 'get-catalog',
+        view: 'tree',
+        outputFormat: 'json',
+      };
+      const rawResponse = await fetch('[~30~]', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/html',
+        },
+        body: JSON.stringify(request),
+      });
+      const { successData } = JSON.parse(await rawResponse.text());
+      AllItemsForSearch = await successData.items;
+      AllModifiersForSearch = await successData.modifiers;
+    }
+    const newAllItemsForSearch = {};
+    for (const id in AllItemsForSearch) {
+      newAllItemsForSearch[AllItemsForSearch[id].name.toLowerCase()] = AllItemsForSearch[id];
+    }
+    AllItemsForSearch = newAllItemsForSearch;
+  })();
 }
 
 window.showSearch = showSearch;

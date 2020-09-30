@@ -29,6 +29,9 @@ class CreateButton extends CreateItem {
     super();
     this.parameters = parameters;
     this.element = document.createElement(this.parameters.selector);
+    if (this.parameters.typeSubmit) {
+      this.element.type = 'submit';
+    }
     this.template = this.parameters.template;
   }
 

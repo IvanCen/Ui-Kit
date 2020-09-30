@@ -436,12 +436,138 @@ class CreateFormGiftCard extends CreateItem {
   }
 }
 
+class CreateFormDeliver extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+    this.element = document.createElement(this.parameters.selector);
+    this.create = this.create.bind(this);
+  }
+
+  create() {
+    const template = `
+        <div class="basket__header accordion__trigger basket__header-should-open" data-id="2">
+            <div class="basket__title">Способ доставки</div>
+        </div>
+        <section class="basket__delivery-type accordion__container" data-id="2">
+            <div class="form__group basket__group">
+                <label class="form__label form__label--type--package">
+                    <input type="radio" class="form__input" data-id="${dataPackage.successData.id}" typeToGo="toGo-withPackage" name="delivery-type" checked>
+                    С собой (${dataPackage.successData.name} +${dataPackage.successData.price} ₽)
+                </label>
+                <label class="form__label">
+                    <input type="radio" class="form__input" typeToGo="toGo" name="delivery-type">
+                    С собой (без пакета)
+                </label>
+                <label class="form__label">
+                    <input type="radio" class="form__input" typeToGo="inCoffee" name="delivery-type">
+                    В кафе
+                </label>
+            </div>
+        </section>
+   `;
+    this.element.insertAdjacentHTML('beforeend', template);
+
+    return super.create(this.element);
+  }
+}
+
+class CreateFormStores extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+    this.element = document.createElement(this.parameters.selector);
+
+    this.template = `
+        <div class="basket__header accordion__trigger basket__header-should-open" data-id="3">
+            <div class="basket__title">Выберите магазин</div>
+        </div>
+        <section class="basket__shop accordion__container" data-id="3">
+            <div class="form__group basket__group">
+                
+            </div>
+        </section>
+   `;
+  }
+
+  renderStores(container) {
+    Object.values(storesDataObj.successData).forEach((item) => {
+      let template;
+      if (item.id === userStore.store.id) {
+        template = `
+        <label class="form__label">
+            <input type="radio" data-id="${item.id}" class="form__input" name="shop" checked>
+            ${item.shortTitle}
+        </label>
+   `;
+      } else {
+        template = `
+        <label class="form__label">
+            <input type="radio" class="form__input" name="shop">
+            ${item.shortTitle}
+        </label>
+   `;
+      }
+
+      container.insertAdjacentHTML('beforeend', template);
+    });
+  }
+
+  create() {
+    this.element.insertAdjacentHTML('beforeend', this.template);
+    this.basketGroup = this.element.querySelector('.basket__group');
+    this.renderStores(this.basketGroup);
+    return super.create(this.element);
+  }
+}
+
+class CreateFormPay extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+    this.element = document.createElement(this.parameters.selector);
+    let balance;
+    let bonus;
+    if (!isEmptyObj(userInfoObj)) {
+      balance = `(${userInfoObj.successData.balance})`;
+      bonus = `(${userInfoObj.successData.bonus})`;
+    }
+    this.template = `
+        <div class="basket__header accordion__trigger basket__header-should-open" data-id="1">
+            <div class="basket__title">Способ оплаты</div>
+        </div>
+        <section class="basket__payment accordion__container" data-id="1">
+            <div class="form__group basket__group">
+                <label class="form__label">
+                    <input id="creditCard" type="radio" class="form__input" name="payment">
+                    Банковская карта
+                </label>
+                <label class="form__label">
+                    <input id="balance" type="radio" class="form__input" name="payment" checked>
+                    Баланс ${balance || ''}
+                </label>
+                <label class="form__label">
+                    <input id="bonus" type="radio" class="form__input" name="payment">
+                    Бонусы ${bonus || ''}
+                </label>
+            </div>
+        </section>
+   `;
+  }
+
+  create() {
+    this.element.insertAdjacentHTML('beforeend', this.template);
+
+    return super.create(this.element);
+  }
+}
+
 class CreateFormPromoCode extends CreateItem {
   constructor(parameters) {
     super();
     this.parameters = parameters;
     this.element = document.createElement(this.parameters.selector);
-    this.template = `
+    /* this.template = `
           <button class="accordion accordion--type--promo-code">Есть промокод?
             <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-bottom.svg]]" alt="" class="accordion__icon-arrow">
           </button>
@@ -463,24 +589,24 @@ class CreateFormPromoCode extends CreateItem {
             <button class="button button--indentation--top button--theme--tangerin button--size--small button--type--promo-code" type="submit">Подтвердить</button>
             </div>
           </div>
+   `; */
+    this.template = `
+        <div class="basket__header basket__header--dark accordion__trigger" data-id="4">
+            <div class="basket__title">Есть промокод?</div>
+        </div>
+        <section class="basket__payment accordion__container" data-id="4">
+            <div class="form__group form__group--float form__group--bordered">
+                <label class="form__label">Промокод</label>
+                <input class="form__input form__input-promoCode" type="text">
+            </div>
+        </section>
    `;
-    /*this.template = `
-          <div class="basket__header basket__header--dark accordion__trigger accordion--type--promo-code" data-id="4">
-              <div class="basket__title">Есть промокод?</div>
-          </div>
-          <section class="basket__payment accordion__container" data-id="4">
-              <div class="form__group form__group--float form__group--bordered">
-                  <label class="form__label">Промокод</label>
-                  <input class="form__input .form__input-requirement--type--promo-code" type="text">
-              </div>
-          </section>
-   `;*/
   }
 
   create() {
     this.element.insertAdjacentHTML('beforeend', this.template);
 
-    this.buttonPromoCode = this.element.querySelector('.button--type--promo-code');
+    /* this.buttonPromoCode = this.element.querySelector('.button--type--promo-code');
 
     function checkPromoCode(info) {
       const error = document.querySelector('.form__input-requirement--type--promo-code');
@@ -528,7 +654,7 @@ class CreateFormPromoCode extends CreateItem {
           toggleModalPageSignIn.rendering();
         }
       });
-    });
+    }); */
 
 
     return super.create(this.element);
@@ -540,7 +666,7 @@ class CreateFormComment extends CreateItem {
     super();
     this.parameters = parameters;
     this.element = document.createElement(this.parameters.selector);
-    this.template = `
+    /* this.template = `
           <button class="accordion">Хотите оставить комментарий к заказу?
             <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-bottom.svg]]" alt="" class="accordion__icon-arrow">
           </button>
@@ -558,14 +684,25 @@ class CreateFormComment extends CreateItem {
             <button class="button button--indentation--top button--theme--tangerin button--size--small button--type--comment" type="submit">Подтвердить</button>
             </div>
           </div>
+   `; */
+    this.template = `         
+      <div class="basket__header basket__header--dark accordion__trigger" data-id="5">
+          <div class="basket__title">Комментарий к заказу</div>
+      </div>
+      <section class="basket__payment accordion__container" data-id="5">
+          <div class="form__group form__group--float form__group--bordered">
+              <label class="form__label">Комментарий</label>
+              <input class="form__input form__input-comment" type="text">
+          </div>
+      </section>
    `;
   }
 
   create() {
     this.element.insertAdjacentHTML('beforeend', this.template);
 
-    this.buttonComment = this.element.querySelector('.button--type--comment');
-    this.inputArea = this.element.querySelector('.form__input-area');
+    /* this.buttonComment = this.element.querySelector('.button--type--comment');
+    this.inputArea = this.element.querySelector('.form__input');
 
     this.error = this.element.querySelector('.form__input-requirement--type--comment');
     this.buttonComment.addEventListener('click', () => {
@@ -583,7 +720,7 @@ class CreateFormComment extends CreateItem {
           this.error.classList.remove('form__input-requirement--hide');
         }
       });
-    });
+    }); */
 
 
     return super.create(this.element);
@@ -595,7 +732,7 @@ class CreateFormFriendPay extends CreateItem {
     super();
     this.parameters = parameters;
     this.element = document.createElement(this.parameters.selector);
-    this.template = `
+    /* this.template = `
           <button class="accordion">Хотите оплатить за друга?
             <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-bottom.svg]]" alt="" class="accordion__icon-arrow">
           </button>
@@ -624,21 +761,48 @@ class CreateFormFriendPay extends CreateItem {
             <button class="button button--indentation--top button--theme--tangerin button--size--small form__button button--type--friend" type="submit">Отменить</button>
             </div>
           </div>
+   `; */
+    this.template = `
+      <div class="basket__header basket__header--dark accordion__trigger" data-id="6">
+          <div class="basket__title">Хотите оплатить за друга?</div>
+      </div>
+      <section class="basket__payment accordion__container" data-id="6">
+          <div class="form__group form__group--float form__group--bordered">
+              <label class="form__label">Номер телефона</label>
+              <input class="form__input form__input-area--type--phone-friend" type="text">
+          </div>
+          <div class="form__group form__group--float form__group--bordered">
+              <label class="form__label">Имя</label>
+              <input class="form__input form__input-area--type--name" type="text">
+          </div>
+          <div class="basket__payment-buttons">
+              <button class="button button--color-3 button__reset">Отменить</button>
+          </div>
+      </section>
    `;
   }
 
   create() {
     this.element.insertAdjacentHTML('beforeend', this.template);
 
-    this.buttonFriend = this.element.querySelector('.button--type--friend');
+    this.buttonReset = this.element.querySelector('.button__reset');
     this.inputAreaName = this.element.querySelector('.form__input-area--type--name');
     this.inputAreaPhone = this.element.querySelector('.form__input-area--type--phone-friend');
-    this.error = this.element.querySelector('.form__input-requirement--type--error');
-    this.accordionButton = this.element.querySelector('.accordion');
+    // this.error = this.element.querySelector('.form__input-requirement--type--error');
+    this.accordionButton = this.element.querySelector('.accordion__trigger');
     this.inputAreaName.addEventListener('keyup', (e) => orderFriendData.friendName = e.target.value);
     this.inputAreaPhone.addEventListener('keyup', (e) => orderFriendData.friendPhone = e.target.value);
 
-    this.buttonFriend.addEventListener('click', () => {
+    IMask(
+      this.inputAreaPhone, {
+        mask: '+{7}(000)000-00-00',
+        lazy: false,
+        placeholderChar: '_',
+        autoUnmask: true,
+      },
+    );
+
+    this.buttonReset.addEventListener('click', () => {
       stopAction(() => {
         this.inputAreaName.value = '';
         this.inputAreaPhone.value = '';

@@ -361,9 +361,7 @@ async function load_image_with_correct_extension_and_resolution(productInfo, img
   let image = productInfo.mainPhoto;
   let regExp = /(assets\/images\/docs)(\/\d*\/)([\d\D]*\.)(\D+)/g;
   let productName = image.name.replace(regExp, '$3');
-
   let source = `https://app.xleb.ru/${image.name}_cache/${image.edit}/${imageBlockWidth}x${imageBlockHeight}/${productName}${extension}`;
-
 
   if(aspectRatio === 1 && document.location.hash !== 'debug' && document.location.hash !== '#debug'){
 
@@ -1214,6 +1212,73 @@ class ToggleModalPageSearch {
     this.modalPageSearch = document.querySelector('.modal-page-search');
     this.modalPageSearchContent = document.querySelector('.modal-page-search__content');
 
+  }
+}
+
+class ToggleModalPageCardDef {
+  constructor(parameters) {
+    this.parameters = parameters;
+    this.body = document.querySelector('body');
+    this.modalPageCard = document.querySelector('.card');
+    this.modalPageCardContent = document.querySelector('.card__content');
+    this.classOpen = this.parameters.classOpen;
+
+    this.closePage = this.closePage.bind(this);
+    this.deletePage = this.deletePage.bind(this);
+    this.openPage = this.openPage.bind(this);
+
+    if (typeof this.parameters !== 'object') {
+      this.parameters = {};
+    }
+  }
+
+  clearPage() {
+    this.modalPageCard = document.querySelector('.card');
+    if (this.modalPageCard !== null) {
+      if (this.modalPageCard.childNodes.length !== 0) {
+        this.arrHtml = Array.from(this.modalPageCard.children);
+        this.arrHtml.forEach((item) => item.remove());
+      }
+    }
+  }
+
+  deletePage() {
+    setTimeout(() => {
+      if (this.modalPageCard) {
+        this.modalPageCard.remove()
+      }
+    }, 100);
+  }
+
+  closePage() {
+    this.modalPageCard = document.querySelector('.card');
+    if (this.modalPageCard) {
+      this.modalPageCard.querySelectorAll('button').forEach((button) => {
+        button.remove();
+      });
+      if (typeof this.parameters.classOpen === 'object') {
+        for (const style of this.parameters.classOpen) {
+          this.modalPageCard.classList.remove(style);
+        }
+      }
+      setTimeout(() => this.body.classList.remove('body'), 100);
+    }
+  }
+
+  openPage() {
+    this.modalPageCard = document.querySelector('.card');
+    setTimeout(() => {
+      this.modalPageCard.classList.add(this.classOpen);
+      this.body.classList.add('body');
+    }, 100);
+    history.pushState({ state: '#card' }, null, '#card');
+  }
+
+  rendering() {
+    this.body = document.querySelector('body');
+    this.body.append(createModalPageCard());
+    this.modalPageCard = document.querySelector('.card');
+    this.modalPageCardContent = document.querySelector('.card__content');
   }
 }
 

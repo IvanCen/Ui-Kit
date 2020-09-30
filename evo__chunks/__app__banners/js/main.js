@@ -125,8 +125,8 @@ class CreateBannersOrder extends CreateItem {
     this.element.insertAdjacentHTML('beforeend', this.template);
     this.element.addEventListener('click', () => {
       stopAction(() => {
-        toggleSubPageProductCard.rendering(productInfo);
-        toggleSubPageProductCard.openPage();
+        toggleModalPageCard.rendering(productInfo);
+        toggleModalPageCard.openPage();
       });
     });
 
