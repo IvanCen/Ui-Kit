@@ -50,7 +50,6 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
             this.deleteItem(idPackage);
             basketArray.push({ id: idPackage, modifier: [] });
           }
-          console.log(isToGo);
           this.inputComment = document.querySelector('.form__input-comment');
           let orderComment;
           if (this.inputComment.value !== '') {
@@ -294,7 +293,6 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
     const textAreaResult = new CreateTextAreaResult({
       selector: ['div'],
       style: ['text-area-container'],
-      sumPrice: '',
     });
 
     this.modalPageOrderReview.append(createTopBarIos());
@@ -313,7 +311,6 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
       // this.modalPageOrderReview.append(reviewButton.create());
 
       this.accordContainer = document.querySelector('.accordion__container-review');
-      this.reviewButton = document.querySelector('.button--type--make-order');
 
       const productsItems = dataProductApi.successData.items;
 
@@ -325,6 +322,10 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
           localStorage.setItem('basket', JSON.stringify(basketArray));
         }
       });
+
+      countResultPriceAndAllProductCounter();
+
+      this.reviewButton = document.querySelector('.button--type--make-order');
 
       emitter.emit('event:counter-changed');
       const banners = document.querySelectorAll('.banner__container');
@@ -370,7 +371,7 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
     }
 
     function onDOMContentLoaded(e) {
-      initImages();
+
 
       const accordionTriggers = document.querySelectorAll('.accordion__trigger');
       accordionTriggers.forEach((trigger) => {
@@ -385,6 +386,7 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
           }
         });
       });
+
       const accordionShouldOpen = document.querySelectorAll('.basket__header-should-open');
       accordionShouldOpen.forEach((element) => {
         element.click();

@@ -5,6 +5,7 @@ class ToggleModalPageCard extends ToggleModalPageCardDef {
     this.rendering = this.rendering.bind(this);
   }
 
+
   rendering(productInfo) {
     super.rendering();
     const textArea = new CreateTextAreaProductCard({
@@ -12,13 +13,11 @@ class ToggleModalPageCard extends ToggleModalPageCardDef {
       style: ['product-card'],
     });
 
-
     this.modalPageCard.append(createTopBarIos());
     this.modalPageCard.append(textArea.create(productInfo));
 
-
     window.addEventListener('resize', test);
-    let cardOpened = true;
+    let cardOpened = false;
     function onDOMContentLoaded() {
       const container = document.querySelector('.card');
       activeTouch(container);

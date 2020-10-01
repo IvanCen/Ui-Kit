@@ -148,6 +148,6 @@ class ToggleBalance extends ToggleMainPage {
       this.mainPageContent.append(buttonFill.create());
     }
     const footerButtonBalance = document.querySelector('.footer__button--type--cards');
-    activeFooter(footerButtonBalance);
+
   }
 }

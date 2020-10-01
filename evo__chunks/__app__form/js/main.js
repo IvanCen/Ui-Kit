@@ -452,22 +452,21 @@ class CreateFormDeliver extends CreateItem {
         <section class="basket__delivery-type accordion__container" data-id="2">
             <div class="form__group basket__group">
                 <label class="form__label form__label--type--package">
-                    <input type="radio" class="form__input" data-id="${dataPackage.successData.id}" typeToGo="toGo-withPackage" name="delivery-type" checked>
+                    <input onclick="countResultPriceAndAllProductCounter()" type="radio" class="form__input" data-id="${dataPackage.successData.id}" typeToGo="toGo-withPackage" name="delivery-type" checked>
                     С собой (${dataPackage.successData.name} +${dataPackage.successData.price} ₽)
                 </label>
                 <label class="form__label">
-                    <input type="radio" class="form__input" typeToGo="toGo" name="delivery-type">
+                    <input onclick="countResultPriceAndAllProductCounter()" type="radio" class="form__input" typeToGo="toGo" name="delivery-type">
                     С собой (без пакета)
                 </label>
                 <label class="form__label">
-                    <input type="radio" class="form__input" typeToGo="inCoffee" name="delivery-type">
+                    <input onclick="countResultPriceAndAllProductCounter()" type="radio" class="form__input" typeToGo="inCoffee" name="delivery-type">
                     В кафе
                 </label>
             </div>
         </section>
    `;
     this.element.insertAdjacentHTML('beforeend', template);
-
     return super.create(this.element);
   }
 }

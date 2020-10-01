@@ -34,7 +34,6 @@ class ToggleReward extends ToggleMainPage {
       this.mainPageContent.append(cardText.create());
     }
 
-    const footerButtonGIft = document.querySelector('.footer__button--type--gift');
-    activeFooter(footerButtonGIft);
+
   }
 }

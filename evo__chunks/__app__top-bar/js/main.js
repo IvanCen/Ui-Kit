@@ -17,7 +17,7 @@ class CreateTopBar extends CreateItem {
     }
     const date = new Date();
     const timeNow = [date.getHours(), date.getMinutes()].map((x) => (x < 10 ? `0${x}` : x)).join(':');
-    this.template = `
+    /*this.template = `
       <div class="top-bar__content-container top-bar__content-container--theme--dark ${isIos ? 'top-bar__content-container--size--big--ios' : 'top-bar__content-container--size--big'}">
         <h1 class="top-bar__title top-bar__title--type--single">${this.parameters.textTitle}</h1>
         <div class="top-bar__content-container top-bar__content-container--score top-bar__content-container--direction--row
@@ -34,7 +34,7 @@ class CreateTopBar extends CreateItem {
           </div>
           <button class="top-bar__button top-bar__button--type--fill button-route">
             <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-rubles-white.svg]]" alt="Иконка рубля" class="top-bar__icon-ruble">
-          </button>   
+          </button>
         </div>
       </div>
       <div class="top-bar__nav-container">
@@ -55,52 +55,44 @@ class CreateTopBar extends CreateItem {
           <button class="top-bar__button top-bar__button--position--right top-bar__button--type--account button-route">
             <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-accaunt.svg]]" alt="Кнопка входа в личный кабинет" class="top-bar__icon">
           </button>
-      </div>`;
+      </div>`;*/
+    this.template = `
+        <div class="header__top-bar">
+            <button class="header__menu">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 12C4 11.4477 4.44772 11 5 11H15C15.5523 11 16 11.4477 16 12C16 12.5523 15.5523 13 15 13H5C4.44772 13 4 12.5523 4 12ZM4 7C4 6.44772 4.44772 6 5 6H19C19.5523 6 20 6.44772 20 7C20 7.55228 19.5523 8 19 8H5C4.44772 8 4 7.55228 4 7Z" fill="white"/>
+                    <line x1="5" y1="17" x2="10" y2="17" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </button>
+            <div class="header__status">Главная</div>
+            <div class="header__basket">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 21C9.55228 21 10 20.5523 10 20C10 19.4477 9.55228 19 9 19C8.44772 19 8 19.4477 8 20C8 20.5523 8.44772 21 9 21Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M19 21C19.5523 21 20 20.5523 20 20C20 19.4477 19.5523 19 19 19C18.4477 19 18 19.4477 18 20C18 20.5523 18.4477 21 19 21Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 2H5.63636L8.07273 14.497C8.15586 14.9267 8.38355 15.3127 8.71595 15.5874C9.04835 15.8621 9.46427 16.0081 9.89091 15.9997H18.7273C19.1539 16.0081 19.5698 15.8621 19.9022 15.5874C20.2346 15.3127 20.4623 14.9267 20.5455 14.497L22 6.66655H6.54545" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+        </div>`;
   }
 
   create() {
     this.element.insertAdjacentHTML('beforeend', this.template);
 
-    this.buttonSignIn = this.element.querySelector('.top-bar__button--type--sign-in');
-    this.buttonInbox = this.element.querySelector('.top-bar__button--type--inbox');
-    this.buttonAccount = this.element.querySelector('.top-bar__button--type--account');
-    this.buttonHistory = this.element.querySelector('.top-bar__button--type--history');
-    this.buttonBalanceFill = this.element.querySelector('.top-bar__button--type--fill');
-    this.navContainer = this.element.querySelector('.top-bar__nav-container');
-    this.buttonContainerScore = this.element.querySelector('.top-bar__content-container--score');
+    this.buttonBasket = this.element.querySelector('.header__basket');
+    this.buttonMenu = this.element.querySelector('.header__menu');
 
-    if (typeof this.parameters.eventOpenHistory === 'object') {
-      for (const event of this.parameters.eventOpenHistory) {
-        this.buttonHistory.addEventListener(event.type, event.callback);
+
+    if (typeof this.parameters.eventOpenBasket === 'object') {
+      for (const event of this.parameters.eventOpenBasket) {
+        this.buttonBasket.addEventListener(event.type, event.callback);
       }
     }
-    if (typeof this.parameters.eventOpenSignInPage === 'object') {
-      for (const event of this.parameters.eventOpenSignInPage) {
-        this.buttonSignIn.addEventListener(event.type, event.callback);
-      }
-    }
-    if (typeof this.parameters.eventOpenInboxPage === 'object') {
-      for (const event of this.parameters.eventOpenInboxPage) {
-        this.buttonInbox.addEventListener(event.type, event.callback);
-      }
-    }
-    if (typeof this.parameters.eventOpenAccountPage === 'object') {
-      for (const event of this.parameters.eventOpenAccountPage) {
-        this.buttonAccount.addEventListener(event.type, event.callback);
-      }
-    }
-    if (typeof this.parameters.eventOpenBalanceFill === 'object') {
-      for (const event of this.parameters.eventOpenBalanceFill) {
-        this.buttonBalanceFill.addEventListener(event.type, event.callback);
+    if (typeof this.parameters.eventOpenMenu === 'object') {
+      for (const event of this.parameters.eventOpenMenu) {
+        this.buttonMenu.addEventListener(event.type, event.callback);
       }
     }
 
-    if (!isEmptyObj(userInfoObj)) {
-      this.buttonSignIn.remove();
-    } else {
-      this.navContainer.remove();
-      this.buttonContainerScore.remove();
-    }
 
 
     return super.create(this.element);

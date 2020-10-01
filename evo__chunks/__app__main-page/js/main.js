@@ -22,6 +22,7 @@ let promoCode;
 let timeRequest;
 const dataPackage = {};
 
+
 let authorizationCodeLet;
 let authorizationPhoneLet;
 let itemsArrayLet;
@@ -378,6 +379,9 @@ const togglePageInbox = new TogglePageInbox({
 const togglePageAccount = new TogglePageAccount({
   classOpen: ['page--opened'],
 });
+const Navigation = new CreateNavigation({
+  style: '',
+});
 
 function closeOrderPage() {
   const pagesOrder = document.querySelectorAll('.page-order');
@@ -394,16 +398,16 @@ const mainPageFooter = new CreateFooter({
       type: 'click',
       callback: () => {
         stopAction(() => {
-          renderMainPage.closePage();
+          /* renderMainPage.closePage();
           renderMainPage.clearPage();
-          renderMainPage.rendering();
+          renderMainPage.rendering(); */
           renderMainPage.openPage();
           closePages();
         });
       },
     },
   ],
-  eventOpenCardsPage: [
+  eventOpenBalancePage: [
     {
       type: 'click',
       callback: () => {
@@ -415,31 +419,26 @@ const mainPageFooter = new CreateFooter({
       },
     },
   ],
-  eventOpenOrderPage: [
+  eventOpenMessagesPage: [
     {
       type: 'click',
       callback: () => {
-        toggleOrder.closePage();
-        toggleOrder.clearPage();
-        toggleOrder.rendering();
-        toggleOrder.openPage();
-        toggleOrderMenuContent.rendering();
-        toggleOrderHitsContent.rendering();
-        toggleOrderHistoryContent.rendering();
+        togglePageInbox.closePage();
+        togglePageInbox.clearPage();
+        togglePageInbox.rendering();
+        togglePageInbox.openPage();
         closePages();
-
-        emitter.emit('event:counter-changed');
       },
     },
   ],
-  eventOpenGiftPage: [
+  eventOpenProfilePage: [
     {
       type: 'click',
       callback: () => {
-        toggleReward.closePage();
-        toggleReward.clearPage();
-        toggleReward.rendering();
-        toggleReward.openPage();
+        togglePageAccount.closePage();
+        togglePageAccount.clearPage();
+        togglePageAccount.rendering();
+        togglePageAccount.openPage();
         closePages();
       },
     },
@@ -457,10 +456,13 @@ const mainPageFooter = new CreateFooter({
   ],
 });
 
+renderMainPage.rendering();
 
+mainPage.after(Navigation.create());
 mainPage.after(mainPageFooter.create());
-switchActiveFooter();
-emitter.emit('event:counter-changed');
+// switchActiveFooter();
+initMainPanel();
+initTopMenu();
 
 if (/\?refer=alfa.*/.test(window.location.search)) {
   const win = window.open('about:blank', '_self');
@@ -468,16 +470,8 @@ if (/\?refer=alfa.*/.test(window.location.search)) {
 }
 
 (function renderHashOrderCategoryPage() {
-  const buttonMain = document.querySelector('.footer__button--type--main');
-  const buttonOrder = document.querySelector('.footer__button--type--order');
-  buttonOrder.dispatchEvent(new Event('click'));
-  Array.from(document.querySelectorAll('.card-item--direction--row')).forEach((item) => {
-    item.dispatchEvent(new Event('click'));
+  const buttonMain = document.querySelector('.main-panel__button--type--main');
 
-    document.querySelectorAll('.page-order').forEach((el) => {
-      el.classList.add('page-order--hide');
-    });
-  });
   setTimeout(() => {
     buttonMain.dispatchEvent(new Event('click')); // рендерит страницу
     if (!isEmptyObj(userInfoObj)) {
@@ -485,14 +479,6 @@ if (/\?refer=alfa.*/.test(window.location.search)) {
       toggleModalPageSignIn.regSuccess({ success: true, isStartApp: true, name: userInfoObj.successData.name });
     }
   }, 2000);
-
-  setTimeout(() => {
-    document.querySelectorAll('.page-order').forEach((el) => {
-      el.classList.remove('page-order--hide');
-      el.classList.remove('page-order--opened--bottom-bar');
-    });
-    setRandomPhraseTobBarMain();
-  }, 3000);
 }());
 
 setTimeout(() => {
@@ -501,6 +487,7 @@ setTimeout(() => {
     loader.classList.add('loader--hide');
     loader.remove();
   }
+  initSliders();
 }, 5000);
 
 
