@@ -155,8 +155,8 @@ function countResultPriceAndAllProductCounter() {
     allPriceEl.forEach((el) => {
       sumPrice += Number(el.textContent);
     });
-    if(input.checked) {
-      if(!isEmptyObj(dataPackage)) {
+    if (input.checked) {
+      if (!isEmptyObj(dataPackage)) {
         sumPrice += dataPackage.successData.price
       }
     }
@@ -171,6 +171,7 @@ function countResultPriceAndAllProductCounter() {
 function initCategories() {
   const categories = document.querySelectorAll('.catalog .catalog__categories-element');
   const lists = document.querySelectorAll('.catalog .catalog__list');
+  const tags = document.querySelectorAll('.catalog .catalog__tags');
   categories.forEach((cat) => {
     cat.addEventListener('click', (e) => {
       categories.forEach((btn) => {
@@ -179,10 +180,27 @@ function initCategories() {
       lists.forEach((list) => {
         list.classList.remove('catalog__list--show');
       });
+      tags.forEach((tag) => {
+        tag.classList.remove('catalog__tags--show');
+      });
       const list = document.querySelector(`.catalog .catalog__list[data-id='${cat.getAttribute('data-id')}']`);
+      const tag = document.querySelector(`.catalog .catalog__tags[data-id='${cat.getAttribute('data-id')}']`);
       if (list) list.classList.add('catalog__list--show');
+      if (tag) tag.classList.add('catalog__tags--show');
       cat.classList.add('catalog__categories-element--active');
     });
+  });
+  tags.forEach((tagsContainer) => {
+    const tagEl = tagsContainer.querySelectorAll('.catalog__tags-element');
+    tagEl.forEach(tag => {
+      tag.addEventListener('click', (e) => {
+        lists.forEach((list) => {
+          list.classList.remove('catalog__list--show');
+        });
+        const list = document.querySelector(`.catalog .catalog__list[data-id='${tag.getAttribute('data-id')}']`);
+        if (list) list.classList.add('catalog__list--show');
+      });
+    })
   });
 }
 
@@ -201,28 +219,52 @@ function initSliders() {
     }
   });
 
-  const swipCategories = new Swiper('.catalog__categories', {
-    spaceBetween: 24,
+  const swipTagsDrinks = new Swiper('.catalog__tags-container-drinks', {
     slidesPerView: 'auto',
     autoHeight: true,
   });
-
-  const swipTags = new Swiper('.catalog__tags-container', {
+  /*const swipCat = new Swiper('.catalog__categories', {
     spaceBetween: 8,
     slidesPerView: 'auto',
     autoHeight: true,
+  });*/
+
+  const swipTagsFoods = new Swiper('.catalog__tags-container-foods', {
+    slidesPerView: 'auto',
+    autoHeight: true,
   });
 
-  swipTags.on('click', () => {
+  swipTagsDrinks.on('click', () => {
     setTimeout(() => {
-      swipTags.update();
+      swipTagsDrinks.update();
     }, 500);
   });
 
-  const tags = document.querySelectorAll('.catalog__tags-element');
-  tags.forEach((tag) => {
+  swipTagsFoods.on('click', () => {
+    setTimeout(() => {
+      swipTagsFoods.update();
+    }, 500);
+  });
+
+  const tagsContainerFood = document.querySelector('.catalog__tags-container-foods');
+  const tagsContainerDrinks = document.querySelector('.catalog__tags-container-drinks');
+  const tagsFood = tagsContainerFood.querySelectorAll('.catalog__tags-element');
+  const tagsDrinks = tagsContainerDrinks.querySelectorAll('.catalog__tags-element');
+  tagsFood.forEach((tag) => {
     tag.addEventListener('click', (e) => {
-      tag.classList.toggle('catalog__tags-element--selected');
+      tagsFood.forEach((tag) => {
+        tag.classList.remove('catalog__tags-element--selected')
+      });
+      tag.classList.add('catalog__tags-element--selected');
+      tag.blur();
+    }, false);
+  });
+  tagsDrinks.forEach((tag) => {
+    tag.addEventListener('click', (e) => {
+      tagsDrinks.forEach((tag) => {
+        tag.classList.remove('catalog__tags-element--selected')
+      });
+      tag.classList.add('catalog__tags-element--selected');
       tag.blur();
     }, false);
   });
@@ -414,8 +456,13 @@ function checkMessageInbox() {
 }
 
 function closePages() {
- /* togglePage.closePage();
-  togglePage.deletePage();*/
+  mainPage.closePage();
+  balancePage.closePage();
+  storesPage.closePage();
+  inboxPage.closePage();
+  pageAccount.closePage();
+  togglePage.closePage();
+  togglePage.deletePage();
   closeOrderPage();
   toggleSubPage.closePage();
   toggleSubPage.deletePage();
@@ -425,8 +472,6 @@ function closePages() {
   toggleFourthPage.deletePage();
   toggleSixthPage.closePage();
   toggleSixthPage.deletePage();
-  toggleModalPage.closePage();
-  toggleModalPage.deletePage();
   toggleModalPageSignIn.closePage()
   toggleModalPageSignIn.deletePage()
   toggleModalPageOrderPayment.closePage()
@@ -453,7 +498,7 @@ function stopAction(func) {
 }
 
 function openHistory() {
-  renderMainPage.clearPage();
+  mainPage.clearPage();
   toggleOrder.rendering();
   toggleOrder.openPage();
   toggleOrderHistoryContent.rendering();
@@ -745,7 +790,7 @@ class CreateItem {
 
   create(element) {
     if (typeof this.parameters.style === 'object') {
-        element.classList.add(this.parameters.style);
+      element.classList.add(this.parameters.style);
     }
     if (typeof this.parameters.modifier === 'object') {
       const {className} = element;
@@ -1331,8 +1376,6 @@ class ToggleModalPageStores {
   constructor(parameters) {
     this.parameters = parameters;
     this.body = document.querySelector('body');
-    this.modalPage = document.querySelector('.modal-page');
-    this.modalPageContent = document.querySelector('.modal-page__content');
     this.classOpen = this.parameters.classOpen;
 
     this.closePage = this.closePage.bind(this);
@@ -1345,7 +1388,7 @@ class ToggleModalPageStores {
   }
 
   clearPage() {
-    this.modalPage = document.querySelector('.modal-page');
+    this.modalPage = document.querySelector('.modal-page-stores');
     if (this.modalPage !== null) {
       if (this.modalPage.childNodes.length !== 0) {
         this.arrHtml = Array.from(this.modalPage.children);
@@ -1363,7 +1406,7 @@ class ToggleModalPageStores {
   }
 
   closePage() {
-    this.modalPage = document.querySelector('.modal-page');
+    this.modalPage = document.querySelector('.modal-page-stores');
     if (this.modalPage) {
       this.modalPage.querySelectorAll('button').forEach((button) => {
         button.remove();
@@ -1378,9 +1421,9 @@ class ToggleModalPageStores {
   }
 
   openPage() {
-    this.modalPage = document.querySelector('.modal-page');
+    this.modalPage = document.querySelector('.modal-page-stores');
     setTimeout(() => {
-      this.modalPage.classList.add(this.classOpen);
+      this.modalPage.classList.add('modal-page--open');
       this.body.classList.add('body');
     }, 100);
     history.pushState({state: '#modal-page-stores'}, null, '#modal-page-stores');
@@ -1389,8 +1432,8 @@ class ToggleModalPageStores {
   rendering() {
     this.body = document.querySelector('body');
     this.body.append(createModalPageStores());
-    this.modalPage = document.querySelector('.modal-page');
-    this.modalPageContent = document.querySelector('.modal-page__content');
+    this.modalPage = document.querySelector('.modal-page-stores');
+    this.modalPageContent = this.modalPage.querySelector('.modal-page__content');
   }
 }
 
@@ -1830,12 +1873,12 @@ class ToggleInboxTabContent {
 
   rendering() {
     this.pageTabContent = document.createElement('div');
-    this.pageTabContent.classList.add('page__tab-content');
-    this.pageContent = document.querySelector('.page__content');
+    this.pageTabContent.classList.add('main-page__tab-content-inbox');
+    this.pageContent = document.querySelector('.main-page__content-inbox');
   }
 
   clearPage() {
-    this.pageTabContent = document.querySelector('.page__tab-content');
+    this.pageTabContent = document.querySelector('.main-page__tab-content-inbox');
     if (this.pageTabContent) {
       this.pageTabContent.remove();
     }

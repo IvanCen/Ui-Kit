@@ -1,12 +1,33 @@
-class ToggleMain extends ToggleMainPage {
+class MainPage {
   constructor(parameters) {
-    super(parameters);
     this.parameters = parameters;
     this.rendering = this.rendering.bind(this);
+    this.body = document.querySelector('body');
+    this.mainPage = document.querySelector('.main-page');
+    this.mainPageContent = document.querySelector('.main-page__content');
+  }
+
+  closePage() {
+    this.mainPageContent.classList.remove('main-page__content--size--small');
+    this.mainPageContent.classList.remove('main-page__content--opened');
+  }
+
+  openPage() {
+    this.mainPageContent = document.querySelector('.main-page__content-main');
+    this.headerTitle = document.querySelector('.header__status');
+    setTimeout(() => {
+      if (this.mainPageContent) {
+        this.mainPageContent.classList.add('main-page__content--opened');
+        this.headerTitle.textContent = 'Главная';
+      }
+    }, 100);
+    history.pushState({ state: '#' }, null, '#');
   }
 
   rendering() {
-    super.rendering('main');
+    this.mainPageContent = document.createElement('div');
+    this.mainPageContent.classList.add('main-page__content', 'main-page__content--size--small', 'main-page__content-main');
+    this.mainPage.prepend(this.mainPageContent);
     const mainPageTopBar = new CreateTopBar({
       selector: ['div'],
       style: ['header'],
@@ -20,19 +41,17 @@ class ToggleMain extends ToggleMainPage {
               });
             } else {
               stopAction(() => {
-                toggleStores.rendering(true);
-                toggleStores.openPage();
+                storesPage.rendering(true);
+                storesPage.openPage();
               });
             }
           });
         },
       }],
-      eventOpenMenu: [{
+      /* eventOpenMenu: [{
         type: 'click',
-        callback: () => {
-          Navigation.toggle();
-        },
-      }],
+        callback: Navigation.toggle,
+      }], */
     });
     const mainPageMainCard = new CreateMainCard();
     const textAreaBalanceMain = new CreateTextAreaBalanceMain({
@@ -92,36 +111,6 @@ class ToggleMain extends ToggleMainPage {
     });
 
 
-    function renderPosts(dataPosts) {
-      const postContainer = document.querySelector('.main-card__container-posts');
-      dataPosts.successData.forEach((item) => {
-        if (postContainer) {
-          postContainer.prepend(mainPageMainCard.create(item));
-        }
-      });
-    }
-
-    function renderPromo(dataPromo) {
-      const promoContainer = document.querySelector('.main-card__container-promo');
-      dataPromo.successData.forEach((item) => {
-        if (promoContainer) {
-          promoContainer.prepend(mainPageMainCard.create(item));
-        }
-      });
-      setTimeout(() => {
-        const mainPage = document.querySelector('.main-page');
-        const loader = document.querySelector('.loader');
-        if (loader) {
-          loader.classList.add('loader--hide');
-          loader.remove();
-        }
-        api.getMessages();
-      }, 1000);
-      if (!isEmptyObj(userInfoObj)) {
-        rateLastOrder();
-      }
-    }
-
     this.postContainer = document.createElement('div');
     this.promoContainer = document.createElement('div');
     this.mainPageContent.prepend(mainPageTopBar.create());
@@ -130,13 +119,14 @@ class ToggleMain extends ToggleMainPage {
 
     this.promoContainer.classList.add('main-card__container-promo');
     this.postContainer.classList.add('main-card__container-posts');
-    this.mainPageContent.append(this.promoContainer);
-    this.mainPageContent.append(this.postContainer);
     this.mainPageContent.append(banners.create());
     this.mainPageContent.append(textAreaBalanceMain.create());
     this.mainPageContent.append(catalog.create());
 
-
+    if (!isEmptyObj(userInfoObj)) {
+      rateLastOrder();
+    }
+    api.getMessages();
     initCategories();
     checkEmptyBasket();
     /* renderPromo(dataPromo);

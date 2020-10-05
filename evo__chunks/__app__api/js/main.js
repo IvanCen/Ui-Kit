@@ -590,9 +590,9 @@ class Api {
           delete userAchievements.successData;
           delete userInfoObj.successData;
           localStorage.setItem('userInfo', JSON.stringify(userInfoObj));
-          renderMainPage.clearPage();
-          renderMainPage.rendering();
-          renderMainPage.openPage();
+          mainPage.clearPage();
+          mainPage.rendering();
+          mainPage.openPage();
         }
         return res;
       })

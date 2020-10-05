@@ -39,8 +39,8 @@ class ToggleModalPagePaymentOrder extends ToggleModalPageOrderPaymentRoot {
           type: 'click',
           callback: () => {
             stopAction(() => {
-              toggleStores.rendering();
-              toggleStores.openPage();
+              storesPage.rendering();
+              storesPage.openPage();
             });
           },
         },

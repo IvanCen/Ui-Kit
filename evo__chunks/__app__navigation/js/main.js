@@ -22,15 +22,15 @@ class CreateNavigation extends CreateItem {
                     C170.28,73.51,158.88,84.91,144.81,84.91z"/>
                 </svg>
         </div>
-        <div class="navigation-element navigation-element--active">Главная</div>
-        <div class="navigation-element">Магазины</div>
-        <div class="navigation-element">История заказов</div>
-        <div class="navigation-element">Избранное</div>
-        <div class="navigation-element">Корзина</div>
-        <div class="navigation-element">Баланс</div>
-        <div class="navigation-element">Личный кабинет</div>
-        <div class="navigation-element">Сообщения</div>
-        <div class="navigation-element navigation-element--close">
+        <div class="navigation-element navigation-element-main navigation-element--active">Главная</div>
+        <div class="navigation-element navigation-element-stores">Магазины</div>
+        <div class="navigation-element navigation-element-history">История заказов</div>
+        <div class="navigation-element navigation-element-favorite">Избранное</div>
+        <div class="navigation-element navigation-element-basket">Корзина</div>
+        <div class="navigation-element navigation-element-balance">Баланс</div>
+        <div class="navigation-element navigation-element-profile">Личный кабинет</div>
+        <div class="navigation-element navigation-element-inbox">Сообщения</div>
+        <div class="navigation-element--close">
             <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle opacity="0.38" cx="24" cy="24" r="23.5" stroke="white"/>
                 <path d="M31 18.41L29.59 17L24 22.59L18.41 17L17 18.41L22.59 24L17 29.59L18.41 31L24 25.41L29.59 31L31 29.59L25.41 24L31 18.41Z" fill="white"/>
@@ -41,11 +41,51 @@ class CreateNavigation extends CreateItem {
 
     this.element.insertAdjacentHTML('beforeend', this.template);
 
+    this.buttonBalance = this.element.querySelector('.navigation-element-balance');
+    this.buttonStores = this.element.querySelector('.navigation-element-stores');
+    this.buttonBasket = this.element.querySelector('.navigation-element-basket');
+    this.buttonMain = this.element.querySelector('.navigation-element-main');
+    this.buttonProfile = this.element.querySelector('.navigation-element-profile');
+    this.buttonInbox = this.element.querySelector('.navigation-element-inbox');
+
+    if (typeof this.parameters.eventOpenMainPage === 'object') {
+      for (const event of this.parameters.eventOpenMainPage) {
+        this.buttonMain.addEventListener(event.type, event.callback);
+      }
+    }
+    if (typeof this.parameters.eventOpenBalancePage === 'object') {
+      for (const event of this.parameters.eventOpenBalancePage) {
+        this.buttonBalance.addEventListener(event.type, event.callback);
+      }
+    }
+    if (typeof this.parameters.eventOpenInboxPage === 'object') {
+      for (const event of this.parameters.eventOpenInboxPage) {
+        this.buttonInbox.addEventListener(event.type, event.callback);
+      }
+    }
+    if (typeof this.parameters.eventOpenProfilePage === 'object') {
+      for (const event of this.parameters.eventOpenProfilePage) {
+        this.buttonProfile.addEventListener(event.type, event.callback);
+      }
+    }
+    if (typeof this.parameters.eventOpenStoresPage === 'object') {
+      for (const event of this.parameters.eventOpenStoresPage) {
+        this.buttonStores.addEventListener(event.type, event.callback);
+      }
+    }
+    if (typeof this.parameters.eventOpenBasketPage === 'object') {
+      for (const event of this.parameters.eventOpenBasketPage) {
+        this.buttonBasket.addEventListener(event.type, event.callback);
+      }
+    }
+
+
     return super.create(this.element);
   }
 
   toggle() {
-    document.querySelector('.navigation').classList.toggle('navigation--opened');
+    const nav = document.querySelector('.navigation');
+    nav.classList.toggle('navigation--opened');
   }
 }
 
@@ -59,13 +99,6 @@ function initTopMenu() {
       const headerNavigation = document.querySelector('.navigation');
       headerNavigation.classList.toggle('navigation--opened');
       document.body.classList.toggle('overflow');
-      // if (headerNavigation.style.transform == "translateY(-5%)") {
-      //     headerNavigation.style.transform = "translateY(-100%)";
-      //     document.body.style.overflow = "auto";
-      // } else {
-      //     headerNavigation.style.transform = "translateY(-5%)";
-      //     document.body.style.overflow = "hidden";
-      // }
     });
   });
   if (headerNavigationClose) {
@@ -73,17 +106,19 @@ function initTopMenu() {
       const headerNavigation = document.querySelector('.navigation');
       headerNavigation.classList.toggle('navigation--opened');
       document.body.classList.toggle('overflow');
-      // if (headerNavigation.style.transform == "translateY(-5%)") {
-      //     headerNavigation.style.transform = "translateY(-100%)";
-      //     document.body.style.overflow = "auto";
-      // } else {
-      //     headerNavigation.style.transform = "translateY(-5%)";
-      //     document.body.style.overflow = "hidden";
-      // }
     });
   }
 
-
+  const navEl = document.querySelectorAll('.navigation-element');
+  navEl.forEach((item) => {
+    item.addEventListener('click', (e) => {
+      navEl.forEach((el) => {
+        el.classList.remove('navigation-element--active');
+      });
+      e.target.classList.add('navigation-element--active');
+      Navigation.toggle();
+    });
+  });
 
   const pages = document.querySelectorAll('.page');
   const baskets = document.querySelectorAll('.header .header__basket');

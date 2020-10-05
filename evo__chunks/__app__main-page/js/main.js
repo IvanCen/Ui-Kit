@@ -1,4 +1,4 @@
-const mainPage = document.querySelector('.main-page');
+const mainPageEl = document.querySelector('.main-page');
 const body = document.querySelector('body');
 
 window.onerror = (message, url, lineNo) => {
@@ -324,15 +324,15 @@ const toggleModalPagePaymentOrder = new ToggleModalPagePaymentOrder({
 
 
 const searchClassMethod = new Search();
-const toggleBalance = new ToggleBalance();
+const balancePage = new BalancePage();
 const toggleOrder = new ToggleOrder();
 const toggleReward = new ToggleReward();
-const toggleStores = new ToggleStores({
+const storesPage = new StoresPage({
   api,
   classOpen: ['modal-page--opened'],
 });
 const toggleModal = new ToggleModal();
-const renderMainPage = new ToggleMain({ api });
+const mainPage = new MainPage({ api });
 const togglePage = new TogglePage({
   classOpen: ['page--opened--bottom-bar', 'page--opened'],
 });
@@ -354,9 +354,9 @@ const toggleFifthPage = new ToggleFifthPage({
 const toggleSixthPage = new ToggleSixthPage({
   classOpen: ['sixth-page--opened'],
 });
-const toggleModalPage = new ToggleModalPageStores({
-  classOpen: ['modal-page--opened'],
-});
+/*const toggleModalPage = new ToggleModalPageStores({
+  classOpen: ['modal-page--open'],
+});*/
 const toggleModalPageSearch = new ToggleModalPageSearch({
   classOpen: ['modal-page-search--opened'],
 });
@@ -373,14 +373,78 @@ const toggleModalPageSignIn = new ToggleModalPageSignIn({
 const togglePageBalanceFill = new TogglePageBalanceFill({
   classOpen: ['page--opened'],
 });
-const togglePageInbox = new TogglePageInbox({
+const inboxPage = new InboxPage({
   classOpen: ['page--opened'],
 });
-const togglePageAccount = new TogglePageAccount({
+const pageAccount = new AccountPage({
   classOpen: ['page--opened'],
 });
 const Navigation = new CreateNavigation({
   style: '',
+  eventOpenBalancePage: [
+    {
+      type: 'click',
+      callback: () => {
+        stopAction(() => {
+          closePages();
+          balancePage.openPage();
+        });
+      },
+    },
+  ],
+  eventOpenMainPage: [
+    {
+      type: 'click',
+      callback: () => {
+        stopAction(() => {
+          closePages();
+          mainPage.openPage();
+        });
+      },
+    },
+  ],
+  eventOpenInboxPage: [
+    {
+      type: 'click',
+      callback: () => {
+        stopAction(() => {
+          closePages();
+          inboxPage.openPage();
+        });
+      },
+    },
+  ],
+  eventOpenProfilePage: [
+    {
+      type: 'click',
+      callback: () => {
+        stopAction(() => {
+          closePages();
+          pageAccount.openPage();
+        });
+      },
+    },
+  ],
+  eventOpenStoresPage: [
+    {
+      type: 'click',
+      callback: () => {
+        stopAction(() => {
+          storesPage.openPage();
+        });
+      },
+    },
+  ],
+  eventOpenBasketPage: [
+    {
+      type: 'click',
+      callback: () => {
+        stopAction(() => {
+          toggleModalPageReviewOrder.rendering();
+        });
+      },
+    },
+  ],
 });
 
 function closeOrderPage() {
@@ -398,11 +462,8 @@ const mainPageFooter = new CreateFooter({
       type: 'click',
       callback: () => {
         stopAction(() => {
-          /* renderMainPage.closePage();
-          renderMainPage.clearPage();
-          renderMainPage.rendering(); */
-          renderMainPage.openPage();
           closePages();
+          mainPage.openPage();
         });
       },
     },
@@ -411,11 +472,8 @@ const mainPageFooter = new CreateFooter({
     {
       type: 'click',
       callback: () => {
-        toggleBalance.closePage();
-        toggleBalance.clearPage();
-        toggleBalance.rendering();
-        toggleBalance.openPage();
         closePages();
+        balancePage.openPage();
       },
     },
   ],
@@ -423,10 +481,7 @@ const mainPageFooter = new CreateFooter({
     {
       type: 'click',
       callback: () => {
-        togglePageInbox.closePage();
-        togglePageInbox.clearPage();
-        togglePageInbox.rendering();
-        togglePageInbox.openPage();
+        inboxPage.openPage();
         closePages();
       },
     },
@@ -435,11 +490,8 @@ const mainPageFooter = new CreateFooter({
     {
       type: 'click',
       callback: () => {
-        togglePageAccount.closePage();
-        togglePageAccount.clearPage();
-        togglePageAccount.rendering();
-        togglePageAccount.openPage();
         closePages();
+        pageAccount.openPage();
       },
     },
   ],
@@ -448,18 +500,22 @@ const mainPageFooter = new CreateFooter({
       type: 'click',
       callback: () => {
         stopAction(() => {
-          toggleStores.rendering();
-          toggleStores.openPage();
+          storesPage.openPage();
         });
       },
     },
   ],
 });
 
-renderMainPage.rendering();
+mainPage.rendering();
+balancePage.rendering();
+storesPage.rendering();
+inboxPage.rendering();
+pageAccount.rendering();
 
-mainPage.after(Navigation.create());
-mainPage.after(mainPageFooter.create());
+
+mainPageEl.after(Navigation.create());
+mainPageEl.after(mainPageFooter.create());
 // switchActiveFooter();
 initMainPanel();
 initTopMenu();

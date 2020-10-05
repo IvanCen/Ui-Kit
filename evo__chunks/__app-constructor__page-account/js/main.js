@@ -1,28 +1,35 @@
-class TogglePageAccount extends TogglePage {
+class AccountPage {
   constructor(parameters) {
-    super(parameters);
     this.parameters = parameters;
     this.rendering = this.rendering.bind(this);
+    this.closePage = this.closePage.bind(this);
+    this.openPage = this.openPage.bind(this);
+    this.body = document.querySelector('body');
+    this.mainPage = document.querySelector('.main-page');
+    this.mainPageContent = document.querySelector('.main-page__content');
+  }
+
+  closePage() {
+    this.mainPageContent.classList.remove('main-page__content--size--small');
+    this.mainPageContent.classList.remove('main-page__content--opened');
+  }
+
+  openPage() {
+    this.mainPageContent = document.querySelector('.main-page__content-profile');
+    this.headerTitle = document.querySelector('.header__status');
+    setTimeout(() => {
+      if (this.mainPageContent) {
+        this.mainPageContent.classList.add('main-page__content--opened');
+        this.headerTitle.textContent = 'Личный кабинет';
+      }
+    }, 100);
+    history.pushState({ state: '#' }, null, '#');
   }
 
   rendering() {
-    super.rendering();
-    const accountTopBar = new CreateTopBarWithBackButton({
-      selector: ['div'],
-      style: ['top-bar'],
-      modifier: [`--size--medium${isIos ? '--ios' : ''}`, '--indentation--bottom'],
-      textTitle: ['Личный кабинет'],
-      eventBack: [
-        {
-          type: 'click',
-          callback: () => {
-            checkMessageInbox();
-            this.closePage();
-            this.deletePage();
-          },
-        },
-      ],
-    });
+    this.mainPageContent = document.createElement('div');
+    this.mainPageContent.classList.add('main-page__content', 'main-page__content--size--small', 'main-page__content-profile');
+    this.mainPage.append(this.mainPageContent);
     const accountButtonJoinTangerin = new CreateButton(
       {
         selector: ['button'],
@@ -57,6 +64,7 @@ class TogglePageAccount extends TogglePage {
           '--theme--tangerin',
           '--indentation--left',
           '--indentation--bottom',
+          '--indentation--top',
         ],
         text: ['Выйти'],
         events: [
@@ -190,21 +198,19 @@ class TogglePageAccount extends TogglePage {
     });
 
     this.buttonContainer = document.createElement('div');
-    this.page.prepend(createTopBarIos());
-    this.page.prepend(accountTopBar.create());
+    this.mainPageContent.prepend(createTopBarIos());
     if (isEmptyObj(userInfoObj)) {
       this.buttonContainer.append(accountButtonJoinTangerin.create());
       this.buttonContainer.append(accountButtonJoinTangerinTransparent.create());
     } else {
       this.buttonContainer.append(accountButtonLogoutTangerin.create());
     }
-    this.page.append(this.buttonContainer);
-    this.page.append(textAreaName.create());
-    this.page.append(textAreaBirthday.create());
-    this.page.append(textAreaPhone.create());
-    this.page.append(textAreaEmail.create());
-    this.page.append(accountTextArea.create());
+    this.mainPageContent.append(this.buttonContainer);
+    this.mainPageContent.append(textAreaName.create());
+    this.mainPageContent.append(textAreaBirthday.create());
+    this.mainPageContent.append(textAreaPhone.create());
+    this.mainPageContent.append(textAreaEmail.create());
+    this.mainPageContent.append(accountTextArea.create());
 
-    this.openPage();
   }
 }

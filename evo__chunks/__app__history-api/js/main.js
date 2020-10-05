@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', BindingHistoryApi);
+//document.addEventListener('DOMContentLoaded', BindingHistoryApi);
 
 function BindingHistoryApi() {
   window.onpopstate = function (event) {

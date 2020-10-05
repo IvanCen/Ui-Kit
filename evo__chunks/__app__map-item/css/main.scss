@@ -2,9 +2,13 @@
 
 .map {
   width: 100%;
-  display: flex;
+  display: none;
   flex-direction: column;
   transition: bottom ease-in 0.2s;
+
+  &--show {
+    display: flex;
+  }
 
   &--hide {
     bottom: -75% !important;
