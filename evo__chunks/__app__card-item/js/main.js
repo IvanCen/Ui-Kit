@@ -28,11 +28,11 @@ class CreateCardItemProductCardNew extends CreateItem {
                     </div>
                     <div class="catalog__list-element-additional">
                         <div class="catalog__list-element-name">${weight}</div>
-                        <div class="catalog__list-element-plus">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle opacity="0.12" cx="12.0001" cy="12" r="12" fill="#E6551E"/>
-                                <path d="M12.0001 6.75V17.25" stroke="#E6551E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M6.75006 12H17.2501" stroke="#E6551E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <div class="catalog__list-element-plus element-plus">
+                            <svg class="element-plus" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle class="element-plus" opacity="0.12" cx="12.0001" cy="12" r="12" fill="#E6551E"/>
+                                <path class="element-plus" d="M12.0001 6.75V17.25" stroke="#E6551E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path class="element-plus" d="M6.75006 12H17.2501" stroke="#E6551E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                         </div>
                     </div>
@@ -58,10 +58,19 @@ class CreateCardItemProductCardNew extends CreateItem {
       }
     }
 
+    this.element.addEventListener('click', (e) => {
+      console.log(e.target);
+      if (!e.target.classList.contains('element-plus')) {
+        stopAction(() => {
+          toggleModalPageCard.rendering(dataProductApi.successData.items[productInfo.id]);
+        });
+      }
+    });
+
     this.iconsPlus.addEventListener('click', () => {
       basketArray.push({ id: productInfo.id, modifiers: [] });
       localStorage.setItem('basket', JSON.stringify(basketArray));
-      checkEmptyBasket()
+      checkEmptyBasket();
     });
 
     const imgEl = this.element.querySelector('.catalog__list-element-image');

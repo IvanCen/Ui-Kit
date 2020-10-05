@@ -79,8 +79,8 @@ class ToggleOrder extends ToggleMainPage {
           type: 'click',
           callback: () => {
             stopAction(() => {
-              toggleStores.rendering();
-              toggleStores.openPage();
+              storesPage.rendering();
+              storesPage.openPage();
             });
           },
         },

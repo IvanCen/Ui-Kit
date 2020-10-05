@@ -1,17 +1,33 @@
-class ToggleBalance extends ToggleMainPage {
+class BalancePage {
   constructor(parameters) {
-    super();
     this.parameters = parameters;
     this.rendering = this.rendering.bind(this);
+    this.body = document.querySelector('body');
+    this.mainPage = document.querySelector('.main-page');
+    this.mainPageContent = document.querySelector('.main-page__content');
   }
 
   closePage() {
-    super.closePage();
     this.mainPageContent.classList.remove('main-page__content--size--small');
+    this.mainPageContent.classList.remove('main-page__content--opened');
+  }
+
+  openPage() {
+    this.mainPageContent = document.querySelector('.main-page__content-balance');
+    this.headerTitle = document.querySelector('.header__status');
+    setTimeout(() => {
+      if (this.mainPageContent) {
+        this.mainPageContent.classList.add('main-page__content--opened');
+        this.headerTitle.textContent = 'Баланс';
+      }
+    }, 100);
+    history.pushState({ state: '#' }, null, '#');
   }
 
   rendering() {
-    super.rendering('balance');
+    this.mainPageContent = document.createElement('div');
+    this.mainPageContent.classList.add('main-page__content', 'main-page__content--size--small', 'main-page__content-balance');
+    this.mainPage.prepend(this.mainPageContent);
     api.getClientApi();
     this.mainPageContent.classList.add('main-page__content--size--small');
     const topBar = new CreateTopBarDefault({
@@ -138,7 +154,7 @@ class ToggleBalance extends ToggleMainPage {
       ],
     });
     this.mainPageContent.append(createTopBarIos());
-    this.mainPageContent.append(topBar.create());
+    // this.mainPageContent.append(topBar.create());
     if (isEmptyObj(userInfoObj)) {
       this.mainPageContent.append(card.create());
       this.mainPageContent.append(buttonJoinOrange.create());
@@ -148,6 +164,5 @@ class ToggleBalance extends ToggleMainPage {
       this.mainPageContent.append(buttonFill.create());
     }
     const footerButtonBalance = document.querySelector('.footer__button--type--cards');
-
   }
 }

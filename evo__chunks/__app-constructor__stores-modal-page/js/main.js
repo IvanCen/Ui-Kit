@@ -1,117 +1,35 @@
-class ToggleStores extends ToggleModalPageStores {
+class StoresPage {
   constructor(parameters) {
-    super(parameters);
     this.parameters = parameters;
-
     this.rendering = this.rendering.bind(this);
   }
 
-  activeMapTouch(container) {
-    let dragStart = 0;
-    let dragEnd = 0;
-    let offsetY = 0;
-    let offsetYOnStart = 0;
-    let isOpen = false;
-    const isMapOpen = localStorage.getItem('isMapListOpen');
 
-    if (isMapOpen === 'false') {
-      offsetY = container.offsetHeight - 43;
-      offsetYOnStart = container.offsetHeight - 43;
-      container.style.transform = `translate3d(0,${offsetY}px,0)`;
-    }
-
-    function mapAnimation(action) {
-      if (offsetY > 50 && !isOpen && action === 'end') {
-        offsetY = container.offsetHeight - 43;
-        offsetYOnStart = container.offsetHeight - 43;
-        isOpen = !isOpen;
-        localStorage.setItem('isMapListOpen', 'false');
-      } else if (offsetY > (container.offsetHeight - 43) && action === 'move' && isOpen) {
-        offsetY = container.offsetHeight - 43;
-        offsetYOnStart = container.offsetHeight - 43;
-      } else if (offsetY < (container.offsetHeight - 100) && action === 'end' && isOpen) {
-        offsetY = 0;
-        offsetYOnStart = 0;
-        isOpen = !isOpen;
-        localStorage.setItem('isMapListOpen', 'true');
-      }
-      if (offsetY < 0) {
-        // тут действия, если тянется дальше максимума
-        if (action === 'end') {
-          offsetY = 0;
-          dragStart = 0;
-          dragEnd = 0;
-          offsetYOnStart = 0;
-        } else if (action === 'move') {
-          offsetY = 0;// уменьшапем скорость смещения в 2 раза
-        }
-      }
-      // console.log(offsetY, dragStart, dragEnd, offsetYOnStart);
-
-      container.style.transform = `translate3d(0,${offsetY}px,0)`;
-    }
-    /**
- * Панель за которую тянется весь контейнер panelTouch
- * */
-    const panelTouch = container.querySelector('.top-bar-search--size--small');
-    panelTouch.addEventListener('touchstart', (event) => {
-      dragStart = event.touches[0].clientY;
-      container.classList.add('map--with-animation');
-    }, { passive: false });
-
-    panelTouch.addEventListener('touchmove', (event) => {
-      dragEnd = event.touches[0].clientY;
-      offsetY = offsetYOnStart + dragEnd - dragStart;
-      mapAnimation('move');
-    }, { passive: false });
-
-    panelTouch.addEventListener('touchend', (event) => {
-      offsetYOnStart = offsetY;
-      container.classList.add('map--with-animation');
-      mapAnimation('end');
-    }, { passive: false });
+  openPage() {
+    this.modalPage = document.querySelector('.modal-page-stores');
+    this.mapSlide = this.modalPage.querySelector('.map');
+    setTimeout(() => {
+      this.modalPage.classList.add('modal-page--open');
+      this.mapSlide.classList.add('map--show');
+      this.body.classList.add('body');
+    }, 100);
+    history.pushState({ state: '#modal-page-stores' }, null, '#modal-page-stores');
   }
 
-  chooseShop(page) {
-    const storesButtonBottomBar = document.querySelector('.bottom-bar__select-item');
-    const modalPageReview = document.querySelector('.modal-page-order-review');
-    const radioInputs = page.querySelectorAll('.radio__input');
-    const mapItem = page.querySelectorAll('.map__item');
-    console.log(radioInputs);
-    [...radioInputs].forEach((radio) => {
-      const radioId = radio.getAttribute('data-id');
-      if (!isEmptyObj(userStore) && userStore.store.id === Number(radioId)) {
-        radio.checked = true;
-        console.log('checked');
-      }
-    });
-    [...mapItem].forEach((input) => {
-      input.addEventListener('click', () => {
-        [...radioInputs].forEach((item) => {
-          if (item.checked) {
-            const inputId = item.getAttribute('data-id');
-            Object.values(storesDataObj.successData).forEach((el) => {
-              if (el.id === Number(inputId)) {
-                api.getShopOutOfStockItemsAndModifiers(el.id);
-                userStore.store = el;
-                localStorage.setItem('userStore', JSON.stringify(userStore));
-                if (modalPageReview) {
-                  toggleModalPageReviewOrder.deletePage();
-                  setTimeout(() => toggleModalPageReviewOrder.rendering(), 100);
-                }
-                if (storesButtonBottomBar) {
-                  storesButtonBottomBar.textContent = el.shortTitle;
-                }
-              }
-            });
-          }
-        });
-      });
-    });
+  closePage() {
+    this.modalPage = document.querySelector('.modal-page-stores');
+    this.mapSlide = this.modalPage.querySelector('.map');
+    if (this.modalPage) {
+      this.modalPage.classList.remove('modal-page--open');
+      this.mapSlide.classList.remove('map--show');
+    }
   }
 
   rendering() {
-    super.rendering('stores');
+    this.body = document.querySelector('body');
+    this.body.append(createModalPageStores());
+    this.modalPage = document.querySelector('.modal-page-stores');
+    this.modalPageContent = this.modalPage.querySelector('.modal-page__content');
 
     const storesTopBar = new CreateTopBarStores({
       selector: ['div'],
@@ -128,8 +46,7 @@ class ToggleStores extends ToggleModalPageStores {
         },
       ],
       eventCloseIcon: [
-        { type: 'click', callback: toggleModalPage.closePage },
-        { type: 'click', callback: toggleModalPage.deletePage },
+        { type: 'click', callback: this.closePage },
       ],
     });
     const storesMap = new CreateMapStores({
@@ -350,11 +267,115 @@ class ToggleStores extends ToggleModalPageStores {
     }, 300);
 
     const topBarSearch = this.modalPageContent.querySelector('.top-bar-search--size--small');
-    const mapList = this.modalPageContent.querySelector('.map');
+    const mapList = document.querySelector('.map');
 
     /* topBarSearch.addEventListener('click', () => {
       mapList.classList.toggle('map--hide');
     }); */
     this.activeMapTouch(mapList);
+  }
+
+  activeMapTouch(container) {
+    let dragStart = 0;
+    let dragEnd = 0;
+    let offsetY = 0;
+    let offsetYOnStart = 0;
+    let isOpen = false;
+    const isMapOpen = localStorage.getItem('isMapListOpen');
+
+    if (isMapOpen === 'false') {
+      offsetY = container.offsetHeight;
+      offsetYOnStart = container.offsetHeight;
+      container.style.transform = `translate3d(0,${offsetY}px,0)`;
+    }
+
+    function mapAnimation(action) {
+      if (offsetY > 50 && !isOpen && action === 'end') {
+        offsetY = container.offsetHeight - 43;
+        offsetYOnStart = container.offsetHeight - 43;
+        isOpen = !isOpen;
+        localStorage.setItem('isMapListOpen', 'false');
+      } else if (offsetY > (container.offsetHeight - 43) && action === 'move' && isOpen) {
+        offsetY = container.offsetHeight - 43;
+        offsetYOnStart = container.offsetHeight - 43;
+      } else if (offsetY < (container.offsetHeight - 100) && action === 'end' && isOpen) {
+        offsetY = 0;
+        offsetYOnStart = 0;
+        isOpen = !isOpen;
+        localStorage.setItem('isMapListOpen', 'true');
+      }
+      if (offsetY < 0) {
+        // тут действия, если тянется дальше максимума
+        if (action === 'end') {
+          offsetY = 0;
+          dragStart = 0;
+          dragEnd = 0;
+          offsetYOnStart = 0;
+        } else if (action === 'move') {
+          offsetY = 0;// уменьшапем скорость смещения в 2 раза
+        }
+      }
+      // console.log(offsetY, dragStart, dragEnd, offsetYOnStart);
+
+      container.style.transform = `translate3d(0,${offsetY}px,0)`;
+    }
+    /**
+     * Панель за которую тянется весь контейнер panelTouch
+     * */
+    const panelTouch = container.querySelector('.top-bar-search--size--small');
+    panelTouch.addEventListener('touchstart', (event) => {
+      dragStart = event.touches[0].clientY;
+      container.classList.add('map--with-animation');
+    }, { passive: false });
+
+    panelTouch.addEventListener('touchmove', (event) => {
+      dragEnd = event.touches[0].clientY;
+      offsetY = offsetYOnStart + dragEnd - dragStart;
+      mapAnimation('move');
+    }, { passive: false });
+
+    panelTouch.addEventListener('touchend', (event) => {
+      offsetYOnStart = offsetY;
+      container.classList.add('map--with-animation');
+      mapAnimation('end');
+    }, { passive: false });
+  }
+
+  chooseShop(page) {
+    const storesButtonBottomBar = document.querySelector('.bottom-bar__select-item');
+    const modalPageReview = document.querySelector('.modal-page-order-review');
+    const radioInputs = page.querySelectorAll('.radio__input');
+    const mapItem = page.querySelectorAll('.map__item');
+    console.log(radioInputs);
+    [...radioInputs].forEach((radio) => {
+      const radioId = radio.getAttribute('data-id');
+      if (!isEmptyObj(userStore) && userStore.store.id === Number(radioId)) {
+        radio.checked = true;
+        console.log('checked');
+      }
+    });
+    [...mapItem].forEach((input) => {
+      input.addEventListener('click', () => {
+        [...radioInputs].forEach((item) => {
+          if (item.checked) {
+            const inputId = item.getAttribute('data-id');
+            Object.values(storesDataObj.successData).forEach((el) => {
+              if (el.id === Number(inputId)) {
+                api.getShopOutOfStockItemsAndModifiers(el.id);
+                userStore.store = el;
+                localStorage.setItem('userStore', JSON.stringify(userStore));
+                if (modalPageReview) {
+                  toggleModalPageReviewOrder.deletePage();
+                  setTimeout(() => toggleModalPageReviewOrder.rendering(), 100);
+                }
+                if (storesButtonBottomBar) {
+                  storesButtonBottomBar.textContent = el.shortTitle;
+                }
+              }
+            });
+          }
+        });
+      });
+    });
   }
 }

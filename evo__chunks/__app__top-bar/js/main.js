@@ -319,14 +319,6 @@ class CreateTopBarInbox extends CreateItem {
     this.parameters = parameters;
     this.element = document.createElement(this.parameters.selector);
     this.template = `
-      <div class="top-bar__content-container top-bar__content-container--size--small">
-        <div class="top-bar__header">
-         <button class="button top-bar__back-button">
-            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-back.svg]]" alt="Кнопка назад" class="top-bar__icon top-bar__icon-back">
-          </button>
-        </div>
-        <h1 class="top-bar__title">Входящие сообщения</h1>
-      </div>
       <div class="top-bar__tab-container">
         <button class="top-bar__tab top-bar__tab--messages top-bar__tab--active">Сообщения</button>
         <button class="top-bar__tab top-bar__tab--last-offers">Последние предложения</button>
@@ -338,9 +330,9 @@ class CreateTopBarInbox extends CreateItem {
 
     this.topBarTabMessages = this.element.querySelector('.top-bar__tab--messages');
     this.topBarTabLastOffers = this.element.querySelector('.top-bar__tab--last-offers');
-    this.iconBack = this.element.querySelector('.top-bar__back-button');
+/*    this.iconBack = this.element.querySelector('.top-bar__back-button');
 
-    this.iconBack.addEventListener('click', () => window.history.back());
+    this.iconBack.addEventListener('click', () => window.history.back());*/
 
     if (typeof this.parameters.eventToggleMessages === 'object') {
       for (const event of this.parameters.eventToggleMessages) {
@@ -352,11 +344,11 @@ class CreateTopBarInbox extends CreateItem {
         this.topBarTabLastOffers.addEventListener(event.type, event.callback);
       }
     }
-    if (typeof this.parameters.eventBack === 'object') {
+    /*if (typeof this.parameters.eventBack === 'object') {
       for (const event of this.parameters.eventBack) {
         this.iconBack.addEventListener(event.type, event.callback);
       }
-    }
+    }*/
 
     return super.create(this.element);
   }
@@ -462,10 +454,10 @@ class CreateTopBarStores extends CreateItem {
       <div class="top-bar__content-container top-bar__content-container--size--medium">
         <div class="top-bar__header">
           <button class="top-bar__button">
-            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-close-white.svg]]" alt="Кнопка закрытия" class="top-bar__icon top-bar__icon--type--close">
+            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-close.svg]]" alt="Кнопка закрытия" class="top-bar__icon top-bar__icon--type--close">
           </button>
           <button class="button top-bar__search-button top-bar__search-button--store button-route">
-          <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-search.svg]]" alt="Кнопка поиска" class="top-bar__icon">
+            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-search.svg]]" alt="Кнопка поиска" class="top-bar__icon">
           </button>
         </div>
       </div>`;

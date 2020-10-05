@@ -77,7 +77,7 @@ class ToggleModalPageStoresSearch extends ToggleModalPageSearch {
           callback: () => {
             this.closePage();
             this.deletePage();
-            toggleStores.chooseShop(document.querySelector('.modal-page__content'));
+            storesPage.chooseShop(document.querySelector('.modal-page__content'));
           },
         },
       ],

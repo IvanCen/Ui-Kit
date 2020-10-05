@@ -1125,9 +1125,10 @@ body {
         background-color: grey;
       }
 
-      &--ended{
+      &--ended {
         position: relative;
-        &:before{
+
+        &:before {
           display: block;
           content: "";
           position: absolute;
@@ -1141,10 +1142,12 @@ body {
           background-position: center center;
           background-image: url("[+chunkWebPath+]/img/clock.svg");
         }
-        .catalog__list-element-image{
+
+        .catalog__list-element-image {
           filter: grayscale(1);
         }
-        .catalog__list-element-detail{
+
+        .catalog__list-element-detail {
           filter: grayscale(1);
           opacity: .38;
         }
@@ -1768,9 +1771,11 @@ body {
       display: none;
     }
   }
+
   &__out-of-stock {
     display: none;
   }
+
   &--ended {
     .card__out-of-stock {
       width: 227px;
@@ -1837,8 +1842,14 @@ body {
   }
 
   &__tags {
+    display: none;
+
+    &--show {
+      display: block;
+    }
+
     .swiper-container {
-      padding: 16px 0 32px;
+      padding: 0 0 32px;
     }
 
     &-container {
@@ -1859,7 +1870,7 @@ body {
       height: 32px;
       transition: all .3s ease-in-out;
 
-      &::after {
+      /*&::after {
         display: block;
         position: absolute;
         content: "";
@@ -1873,13 +1884,12 @@ body {
         background-repeat: no-repeat;
         background-image: url("[+chunkWebPath+]/img/tag-close.svg");
         transition: all .3s ease-in-out;
-      }
+      }*/
 
       &--selected {
         color: white;
         border: 1px solid #35302B;
         background-color: #35302B;
-        padding-right: 32px;
         opacity: 1;
 
         &::after {
@@ -1897,6 +1907,7 @@ body {
     display: flex;
     justify-content: left;
     align-items: center;
+    margin-bottom: 20px;
 
     &-element {
       display: flex;
@@ -1905,6 +1916,8 @@ body {
       align-items: center;
       width: 52px;
       white-space: nowrap;
+      margin-right: 20px;
+
 
       &-image {
         margin-bottom: 6px;
@@ -2233,6 +2246,22 @@ body {
 
     &--close {
       margin-bottom: 32px;
+      height: 56px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 16px;
+      text-transform: uppercase;
+      font-weight: 400;
+      color: #fff;
+      height: 56px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 16px;
+      text-transform: uppercase;
+      font-weight: 400;
+      color: #fff;
     }
   }
 }
@@ -2247,15 +2276,17 @@ body {
   left: 0;
   transform: translateY(-1px);
   backdrop-filter: blur(27px);
-  box-shadow: 0px 1px 1px rgba(0,0,0,.14), 0px 2px 1px rgba(0,0,0,.12), 0px 1px 3px rgba(0,0,0,.2);
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, .14), 0px 2px 1px rgba(0, 0, 0, .12), 0px 1px 3px rgba(0, 0, 0, .2);
 
-  &__basket{
-    & > svg{
+  &__basket {
+    & > svg {
       overflow: visible;
     }
+
     position: relative;
-    &--not-empty{
-      &:after{
+
+    &--not-empty {
+      &:after {
         display: block;
         position: absolute;
         content: "";

@@ -42,8 +42,8 @@ class CreateBottomBarOrder extends CreateItem {
         });
       } else {
         stopAction(() => {
-          toggleStores.rendering(true);
-          toggleStores.openPage();
+          storesPage.rendering(true);
+          storesPage.openPage();
         });
       }
     });

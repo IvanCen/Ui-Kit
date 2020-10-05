@@ -1,12 +1,38 @@
-class TogglePageInbox extends TogglePage {
+class InboxPage {
   constructor(parameters) {
-    super(parameters);
     this.parameters = parameters;
     this.rendering = this.rendering.bind(this);
+    this.closePage = this.closePage.bind(this);
+    this.openPage = this.openPage.bind(this);
+    this.body = document.querySelector('body');
+    this.mainPage = document.querySelector('.main-page');
+    this.mainPageContent = document.querySelector('.main-page__content');
+  }
+
+  closePage() {
+    this.mainPageContent.classList.remove('main-page__content--size--small');
+    this.mainPageContent.classList.remove('main-page__content--opened');
+  }
+
+  openPage() {
+    this.mainPageContent = document.querySelector('.main-page__content-inbox');
+    this.headerTitle = document.querySelector('.header__status');
+    setTimeout(() => {
+      if (this.mainPageContent) {
+        this.mainPageContent.classList.add('main-page__content--opened');
+        this.headerTitle.textContent = 'Баланс';
+      }
+    }, 100);
+    history.pushState({ state: '#' }, null, '#');
   }
 
   rendering() {
-    super.rendering();
+    this.mainPageContent = document.createElement('div');
+   // this.mainPageTabContent = document.createElement('div');
+    this.mainPageContent.classList.add('main-page__content', 'main-page__content--size--small', 'main-page__content-inbox');
+    //this.mainPageTabContent.classList.add('main-page__tab-content-inbox');
+    this.mainPage.append(this.mainPageContent);
+    //this.mainPageContent.append(this.mainPageTabContent);
 
     const inboxTopBar = new CreateTopBarInbox({
       selector: ['div'],
@@ -40,8 +66,8 @@ class TogglePageInbox extends TogglePage {
     });
 
 
-    this.page.prepend(createTopBarIos());
-    this.page.prepend(inboxTopBar.create());
+    this.mainPageContent.prepend(createTopBarIos());
+    this.mainPageContent.prepend(inboxTopBar.create());
 
     function render() {
       toggleInboxTabMessagesContent.rendering();
