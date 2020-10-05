@@ -376,7 +376,7 @@ const togglePageBalanceFill = new TogglePageBalanceFill({
 const inboxPage = new InboxPage({
   classOpen: ['page--opened'],
 });
-const pageAccount = new AccountPage({
+const togglePageAccount = new TogglePageAccount({
   classOpen: ['page--opened'],
 });
 const Navigation = new CreateNavigation({
@@ -386,61 +386,11 @@ const Navigation = new CreateNavigation({
       type: 'click',
       callback: () => {
         stopAction(() => {
-          closePages();
+          balancePage.closePage();
+          balancePage.clearPage();
+          balancePage.rendering();
           balancePage.openPage();
-        });
-      },
-    },
-  ],
-  eventOpenMainPage: [
-    {
-      type: 'click',
-      callback: () => {
-        stopAction(() => {
           closePages();
-          mainPage.openPage();
-        });
-      },
-    },
-  ],
-  eventOpenInboxPage: [
-    {
-      type: 'click',
-      callback: () => {
-        stopAction(() => {
-          closePages();
-          inboxPage.openPage();
-        });
-      },
-    },
-  ],
-  eventOpenProfilePage: [
-    {
-      type: 'click',
-      callback: () => {
-        stopAction(() => {
-          closePages();
-          pageAccount.openPage();
-        });
-      },
-    },
-  ],
-  eventOpenStoresPage: [
-    {
-      type: 'click',
-      callback: () => {
-        stopAction(() => {
-          storesPage.openPage();
-        });
-      },
-    },
-  ],
-  eventOpenBasketPage: [
-    {
-      type: 'click',
-      callback: () => {
-        stopAction(() => {
-          toggleModalPageReviewOrder.rendering();
         });
       },
     },
@@ -462,6 +412,9 @@ const mainPageFooter = new CreateFooter({
       type: 'click',
       callback: () => {
         stopAction(() => {
+          /* renderMainPage.closePage();
+          renderMainPage.clearPage();
+          renderMainPage.rendering(); */
           closePages();
           mainPage.openPage();
         });
@@ -472,6 +425,9 @@ const mainPageFooter = new CreateFooter({
     {
       type: 'click',
       callback: () => {
+        /*toggleBalance.closePage();
+        toggleBalance.clearPage();
+        toggleBalance.rendering();*/
         closePages();
         balancePage.openPage();
       },
@@ -490,8 +446,11 @@ const mainPageFooter = new CreateFooter({
     {
       type: 'click',
       callback: () => {
+        togglePageAccount.closePage();
+        togglePageAccount.clearPage();
+        togglePageAccount.rendering();
+        togglePageAccount.openPage();
         closePages();
-        pageAccount.openPage();
       },
     },
   ],
@@ -511,7 +470,6 @@ mainPage.rendering();
 balancePage.rendering();
 storesPage.rendering();
 inboxPage.rendering();
-pageAccount.rendering();
 
 
 mainPageEl.after(Navigation.create());
