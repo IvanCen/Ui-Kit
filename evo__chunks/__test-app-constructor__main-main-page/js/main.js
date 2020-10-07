@@ -1,4 +1,54 @@
-class MainPage {
+/**
+ * Функция создания элемента главной страницы с контейнером для контента
+ * @return {HTMLDivElement}
+ */
+function createElementMainPage() {
+  const mainPage = document.createElement('div');
+  mainPage.classList.add('main-page');
+  return mainPage;
+}
+
+/**
+ * Создает контейнер для контента главной страницы
+ * @returns {HTMLDivElement}
+ */
+function createElementMainPageContent() {
+  const mainPageContent = document.createElement('div');
+  mainPageContent.classList.add(
+    'main-page__content',
+    'main-page__content--size--small',
+    'main-page__content-main',
+    'main-page__content--opened',
+  );
+  return mainPageContent;
+}
+
+/**
+ * Создает контейнер для контента главной страницы и добавляет в него компоненты
+ * @returns {HTMLDivElement}
+ */
+function renderMainPageContent() {
+  const mainPageContent = createElementMainPageContent();
+  const banners = createBanners();
+  mainPageContent.append(banners);
+  return mainPageContent;
+}
+
+/**
+ * Создает экземпляр главной страницы, добавляет в DOM вместе с контентом
+ */
+function renderMainPage() {
+  const mainPage = createElementMainPage();
+  const mainPageContent = renderMainPageContent();
+  const topBar = createTopBar();
+
+  mainPage.append(topBar);
+  mainPage.append(mainPageContent);
+
+  document.body.append(mainPage);
+}
+
+class MainPages {
   constructor(parameters) {
     this.parameters = parameters;
     this.rendering = this.rendering.bind(this);

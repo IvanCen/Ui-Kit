@@ -42,6 +42,7 @@ function renderPreLoader() {
 function runPreloader() {
   renderPreLoader();
 }
+
 /**
  * Функция скрывающая пре-лоадер
  */

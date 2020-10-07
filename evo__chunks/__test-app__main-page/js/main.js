@@ -125,6 +125,7 @@ function updateDataPosts(data) {
     }
   }
 }
+
 /**
  * Функция создания объекта для данных о публичных документах и записи туда информации
  * Завершается вызовом функции записи всего объекта appData в локал сторадж
@@ -151,6 +152,9 @@ function checkAvailabilityDataPublicDocuments() {
   return true;
 }
 
+/**
+ * Функция получения документа через запрос по API
+ */
 async function getPublicDocument(mode, documentName) {
   const document = await makeApiRequest('get-public-document', {
     document: documentName,
@@ -158,7 +162,6 @@ async function getPublicDocument(mode, documentName) {
   });
   if (document) {
     document.successData.documentName = documentName;
-    document.successData.lastEditDateRequest = Date.now();
   }
   return document.successData;
 }
@@ -173,16 +176,14 @@ function checkLastEditDateTimeDocumentsAndGetItIfIsNeed() {
   Object.entries(publicDocuments).forEach(async ([key, value]) => {
     // сравнение времени сейчас с последним запросом на документ,
     // если оно больше чем день вернет true
-    if ((Date.now() - value.lastEditDateRequest) > (24 * 60 * 60 * 1000)) {
-      // запрос последнего редактирования документа
-      const publicDocumentEditDate = await getPublicDocument('editDateTime', key);
-      // если время изменилось, делаем запрос на новый документ
-      if (publicDocumentEditDate.editDate !== value.editDate) {
-        const publicDocument = await getPublicDocument('both', key);
-        if (publicDocument) {
-          // и записываем его в объект с новыми документами
-          newPublicDocuments[publicDocument.documentName] = publicDocument;
-        }
+    // запрос последнего редактирования документа
+    const publicDocumentEditDate = await getPublicDocument('editDateTime', key);
+    // если время изменилось, делаем запрос на новый документ
+    if (publicDocumentEditDate.editDate !== value.editDate) {
+      const publicDocument = await getPublicDocument('both', key);
+      if (publicDocument) {
+        // и записываем его в объект с новыми документами
+        newPublicDocuments[publicDocument.documentName] = publicDocument;
       }
     }
   });
@@ -233,7 +234,7 @@ function checkInternetConnection() {
  * Функция запроса всех данных по апи для старта приложения
  * @return {Promise<void>}
  * */
-async function updateAllDataForStartApp() {
+async function getAllDataForStartApp() {
   const catalog = await makeApiRequest('get-catalog', {
     view: 'both',
   });
@@ -248,6 +249,18 @@ async function updateAllDataForStartApp() {
   });
   const publicDocuments = await getDataPublicDocuments();
 
+  return {
+    catalog, stores, promos, posts, publicDocuments,
+  };
+}
+
+/**
+ * Функция обновления всех данных для старта приложения
+ * @return {Promise<void>}
+ * */
+async function updateAllDataForStartApp({
+  catalog, stores, promos, posts, publicDocuments,
+}) {
   updateDataCatalog(catalog);
   updateDataStores(stores);
   updateDataPromos(promos);
@@ -263,8 +276,9 @@ async function updateAllDataForStartApp() {
 async function dataInit() {
   const haveInternet = checkInternetConnection();
   appData = getLocalStorageAppData(); // берет данные из локал стораджа и обновляет в глобальной переменной
-  if (haveInternet) {
-    await updateAllDataForStartApp(); // если есть интернет, то обновляет данные на актуальные
+  if (haveInternet) { // если есть интернет, то обновляет данные на актуальные
+    const updatedDataForStartApp = await getAllDataForStartApp;
+    await updateAllDataForStartApp(updatedDataForStartApp);
   }
 }
 
@@ -275,7 +289,7 @@ async function dataInit() {
 async function coreInit() {
   runPreloader();
   await dataInit();
-  // renderMainPage();
+  renderMainPage();
   stopPreloader();
 }
 

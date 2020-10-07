@@ -396,7 +396,7 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
       groups.forEach((group) => {
         group.addEventListener('click', (e) => {
           group.classList.add('form__group--focused');
-          group.querySelector('input').focus();
+          //group.querySelector('input').focus();
         });
         group.querySelector('input').addEventListener('blur', (e) => {
           group.classList.remove('form__group--focused');

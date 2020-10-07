@@ -6,6 +6,7 @@ class CreateCatalogMain extends CreateItem {
     this.renderDrinksCategory = this.renderDrinksCategory.bind(this);
     this.renderFoodCategory = this.renderFoodCategory.bind(this);
     this.renderHitsCategory = this.renderHitsCategory.bind(this);
+    this.openSearchPage = this.openSearchPage.bind(this);
   }
 
   create() {
@@ -234,12 +235,19 @@ class CreateCatalogMain extends CreateItem {
     const drinksContainer = this.element.querySelector('.catalog__list-drinks');
     const foodContainer = this.element.querySelector('.catalog__list-food');
     const hitContainer = this.element.querySelector('.catalog__list-hit');
+    const searchButton = this.element.querySelector('.catalog__categories-element--search');
+
+    searchButton.addEventListener('click', this.openSearchPage);
 
     this.renderFoodCategory(foodContainer, card);
     this.renderDrinksCategory(drinksContainer, card);
     this.renderHitsCategory(hitContainer, card);
 
     return super.create(this.element);
+  }
+
+  openSearchPage() {
+    toggleModalPageOrderSearch.rendering();
   }
 
   renderFoodCategory(container, el) {

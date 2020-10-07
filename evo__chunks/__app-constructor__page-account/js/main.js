@@ -38,6 +38,7 @@ class AccountPage {
           '--theme--tangerin',
           '--indentation--left',
           '--indentation--bottom',
+          '--indentation--top',
         ],
         text: ['Присоединиться'],
         events: [
@@ -45,11 +46,7 @@ class AccountPage {
             type: 'click',
             callback: () => {
               stopAction(() => {
-                this.closePage();
-                this.deletePage();
-                setTimeout(() => {
-                  toggleModalPageSignIn.rendering();
-                }, 300);
+                toggleModalPageSignIn.rendering();
               });
             },
           },
@@ -94,11 +91,7 @@ class AccountPage {
             type: 'click',
             callback: () => {
               stopAction(() => {
-                this.closePage();
-                this.deletePage();
-                setTimeout(() => {
-                  toggleModalPageSignIn.rendering();
-                }, 300);
+                toggleModalPageSignIn.rendering();
               });
             },
           },
@@ -109,7 +102,7 @@ class AccountPage {
       selector: ['div'],
       style: ['text-area'],
       identifier: ['name'],
-      title: userInfoObj.successData.name,
+      title: !isEmptyObj(userInfoObj) ? userInfoObj.successData.name : '',
       text: ['Ваше имя'],
       isButton: true,
       eventButton: [
@@ -129,18 +122,18 @@ class AccountPage {
       ],
     });
     let textAreaBirthday;
-    if (userInfoObj.successData.birthday !== '') {
+    if (!isEmptyObj(userInfoObj) && userInfoObj.successData.birthday !== '') {
       textAreaBirthday = new CreateTextArea({
         selector: ['div'],
         style: ['text-area'],
-        title: userInfoObj.successData.birthday,
+        title: !isEmptyObj(userInfoObj) ? userInfoObj.successData.birthday : '',
         text: ['Ваш день рождения'],
       });
     } else {
       textAreaBirthday = new CreateTextArea({
         selector: ['div'],
         style: ['text-area'],
-        title: userInfoObj.successData.birthday,
+        title: !isEmptyObj(userInfoObj) ? userInfoObj.successData.birthday : '',
         text: ['Ваш день рождения'],
         isButton: true,
         eventButton: [
@@ -164,14 +157,14 @@ class AccountPage {
     const textAreaPhone = new CreateTextArea({
       selector: ['div'],
       style: ['text-area'],
-      title: userInfoObj.successData.phone,
+      title: !isEmptyObj(userInfoObj) ? userInfoObj.successData.phone : '',
       text: ['Ваш телефон'],
     });
     const textAreaEmail = new CreateTextArea({
       selector: ['div'],
       style: ['text-area'],
       identifier: ['email'],
-      title: userInfoObj.successData.email,
+      title: !isEmptyObj(userInfoObj) ? userInfoObj.successData.email : '',
       text: ['Ваш email'],
       isButton: true,
       eventButton: [
@@ -204,13 +197,12 @@ class AccountPage {
       this.buttonContainer.append(accountButtonJoinTangerinTransparent.create());
     } else {
       this.buttonContainer.append(accountButtonLogoutTangerin.create());
+      this.mainPageContent.append(textAreaName.create());
+      this.mainPageContent.append(textAreaBirthday.create());
+      this.mainPageContent.append(textAreaPhone.create());
+      this.mainPageContent.append(textAreaEmail.create());
     }
     this.mainPageContent.append(this.buttonContainer);
-    this.mainPageContent.append(textAreaName.create());
-    this.mainPageContent.append(textAreaBirthday.create());
-    this.mainPageContent.append(textAreaPhone.create());
-    this.mainPageContent.append(textAreaEmail.create());
     this.mainPageContent.append(accountTextArea.create());
-
   }
 }

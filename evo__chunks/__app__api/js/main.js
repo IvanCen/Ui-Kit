@@ -583,15 +583,12 @@ class Api {
       .then((res) => {
         console.log(res);
         if (res.success === true) {
-          togglePage.closePage();
           localStorage.removeItem('user-sign-in');
           localStorage.removeItem('authorizationCode');
           localStorage.removeItem('userAchievements');
           delete userAchievements.successData;
           delete userInfoObj.successData;
           localStorage.setItem('userInfo', JSON.stringify(userInfoObj));
-          mainPage.clearPage();
-          mainPage.rendering();
           mainPage.openPage();
         }
         return res;
@@ -660,26 +657,26 @@ class Api {
         return Promise.reject(`Ошибка: ${res.status}`);
       })
       .then((res) => {
-        console.log(res);
         let needVibrate = false;
-
-        res.successData.messages.forEach((mess) => {
-          if (mess.id > Number(lastUserMessagesId)) {
-            lastUserMessagesId = mess.id;
-            if (!mess.wasRead) {
-              needVibrate = true;
+        if (res.successData) {
+          res.successData.messages.forEach((mess) => {
+            if (mess.id > Number(lastUserMessagesId)) {
+              lastUserMessagesId = mess.id;
+              if (!mess.wasRead) {
+                needVibrate = true;
+              }
+            }
+          });
+          localStorage.setItem('lastUserMessagesId', lastUserMessagesId);
+          if (needVibrate) {
+            if (typeof navigator.vibrate === 'function') {
+              navigator.vibrate(3000);
             }
           }
-        });
-        localStorage.setItem('lastUserMessagesId', lastUserMessagesId);
-        if (needVibrate) {
-          if (typeof navigator.vibrate === 'function') {
-            navigator.vibrate(3000);
-          }
-        }
 
-        userMessages = res;
-        checkMessageInbox();
+          userMessages = res;
+          checkMessageInbox();
+        }
         return res;
       })
       .then(func)
@@ -847,7 +844,7 @@ class Api {
       })
       .then((res) => {
         console.log(res);
-        dataPackage.successData = res.successData
+        dataPackage.successData = res.successData;
         return res;
       })
       .then(func)

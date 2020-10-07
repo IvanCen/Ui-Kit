@@ -3,7 +3,7 @@ function activeBanners(containerBanners, isSwipe, funcCheckBasket = () => {}) {
   let dragEnd = 0;
   let offsetX = 0;
   let offsetXOnStart = 0;
-  
+
 
   function bannersAnimation(action) {
     if (offsetX > 0) {
@@ -207,34 +207,36 @@ class CreateBannersMain extends CreateItem {
   create() {
     this.element.insertAdjacentHTML('beforeend', this.template);
 
-    dataPromo.successData.forEach((banner) => {
-      this.templateSlide = ` 
-          <div class="swiper-slide">
-              <div class="shares__list-element">
-                  <div class="shares__list-element-image"></div>
-                  <div class="shares__list-element-desc">
-                      <div class="shares__list-element-title">${banner.title}</div>
-                      <div class="shares__list-element-text">${banner.intro}</div>
-                  </div>
-              </div>
-          </div>`;
-      this.wraper = this.element.querySelector('.swiper-wrapper');
-      this.wraper.insertAdjacentHTML('beforeend', this.templateSlide);
+    if (!isEmptyObj(dataPromo)) {
+      dataPromo.successData.forEach((banner) => {
+        this.templateSlide = ` 
+            <div class="swiper-slide">
+                <div class="shares__list-element">
+                    <div class="shares__list-element-image"></div>
+                    <div class="shares__list-element-desc">
+                        <div class="shares__list-element-title">${banner.title}</div>
+                        <div class="shares__list-element-text">${banner.intro}</div>
+                    </div>
+                </div>
+            </div>`;
+        this.wraper = this.element.querySelector('.swiper-wrapper');
+        this.wraper.insertAdjacentHTML('beforeend', this.templateSlide);
 
-      this.el = this.wraper.querySelector('.swiper-slide');
-      this.el.addEventListener('click', () => {
-        toggleModal.renderingPost(banner);
-        toggleModal.openPage();
+        this.el = this.wraper.querySelector('.swiper-slide');
+        this.el.addEventListener('click', () => {
+          toggleModal.renderingPost(banner);
+          toggleModal.openPage();
+        });
+
+        const imgEl = this.element.querySelector('.shares__list-element-image');
+
+        if (!canUseWebP()) {
+          loadImgNotSquare(banner, imgEl, 'jpg');
+        } else {
+          loadImgNotSquare(banner, imgEl, 'webp');
+        }
       });
-
-      const imgEl = this.element.querySelector('.shares__list-element-image');
-
-      if (!canUseWebP()) {
-        loadImgNotSquare(banner, imgEl, 'jpg');
-      } else {
-        loadImgNotSquare(banner, imgEl, 'webp');
-      }
-    });
+    }
 
 
     return super.create(this.element);

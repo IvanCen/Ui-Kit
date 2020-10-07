@@ -460,7 +460,7 @@ function closePages() {
   balancePage.closePage();
   storesPage.closePage();
   inboxPage.closePage();
-  pageAccount.closePage();
+  accountPage.closePage();
   togglePage.closePage();
   togglePage.deletePage();
   closeOrderPage();
