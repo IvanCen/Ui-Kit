@@ -17,25 +17,18 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
 
   /* метод возврата на прошлую страницу, берет boolean из глобального объекта выставляемое перед отрисовкой страницы */
   returnPage() {
+    accountPage.deletePage();
+    accountPage.rendering();
+    toggleModalPageSignIn.closePage();
+    toggleModalPageSignIn.deletePage();
     if (returnPageObj.returnMainPageAfterSignIn) {
-      mainPage.closePage();
-      mainPage.clearPage();
-      mainPage.rendering();
       mainPage.openPage();
-      toggleModalPageSignIn.closePage();
-      toggleModalPageSignIn.deletePage();
       history.pushState({ state: '#' }, null, '#');
     } else if (returnPageObj.returnBalanceAfterSignIn) {
-      balancePage.closePage();
-      balancePage.clearPage();
-      balancePage.rendering();
       balancePage.openPage();
-      toggleModalPageSignIn.closePage();
-      toggleModalPageSignIn.deletePage();
       history.pushState({ state: '#' }, null, '#');
     } else {
-      toggleModalPageSignIn.closePage();
-      toggleModalPageSignIn.deletePage();
+      accountPage.openPage();
     }
   }
 

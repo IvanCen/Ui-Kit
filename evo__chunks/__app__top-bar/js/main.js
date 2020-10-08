@@ -201,11 +201,14 @@ class CreateTopBarWithBackButton extends CreateItem {
       <div class="top-bar__content-container">
        <div class="top-bar__header">
           <button class="button top-bar__back-button">
-            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-back.svg]]" alt="Кнопка назад" class="top-bar__icon top-bar__icon-back">
+             <svg class="top-bar__icon top-bar__icon-back" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M16 7H3.83L9.42 1.41L8 0L0 8L8 16L9.41 14.59L3.83 9H16V7Z" fill="white"/>
+              </svg>
           </button>
+          <h1 class="top-bar__title top-bar__title--size--small">${this.parameters.textTitle}</h1>
         </div>
-        <h1 class="top-bar__title">${this.parameters.textTitle}</h1>
-      </div>`;
+      </div>
+      `;
   }
 
   create() {

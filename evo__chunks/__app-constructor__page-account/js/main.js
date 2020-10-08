@@ -9,6 +9,12 @@ class AccountPage {
     this.mainPageContent = document.querySelector('.main-page__content');
   }
 
+  deletePage() {
+    if (this.mainPageContent) {
+      this.mainPageContent.remove();
+    }
+  }
+
   closePage() {
     this.mainPageContent.classList.remove('main-page__content--size--small');
     this.mainPageContent.classList.remove('main-page__content--opened');
@@ -20,7 +26,7 @@ class AccountPage {
     setTimeout(() => {
       if (this.mainPageContent) {
         this.mainPageContent.classList.add('main-page__content--opened');
-        this.headerTitle.textContent = 'Личный кабинет';
+        this.headerTitle.textContent = 'Профиль';
       }
     }, 100);
     history.pushState({ state: '#' }, null, '#');
@@ -39,6 +45,8 @@ class AccountPage {
           '--indentation--left',
           '--indentation--bottom',
           '--indentation--top',
+          '--join',
+          !isEmptyObj(userInfoObj) ? '--hide' : '',
         ],
         text: ['Присоединиться'],
         events: [
@@ -56,13 +64,7 @@ class AccountPage {
     const accountButtonLogoutTangerin = new CreateButton(
       {
         selector: ['button'],
-        style: ['button'],
-        modifier: ['--size--small',
-          '--theme--tangerin',
-          '--indentation--left',
-          '--indentation--bottom',
-          '--indentation--top',
-        ],
+        style: ['profile__logout'],
         text: ['Выйти'],
         events: [
           {
@@ -70,6 +72,12 @@ class AccountPage {
             callback: () => {
               stopAction(() => {
                 api.logout();
+                const userInfoSection = document.querySelector('.profile__data');
+                const buttonJoin = document.querySelector('.button--join');
+                const buttonLogout = document.querySelector('.profile__logout');
+                userInfoSection.classList.add('profile__data--hide');
+                buttonJoin.classList.remove('button--hide');
+                buttonLogout.classList.add('button--hide');
               });
             },
           },
@@ -189,20 +197,20 @@ class AccountPage {
       selector: ['div'],
       style: ['wraper'],
     });
+    const userProfileTextArea = new CreateTextAreaProfile({
+      selector: ['section'],
+      style: ['profile__data'],
+      modifier: [isEmptyObj(userInfoObj) ? '--hide' : ''],
+    });
 
     this.buttonContainer = document.createElement('div');
     this.mainPageContent.prepend(createTopBarIos());
-    if (isEmptyObj(userInfoObj)) {
-      this.buttonContainer.append(accountButtonJoinTangerin.create());
-      this.buttonContainer.append(accountButtonJoinTangerinTransparent.create());
-    } else {
+    this.buttonContainer.append(accountButtonJoinTangerin.create());
+    this.mainPageContent.append(userProfileTextArea.create());
+    if (!isEmptyObj(userInfoObj)) {
       this.buttonContainer.append(accountButtonLogoutTangerin.create());
-      this.mainPageContent.append(textAreaName.create());
-      this.mainPageContent.append(textAreaBirthday.create());
-      this.mainPageContent.append(textAreaPhone.create());
-      this.mainPageContent.append(textAreaEmail.create());
     }
-    this.mainPageContent.append(this.buttonContainer);
     this.mainPageContent.append(accountTextArea.create());
+    this.mainPageContent.append(this.buttonContainer);
   }
 }

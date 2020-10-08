@@ -1159,47 +1159,62 @@ class CreateTextAreaAccount extends CreateItem {
   create() {
     this.element = document.createElement(this.parameters.selector);
     this.template = `
-      <div class="text-area text-area--type--privacy">
-        <div class="text-area__container text-area__container--indentation--small">
-          <div class="text-area__content-container text-area__content-container--direction--column">
-            <h2 class="text-area__title text-area__title--size--small text-area__title--type--bold">Политика конфиденциальности</h2>
+      <!--<div class="text-area text-area&#45;&#45;type&#45;&#45;privacy">
+        <div class="text-area__container text-area__container&#45;&#45;indentation&#45;&#45;small">
+          <div class="text-area__content-container text-area__content-container&#45;&#45;direction&#45;&#45;column">
+            <h2 class="text-area__title text-area__title&#45;&#45;size&#45;&#45;small text-area__title&#45;&#45;type&#45;&#45;bold">Политика конфиденциальности</h2>
           </div>
           <button class="button">
-            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-right.svg]]" alt="" class="text-area__icon text-area__icon--position--center">
+            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-right.svg]]" alt="" class="text-area__icon text-area__icon&#45;&#45;position&#45;&#45;center">
           </button>
         </div>
       </div>
-      <div class="text-area text-area--type--terms">
-        <div class="text-area__container text-area__container--indentation--small">
-          <h2 class="text-area__title text-area__title--size--small text-area__title--type--bold">Пользовательское соглашение</h2>
+      <div class="text-area text-area&#45;&#45;type&#45;&#45;terms">
+        <div class="text-area__container text-area__container&#45;&#45;indentation&#45;&#45;small">
+          <h2 class="text-area__title text-area__title&#45;&#45;size&#45;&#45;small text-area__title&#45;&#45;type&#45;&#45;bold">Пользовательское соглашение</h2>
           <button class="button">
-            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-right.svg]]" alt="" class="text-area__icon text-area__icon--position--center">
+            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-right.svg]]" alt="" class="text-area__icon text-area__icon&#45;&#45;position&#45;&#45;center">
           </button>
          </div>
        </div>  
-       <div class="text-area text-area--type--public">
-        <div class="text-area__container text-area__container--indentation--small">
-          <h2 class="text-area__title text-area__title--size--small text-area__title--type--bold">Публичная оферта</h2>
+       <div class="text-area text-area&#45;&#45;type&#45;&#45;public">
+        <div class="text-area__container text-area__container&#45;&#45;indentation&#45;&#45;small">
+          <h2 class="text-area__title text-area__title&#45;&#45;size&#45;&#45;small text-area__title&#45;&#45;type&#45;&#45;bold">Публичная оферта</h2>
           <button class="button">
-            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-right.svg]]" alt="" class="text-area__icon text-area__icon--position--center">
+            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-right.svg]]" alt="" class="text-area__icon text-area__icon&#45;&#45;position&#45;&#45;center">
           </button>
          </div>
        </div>  
-       <div class="text-area text-area--type--subscription">
-        <div class="text-area__container text-area__container--indentation--small">
-          <h2 class="text-area__title text-area__title--size--small text-area__title--type--bold">Абонементы</h2>
+       <div class="text-area text-area&#45;&#45;type&#45;&#45;subscription">
+        <div class="text-area__container text-area__container&#45;&#45;indentation&#45;&#45;small">
+          <h2 class="text-area__title text-area__title&#45;&#45;size&#45;&#45;small text-area__title&#45;&#45;type&#45;&#45;bold">Абонементы</h2>
           <button class="button">
-            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-right.svg]]" alt="" class="text-area__icon text-area__icon--position--center">
+            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-right.svg]]" alt="" class="text-area__icon text-area__icon&#45;&#45;position&#45;&#45;center">
           </button>
          </div>
-       </div>
+       </div>-->
+       
+        <section class="profile__info">
+          <div class="profile__header">
+              <div class="profile__title">Информация</div>
+          </div>
+          <div class="form__group profile__group text-area--type--privacy">
+              <label>Политика конфиденциальности</label>
+          </div>
+          <div class="form__group profile__group text-area--type--terms">
+              <label>Пользовательское соглашение</label>
+          </div>
+          <div class="form__group profile__group text-area--type--public">
+              <label>Публичная оферта</label>
+          </div>
+        </section>
     `;
     this.element.insertAdjacentHTML('beforeend', this.template);
 
     this.buttonPrivacy = this.element.querySelector('.text-area--type--privacy');
     this.buttonTerms = this.element.querySelector('.text-area--type--terms');
     this.buttonPublic = this.element.querySelector('.text-area--type--public');
-    this.buttonSubscription = this.element.querySelector('.text-area--type--subscription');
+    // this.buttonSubscription = this.element.querySelector('.text-area--type--subscription');
 
     this.buttonPrivacy.addEventListener('click', () => {
       stopAction(() => {
@@ -1216,11 +1231,11 @@ class CreateTextAreaAccount extends CreateItem {
         toggleSubPageApplication.rendering(this.setData('public-offer'));
       });
     });
-    this.buttonSubscription.addEventListener('click', () => {
+    /*    this.buttonSubscription.addEventListener('click', () => {
       stopAction(() => {
         toggleModalPageSubscription.rendering();
       });
-    });
+    }); */
 
     return super.create(this.element);
   }
@@ -1464,6 +1479,93 @@ class CreateTextArea extends CreateItem {
         }
       }
     }
+
+    return super.create(this.element);
+  }
+}
+
+class CreateTextAreaProfile extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+  }
+
+  create() {
+    this.element = document.createElement(this.parameters.selector);
+    let name = '';
+    let email = '';
+    let phoneFormatted = '';
+    let shortDateBirthday = '';
+    if (!isEmptyObj(userInfoObj)) {
+      name = userInfoObj.successData.name;
+      email = userInfoObj.successData.email;
+      const { phone } = userInfoObj.successData;
+      const { birthday } = userInfoObj.successData;
+      phoneFormatted = phone.replace(/(\+\d)(\d{3})(\d{3})(\d{2})(\d{2})/g, '$1 ($2) $3-$4-$5') || '';
+      shortDateBirthday = new Date(`${birthday.replace(/-/g, '/')} UTC`).toLocaleString('ru', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+      }).replace('.', '').replace(' г.', '');
+    }
+
+    this.template = `
+      <div class="profile__header">
+        <div class="profile__title">Персональные данные</div>
+      </div>
+      <form class="form profile__form">
+        <div class="form__group profile__group" data-id="name">
+            <label class="profile__form-label">Имя</label>
+            <input class="profile__form-input" type="text" value="${name}" readonly>
+        </div>
+        <div class="form__group profile__group" data-id="birthday">
+            <label class="profile__form-label">День рождения</label>
+            <input class="profile__form-input" type="text" value="${shortDateBirthday}" readonly>
+        </div>
+        <div class="form__group profile__group">
+            <label class="profile__form-label">Телефон</label>
+            <input class="profile__form-input" type="text" value="${phoneFormatted}" readonly>
+        </div>
+        <div class="form__group profile__group" data-id="email">
+            <label class="profile__form-label">Email</label>
+            <input class="profile__form-input" type="text" value="${email}" readonly>
+        </div>
+    </form>
+      
+    `;
+    this.element.insertAdjacentHTML('beforeend', this.template);
+
+    this.buttonName = this.element.querySelector('.profile__group[data-id="name"]');
+    this.buttonBirthday = this.element.querySelector('.profile__group[data-id="birthday"]');
+    this.buttonEmail = this.element.querySelector('.profile__group[data-id="email"]');
+
+    this.buttonName.addEventListener('click', () => {
+      toggleSubPageEditUser.rendering({
+        titleTopBar: 'Редактировать',
+        inputLabel: 'Введите имя',
+        identifier: 'name',
+        inputType: 'text',
+      });
+    });
+
+    this.buttonBirthday.addEventListener('click', () => {
+      toggleSubPageEditUser.rendering({
+        titleTopBar: 'Редактировать',
+        inputLabel: 'Введите дату рождения',
+        identifier: 'birthday',
+        inputType: 'text',
+      });
+    });
+
+    this.buttonEmail.addEventListener('click', () => {
+      toggleSubPageEditUser.rendering({
+        titleTopBar: 'Редактировать',
+        inputLabel: 'Введите email',
+        identifier: 'email',
+        inputType: 'text',
+      });
+    });
+
 
     return super.create(this.element);
   }
