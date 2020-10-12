@@ -15,6 +15,10 @@
   }
 }
 
+.text-area-container {
+  padding: 0 16px 20px;
+}
+
 .text-area {
   padding-left: 16px;
 
@@ -55,7 +59,7 @@
     }
 
     &--indentation--top-bottom {
-      padding: 10px 0 ;
+      padding: 10px 0;
     }
 
     &--direction--column {
@@ -413,6 +417,24 @@
         height: 11px;
       }
     }
+
+    &--size--smallest {
+      @extend %style-5;
+      font-weight: bold;
+      width: fit-content;
+
+      &:after {
+        content: "";
+        background: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-rubles.svg]]") no-repeat;
+        background-size: cover;
+        position: absolute;
+        right: -11px;
+        top: 3px;
+        width: 10px;
+        height: 10px;
+      }
+    }
+
 
   }
 

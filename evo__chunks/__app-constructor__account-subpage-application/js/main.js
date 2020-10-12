@@ -14,7 +14,7 @@ class ToggleSubPageApplication extends ToggleSubPage {
         `--size--medium${isIos ? '--ios' : ''}`,
         `--fixed${isIos ? '--ios-small' : ''}`,
         '--indentation--bottom',
-        '--theme--light'],
+        '--theme--dark'],
       textTitle: [''],
       eventBack: [
         { type: 'click', callback: this.closePage },

@@ -1,1 +1,1 @@
-.accordion{font-style:normal;font-weight:500;font-size:13px;line-height:19px}.accordion{font-weight:bold;display:flex;width:100%;text-align:left;color:#e6551e;border:none;outline:none;transition:.4s;justify-content:space-between}.accordion__container{padding:10px 16px}.accordion__content{max-height:0;height:fit-content;overflow:hidden;opacity:0;transition:max-height .2s ease-out,opacity .2s}.accordion__content--show{opacity:1}.accordion__icon-arrow{margin-left:20px;transition:all .2s}.accordion__icon-arrow--active{transform:rotate(180deg)}
+

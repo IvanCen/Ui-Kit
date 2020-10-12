@@ -3,8 +3,7 @@ function activeBanners(containerBanners, isSwipe, funcCheckBasket = () => {}) {
   let dragEnd = 0;
   let offsetX = 0;
   let offsetXOnStart = 0;
-  const counterTopBar = document.querySelector('.top-bar__all-counter-order');
-  const counterBottomBar = document.querySelector('.bottom-bar__counter');
+
 
   function bannersAnimation(action) {
     if (offsetX > 0) {
@@ -40,13 +39,13 @@ function activeBanners(containerBanners, isSwipe, funcCheckBasket = () => {}) {
                 break;
               }
             }
-            counterTopBar.textContent = basketArray.length;
-            counterBottomBar.textContent = basketArray.length;
+
             localStorage.setItem('basket', JSON.stringify(basketArray));
-            emitter.emit('event:counter-changed');
+
 
             checkEmptyBasket();
             containerBanners.remove();
+            countResultPriceAndAllProductCounter();
           }, 300);
           containerBanners.classList.add('stop-action');
         }
@@ -125,8 +124,8 @@ class CreateBannersOrder extends CreateItem {
     this.element.insertAdjacentHTML('beforeend', this.template);
     this.element.addEventListener('click', () => {
       stopAction(() => {
-        toggleSubPageProductCard.rendering(productInfo);
-        toggleSubPageProductCard.openPage();
+        toggleModalPageCard.rendering(productInfo);
+        toggleModalPageCard.openPage();
       });
     });
 
@@ -182,6 +181,63 @@ class CreateBannersTabHits extends CreateItem {
 
   create() {
     this.element.insertAdjacentHTML('beforeend', this.template);
+
+    return super.create(this.element);
+  }
+}
+
+class CreateBannersMain extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+    this.element = document.createElement(this.parameters.selector);
+    this.template = `
+      <div class="shares__header">
+            <div class="shares__title">Акции</div>
+        </div>
+        <div class="shares__list">
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    
+                </div>
+            </div>
+        </div>`;
+  }
+
+  create() {
+    this.element.insertAdjacentHTML('beforeend', this.template);
+
+    if (!isEmptyObj(dataPromo)) {
+      dataPromo.successData.forEach((banner) => {
+        this.templateSlide = ` 
+            <div class="swiper-slide">
+                <div class="shares__list-element">
+                    <div class="shares__list-element-image"></div>
+                    <div class="shares__list-element-desc">
+                        <div class="shares__list-element-title">${banner.title}</div>
+                        <div class="shares__list-element-text">${banner.intro}</div>
+                    </div>
+                </div>
+            </div>`;
+        this.wraper = this.element.querySelector('.swiper-wrapper');
+        this.wraper.insertAdjacentHTML('beforeend', this.templateSlide);
+
+        this.el = this.wraper.querySelector('.swiper-slide');
+        this.el.addEventListener('click', () => {
+          toggleModal.renderingPost(banner);
+          toggleModal.openPage();
+        });
+
+        const imgEl = this.element.querySelector('.shares__list-element-image');
+
+        if (!canUseWebP()) {
+          loadImgNotSquare(banner, imgEl, 'jpg');
+        } else {
+          loadImgNotSquare(banner, imgEl, 'webp');
+        }
+      });
+    }
+
 
     return super.create(this.element);
   }

@@ -2,13 +2,19 @@
 
 .checkbox-slide {
   position: relative;
+  max-width: max-content;
+  padding-left: 16px;
 
-  &--type--text {
-    max-width: 85px;
+  &--indentation--top {
+    padding-top: 20px;
   }
 
-  &--type--single {
-    max-width: 45px;
+  &--indentation--bottom-big {
+    padding-bottom: 100px;
+  }
+
+  &--hide {
+    display: none;
   }
 
   &__container {
@@ -27,7 +33,7 @@
 
   &__text {
     position: relative;
-    padding: 0 0 0 35px;
+    padding: 0 0 0 55px;
     margin-right: 15px;
     min-height: 28px;
 

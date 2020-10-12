@@ -16,12 +16,12 @@
   justify-content: flex-start;
   top: 0;
    //убрать потом, сделанно для отображение с панелькой телефонов
-  background-color: $whiteSmoke;
+  background-color: $white;
 
   &--opened {
-    height: calc(100vh - 78px);
+    height: calc(100vh - 56px);
     left: 0;
-    background-color: $whiteSmoke;
+    background-color: $white;
   }
 
   &--opened--bottom-bar {
@@ -36,5 +36,8 @@
       display: flex;
       flex-direction: column;
     }
+  }
+
+  &__tab-content {
   }
 }

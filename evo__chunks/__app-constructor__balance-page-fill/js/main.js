@@ -5,38 +5,130 @@ class TogglePageBalanceFill extends TogglePage {
     this.rendering = this.rendering.bind(this);
     this.setFillInfo = this.setFillInfo.bind(this);
     this.getPayLink = this.getPayLink.bind(this);
+    this.getPayLinkYandex = this.getPayLinkYandex.bind(this);
+    this.setFillInfoApplePay = this.setFillInfoApplePay.bind(this);
+  }
+
+  activeButtonSumFill() {
+    this.buttonSizeBar = this.page.querySelectorAll('.form__sums input');
+    this.buttonFill = this.page.querySelector('.button--type--fill');
+    this.buttonSizeBar.forEach((button) => {
+      button.addEventListener('click', () => {
+        this.buttonFill.textContent = `Пополнить (${button.value})`;
+      });
+    });
   }
 
   setFillInfo() {
-    this.buttonFill = this.page.querySelector('.button--type--fill');
-    this.topBar = this.page.querySelector('.top-bar');
-    this.buttonSizeBar = this.page.querySelectorAll('.size-bar__button');
-    this.sizeBar = this.page.querySelector('.size-bar');
-    this.loader = document.createElement('img');
-    this.loader.classList.add('spinner');
-    this.loader.src = 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-spinner.svg]]';
-    this.topBar.after(this.loader);
+    try {
+      this.page = document.querySelector('.page');
+      this.buttonFill = this.page.querySelector('.button--type--fill');
+      this.topBar = this.page.querySelector('.top-bar');
+      this.buttonSizeBar = this.page.querySelectorAll('.form__sums input');
+      this.sizeBar = this.page.querySelector('.balance__detail-container');
+      this.loader = document.createElement('img');
+      this.loader.classList.add('spinner');
+      this.loader.src = 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-spinner.svg]]';
+      this.topBar.after(this.loader);
 
-    this.buttonFill.classList.add('button--hide');
-    this.sizeBar.classList.add('size-bar--hide');
-    this.paymentForm = document.createElement('div');
-    this.paymentForm.id = 'payment-form';
-    this.page.append(this.paymentForm);
+      this.buttonFill.classList.add('button--hide');
+      this.sizeBar.classList.add('size-bar--hide');
+      this.paymentForm = document.createElement('div');
+      this.paymentForm.id = 'payment-form';
+      this.page.append(this.paymentForm);
+
+      [...this.buttonSizeBar].forEach((item) => {
+        if (item.checked) {
+          this.amount = Number(item.value);
+          this.userPhone = userInfoObj.successData.phone;
+          if (this.userPhone === '+79522655566' || this.userPhone === '+79818380415') {
+            api.rechargeBalanceApi(this.userPhone, this.amount, 'appWidget', this.getPayLinkYandex);
+          } else {
+            api.rechargeBalanceApi(this.userPhone, this.amount, 'app', this.getPayLink);
+          }
+        }
+      });
+    } catch (e) {
+      alert(e);
+    }
+  }
+
+  setFillInfoApplePay() {
+    this.buttonFillApplePay = this.page.querySelector('.button--type--fill-apple-pay');
+    this.topBar = this.page.querySelector('.top-bar');
+    this.buttonSizeBar = this.page.querySelectorAll('.form__sums input');
+    this.sizeBar = this.page.querySelector('.size-bar');
 
     [...this.buttonSizeBar].forEach((item) => {
       if (item.classList.contains('size-bar__button--active')) {
         this.amount = Number(item.textContent);
         this.userPhone = userInfoObj.successData.phone;
-        if (this.userPhone === '+79522655566') {
-          api.rechargeBalanceApi(this.userPhone, this.amount, 'appWidget', this.getPayLinkYandex);
+        if (typeof ApplePay !== 'undefined' && typeof ApplePay.makePaymentRequest === 'function') {
+          ApplePay.makePaymentRequest(
+            {
+              items: [
+
+                {
+                  label: `Balance recharge ${this.amount}`,
+                  amount: this.amount,
+                },
+              ],
+              shippingMethods: [
+              ],
+              supportedNetworks: ['visa', 'masterCard', 'discover'],
+              merchantCapabilities: ['3ds', 'debit', 'credit'],
+              merchantIdentifier: 'merchant.ru.xleb.app',
+              currencyCode: 'RUB',
+              countryCode: 'RU',
+              billingAddressRequirement: 'none',
+              shippingAddressRequirement: 'none',
+              shippingType: 'shipping',
+            },
+          )
+            .then((paymentResponse) => {
+              // alert('OKDATA:'+JSON.stringify(token.paymentData));
+              (async () => {
+                const request = {
+                  method: 'recharge_the_balance',
+                  user: this.userPhone,
+                  phone: authorizationPhone,
+                  code: authorizationCode,
+                  amount: this.amount,
+                  creditCardProvider: 'AlfaApplePay',
+                  paymentToken: token.paymentData,
+                  outputFormat: 'json',
+                };
+                const rawResponse = await fetch('[~30~]', {
+                  method: 'POST',
+                  mode: 'no-cors',
+                  headers: {
+                    'Content-Type': 'text/html',
+                  },
+                  body: JSON.stringify(request),
+                });
+                const textResponse = await rawResponse.text();
+                // alert(textResponse);
+                const jsResponse = JSON.parse(textResponse);
+                if (jsResponse.success) {
+                  ApplePay.completeLastTransaction('success');
+                } else {
+                  ApplePay.completeLastTransaction('failure');
+                }
+                //   console.log(JSON.parse(await rawResponse.text()));
+              })();
+            })
+            .catch((e) => {
+              alert('Не удалось пополнить баланс с помощью apple pay');
+            });
         } else {
-          api.rechargeBalanceApi(this.userPhone, this.amount, 'app', this.getPayLink);
+          this.setFillInfo();
         }
       }
     });
   }
 
   getPayLink(payInfo) {
+    this.page = document.querySelector('.page');
     this.loader = this.page.querySelector('.spinner');
     this.loader.classList.add('spinner--hide');
     if (payInfo.success) {
@@ -48,24 +140,31 @@ class TogglePageBalanceFill extends TogglePage {
 
   getPayLinkYandex(payInfo) {
     console.log(payInfo);
-    this.loader = this.page.querySelector('.spinner');
-    this.loader.classList.add('spinner--hide');
+    try {
+      this.page = document.querySelector('.page');
+      this.loader = this.page.querySelector('.spinner');
+      this.loader.classList.add('spinner--hide');
+      this.buttonFillApplePay = this.page.querySelector('.button--type--fill-apple-pay');
 
-    if (payInfo.success) {
-      // Инициализация виджета. Все параметры обязательные.
-      const checkout = new window.YandexCheckout({
-        confirmation_token: payInfo.successData.confirmationToken, // Токен, который перед проведением оплаты нужно получить от Яндекс.Кассы
-        return_url: 'https://xleb.ru/test-app.html', // Ссылка на страницу завершения оплаты
-        embedded_3ds: true,
-        error_callback(error) {
-          toggleModal.rendering(error);
-        },
-      });
+      if (payInfo.success) {
+        // Инициализация виджета. Все параметры обязательные.
+        const checkout = new window.YandexCheckout({
+          confirmation_token: payInfo.successData.confirmationToken, // Токен, который перед проведением оплаты нужно получить от Яндекс.Кассы
+          return_url: 'https://xleb.ru/test-app.html', // Ссылка на страницу завершения оплаты
+          embedded_3ds: true,
+          newDesign: true,
+          error_callback(error) {
+            toggleModal.rendering(error);
+          },
+        });
 
-      // Отображение платежной формы в контейнере
-      checkout.render('payment-form');
-    } else {
-      toggleModal.rendering(payInfo.errors[0]);
+        // Отображение платежной формы в контейнере
+        checkout.render('payment-form');
+      } else {
+        toggleModal.rendering(payInfo.errors[0]);
+      }
+    } catch (e) {
+      alert(e);
     }
   }
 
@@ -75,19 +174,11 @@ class TogglePageBalanceFill extends TogglePage {
     this.cardTopBar = new CreateTopBarWithBackButton({
       selector: ['div'],
       style: ['top-bar'],
-      modifier: [`${isIos ? '--size--small--ios' : '--size--small'}`, '--indentation--bottom', '--theme--light'],
+      modifier: [`${isIos ? '--size--small--ios' : '--size--small'}`, '--theme--dark'],
       textTitle: ['Пополнение баланса'],
       eventBack: [
         { type: 'click', callback: this.closePage },
         { type: 'click', callback: this.deletePage },
-      ],
-    });
-    this.sizeBar = new CreateSizeBar({
-      selector: ['div'],
-      style: ['size-bar'],
-      modifier: [
-        '--main',
-        '--open',
       ],
     });
 
@@ -95,13 +186,12 @@ class TogglePageBalanceFill extends TogglePage {
       selector: ['button'],
       style: ['button'],
       modifier: [
-        '--size--big',
+        '--size--large',
         '--theme--tangerin',
         '--theme--shadow-big',
-        '--type--fixed',
         '--type--fill',
       ],
-      text: ['Оплатить'],
+      text: ['Пополнить (100)'],
       eventsOpen: [
         {
           type: 'click',
@@ -109,13 +199,38 @@ class TogglePageBalanceFill extends TogglePage {
         },
       ],
     });
+    this.textAreaFill = new CreateTextAreaBalanceFill({
+      selector: ['div'],
+      style: ['balance__detail-container'],
+    });
 
     this.page.append(createTopBarIos());
     this.page.append(this.cardTopBar.create());
-    this.page.append(this.sizeBar.create());
-    this.page.append(this.buttonFill.create());
+    this.page.append(this.textAreaFill.create());
+    this.textArea = this.page.querySelector('.balance__detail-container');
+    this.textArea.append(this.buttonFill.create());
 
-    activeSizeBar();
+    if (isIos) {
+      this.buttonFillApplePay = new CreateButton({
+        selector: ['button'],
+        style: ['button'],
+        modifier: [
+          '--size--large',
+          '--theme--dark-transparent',
+          '--type--fill-apple-pay',
+        ],
+        text: ['Оплатить через Apple Pay'],
+        eventsOpen: [
+          {
+            type: 'click',
+            callback: this.setFillInfoApplePay,
+          },
+        ],
+      });
+      this.textArea.append(this.buttonFillApplePay.create());
+    }
+
+    this.activeButtonSumFill();
     this.openPage();
   }
 }

@@ -155,10 +155,7 @@ class CreateMapItemStores extends CreateItem {
         || e.target.classList.contains('map__item-text')
       ) {
         radioInputEl.checked = 'checked';
-        toggleModalPage.closePage();
-        toggleModalPage.deletePage();
-        toggleModalPageSearch.closePage();
-        toggleModalPageSearch.deletePage();
+        storesPage.closePage();
         if (placemark && myMap) {
           placemark.options.set('iconImageHref', 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-point-select.svg]]');
           myMap.panTo([Number(store.latitude), Number(store.longitude)], {
@@ -183,7 +180,7 @@ class CreateMapItemStores extends CreateItem {
         }
       } else {
         icon.classList.add('map__icon--liked');
-        storesDataObj.successData.forEach((item) => {
+        Object.values(storesDataObj.successData).forEach((item) => {
           if (item.id === store.id) {
             userFavoriteStore[store.id] = item;
             localStorage.setItem('userFavoriteStore', JSON.stringify(userFavoriteStore));
@@ -207,7 +204,7 @@ class CreateMapItemStores extends CreateItem {
           });/* .then(() => {
             myMap.setZoom(15);
           }); */
-          storesDataObj.successData.forEach((el) => {
+          Object.values(storesDataObj.successData).forEach((el) => {
             if (Number(identity() + el.id) === Number(radioInputId)) {
               api.getShopOutOfStockItemsAndModifiers(el.id);
               userStore.store = el;

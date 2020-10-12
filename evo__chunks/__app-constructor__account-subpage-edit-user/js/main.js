@@ -54,6 +54,8 @@ class ToggleSubPageEditUser extends ToggleSubPage {
     const request = {
       method: 'set-client',
       set: setName,
+      phone: authorizationPhone,
+      code: authorizationCode,
       outputFormat: 'json',
     };
     request[setName] = value;
@@ -67,7 +69,7 @@ class ToggleSubPageEditUser extends ToggleSubPage {
     const topBar = new CreateTopBarWithBackButton({
       selector: ['div'],
       style: ['top-bar'],
-      modifier: [`${isIos ? '--size--small--ios' : '--size--small'}`, '--theme--light'],
+      modifier: [`${isIos ? '--size--small--ios' : '--size--small'}`, '--theme--dark'],
       textTitle: parameters.titleTopBar,
       eventBack: [
         { type: 'click', callback: this.closePage },
@@ -89,13 +91,11 @@ class ToggleSubPageEditUser extends ToggleSubPage {
       selector: ['button'],
       style: ['button'],
       modifier: [
-        '--size--big',
         '--theme--tangerin',
-        '--type--fixed',
-        '--theme--shadow-big',
+        '--size--large',
         '--type--edit-user',
       ],
-      text: ['Изменить'],
+      text: ['Сохранить'],
       events: [
         {
           type: 'click',
@@ -113,7 +113,8 @@ class ToggleSubPageEditUser extends ToggleSubPage {
     this.subPage.append(createTopBarIos());
     this.subPage.append(topBar.create());
     this.subPage.append(formInput.create(parameters.text));
-    this.subPage.append(buttonEdit.create());
+    this.formEl = this.subPage.querySelector('.form');
+    this.formEl.append(buttonEdit.create());
 
     this.buttonAgree = this.subPage.querySelector('.button--type--edit-user');
     this.buttonAgree.classList.add('form__button');

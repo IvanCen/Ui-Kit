@@ -1,3 +1,5 @@
+createMainEl();
+
 class Api {
   constructor() {
     this.options = {
@@ -19,7 +21,6 @@ class Api {
       method: 'POST',
       headers: this.options.headers,
       body: JSON.stringify(request),
-
     })
       .then((res) => {
         if (res.ok) {
@@ -67,10 +68,12 @@ class Api {
               return true;
             });
           }
+
           if (isOldStore()) {
             delete userStore.store;
             localStorage.setItem('userStore', JSON.stringify(userStore));
           }
+          api.getShopOutOfStockItemsAndModifiers(userStore.store.id);
         }
       })
       .catch((err) => {
@@ -97,7 +100,11 @@ class Api {
         }
         return Promise.reject(`Ошибка: ${res.status}`);
       })
-      .then((promoInfo) => promoInfo)
+      .then((promoInfo) => {
+        dataPromo.successData = promoInfo.successData;
+        localStorage.setItem('dataPromo', JSON.stringify(dataPromo));
+        return promoInfo;
+      })
       .then(func)
       .catch((err) => {
         console.log('Ошибка. Запрос не выполнен: ', err);
@@ -123,7 +130,11 @@ class Api {
         }
         return Promise.reject(`Ошибка: ${res.status}`);
       })
-      .then((postsInfo) => postsInfo)
+      .then((postsInfo) => {
+        dataPosts.successData = postsInfo.successData;
+        localStorage.setItem('dataPosts', JSON.stringify(dataPosts));
+        return postsInfo;
+      })
       .then(func)
       .catch((err) => {
         console.log('Ошибка. Запрос не выполнен: ', err);
@@ -134,11 +145,11 @@ class Api {
     const request = {
       method: 'sign-in',
       sendCodeMethod: 'callIn',
-      phone: `+${phoneSend}`,
+      phone: `${phoneSend}`,
       outputFormat: 'json',
     };
 
-    fetch(this.options.baseUrl, {
+    fetch('[~30~]', {
       method: 'POST',
       headers: this.options.headers,
       body: JSON.stringify(request),
@@ -192,6 +203,8 @@ class Api {
   getClientApi(func) {
     const request = {
       method: 'get-client',
+      phone: authorizationPhone,
+      code: authorizationCode,
       outputFormat: 'json',
     };
 
@@ -209,13 +222,14 @@ class Api {
       })
       .then((userInfo) => {
         console.log(userInfo);
-        if (userInfo.success === true) {
+        if (userInfo.success) {
           userInfoObj.successData = userInfo.successData;
-          localStorage.setItem('userInfo', JSON.stringify(userInfoObj));
+          api.getClientAchievements();
+          api.getMessages();
         } else {
           delete userInfoObj.successData;
-          localStorage.setItem('userInfo', JSON.stringify(userInfoObj));
         }
+        localStorage.setItem('userInfo', JSON.stringify(userInfoObj));
         return userInfo;
       })
       .then(func)
@@ -299,10 +313,10 @@ class Api {
       });
   }
 
-  makeOrderApi(phone, orderArrItems, shopId, orderComment = '', orderFriendData, promoCode = '', func) {
+  makeOrderApi(phone, orderArrItems, shopId, orderComment = '', orderFriendData, promoCode = '', isToGo, func) {
     const { friendName = '', friendPhone = '' } = orderFriendData;
 
-    console.log(phone, orderArrItems, shopId, orderComment, friendName, friendPhone, func);
+    console.log(phone, orderArrItems, shopId, orderComment, friendName, friendPhone, isToGo, func);
     let store = JSON.parse(localStorage.getItem('userStore'));
     store = store.store;
     const request = {
@@ -311,6 +325,7 @@ class Api {
       cart: orderArrItems,
       shopId: store.id,
       promoCode,
+      takeAway: isToGo,
       comment: orderComment,
       replaceName: friendName,
       replacePhone: friendPhone,
@@ -349,6 +364,8 @@ class Api {
       from: 'app', // Доступные варианты: app, site, обязательный для атрибута payForm: creditCard
       payFrom, // Доступные варианты: balance, creditCard, bonus
       orderId: orderInfo.orderId, // Номер заказа полученный при его создании
+      phone: authorizationPhone,
+      code: authorizationCode,
       outputFormat: 'json',
     };
 
@@ -411,6 +428,8 @@ class Api {
       method: 'get-client-orders',
       // lastOrder: '900313', // необязательное поле, позволяет указать последний номер заказа в кеше
       lastCount: 10, // необязательное поле, позволяет указать сколько последних заказов вернуть
+      phone: authorizationPhone,
+      code: authorizationCode,
       outputFormat: 'json',
     };
 
@@ -475,6 +494,8 @@ class Api {
       method: 'get-client-bonus-log',
       // lastLogId: '100', // необязательное поле, позволяет указать последний номер заказа в кеше
       lastCount: 10, // необязательное поле, позволяет указать сколько последних заказов вернуть
+      phone: authorizationPhone,
+      code: authorizationCode,
       outputFormat: 'json',
     };
 
@@ -508,6 +529,8 @@ class Api {
       method: 'get-client-balance-log',
       // lastLogId: '100', // необязательное поле, позволяет указать последний номер заказа в кеше
       lastCount: 10, // необязательное поле, позволяет указать сколько последних заказов вернуть
+      phone: authorizationPhone,
+      code: authorizationCode,
       outputFormat: 'json',
     };
 
@@ -560,16 +583,13 @@ class Api {
       .then((res) => {
         console.log(res);
         if (res.success === true) {
-          togglePage.closePage();
           localStorage.removeItem('user-sign-in');
           localStorage.removeItem('authorizationCode');
           localStorage.removeItem('userAchievements');
           delete userAchievements.successData;
           delete userInfoObj.successData;
           localStorage.setItem('userInfo', JSON.stringify(userInfoObj));
-          renderMainPage.clearPage();
-          renderMainPage.rendering();
-          renderMainPage.openPage();
+          mainPage.openPage();
         }
         return res;
       })
@@ -617,6 +637,8 @@ class Api {
       method: 'get-messages',
       // lastId: '100', // необязательное поле, позволяет указать последний идентификатор сообщения в кеше
       // lastCount: 10, // необязательное поле, позволяет указать сколько последних заказов вернуть
+      phone: authorizationPhone,
+      code: authorizationCode,
       outputFormat: 'json',
     };
 
@@ -635,8 +657,26 @@ class Api {
         return Promise.reject(`Ошибка: ${res.status}`);
       })
       .then((res) => {
-        console.log(res);
-        userMessages = res;
+        let needVibrate = false;
+        if (res.successData) {
+          res.successData.messages.forEach((mess) => {
+            if (mess.id > Number(lastUserMessagesId)) {
+              lastUserMessagesId = mess.id;
+              if (!mess.wasRead) {
+                needVibrate = true;
+              }
+            }
+          });
+          localStorage.setItem('lastUserMessagesId', lastUserMessagesId);
+          if (needVibrate) {
+            if (typeof navigator.vibrate === 'function') {
+              navigator.vibrate(3000);
+            }
+          }
+
+          userMessages = res;
+          checkMessageInbox();
+        }
         return res;
       })
       .then(func)
@@ -752,6 +792,8 @@ class Api {
   getClientAchievements(func) {
     const request = {
       method: 'get-client-achievements',
+      phone: authorizationPhone,
+      code: authorizationCode,
       outputFormat: 'json',
     };
 
@@ -781,4 +823,112 @@ class Api {
         console.log('Ошибка. Запрос не выполнен: ', err);
       });
   }
+
+  getDefaultBagItemForOrder(func) {
+    const request = {
+      method: 'get-default-bag-item-for-order',
+      outputFormat: 'json',
+    };
+
+    fetch(this.options.baseUrl, {
+      method: 'POST',
+      headers: this.options.headers,
+      body: JSON.stringify(request),
+
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+      .then((res) => {
+        console.log(res);
+        dataPackage.successData = res.successData;
+        return res;
+      })
+      .then(func)
+      .catch((err) => {
+        console.log('Ошибка. Запрос не выполнен: ', err);
+      });
+  }
+
+  getSeasons(func) {
+    const request = {
+      method: 'get-seasons',
+      outputFormat: 'json',
+    };
+
+    fetch(this.options.baseUrl, {
+      method: 'POST',
+      headers: this.options.headers,
+      body: JSON.stringify(request),
+
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+      .then((res) => {
+        console.log(res);
+        if (res.success) {
+          dataSeasons.successData = res.successData;
+          localStorage.setItem('dataSeasons', JSON.stringify(dataSeasons));
+        }
+        return res;
+      })
+      .then(func)
+      .catch((err) => {
+        console.log('Ошибка. Запрос не выполнен: ', err);
+      });
+  }
+
+  getClientSeasons(func) {
+    const request = {
+      method: 'get-client-seasons',
+      phone: authorizationPhone,
+      code: authorizationCode,
+      outputFormat: 'json',
+    };
+
+    fetch(this.options.baseUrl, {
+      method: 'POST',
+      headers: this.options.headers,
+      body: JSON.stringify(request),
+
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+      .then((res) => {
+        console.log(res);
+        if (res.success) {
+          dataUserSeasons.successData = res.successData;
+          localStorage.setItem('dataUserSeasons', JSON.stringify(dataUserSeasons));
+        }
+        return res;
+      })
+      .then(func)
+      .catch((err) => {
+        console.log('Ошибка. Запрос не выполнен: ', err);
+      });
+  }
 }
+
+const scriptPromise = new Promise((resolve, reject) => {
+  const script = document.createElement('script');
+  document.body.appendChild(script);
+  script.onload = resolve;
+  script.onerror = reject;
+  script.async = true;
+  script.src = 'https://kassa.yandex.ru/checkout-ui/v2.js';
+});
+
+scriptPromise.then((res) => {
+  console.log(res);
+});

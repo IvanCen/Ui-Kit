@@ -1,63 +1,58 @@
-class ToggleMain extends ToggleMainPage {
+class MainPage {
   constructor(parameters) {
-    super(parameters);
     this.parameters = parameters;
     this.rendering = this.rendering.bind(this);
+    this.body = document.querySelector('body');
+    this.mainPage = document.querySelector('.main-page');
+    this.mainPageContent = document.querySelector('.main-page__content');
+  }
+
+  closePage() {
+    this.mainPageContent.classList.remove('main-page__content--size--small');
+    this.mainPageContent.classList.remove('main-page__content--opened');
+  }
+
+  openPage() {
+    this.mainPageContent = document.querySelector('.main-page__content-main');
+    this.headerTitle = document.querySelector('.header__status');
+    setTimeout(() => {
+      if (this.mainPageContent) {
+        this.mainPageContent.classList.add('main-page__content--opened');
+        this.headerTitle.textContent = 'Главная';
+      }
+    }, 100);
+    history.pushState({ state: '#' }, null, '#');
   }
 
   rendering() {
-    super.rendering('main');
-    if (returnPageObj) {
-      returnPageObj.returnMainPageAfterSignIn = false;
-    }
-    const mainPageTopBar = new CreateTopBar({
-      selector: ['div'],
-      style: ['top-bar'],
-      modifier: [
-        '--indentation--bottom',
-        '--main',
-      ],
-      textTitle: ['Отличный день для кофе ☕'],
-      eventOpenSignInPage: [{
-        type: 'click',
-        callback: () => {
-          stopAction(() => {
-            returnPageObj.returnMainPageAfterSignIn = true;
-            toggleModalPageSignIn.rendering();
-          });
-        },
-      }],
-      eventOpenInboxPage: [{
-        type: 'click',
-        callback: () => {
-          stopAction(() => {
-            togglePageInbox.rendering();
-          });
-        },
-      }],
-      eventOpenAccountPage: [{
-        type: 'click',
-        callback: () => {
-          stopAction(() => {
-            togglePageAccount.rendering();
-          });
-        },
-      }],
-      eventOpenBalanceFill:
-        [{
+    this.mainPageContent = document.createElement('div');
+    this.mainPageContent.classList.add('main-page__content', 'main-page__content--size--small', 'main-page__content-main');
+    this.mainPage.prepend(this.mainPageContent);
+
+    const mainPageMainCard = new CreateMainCard();
+    const textAreaBalanceMain = new CreateTextAreaBalanceMain({
+      selector: ['section'],
+      style: ['balance-section'],
+      eventsButton: [
+        {
           type: 'click',
           callback: () => {
             stopAction(() => {
               togglePageBalanceFill.rendering();
             });
           },
-        }],
-      eventOpenHistory: [
-        { type: 'click', callback: openHistory },
-
+        },
       ],
     });
-    const mainPageMainCard = new CreateMainCard();
+    const banners = new CreateBannersMain({
+      selector: ['section'],
+      style: ['shares'],
+    });
+    const catalog = new CreateCatalogMain({
+      selector: ['section'],
+      style: ['catalog'],
+    });
+
 
     const ourHistoryMainCard = new CreateOurHistoryMainCard({
       selector: ['div'],
@@ -83,87 +78,36 @@ class ToggleMain extends ToggleMainPage {
       events: [{
         type: 'click',
         callback: () => {
-          returnPageObj.returnMainPageAfterSignIn = true;
-          toggleModalPageSignIn.rendering();
+          stopAction(() => {
+            returnPageObj.returnMainPageAfterSignIn = true;
+            toggleModalPageSignIn.rendering();
+          });
         },
       }],
     });
 
 
-    function renderPosts(dataPosts) {
-      const postContainer = document.querySelector('.main-card__container-posts');
-      dataPosts.successData.forEach((item) => {
-        if (postContainer) {
-          postContainer.prepend(mainPageMainCard.create(item));
-        }
-      });
-    }
-
-    function renderPromo(dataPromo) {
-      const promoContainer = document.querySelector('.main-card__container-promo');
-      dataPromo.successData.forEach((item) => {
-        if (promoContainer) {
-          promoContainer.prepend(mainPageMainCard.create(item));
-        }
-      });
-      setTimeout(() => {
-        const mainPage = document.querySelector('.main-page');
-        const loader = document.querySelector('.loader');
-        if (loader) {
-          mainPage.classList.remove('main-page--loaded');
-          loader.classList.add('loader--hide');
-          loader.remove();
-        }
-      }, 1000);
-      if (!isEmptyObj(userInfoObj)) {
-        rateLastOrder();
-      }
-    }
-
     this.postContainer = document.createElement('div');
     this.promoContainer = document.createElement('div');
-    this.mainPageContent.prepend(mainPageTopBar.create());
-    this.mainPageContent.prepend(createTopBarIos());
+
     this.topBar = document.querySelector('.top-bar--main');
 
     this.promoContainer.classList.add('main-card__container-promo');
     this.postContainer.classList.add('main-card__container-posts');
-    this.mainPageContent.append(this.promoContainer);
-    this.mainPageContent.append(this.postContainer);
-
-    this.parameters.api.promoApi(renderPromo);
-    this.parameters.api.postsApi(renderPosts);
-    this.promoContainer.append(ourHistoryMainCard.create());
-
-    if (isEmptyObj(userInfoObj)) {
-      this.mainPageContent.append(mainPageButtonJoinOrange.create());
+    this.mainPageContent.append(banners.create());
+    if (!isEmptyObj(userInfoObj)) {
+      this.mainPageContent.append(textAreaBalanceMain.create());
     }
-    setTimeout(() => {
-      this.footerButtonMain = document.querySelector('.footer__button--type--main');
-      activeFooter(this.footerButtonMain);
-    }, 300);
-
+    this.mainPageContent.append(catalog.create());
 
     if (!isEmptyObj(userInfoObj)) {
-      this.topBarContentContainer = document.querySelector('.top-bar__content-container--theme--dark');
-
-      this.mainPageContent.addEventListener('scroll', () => {
-        if (this.mainPageContent.scrollTop < 212) {
-          if (this.topBarContentContainer.classList.contains('top-bar__content-container--hide')) {
-            this.topBarContentContainer.classList.remove('top-bar__content-container--hide');
-            this.topBar.classList.remove(`top-bar--fixed${isIos ? '--ios' : ''}`);
-            this.promoContainer.classList.remove(`main-card__container-promo--indentation--top${isIos ? '--ios' : ''}`);
-          }
-        } if (this.mainPageContent.scrollTop > 212) {
-          if (!this.topBarContentContainer.classList.contains('top-bar__content-container--hide')) {
-            this.topBarContentContainer.classList.add('top-bar__content-container--hide');
-            this.topBar.classList.add(`top-bar--fixed${isIos ? '--ios' : ''}`);
-            this.promoContainer.classList.add(`main-card__container-promo--indentation--top${isIos ? '--ios' : ''}`);
-          }
-        }
-      });
+      rateLastOrder();
     }
-
-    checkMessageInbox();
+    api.getMessages();
+    initCategories();
+    checkEmptyBasket();
+    /* renderPromo(dataPromo);
+    renderPosts(dataPosts);
+    this.promoContainer.append(ourHistoryMainCard.create()); */
   }
 }

@@ -63,7 +63,7 @@
 
 
   &--theme--dark {
-    background-color: $bokaraGrey;
+    background-color: $blackPerl;
     color: $white;
   }
 
@@ -72,7 +72,7 @@
   }
 
   &--size--small {
-    padding: 20px 16px 11px;
+    padding: 33px 16px 0;
 
     &--ios {
       padding: 50px 16px 11px;
@@ -80,7 +80,7 @@
   }
 
   &--size--medium {
-    padding-top: 20px;
+    padding-top: 39px;
     padding-right: 16px;
     padding-left: 16px;
 
@@ -101,6 +101,10 @@
 
   &--indentation--bottom {
     margin-bottom: 20px;
+  }
+
+  &--indentation--bottom-padding {
+    padding-bottom: 34px;
   }
 
   &--indentation--bottom-big {
@@ -225,7 +229,7 @@
     justify-content: space-between;
     align-items: center;
     min-height: 30px;
-    padding-bottom: 14px;
+    padding-bottom: 17px;
     grid-template-areas: 'back text search';
 
     &--indentation--top {
@@ -257,6 +261,15 @@
 
     &--type--single {
       margin-bottom: 24px;
+    }
+
+    &--theme--light {
+      color: $white;
+    }
+
+    &--size--small {
+      @extend %style-3-5;
+      margin-bottom: 0;
     }
 
   }
@@ -408,6 +421,12 @@
   &__tab-container {
     display: flex;
     flex-wrap: nowrap;
+
+    &--type--grid-equal {
+      display: grid;
+      grid-auto-flow: column;
+      grid-template-columns: 1fr 1fr;
+    }
   }
 
   &__number {
@@ -439,7 +458,7 @@
     @extend %style-5;
     font-weight: bold;
     box-sizing: border-box;
-    padding: 14px 16px;
+    padding: 15px 15px;
     border: none;
     outline: none;
     color: $gray;
@@ -462,5 +481,24 @@
         background: $orange;
       }
     }
+
+    &--active-light {
+      position: relative;
+      color: $white;
+
+      &:after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: $white;
+      }
+    }
   }
+}
+
+.tab-content {
+  padding-bottom: 150px;
 }

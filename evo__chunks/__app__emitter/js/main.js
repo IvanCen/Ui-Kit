@@ -20,4 +20,3 @@ class EventEmitter {
 
 const emitter = new EventEmitter();
 
-emitter.subscribe('event:counter-changed', counterBasket);

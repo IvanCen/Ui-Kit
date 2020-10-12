@@ -12,7 +12,7 @@ class CreateMainCard extends CreateItem {
         <div class="main-card__img"></div>
       </div>
       <div class="main-card__text-area">
-        <h2 class="main-card__title">${postInfo.title}</h2>
+        <h2 class="main-card__title main-card__title--size--normal">${postInfo.title}</h2>
         <p class="main-card__text">${postInfo.intro}</p>
       </div>
       <div class="main-card__button-container main-card__button-container--indentation--left main-card__button-container--indentation--bottom">
@@ -31,6 +31,7 @@ class CreateMainCard extends CreateItem {
     });
     const imgEl = this.element.querySelector('.main-card__img');
     const infoImg = { mainPhoto: { name: postInfo.mainPhoto, edit: postInfo.mainPhotoEdit } };
+
     if (!canUseWebP()) {
       loadImgNotSquare(infoImg, imgEl, 'jpg');
     } else {
@@ -48,10 +49,10 @@ class CreateOurHistoryMainCard extends CreateItem {
     this.element = document.createElement(this.parameters.selector);
     this.template = `
         <div class="main-card__img-container">
-          <div style="background-image: url('/assets/images/docs/381/love.jpg')" class="main-card__img"></div>
+          <div style="background-image: url('https://app.xleb.ru/assets/images/docs/381/love.jpg')"  class="main-card__img"></div>
         </div>
         <div class="main-card__text-area">
-          <h2 class="main-card__title">${this.parameters.title}</h2>
+          <h2 class="main-card__title main-card__title--size--normal">${this.parameters.title}</h2>
           <p class="main-card__text">${this.parameters.text}</p>
         </div>
         <div class="main-card__button-container main-card__button-container--indentation--left main-card__button-container--indentation--bottom">
@@ -70,6 +71,7 @@ class CreateOurHistoryMainCard extends CreateItem {
     this.imgContainer.addEventListener('click', () => {
       togglePageOurHistory.rendering();
     });
+
     return super.create(this.element);
   }
 }
@@ -89,6 +91,134 @@ class CreateCardsMainCard extends CreateItem {
   create() {
     this.element.insertAdjacentHTML('beforeend', this.template);
 
+    return super.create(this.element);
+  }
+}
+
+class CreateNoSubscriptionsMainCard extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+    this.element = document.createElement(this.parameters.selector);
+    this.template = `
+        <div class="main-card__img-container">
+          <div style="background-image: url('[+chunkWebPath+]/img/no-subscriptions.png')" class="main-card__img"></div>
+        </div>
+        <div class="main-card__text-area main-card__text-area--pisition--center">
+        <h2 class="main-card__title main-card__title--size--normal">У вас еще нет активных абонементов</h2>
+          <p class="main-card__text main-card__text--size--small main-card__text--theme--shadow">Приобрести их вы можете в любом магазине сети Хлебник</p>
+        </div>`;
+  }
+
+  create() {
+    this.element.insertAdjacentHTML('beforeend', this.template);
+
+    return super.create(this.element);
+  }
+}
+
+class CreateSubscriptionsMainCard extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+  }
+
+  create(subscriptionInfo, subscriptionUserInfo) {
+    const {
+      title, image, duration, id, description,
+    } = subscriptionInfo;
+    let date = `Действителен ${duration} дней`;
+
+    const dateNowLocal = (new Date().toLocaleString('ru', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+    }).replace('.', '').replace(' г.', ''));
+    let templateAddress;
+    if (subscriptionUserInfo) {
+      date = `Действителен до ${transformationUtcToLocalDate(subscriptionUserInfo.endDate, {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+      }).replace('г.', '')}`;
+      const shopName = storesDataObj.successData[subscriptionUserInfo.shopId].longTitle;
+      templateAddress = `<div class="main-card__address-container">
+          <div style="background-image: url('data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-point.svg]]')" class="main-card__icon--type--point"></div>
+          <span class="main-card__address">${shopName}</span>
+        </div>`;
+    }
+
+    this.element = document.createElement(this.parameters.selector);
+    this.template = `
+    <div class="main-card__content-container main-card__content-container--subscription">
+      <div class="main-card__img-container">
+        <div style="background-image: url('${image}')" class="main-card__img main-card__img--size--small"></div>
+      </div>
+      <div class="main-card__text-area main-card__text-area--type--subscription">
+        <h2 class="main-card__title main-card__title--indentation--small main-card__title--size--big">${title}</h2>
+        <p class="main-card__text main-card__date main-card__text--size--small main-card__text--theme--shadow main-card__text--indentation--bottom">${date}</p>
+        
+        <span class="main-card__text main-card__text--text--bold main-card__text--indentation--bottom-small">Условия:</span>
+      </div>
+    </div>
+     <div class="main-card__content-container main-card__content-container--qr main-card__content-container--hide">
+        <div class="main-card__text-area main-card__text-area--position--center">
+          <h2 class="main-card__title main-card__title--indentation--small main-card__title--size--big">Отсканируйте код, чтобы получить скидку</h2>
+        </div>
+        <div class="main-card__img-container">
+          <div class="main-card__img-qr"></div>
+        </div>
+        <div class="main-card__text-area main-card__text-area--position--center">
+          <span class="main-card__text main-card__text--type--address main-card__text--indentation--bottom-small">г. Санкт-Петербург, проспект Металлистов, д 110</span>
+          <span class="main-card__text main-card__text--size--small main-card__text--theme--shadow main-card__text--indentation--bottom-small">${dateNowLocal}</span>
+        </div>
+      </div>`;
+    this.element.insertAdjacentHTML('beforeend', this.template);
+
+    this.textArea = this.element.querySelector('.main-card__text-area--type--subscription');
+    this.textArea.insertAdjacentHTML('beforeend', description);
+    if (this.parameters.qr) {
+      this.date = this.element.querySelector('.main-card__date');
+      this.date.insertAdjacentHTML('afterend', templateAddress);
+      this.contentContainer = this.element.querySelector('.main-card__content-container');
+      /* eslint-disable-next-line */
+      this.qrTemplate = `<div style="background-image: url('data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-qr.svg]]')" class="main-card__icon main-card__icon--type--qr"></div>`;
+      this.contentContainer.insertAdjacentHTML('afterend', this.qrTemplate);
+      this.qr = this.element.querySelector('.main-card__icon--type--qr');
+      this.qrImage = this.element.querySelector('.main-card__img-qr');
+      const qr = new QRCode(this.qrImage,
+        {
+          text: authorizationPhone,
+          colorDark: '#000000',
+          colorLight: '#ffffff',
+          correctLevel: QRCode.CorrectLevel.H,
+        });
+      this.qr.addEventListener('click', () => {
+        this.conentContainerQr = this.element.querySelector('.main-card__content-container--qr');
+        this.conentContainerSubscription = this.element.querySelector('.main-card__content-container--subscription');
+        if (this.qr.classList.contains('main-card__icon--type--qr')) {
+          this.qr.classList.remove('main-card__icon--type--qr');
+          this.conentContainerSubscription.classList.add('main-card__content-container--hide');
+          this.conentContainerQr.classList.remove('main-card__content-container--hide');
+          this.qr.classList.add('main-card__icon--type--close');
+          this.qr.style.backgroundImage = "url('data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-close-white.svg]]')";
+        } else {
+          this.conentContainerSubscription.classList.remove('main-card__content-container--hide');
+          this.conentContainerQr.classList.add('main-card__content-container--hide');
+          this.qr.classList.add('main-card__icon--type--qr');
+          this.qr.classList.remove('main-card__icon--type--close');
+          this.qr.style.backgroundImage = "url('data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-qr.svg]]')";
+        }
+      });
+    }
+    /* const imgEl = this.element.querySelector('.main-card__img');
+    if (!canUseWebP()) {
+      loadImg(productInfo, imgEl, 'jpg');
+    } else {
+      loadImg(productInfo, imgEl, 'webp');
+    } */
     return super.create(this.element);
   }
 }
@@ -120,7 +250,7 @@ class CreateOrderMainCard extends CreateItem {
     this.template = `
         <img src="[+chunkWebPath+]/img/main-card-noimg.jpg" alt="" class="main-card__img">
         <div class="main-card__text-area">
-          <h2 class="main-card__title">${this.parameters.title}</h2>
+          <h2 class="main-card__title main-card__title--size--normal">${this.parameters.title}</h2>
           <p class="main-card__text">${this.parameters.text}</p>
         </div>
         <div class="main-card__button-container main-card__button-container--indentation--left main-card__button-container--indentation--bottom">
@@ -165,7 +295,7 @@ class CreateInboxMainCardNews extends CreateItem {
     this.element = document.createElement(this.parameters.selector);
     this.template = `
         <div class="main-card__text-area">
-          <h2 class="main-card__title">${subject}</h2>
+          <h2 class="main-card__title main-card__title--size--normal">${subject}</h2>
           <span class="main-card__info main-card__info--theme--shadow">${this.date}</span>
         </div>
         `;
@@ -196,7 +326,7 @@ class CreateInboxMainCard extends CreateItem {
     this.template = `
        
         <div class="main-card__text-area">
-          <h2 class="main-card__title main-card__title--indentation--top">${this.parameters.title}</h2>
+          <h2 class="main-card__title main-card__title--size--normal main-card__title--indentation--top">${this.parameters.title}</h2>
           <p class="main-card__text">${this.parameters.text}</p>
         </div>`;
   }
@@ -259,7 +389,7 @@ class CreateGiftMainCard extends CreateItem {
     this.element = document.createElement(this.parameters.selector);
     this.template = `
       <img src="[+chunkWebPath+]/img/main-card-noimg.jpg" alt="" class="main-card__img main-card__img--theme--shadow">
-      <h2 class="main-card__title">${this.parameters.title}</h2>`;
+      <h2 class="main-card__title main-card__title--size--normal">${this.parameters.title}</h2>`;
   }
 
   create() {

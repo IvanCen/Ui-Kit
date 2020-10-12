@@ -79,8 +79,8 @@ class ToggleOrder extends ToggleMainPage {
           type: 'click',
           callback: () => {
             stopAction(() => {
-              toggleStores.rendering();
-              toggleStores.openPage();
+              storesPage.rendering();
+              storesPage.openPage();
             });
           },
         },
@@ -93,7 +93,7 @@ class ToggleOrder extends ToggleMainPage {
     footer.before(orderBottomBar.create());
     emitter.emit('event:counter-changed');
     const footerButtonOrder = document.querySelector('.footer__button--type--order');
-    activeFooter(footerButtonOrder);
+
     const topBarTabs = document.querySelectorAll('.top-bar__tab');
     switchActive(topBarTabs, 'top-bar__tab--active');
   }

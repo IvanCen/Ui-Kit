@@ -54,6 +54,8 @@ class CreateSizeBar extends CreateItem {
               <span class="size-bar__info">500</span>
               </div>
               <div class="size-bar__button-container">
+                <button class="size-bar__button">1</button>
+                <button class="size-bar__button">10</button>
                 <button class="size-bar__button">100</button>
                 <button class="size-bar__button size-bar__button--active">500</button>
                 <button class="size-bar__button">1000</button>

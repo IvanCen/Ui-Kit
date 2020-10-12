@@ -21,7 +21,7 @@ class ToggleInboxTabLastOffersContent extends ToggleInboxTabContent {
 
     this.pageContent.append(this.pageTabContent);
 
-    if (!userMessages.success) {
+    if (!userMessages) {
       this.pageTabContent.append(this.inboxMainCards.create());
     } else {
       userMessages.successData.messages.forEach((item) => {
