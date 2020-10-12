@@ -28,7 +28,7 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
       balancePage.openPage();
       history.pushState({ state: '#' }, null, '#');
     } else {
-      accountPage.openPage();
+      mainPage.openPage();
     }
   }
 

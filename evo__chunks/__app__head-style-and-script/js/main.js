@@ -474,8 +474,8 @@ function closePages() {
   toggleSixthPage.deletePage();
   toggleModalPageSignIn.closePage()
   toggleModalPageSignIn.deletePage()
-  toggleModalPageOrderPayment.closePage()
-  toggleModalPageOrderPayment.deletePage()
+  toggleModalPageOrderHistory.closePage()
+  toggleModalPageOrderHistory.deletePage()
   toggleModalPageOrderReview.closePage()
   toggleModalPageOrderReview.deletePage()
   toggleModalPageSearch.closePage()
@@ -1642,12 +1642,12 @@ class ToggleModalPageOrderReviewRoot {
   }
 }
 
-class ToggleModalPageOrderPaymentRoot {
+class ToggleModalPageOrderHistoryRoot {
   constructor(parameters) {
     this.parameters = parameters;
     this.body = document.querySelector('body');
-    this.modalPageOrderPayment = document.querySelector('.modal-page-order-payment');
-    this.modalPageOrderPaymentContent = document.querySelector('.modal-page-order-payment__content');
+    this.modalPageOrderHistory = document.querySelector('.modal-page-order-history');
+    this.modalPageOrderHistoryContent = document.querySelector('.modal-page-order-history__content');
     this.classOpen = this.parameters.classOpen;
 
     this.closePage = this.closePage.bind(this);
@@ -1660,10 +1660,10 @@ class ToggleModalPageOrderPaymentRoot {
   }
 
   clearPage() {
-    this.modalPageOrderPayment = document.querySelector('.modal-page-order-payment');
-    if (this.modalPageOrderPayment !== null) {
-      if (this.modalPageOrderPayment.childNodes.length !== 0) {
-        this.arrHtml = Array.from(this.modalPageOrderPayment.children);
+    this.modalPageOrderHistory = document.querySelector('.modal-page-order-history');
+    if (this.modalPageOrderHistory !== null) {
+      if (this.modalPageOrderHistory.childNodes.length !== 0) {
+        this.arrHtml = Array.from(this.modalPageOrderHistory.children);
         this.arrHtml.forEach((item) => item.remove());
       }
     }
@@ -1671,21 +1671,21 @@ class ToggleModalPageOrderPaymentRoot {
 
   deletePage() {
     setTimeout(() => {
-      if (this.modalPageOrderPayment) {
-        this.modalPageOrderPayment.remove()
+      if (this.modalPageOrderHistory) {
+        this.modalPageOrderHistory.remove()
       }
     }, 100);
   }
 
   closePage() {
-    this.modalPageOrderPayment = document.querySelector('.modal-page-order-payment');
-    if (this.modalPageOrderPayment) {
-      this.modalPageOrderPayment.querySelectorAll('button').forEach((button) => {
+    this.modalPageOrderHistory = document.querySelector('.modal-page-order-history');
+    if (this.modalPageOrderHistory) {
+      this.modalPageOrderHistory.querySelectorAll('button').forEach((button) => {
         button.remove();
       });
       if (typeof this.parameters.classOpen === 'object') {
         for (const style of this.parameters.classOpen) {
-          this.modalPageOrderPayment.classList.remove(style);
+          this.modalPageOrderHistory.classList.remove(style);
         }
       }
       setTimeout(() => this.body.classList.remove('body'), 100);
@@ -1693,19 +1693,19 @@ class ToggleModalPageOrderPaymentRoot {
   }
 
   openPage() {
-    this.modalPageOrderPayment = document.querySelector('.modal-page-order-payment');
+    this.modalPageOrderHistory = document.querySelector('.modal-page-order-history');
     setTimeout(() => {
-      this.modalPageOrderPayment.classList.add(this.classOpen);
+      this.modalPageOrderHistory.classList.add(this.classOpen);
       this.body.classList.add('body');
     }, 100);
-    history.pushState({state: '#modal-page-order-payment'}, null, '#modal-page-order-payment');
+    history.pushState({state: '#modal-page-order-history'}, null, '#modal-page-order-history');
   }
 
   rendering() {
     this.body = document.querySelector('body');
-    this.body.append(createModalPageOrderPayment());
-    this.modalPageOrderPayment = document.querySelector('.modal-page-order-payment');
-    this.modalPageOrderPaymentContent = document.querySelector('.modal-page-order-payment__content');
+    this.body.append(createModalPageOrderHistory());
+    this.modalPageOrderHistory = document.querySelector('.modal-page-order-history');
+    this.modalPageOrderHistoryContent = document.querySelector('.modal-page-order-history__content');
   }
 }
 

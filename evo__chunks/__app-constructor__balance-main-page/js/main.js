@@ -8,15 +8,21 @@ class BalancePage {
   }
 
   closePage() {
+    this.topBarTabs = document.querySelector('.header__top-tabs');
     this.mainPageContent.classList.remove('main-page__content--size--small');
+    this.mainPageContent.classList.remove('main-page__content--opened-with-tabs');
     this.mainPageContent.classList.remove('main-page__content--opened');
+    this.topBarTabs.classList.add('header__top-tabs--hide');
   }
 
   openPage() {
     this.mainPageContent = document.querySelector('.main-page__content-balance');
+    this.topBarTabs = document.querySelector('.header__top-tabs');
     this.headerTitle = document.querySelector('.header__status');
+    this.topBarTabs.classList.remove('header__top-tabs--hide');
     setTimeout(() => {
       if (this.mainPageContent) {
+        this.mainPageContent.classList.add('main-page__content--opened-with-tabs');
         this.mainPageContent.classList.add('main-page__content--opened');
         this.headerTitle.textContent = 'Баланс';
       }
@@ -30,83 +36,20 @@ class BalancePage {
     this.mainPage.prepend(this.mainPageContent);
     api.getClientApi();
     this.mainPageContent.classList.add('main-page__content--size--small');
-    const topBar = new CreateTopBarDefault({
-      selector: ['div'],
-      style: ['top-bar'],
-      modifier: [
-        `--size--medium${isIos ? '--ios' : ''}`,
-      ],
-      textTitle: ['Баланс'],
-    });
+
     const card = new CreateTextMainCard({
       selector: ['div'],
       style: ['main-card'],
       modifier: ['--indentation--top'],
       text: ['Войдите, что бы увидеть свой баланс'],
     });
-    const textAreaScore = new CreateTextAreaBalance({
+    const content = new CreateTextAreaBalanceTabs({
       selector: ['div'],
-      style: ['text-area'],
-      buttonText: ['История'],
-      themeButton: ['--theme--tangerin'],
-      identifier: ['score'],
-      text: ['Ваш баланс'],
-      heart: false,
-      number() {
-        if (!isEmptyObj(userInfoObj)) {
-          return userInfoObj.successData.balance;
-        }
-        return '0';
-      },
-      eventButton: [
-        {
-          type: 'click',
-          callback: () => {
-            const option = {
-              heart: false,
-            };
-            stopAction(() => {
-              function renderScore() {
-                togglePageBalanceHistoryScore.rendering(option);
-                togglePageBalanceHistoryScore.openPage();
-              }
-              api.getClientBalanceLog(renderScore);
-            });
-          },
-        },
-      ],
+      style: ['tab-content'],
     });
-    const textAreaBonus = new CreateTextAreaBalance({
+    const tobBarTabs = new CreateTopBarTabsBalance({
       selector: ['div'],
-      style: ['text-area'],
-      buttonText: ['История'],
-      themeButton: ['--theme--tangerin-transparent'],
-      identifier: ['score'],
-      text: ['Ваши бонусы'],
-      heart: true,
-      number() {
-        if (!isEmptyObj(userInfoObj)) {
-          return userInfoObj.successData.bonus;
-        }
-        return '0';
-      },
-      eventButton: [
-        {
-          type: 'click',
-          callback: () => {
-            const option = {
-              heart: true,
-            };
-            stopAction(() => {
-              function renderBonus() {
-                togglePageBalanceHistoryBonus.rendering(option);
-                togglePageBalanceHistoryBonus.openPage();
-              }
-              api.getClientBonusLog(renderBonus);
-            });
-          },
-        },
-      ],
+      style: ['header__top-tabs'],
     });
     const buttonJoinOrange = new CreateButton({
       selector: ['button'],
@@ -154,15 +97,54 @@ class BalancePage {
       ],
     });
     this.mainPageContent.append(createTopBarIos());
-    // this.mainPageContent.append(topBar.create());
-    if (isEmptyObj(userInfoObj)) {
-      this.mainPageContent.append(card.create());
-      this.mainPageContent.append(buttonJoinOrange.create());
-    } else {
-      this.mainPageContent.append(textAreaScore.create());
-      this.mainPageContent.append(textAreaBonus.create());
-      this.mainPageContent.append(buttonFill.create());
-    }
-    const footerButtonBalance = document.querySelector('.footer__button--type--cards');
+
+    this.topBar = document.querySelector('.header');
+    this.topBar.append(tobBarTabs.create());
+
+    this.mainPageContent.append(buttonJoinOrange.create());
+    this.mainPageContent.append(content.create());
+    this.mainPageContent.append(buttonFill.create());
+
+    this.initBalance();
+  }
+
+  initBalance() {
+    const sectionGroupTriggers = document.querySelectorAll('.balance__history-section-group');
+    sectionGroupTriggers.forEach((trigger) => {
+      trigger.addEventListener('click', (e) => {
+        const container = trigger.parentElement.querySelector('.balance__history-section-list');
+        trigger.parentElement.classList.toggle('balance__history-section--opened');
+        if (container.style.maxHeight) {
+          container.style.maxHeight = null;
+        } else {
+          container.style.maxHeight = `${container.scrollHeight}px`;
+        }
+      });
+    });
+
+    const tabs = document.querySelectorAll('.header__top-tabs-element');
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        tabs.forEach((tab) => {
+          tab.classList.remove('header__top-tabs-element--active');
+        });
+        tab.classList.add('header__top-tabs-element--active');
+        const id = tab.getAttribute('data-id');
+        const containers = document.querySelectorAll('.balance__container');
+        containers.forEach((el) => {
+          el.classList.remove('balance__container--show');
+        });
+        const container = document.querySelector(`.balance__container[data-id='${id}']`);
+        if (container) container.classList.add('balance__container--show');
+      });
+    });
+
+    const sums = document.querySelectorAll('.form__sums label');
+    sums.forEach((sum) => {
+      sum.addEventListener('click', () => {
+        const btnSpan = sum.closest('.form').querySelector('.button span');
+        btnSpan.textContent = `(${document.querySelector(`input[id='${sum.getAttribute('for')}']`).value})`;
+      });
+    });
   }
 }

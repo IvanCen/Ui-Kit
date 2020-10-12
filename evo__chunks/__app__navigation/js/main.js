@@ -47,6 +47,7 @@ class CreateNavigation extends CreateItem {
     this.buttonMain = this.element.querySelector('.navigation-element-main');
     this.buttonProfile = this.element.querySelector('.navigation-element-profile');
     this.buttonInbox = this.element.querySelector('.navigation-element-inbox');
+    this.buttonHistory = this.element.querySelector('.navigation-element-history');
 
     if (typeof this.parameters.eventOpenMainPage === 'object') {
       for (const event of this.parameters.eventOpenMainPage) {
@@ -76,6 +77,11 @@ class CreateNavigation extends CreateItem {
     if (typeof this.parameters.eventOpenBasketPage === 'object') {
       for (const event of this.parameters.eventOpenBasketPage) {
         this.buttonBasket.addEventListener(event.type, event.callback);
+      }
+    }
+    if (typeof this.parameters.eventOpenHistoryPage === 'object') {
+      for (const event of this.parameters.eventOpenHistoryPage) {
+        this.buttonHistory.addEventListener(event.type, event.callback);
       }
     }
 

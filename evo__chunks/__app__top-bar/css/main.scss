@@ -4,10 +4,6 @@
   width: 100%;
   box-shadow: 0 5px 6px rgba(0, 0, 0, 0.1);
 
-  &--theme--dark-perl {
-    background-color: $blackPerl;
-  }
-
   &--fixed {
     position: fixed;
     top: 0;
@@ -67,7 +63,7 @@
 
 
   &--theme--dark {
-    background-color: $bokaraGrey;
+    background-color: $blackPerl;
     color: $white;
   }
 
@@ -501,4 +497,8 @@
       }
     }
   }
+}
+
+.tab-content {
+  padding-bottom: 150px;
 }

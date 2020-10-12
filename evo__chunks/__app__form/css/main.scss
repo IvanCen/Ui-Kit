@@ -13,6 +13,7 @@
 
   &--indentation {
     padding: 0 16px 20px;
+    justify-content: space-between;
   }
 
   &--indentation--bottom {
@@ -88,7 +89,6 @@
 
 .form__input-area {
   border-bottom: 1px solid;
-  border-color: $gainsboroGray;
   width: 100%;
   padding-top: 28px;
   padding-bottom: 0.5rem;
@@ -98,21 +98,25 @@
     @extend %style-4;
   }
 
+  &:focus {
+    border-color: $orange;
+  }
+
   &:focus + .form__input-label {
     top: 10px;
-    color: $gray;
+    color: $orange;
     @extend %style-6;
   }
 
   &:hover + .form__input-label {
     top: 10px;
-    color: $gray;
+    color: $orange;
     @extend %style-6;
   }
 
   &:active + .form__input-label {
     top: 10px;
-    color: $gray;
+    color: $orange;
     @extend %style-6;
   }
 
@@ -147,7 +151,7 @@
 
   &--focused {
     top: 10px;
-    color: $gray;
+    color: $orange;
     @extend %style-6;
   }
 
@@ -201,7 +205,7 @@
 .form__input--focused {
   @extend %style-6;
   top: 10px;
-  color: $gray;
+  color: $orange;
 }
 
 .form__input-requirements {

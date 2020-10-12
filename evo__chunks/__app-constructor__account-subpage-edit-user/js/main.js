@@ -91,13 +91,11 @@ class ToggleSubPageEditUser extends ToggleSubPage {
       selector: ['button'],
       style: ['button'],
       modifier: [
-        '--size--big',
         '--theme--tangerin',
-        '--type--fixed',
-        '--theme--shadow-big',
+        '--size--large',
         '--type--edit-user',
       ],
-      text: ['Изменить'],
+      text: ['Сохранить'],
       events: [
         {
           type: 'click',
@@ -115,7 +113,8 @@ class ToggleSubPageEditUser extends ToggleSubPage {
     this.subPage.append(createTopBarIos());
     this.subPage.append(topBar.create());
     this.subPage.append(formInput.create(parameters.text));
-    this.subPage.append(buttonEdit.create());
+    this.formEl = this.subPage.querySelector('.form');
+    this.formEl.append(buttonEdit.create());
 
     this.buttonAgree = this.subPage.querySelector('.button--type--edit-user');
     this.buttonAgree.classList.add('form__button');

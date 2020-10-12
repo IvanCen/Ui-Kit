@@ -13,13 +13,15 @@ class ToggleOrderHistoryContent extends ToggleOrderTabContent {
   }
 
   rendering() {
-    const cardItem = new CreateCardItemHistory();
+    const reviewCardItemNew = new CreateCardItemReview({
+      style: ['order-history__offers-element'],
+    });
 
     function render() {
       const mainPageTabContentHistory = document.querySelector('.main-page__tab-content--history');
       if (!isEmptyObj(userLastOrdersObj)) {
         for (const item of Object.values(userLastOrdersObj.successData.orders)) {
-          mainPageTabContentHistory.prepend(cardItem.create(item));
+          mainPageTabContentHistory.prepend(reviewCardItemNew.create(item));
         }
       }
     }

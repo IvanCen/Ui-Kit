@@ -56,6 +56,11 @@
     left: 0;
   }
 
+  &--opened-with-tabs {
+    height: calc(100vh - 126px);
+    padding: 0 16px;
+  }
+
   &--opened--bottom-bar {
     left: 0;
     height: calc(100vh - 132px);

@@ -224,6 +224,24 @@ class CreateTopBarWithBackButton extends CreateItem {
   }
 }
 
+class CreateTopBarTabsBalance extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+    this.element = document.createElement(this.parameters.selector);
+    this.template = `
+      <div class="header__top-tabs-element header__top-tabs-element--active" data-id="1">Счет</div>
+      <div class="header__top-tabs-element" data-id="2">Бонусы</div>
+      `;
+  }
+
+  create() {
+    this.element.insertAdjacentHTML('beforeend', this.template);
+
+    return super.create(this.element);
+  }
+}
+
 class CreateTopBarStoresInfo extends CreateItem {
   constructor(parameters) {
     super();
@@ -500,6 +518,71 @@ class CreateTopBarReviewOrder extends CreateItem {
     this.parameters = parameters;
   }
 
+
+  create() {
+    this.element = document.createElement(this.parameters.selector);
+    this.template = `
+        <div class="top-bar__content-container">
+          <div class="top-bar__header">
+            <button class="button top-bar__button top-bar__button--theme--dark top-bar__button--type--close">
+              <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-close-white.svg]]" alt="Кнопка закрытия" class="top-bar__icon top-bar__icon--type--close">
+            </button>
+          </div>
+          <h1 class="top-bar__title">Товаров в корзине (<span class="top-bar__all-counter-order"></span>)</h1>
+          <span class="top-bar__info">Самовывоз по адресу</span>
+          <div class="top-bar__select-container">
+            <button class="top-bar__select-item top-bar__select-item--theme--dark top-bar__select-item--type--stores button-route">
+              ${!isEmptyObj(userStore) ? userStore.store.shortTitle : 'Адрес магазина' || 'Адрес магазина'}
+              <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-bottom-white.svg]]" alt="Кнопка выбора адреса магазина"
+                   class="top-bar__icon top-bar__icon-arrow-down">
+            </button>
+            <button class=" top-bar__select-item top-bar__select-item--theme--dark top-bar__select-item--size--small top-bar__select-item--hide button-route">
+              <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-man-white.svg]]" alt="" class="top-bar__icon">
+              <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-bottom-white.svg]]" alt="Кнопка выбора"
+                   class="top-bar__icon top-bar__icon-arrow-down">
+            </button>
+          </div>
+        </div>`;
+    this.element.insertAdjacentHTML('beforeend', this.template);
+
+    this.counter = this.element.querySelector('.top-bar__all-counter-order');
+    this.counter.textContent = basketArray.length.toString();
+    this.buttonSearch = this.element.querySelector('.top-bar__search-button');
+    this.storesButton = this.element.querySelector('.top-bar__select-item--type--stores');
+    this.info = this.element.querySelector('.top-bar__info');
+    this.selectContainer = this.element.querySelector('.top-bar__select-container');
+    this.iconClose = this.element.querySelector('.top-bar__button--type--close');
+
+    if (this.parameters.isClose) {
+      this.iconClose.addEventListener('click', () => window.history.back());
+    }
+
+    if (typeof this.parameters.eventStores === 'object') {
+      for (const event of this.parameters.eventStores) {
+        this.storesButton.addEventListener(event.type, event.callback);
+      }
+    }
+
+    if (typeof this.parameters.eventClose === 'object') {
+      for (const event of this.parameters.eventClose) {
+        this.iconClose.addEventListener(event.type, event.callback);
+      }
+    }
+
+    if (this.parameters.withOutAddress) {
+      this.selectContainer.remove();
+      this.info.remove();
+    }
+
+    return super.create(this.element);
+  }
+}
+
+class CreateTopBarOrderHistory extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+  }
 
   create() {
     this.element = document.createElement(this.parameters.selector);

@@ -1553,7 +1553,7 @@ class CreateTextAreaProfile extends CreateItem {
         titleTopBar: 'Редактировать',
         inputLabel: 'Введите дату рождения',
         identifier: 'birthday',
-        inputType: 'text',
+        inputType: 'date',
       });
     });
 
@@ -1562,12 +1562,209 @@ class CreateTextAreaProfile extends CreateItem {
         titleTopBar: 'Редактировать',
         inputLabel: 'Введите email',
         identifier: 'email',
-        inputType: 'text',
+        inputType: 'email',
       });
     });
 
 
     return super.create(this.element);
+  }
+}
+
+class CreateTextAreaBalanceFill extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+  }
+
+  create() {
+    this.element = document.createElement(this.parameters.selector);
+
+    this.template = `
+      <div class="balance__detail-text">Выберите сумму, на которую хотели бы пополнить баланс</div>
+      <div class="balance__detail-image"></div>
+      <form class="form balance__detail-count">
+          <div class="form__group form__sums">
+              <input id="sum1" name="sum" type="radio" value="100" checked>
+              <label for="sum1">100</label>
+              <input id="sum2" name="sum" type="radio" value="500">
+              <label for="sum2">500</label>
+              <input id="sum3" name="sum" type="radio" value="1000">
+              <label for="sum3">1000</label>
+              <input id="sum4" name="sum" type="radio" value="2000">
+              <label for="sum4">2000</label>
+              <input id="sum5" name="sum" type="radio" value="5000">
+              <label for="sum5">5000</label>
+          </div>
+      </form>
+    `;
+    this.element.insertAdjacentHTML('beforeend', this.template);
+
+    return super.create(this.element);
+  }
+}
+
+class CreateTextAreaSearch extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+  }
+
+  create() {
+    this.element = document.createElement(this.parameters.selector);
+
+    this.template = `
+    <div class="search__header">
+        <div class="search__top">
+            <button class="search__close">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M18 6L6 18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M6 6L18 18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+            <div class="search__status">Поиск</div>
+        </div>
+        <form action="" class="form search__form">
+            <div class="search__form-group">
+                <input type="text" class="search__form-input" placeholder="Введите наименование товара...">
+                <div class="search__form-input-clear"></div>
+            </div>
+        </form>
+    </div>
+    <div class="search__result search__result--empty">
+        <div class="search__result-header">
+            <div class="search__result-title">Результаты поиска</div>
+            <div class="search__result-count">3 товара</div>
+        </div>
+        <div class="search__result-container"></div>
+        <div class="search__result-empty">
+            <div class="search__result-empty-img"></div>
+            <div class="search__result-empty-text">
+                <span>Ой!</span> По вашему запросу ничего не найдено.....
+            </div>
+        </div>
+    </div>
+    `;
+    this.element.insertAdjacentHTML('beforeend', this.template);
+
+    this.iconClose = this.element.querySelector('.search__close');
+
+    if (typeof this.parameters.eventCloseIcon === 'object') {
+      for (const event of this.parameters.eventCloseIcon) {
+        this.iconClose.addEventListener('click', () => window.history.back());
+        this.iconClose.addEventListener(event.type, event.callback);
+      }
+    }
+
+    return super.create(this.element);
+  }
+}
+
+class CreateTextAreaBalanceTabs extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+  }
+
+  create() {
+    this.element = document.createElement(this.parameters.selector);
+
+    let balance;
+    let bonus;
+    if (!isEmptyObj(userInfoObj)) {
+      balance = userInfoObj.successData.balance;
+      bonus = userInfoObj.successData.bonus;
+    } else {
+      balance = '0';
+    }
+    const date = new Date();
+    const timeNow = [date.getHours(), date.getMinutes()].map((x) => (x < 10 ? `0${x}` : x)).join(':');
+
+    this.template = `
+      <div class="balance__container balance__container--show" data-id="1">
+        <div class="balance__image balance__image--balance"></div>
+        <div class="balance__content">
+            <div class="balance__currency">${balance} ₽</div>
+            <div class="balance__date">сегодня, ${timeNow}</div>
+        </div>
+        <div class="balance__history">
+            <div class="balance__history-title">История транзакций</div>
+
+        </div>
+    </div>
+    <div class="balance__container" data-id="2">
+        <div class="balance__image balance__image--balance"></div>
+        <div class="balance__content">
+            <div class="balance__currency">${bonus} ❤️</div>
+            <div class="balance__date">сегодня, ${timeNow}</div>
+        </div>
+        <div class="balance__history">
+            <div class="balance__history-title">История транзакций</div>
+
+        </div>
+    </div>
+      
+    `;
+    this.element.insertAdjacentHTML('beforeend', this.template);
+
+    this.balanceContainer = this.element.querySelector('.balance__container[data-id="1"]');
+    this.bonusContainer = this.element.querySelector('.balance__container[data-id="2"]');
+
+    this.renderContent(this.balanceContainer);
+    this.renderContent(this.bonusContainer, true);
+
+    return super.create(this.element);
+  }
+
+  renderContent(container, isBonus = false) {
+    const reformattedLog = {};
+    const log = isBonus ? userBonusLog : userBalanceLog;
+
+    log.successData.forEach((item) => {
+      const dateElems = new Date(`${item.timestamp.replace(/-/g, '/')} UTC`).toLocaleString('ru', {
+        year: 'numeric',
+        month: 'long',
+      }).replace('.', '').replace(' г', '');
+      const dateEl = dateElems[0].toUpperCase() + dateElems.slice(1);
+      if (!reformattedLog[dateEl]) {
+        reformattedLog[dateEl] = [];
+      }
+      reformattedLog[dateEl].push(item);
+    });
+    Object.entries(reformattedLog).forEach(([key, value]) => {
+      let temp = '';
+      value.forEach((el) => {
+        const date = new Date(`${el.timestamp.replace(/-/g, '/')} UTC`).toLocaleString('ru', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+          hour: 'numeric',
+          minute: 'numeric',
+        }).replace('.', '').replace(' г.', '');
+        let classValue = '';
+
+        if (Math.sign(el.amount) === 1) {
+          classValue = 'balance__history-transaction-value--up';
+        } else {
+          classValue = 'balance__history-transaction-value--down';
+        }
+        this.templateBalanceEl = `
+          <div class="balance__history-transaction">
+              <div class="balance__history-transaction-date">${date}</div>
+              <div class="balance__history-transaction-value ${classValue}">${el.amount} ${isBonus ? '❤' : '₽'}️</div>
+          </div>
+        `;
+        temp += this.templateBalanceEl;
+      });
+      this.bonusSection = document.createElement('div');
+      this.bonusSection.classList.add('balance__history-section');
+      this.templateEl = `
+              <div class="balance__history-section-group">${key}</div>
+              <div class="balance__history-section-list">${temp}</div>
+            `;
+      this.bonusSection.insertAdjacentHTML('beforeend', this.templateEl);
+      container.append(this.bonusSection);
+    });
   }
 }
 
@@ -1725,42 +1922,11 @@ class CreateTextAreaNoBasket extends CreateItem {
   }
 }
 
-class CreateTextAreaOrderPayment extends CreateItem {
+class CreateTextAreaOrderHistory extends CreateItem {
   constructor(parameters) {
     super();
     this.parameters = parameters;
   }
-
-  resPayOrder(payInfo) {
-    console.log(payInfo);
-    if (payInfo.success) {
-      let successText = 'Ваш заказ успешно оплачен';
-      let successTextTimeout = 300;
-      if (typeof payInfo.successData.payUrl !== 'undefined') {
-        successText = 'Если платеж был успешным, то скоро мы получим его и обновим статус вашего заказа или доставим средства на счет';
-        successTextTimeout = 2000;
-        const link = document.querySelector('.text-area__link');
-        document.location.href = payInfo.successData.payUrl;
-        link.href = payInfo.successData.payUrl;
-        link.click();
-      }
-      closePages();
-      while (basketArray.length > 0) {
-        basketArray.pop();
-      }
-      localStorage.setItem('basket', JSON.stringify(basketArray));
-      emitter.emit('event:counter-changed');
-
-      setTimeout(() => {
-        toggleModal.rendering(successText);
-      }, successTextTimeout);
-    }
-  }
-
-  /* <div class="radio">
-            <input type="radio" class="radio__input" id="applePay" name="radio"/>
-            <label class="radio__label radio__label--disable radio__label--default" for="applePay">Apple Pay</label>
-          </div> */
 
   create() {
     this.element = document.createElement(this.parameters.selector);

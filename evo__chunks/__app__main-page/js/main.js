@@ -1,9 +1,9 @@
 const mainPageEl = document.querySelector('.main-page');
 const body = document.querySelector('body');
 
-/*window.onerror = (message, url, lineNo) => {
+/* window.onerror = (message, url, lineNo) => {
   api.sendDebugMessage(`App-test. Error: ${message} Line Number: ${lineNo}`);
-};*/
+}; */
 
 const api = new Api();
 api.getDefaultBagItemForOrder();
@@ -21,6 +21,8 @@ let lastUserMessagesIdLet;
 let promoCode;
 let timeRequest;
 const dataPackage = {};
+let AllItemsForSearch;
+let AllModifiersForSearch;
 
 
 let authorizationCodeLet;
@@ -319,8 +321,8 @@ const toggleThirdPageAddinsCard = new ToggleThirdPageAddinsCard({
 const toggleModalPageReviewOrder = new ToggleModalPageReviewOrder({
   classOpen: ['modal-page-order-review--opened'],
 });
-const toggleModalPagePaymentOrder = new ToggleModalPagePaymentOrder({
-  classOpen: ['modal-page-order-payment--opened'],
+const toggleModalPageOrderHistory = new ToggleModalPageOrderHistory({
+  classOpen: ['modal-page-order-history--opened'],
 });
 
 
@@ -364,7 +366,7 @@ const toggleModalPageSearch = new ToggleModalPageSearch({
 const toggleModalPageOrderReview = new ToggleModalPageOrderReviewRoot({
   classOpen: ['modal-page-order-review--opened'],
 });
-const toggleModalPageOrderPayment = new ToggleModalPageOrderPaymentRoot({
+const toggleModalPageOrderPayment = new ToggleModalPageOrderHistoryRoot({
   classOpen: ['modal-page-order-payment--opened'],
 });
 const toggleModalPageSignIn = new ToggleModalPageSignIn({
@@ -389,6 +391,19 @@ const Navigation = new CreateNavigation({
         stopAction(() => {
           closePages();
           balancePage.openPage();
+        });
+      },
+    },
+  ],
+  eventOpenHistoryPage: [
+    {
+      type: 'click',
+      callback: () => {
+        stopAction(() => {
+          closePages();
+          setTimeout(() => {
+            toggleModalPageOrderHistory.rendering();
+          }, 200);
         });
       },
     },

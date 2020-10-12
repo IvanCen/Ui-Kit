@@ -174,7 +174,7 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
       selector: ['div'],
       style: ['top-bar'],
       modifier: [
-        '--theme--dark-perl',
+        '--theme--dark',
         `--size--medium${isIos ? '--ios' : ''}`,
         '--indentation--bottom-padding',
       ],
