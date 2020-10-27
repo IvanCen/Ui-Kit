@@ -18,35 +18,33 @@ function initMainPanel() {
   const pages = document.querySelectorAll('.page');
   const btns = document.querySelectorAll('.main-panel .main-panel__button');
   btns.forEach((btn) => {
-    if (!btn.classList.contains('main-panel__button--type--stores')) {
-      btn.addEventListener('click', (e) => {
-        btns.forEach((btn) => {
-          btn.classList.remove('main-panel__button--active');
-        });
-        btn.classList.add('main-panel__button--active');
-
-        const pageId = btn.getAttribute('data-page');
-        const pageTitle = btn.getAttribute('data-page-title');
-
-        pages.forEach((page) => {
-          page.classList.remove('page--show');
-        });
-
-        const page = document.querySelector(`.page[data-page='${pageId}']`);
-        if (page) {
-          page.classList.add('page--show');
-          const header = page.querySelector('.header');
-          if (header) {
-            document.body.style.paddingTop = `${header.clientHeight}px`;
-          } else document.body.style.paddingTop = '0px';
-        }
-        if (window.swipArray) {
-          window.swipArray.forEach((swip) => {
-            swip.update();
-          });
-        }
+    btn.addEventListener('click', (e) => {
+      btns.forEach((btn) => {
+        btn.classList.remove('main-panel__button--active');
       });
-    }
+      btn.classList.add('main-panel__button--active');
+
+      const pageId = btn.getAttribute('data-page');
+      const pageTitle = btn.getAttribute('data-page-title');
+
+      pages.forEach((page) => {
+        page.classList.remove('page--show');
+      });
+
+      const page = document.querySelector(`.page[data-page='${pageId}']`);
+      if (page) {
+        page.classList.add('page--show');
+        const header = page.querySelector('.header');
+        if (header) {
+          document.body.style.paddingTop = `${header.clientHeight}px`;
+        } else document.body.style.paddingTop = '0px';
+      }
+      if (window.swipArray) {
+        window.swipArray.forEach((swip) => {
+          swip.update();
+        });
+      }
+    });
   });
 }
 

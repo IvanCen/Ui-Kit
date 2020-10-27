@@ -21,7 +21,7 @@ class CreateCardItemProductCardNew extends CreateItem {
                 <div class="catalog__list-element-image">
                     <div class="catalog__stickers"></div>
                 </div>
-                <div class="catalog__list-element-detail">
+                <div class="catalog__list-element-detail catalog__list-element-detail--type--border">
                     <div class="catalog__list-element-title">
                         <div class="catalog__list-element-name">${productInfo.name}</div>
                         <div class="catalog__list-element-price">${productInfo.price} ₽</div>
@@ -834,27 +834,41 @@ class CreateCardItemHistory extends CreateItem {
 
     for (const items of Object.values(productInfo.items)) {
       const item = dataProductApi.successData.items[items.itemId];
-      console.log(item);
+
       this.element = document.createElement('div');
-      this.element.classList.add('catalog__list-element', 'catalog__list-element--hit');
-      this.element.id = productInfo.id;
+      this.element.classList.add('catalog__list-element', 'catalog__list-element--hit', 'catalog__list-element--indentation');
+
       let weight;
-      if (productInfo.netWeight) {
-        weight = `${productInfo.netWeight} г`;
-      } else if (productInfo.volume) {
-        weight = `${productInfo.volume} мл`;
+      if (item && item.netWeight) {
+        weight = `${item.netWeight} г`;
+      } else if (item && item.volume) {
+        weight = `${item.volume} мл`;
       } else {
         weight = '';
+      }
+
+      let name;
+      if (item && item.name) {
+        name = item.name;
+      } else {
+        name = items.itemName;
+      }
+
+      let price;
+      if (item && item.price) {
+        price = item.price;
+      } else {
+        price = items.itemPrice;
       }
 
       this.template = `
                 <div class="catalog__list-element-image">
                     <div class="catalog__stickers"></div>
                 </div>
-                <div class="catalog__list-element-detail">
+                <div class="catalog__list-element-detail catalog__list-element-detail--type--border">
                     <div class="catalog__list-element-title">
-                        <div class="catalog__list-element-name">${productInfo.name}</div>
-                        <div class="catalog__list-element-price">${productInfo.price} ₽</div>
+                        <div class="catalog__list-element-name">${name}</div>
+                        <div class="catalog__list-element-price">${price} ₽</div>
                     </div>
                     <div class="catalog__list-element-additional">
                         <div class="catalog__list-element-name">${weight}</div>
@@ -868,38 +882,33 @@ class CreateCardItemHistory extends CreateItem {
                     </div>
                 </div>`;
       this.element.insertAdjacentHTML('beforeend', this.template);
-      /* this.stickersContainer = this.element.querySelector('.card-item__stickers-container');
-      if (productInfo.stickers && productInfo.stickers.length !== 0) {
-        productInfo.stickers.forEach((stickerName) => {
-          const stickerEl = document.createElement('div');
-          stickerEl.classList.add('text-area__icon', 'text-area__icon--size--big', `text-area__icon--type--${stickerName}`);
-          this.stickersContainer.prepend(stickerEl);
-        });
-      } */
 
       this.iconsPlus = this.element.querySelector('.catalog__list-element-plus');
 
-      this.element.addEventListener('click', (e) => {
-        console.log(e.target);
-        if (!e.target.classList.contains('element-plus')) {
-          stopAction(() => {
-            toggleModalPageCard.rendering(dataProductApi.successData.items[productInfo.id]);
-          });
+      if (item) {
+        this.element.addEventListener('click', (e) => {
+          console.log(e.target);
+          if (!e.target.classList.contains('element-plus')) {
+            stopAction(() => {
+              toggleModalPageCard.rendering(dataProductApi.successData.items[item.id]);
+            });
+          }
+        });
+
+        this.iconsPlus.addEventListener('click', () => {
+          basketArray.push({ id: item.id, modifiers: [...items.modifiers] });
+          localStorage.setItem('basket', JSON.stringify(basketArray));
+          checkEmptyBasket();
+        });
+
+        const imgEl = this.element.querySelector('.catalog__list-element-image');
+        if (!canUseWebP()) {
+          loadImg(dataProductApi.successData.items[items.itemId], imgEl, 'jpg');
+        } else {
+          loadImg(dataProductApi.successData.items[items.itemId], imgEl, 'webp');
         }
-      });
+      }
 
-      this.iconsPlus.addEventListener('click', () => {
-        basketArray.push({ id: productInfo.id, modifiers: [...items.modifiers] });
-        localStorage.setItem('basket', JSON.stringify(basketArray));
-        checkEmptyBasket();
-      });
-
-      /* const imgEl = this.element.querySelector('.catalog__list-element-image');
-      if (!canUseWebP()) {
-        loadImg(productInfo, imgEl, 'jpg');
-      } else {
-        loadImg(productInfo, imgEl, 'webp');
-      } */
 
       this.elementWraper.append(this.element);
     }

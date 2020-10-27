@@ -2,6 +2,7 @@ class MainPage {
   constructor(parameters) {
     this.parameters = parameters;
     this.rendering = this.rendering.bind(this);
+    this.removeLastItemLine = this.removeLastItemLine.bind(this);
     this.body = document.querySelector('body');
     this.mainPage = document.querySelector('.main-page');
     this.mainPageContent = document.querySelector('.main-page__content');
@@ -29,7 +30,7 @@ class MainPage {
     this.mainPageContent.classList.add('main-page__content', 'main-page__content--size--small', 'main-page__content-main');
     this.mainPage.prepend(this.mainPageContent);
 
-    const mainPageMainCard = new CreateMainCard();
+    const shopSelector = new CreateShopSelect({ style: ['shop-selector'] });
     const textAreaBalanceMain = new CreateTextAreaBalanceMain({
       selector: ['section'],
       style: ['balance-section'],
@@ -95,6 +96,7 @@ class MainPage {
     this.promoContainer.classList.add('main-card__container-promo');
     this.postContainer.classList.add('main-card__container-posts');
     this.mainPageContent.append(banners.create());
+    this.mainPageContent.append(shopSelector.create());
     if (!isEmptyObj(userInfoObj)) {
       this.mainPageContent.append(textAreaBalanceMain.create());
     }
@@ -106,8 +108,17 @@ class MainPage {
     api.getMessages();
     initCategories();
     checkEmptyBasket();
+    checkStore();
+    this.removeLastItemLine();
     /* renderPromo(dataPromo);
     renderPosts(dataPosts);
     this.promoContainer.append(ourHistoryMainCard.create()); */
+  }
+
+  removeLastItemLine() {
+    document.querySelectorAll('.catalog__list').forEach((item) => {
+      const lastEl = item.lastElementChild.querySelector('.catalog__list-element-detail');
+      lastEl.classList.remove('catalog__list-element-detail--type--border');
+    });
   }
 }

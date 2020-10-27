@@ -287,27 +287,36 @@ class CreateInboxMainCardNews extends CreateItem {
 
   create(messageInfo) {
     const {
-      id, subject, client, timestamp, wasRead,
+      id, subject, client, timestamp, wasRead, message,
     } = messageInfo;
-
-    this.date = transformationUtcToLocalDate(timestamp);
+    console.log(messageInfo);
+    this.date = transformationUtcToLocalDate(timestamp, {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    });
 
     this.element = document.createElement(this.parameters.selector);
     this.template = `
-        <div class="main-card__text-area">
-          <h2 class="main-card__title main-card__title--size--normal">${subject}</h2>
-          <span class="main-card__info main-card__info--theme--shadow">${this.date}</span>
-        </div>
+        <div class="messages__element-icon messages__element-icon--shop"></div>
+          <div class="messages__element-body">
+              <div class="messages__element-title">${subject}</div>
+              <div class="messages__element-wrapper">
+                  <div class="messages__element-text">${message}</div>
+                  <div class="messages__element-date">${this.date}</div>
+              </div>
+          </div>
         `;
 
     this.element.insertAdjacentHTML('beforeend', this.template);
-    const title = this.element.querySelector('.main-card__title');
+    const title = this.element.querySelector('.messages__element-title');
 
     if (wasRead) {
       title.classList.add('main-card__title--font-weight--normal');
     }
     this.element.addEventListener('click', () => {
       toggleModal.renderingInbox(messageInfo);
+      inboxPage.checkMessages();
       if (!wasRead) {
         api.markMessageRead(client, timestamp, id);
       }

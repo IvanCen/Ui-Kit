@@ -1676,6 +1676,7 @@ class CreateTextAreaBalanceTabs extends CreateItem {
       bonus = userInfoObj.successData.bonus;
     } else {
       balance = '0';
+      bonus = '0';
     }
     const date = new Date();
     const timeNow = [date.getHours(), date.getMinutes()].map((x) => (x < 10 ? `0${x}` : x)).join(':');
@@ -1710,9 +1711,11 @@ class CreateTextAreaBalanceTabs extends CreateItem {
     this.balanceContainer = this.element.querySelector('.balance__container[data-id="1"]');
     this.bonusContainer = this.element.querySelector('.balance__container[data-id="2"]');
 
-    this.renderContent(this.balanceContainer);
-    this.renderContent(this.bonusContainer, true);
-
+    if(!isEmptyObj(userBonusLog)) {
+      this.renderContent(this.balanceContainer);
+      this.renderContent(this.bonusContainer, true);
+    }
+    
     return super.create(this.element);
   }
 
@@ -1731,6 +1734,70 @@ class CreateTextAreaBalanceTabs extends CreateItem {
       }
       reformattedLog[dateEl].push(item);
     });
+    Object.entries(reformattedLog).forEach(([key, value]) => {
+      let temp = '';
+      value.forEach((el) => {
+        const date = new Date(`${el.timestamp.replace(/-/g, '/')} UTC`).toLocaleString('ru', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+          hour: 'numeric',
+          minute: 'numeric',
+        }).replace('.', '').replace(' г.', '');
+        let classValue = '';
+
+        if (Math.sign(el.amount) === 1) {
+          classValue = 'balance__history-transaction-value--up';
+        } else {
+          classValue = 'balance__history-transaction-value--down';
+        }
+        this.templateBalanceEl = `
+          <div class="balance__history-transaction">
+              <div class="balance__history-transaction-date">${date}</div>
+              <div class="balance__history-transaction-value ${classValue}">${el.amount} ${isBonus ? '❤' : '₽'}️</div>
+          </div>
+        `;
+        temp += this.templateBalanceEl;
+      });
+      this.bonusSection = document.createElement('div');
+      this.bonusSection.classList.add('balance__history-section');
+      this.templateEl = `
+              <div class="balance__history-section-group">${key}</div>
+              <div class="balance__history-section-list">${temp}</div>
+            `;
+      this.bonusSection.insertAdjacentHTML('beforeend', this.templateEl);
+      container.append(this.bonusSection);
+    });
+  }
+}
+
+class CreateTextAreaInboxTabs extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+  }
+
+  create() {
+    this.element = document.createElement(this.parameters.selector);
+
+    this.template = `
+      <div class="messages__container messages__container--show" data-id="1"></div>
+      <div class="messages__container" data-id="2"></div>
+      
+    `;
+    this.element.insertAdjacentHTML('beforeend', this.template);
+
+    this.messagesContainer = this.element.querySelector('.messages__container[data-id="1"]');
+    this.lastOffersContainer = this.element.querySelector('.messages__container[data-id="2"]');
+
+    this.renderContent(this.messagesContainer);
+    this.renderContent(this.lastOffersContainer);
+
+    return super.create(this.element);
+  }
+
+  renderContent(container) {
+
     Object.entries(reformattedLog).forEach(([key, value]) => {
       let temp = '';
       value.forEach((el) => {

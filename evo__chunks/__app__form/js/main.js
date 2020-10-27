@@ -235,19 +235,22 @@ class CreateFormInputSignIn extends CreateItem {
         </div>
         <p class="form__text form__text--error-phone form__text--hide"></p>
         <div class="form__call-container">
-          <div class="form__title">В течении нескольких секунд Вам поступит звонок</div>
+          <div class="form__text-container">
+            <div class="form__title">В течении нескольких секунд Вам поступит звонок</div>
+            <p class="form__text form__text--indentation--small">Введите последние 4 цифры входящего номера в качестве кода для входа</p>
+          </div>
           <div class="form__group form__group--m-top form__group--d-ib">
               <div class="form__input-wrapper  form__input-wrapper--last-number-inputs">
-                  <p class="form__text form__text--indentation--small">Введите последние 4 цифры входящего номера в качестве кода для входа</p>
                   <input type="tel" inputmode="numeric" maxlength="1" class="last-number-input" name="first-phone"  autocomplete="qwe">
                   <input type="tel" inputmode="numeric" maxlength="1" class="last-number-input" name="second-phone"  autocomplete="qwe">
                   <input type="tel" inputmode="numeric" maxlength="1" class="last-number-input" name="third-phone"  autocomplete="off">
-                  <input type="tel" inputmode="numeric" maxlength="1" class="last-number-input" name="fourth-phone"  autocomplete="qwe">
+                  <input type="tel" inputmode="numeric" maxlength="1" class="last-number-input" name="fourth-phone"  autocomplete="qwe" data-pos="last">
               </div>
-              <p class="form__text form__text--indentation--small">Вы ввели номер <span class="number-for-registration"></span>, если вы ошиблись при вводе, то <a class="form__link form__link--type--back" type="reset">исправьте номер</a></p>
+              <p class="form__text form__text-info-number form__text--indentation--small">Вы ввели номер <span class="number-for-registration"></span>, если вы ошиблись при вводе, то <a class="form__link form__link--type--back" type="reset">исправьте номер</a></p>
           </div>
-          <button class="button button--theme--tangerin button--size--big button--theme--shadow-big form__button form__button--type--call">Подтвердить</button>
-          <button class="button button--size--small button--theme--tangerin-transparent form__button form__button--type--again form__button--hide">Отправить код повторно</button>
+          <p class="form__text form__text--error form__text--error-code form__text--hide"></p>
+          <button class="button button--theme--tangerin button--size--large button--theme--shadow-big form__button form__button--type--call button--type--disabled" disabled>Подтвердить</button>
+          <button class="button button--size--large button--theme--transparent form__button form__button--type--again form__button--hide">Отправить код повторно</button>
         </div>
         <p class="form__text form__text--success form__text--hide">Вы авторизованны!</p>
         <p class="form__text form__text--error form__text--hide"></p>
@@ -265,7 +268,7 @@ class CreateFormInputSignIn extends CreateItem {
            </div>
           </div>
           <div class="form__input-container form__input-container--birthday form__input-container--hide">
-            <h2 class="form__title">Хотите рассказать нам о своей дате рождения? Мы регулярно проводим специальные акции для именинников.</h2>  
+            <h2 class="form__title">Хотите рассказать нам о своей дате рождения? Мы регулярно проводим специальные акции для именинников</h2>  
             <div class="form__input">
               <label class="form__input-underlined">
                 <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--birthday" type="date" min="1900-01-01">
@@ -275,7 +278,7 @@ class CreateFormInputSignIn extends CreateItem {
             </div>
           </div>
           <div class="form__input-container form__input-container--email form__input-container--hide">
-            <h2 class="form__title">Хотите подписаться на нашу рассылку? Оставьте нам свой email. В любой момент можно будет отписаться от рассылки через ссылку в каждом отправляемом нами письме.</h2> 
+            <h2 class="form__title">Поделитесь своим email адресом, чтобы первым узнавать о новинках</h2> 
             <div class="form__input">
               <label class="form__input-underlined">
                 <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--email" type="email">
@@ -290,10 +293,78 @@ class CreateFormInputSignIn extends CreateItem {
             </div>
           </div>
           
-        <button class="button button--size--medium button--theme--light button--theme--shadow-medium form__button--type--skip">Пропустить</button>
-        <button class="button button--theme--tangerin button--size--big button--theme--shadow-big form__button form__button--type--agree">Подтвердить</button>
+        <button class="button button--theme--tangerin button--size--large button--theme--shadow-big form__button form__button--type--agree">Подтвердить</button>
+        <button class="button button--size--large button--theme--light button--theme--shadow-medium form__button--type--skip">Пропустить</button>
        </div>
-       <button class="button button--theme--tangerin button--size--big button--theme--shadow-big form__button form__button--type--sign-in">Подтвердить</button>
+       <button class="button button--theme--tangerin button--size--large button--theme--shadow-big form__button form__button--type--sign-in">Подтвердить</button>
+       <div class="swiper-container login__container-for-swip login__container form__inputs-container form__inputs-container--hide">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide">
+                <div class="slide-wrapper">
+                    <div class="form__input-container form__input-container--name">
+                      <h2 class="form__title">Давайте знакомиться, меня зовут Хлебник, а вас?</h2>
+                      <div class="form__input">
+                        <label class="form__input-underlined">
+                          <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--name" minlength="2">
+                          <span class="form__input-label">Имя</span>
+                          <ul class="form__input-requirements">
+                            <li class="form__input-requirement form__input-requirement--type--name">Имя должно содержать больше двух букв</li>
+                          </ul>
+                       </label>
+                     </div>
+                    </div>
+                    <div class="login__buttons-for-form">
+                        <button type="submit" class="button button--color-5 button--disabled">Далее</button>
+                        <button type="skip" class="button">Пропустить</button>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-slide">
+                <div class="slide-wrapper">
+                    <div class="form__input-container form__input-container--birthday">
+                      <h2 class="form__title">Хотите рассказать нам о своей дате рождения? Мы регулярно проводим специальные акции для именинников</h2>  
+                      <div class="form__input">
+                        <label class="form__input-underlined">
+                          <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--birthday" type="date" min="1900-01-01">
+                          <button class="date__picker"></button>
+                          <span class="form__input-label form__input--focused">День рождения</span>
+                          <ul class="form__input-requirements"></ul>
+                        </label>
+                      </div>
+                    </div>
+                    <div class="login__buttons-for-form">
+                        <button type="submit" class="button button--color-5 button--disabled">Далее</button>
+                        <button type="skip" class="button">Пропустить</button>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-slide">
+                <div class="slide-wrapper">
+                    <div class="form__input-container form__input-container--email">
+                      <h2 class="form__title">Поделитесь своим email адресом, чтобы первым узнавать о новинках</h2> 
+                      <div class="form__input">
+                        <label class="form__input-underlined">
+                          <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--email" type="email">
+                          <span class="form__input-label">Email</span>
+                          <ul class="form__input-requirements">
+                            <li class="form__input-requirement form__input-requirement--type--email">Пожалуйста введите правильный email адрес</li>
+                          </ul>
+                          <div class="form__input-icon-container">
+                            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-attention-triangle.svg]]" alt="" class="form__input-icon form__input-icon-error">
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+                    <div class="login__buttons-for-form">
+                        <button type="submit" class="button button--color-5 button--disabled">Готово</button>
+                        <button type="skip" class="button">Пропустить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+       
    `;
   }
 
@@ -811,6 +882,33 @@ class CreateFormFriendPay extends CreateItem {
     });
 
 
+    return super.create(this.element);
+  }
+}
+class CreateFormMapSearch extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+    this.element = document.createElement(this.parameters.selector);
+    this.template = `
+        <input class="map-search__input" type="text">
+        <div class="reset"></div>
+   `;
+  }
+
+  create() {
+    this.element.insertAdjacentHTML('beforeend', this.template);
+
+    this.resetButton = this.element.querySelector('.reset');
+    this.input = this.element.querySelector('.map-search__input');
+
+    this.resetButton.addEventListener('click', () => {
+      stopAction(() => {
+        this.input.value = '';
+        this.mapItems = document.querySelectorAll('.map__item');
+        this.mapItems.forEach((item) => item.classList.remove('map__item--hide'));
+      });
+    });
     return super.create(this.element);
   }
 }

@@ -23,7 +23,8 @@ let timeRequest;
 const dataPackage = {};
 let AllItemsForSearch;
 let AllModifiersForSearch;
-
+// eslint-disable-next-line prefer-const
+let storesOpened = false;
 
 let authorizationCodeLet;
 let authorizationPhoneLet;
@@ -236,7 +237,7 @@ if (authorizationCode !== '' && authorizationPhone !== '') {
   api.authorizeCallInApi(getUserInfo, authorizationCode, authorizationPhone);
 }
 
-api.productApi();
+api.productApi(renderMain);
 api.getClientAchievements();
 api.getClientOrdersApi();
 api.promoApi();
@@ -446,7 +447,7 @@ const Navigation = new CreateNavigation({
       type: 'click',
       callback: () => {
         stopAction(() => {
-          storesPage.openPage();
+          storesPage.openPage(true);
         });
       },
     },
@@ -469,6 +470,7 @@ function closeOrderPage() {
     item.classList.remove('page-order--opened--bottom-bar');
   });
 }
+
 console.log(isIos);
 const mainPageTopBar = new CreateTopBar({
   selector: ['div'],
@@ -483,7 +485,6 @@ const mainPageTopBar = new CreateTopBar({
           });
         } else {
           stopAction(() => {
-            storesPage.rendering(true);
             storesPage.openPage();
           });
         }
@@ -547,52 +548,56 @@ const mainPageFooter = new CreateFooter({
       type: 'click',
       callback: () => {
         stopAction(() => {
-          storesPage.openPage();
+          storesPage.openPage(true);
+          closePages();
         });
       },
     },
   ],
 });
-mainPageEl.prepend(mainPageTopBar.create());
-mainPageEl.prepend(createTopBarIos());
-mainPage.rendering();
-balancePage.rendering();
-storesPage.rendering();
-inboxPage.rendering();
-accountPage.rendering();
-toggleInboxTabMessagesContent.rendering();
 
-mainPageEl.after(Navigation.create());
-mainPageEl.after(mainPageFooter.create());
-// switchActiveFooter();
-initMainPanel();
-initTopMenu();
+function renderMain() {
+  mainPageEl.prepend(mainPageTopBar.create());
+  mainPageEl.prepend(createTopBarIos());
+  mainPage.rendering();
+  balancePage.rendering();
+  storesPage.rendering();
+  inboxPage.rendering();
+  accountPage.rendering();
+  toggleInboxTabMessagesContent.rendering();
 
-if (/\?refer=alfa.*/.test(window.location.search)) {
-  const win = window.open('about:blank', '_self');
-  win.close();
-}
+  mainPageEl.after(Navigation.create());
+  mainPageEl.after(mainPageFooter.create());
+  // switchActiveFooter();
+  initMainPanel();
+  initTopMenu();
 
-(function renderHashOrderCategoryPage() {
-  const buttonMain = document.querySelector('.main-panel__button--type--main');
+  if (/\?refer=alfa.*/.test(window.location.search)) {
+    const win = window.open('about:blank', '_self');
+    win.close();
+  }
+
+  (function renderHashOrderCategoryPage() {
+    const buttonMain = document.querySelector('.main-panel__button--type--main');
+
+    setTimeout(() => {
+      buttonMain.dispatchEvent(new Event('click')); // рендерит страницу
+      if (!isEmptyObj(userInfoObj)) {
+        toggleModalPageSignIn.rendering();
+        toggleModalPageSignIn.regSuccess({ success: true, isStartApp: true, name: userInfoObj.successData.name });
+      }
+    }, 2000);
+  }());
 
   setTimeout(() => {
-    buttonMain.dispatchEvent(new Event('click')); // рендерит страницу
-    if (!isEmptyObj(userInfoObj)) {
-      toggleModalPageSignIn.rendering();
-      toggleModalPageSignIn.regSuccess({ success: true, isStartApp: true, name: userInfoObj.successData.name });
+    const loader = document.querySelector('.loader');
+    if (loader) {
+      loader.classList.add('loader--hide');
+      loader.remove();
     }
-  }, 2000);
-}());
-
-setTimeout(() => {
-  const loader = document.querySelector('.loader');
-  if (loader) {
-    loader.classList.add('loader--hide');
-    loader.remove();
-  }
-  initSliders();
-}, 5000);
-
+    initSliders();
+    checkStore();
+  }, 5000);
+}
 
 // api.sendDebugMessage(`${JSON.stringify(basketArray)}`);

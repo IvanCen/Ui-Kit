@@ -2,18 +2,45 @@ class StoresPage {
   constructor(parameters) {
     this.parameters = parameters;
     this.rendering = this.rendering.bind(this);
+    this.initInput = this.initInput.bind(this);
+    this.checkRadioInputs = this.checkRadioInputs.bind(this);
   }
 
 
-  openPage() {
+  openPage(isNav = false) {
     this.modalPage = document.querySelector('.modal-page-stores');
+    this.storesNavButton = document.querySelector('.main-panel__button--type--stores');
+    this.navButton = document.querySelectorAll('.main-panel__button');
     this.mapSlide = this.modalPage.querySelector('.map');
+    this.headerTitle = document.querySelector('.header__status');
+    this.topBarStores = document.querySelector('.top-bar-stores');
+    this.mapSearch = document.querySelector('.map-search');
+    this.mapSearchInput = document.querySelector('.map-search__input');
+    this.mapSearchHeaderInput = document.querySelector('.header__input');
+    this.mapItems = document.querySelectorAll('.map__item');
+    this.mapItems.forEach((item) => item.classList.remove('map__item--hide'));
+    this.mapSearchInput.value = '';
+    this.mapSearchHeaderInput.value = '';
+
     setTimeout(() => {
-      this.modalPage.classList.add('modal-page--open');
+      if (isNav) {
+        this.headerTitle.textContent = 'Магазины';
+        this.modalPage.classList.add('modal-page--open-nav');
+        this.topBarStores.classList.add('top-bar--hide');
+
+        this.navButton.forEach((item) => item.classList.remove('main-panel__button--active'));
+        this.storesNavButton.classList.add('main-panel__button--active');
+      } else {
+        this.mapSearch.classList.remove('map-search--show');
+        this.modalPage.classList.add('modal-page--open');
+        this.modalPage.classList.remove('modal-page--open-nav');
+        this.topBarStores.classList.remove('top-bar--hide');
+      }
       this.mapSlide.classList.add('map--show');
       this.body.classList.add('body');
     }, 100);
     history.pushState({ state: '#modal-page-stores' }, null, '#modal-page-stores');
+    this.checkRadioInputs();
   }
 
   closePage() {
@@ -21,6 +48,7 @@ class StoresPage {
     this.mapSlide = this.modalPage.querySelector('.map');
     if (this.modalPage) {
       this.modalPage.classList.remove('modal-page--open');
+      this.modalPage.classList.remove('modal-page--open-nav');
       this.mapSlide.classList.remove('map--show');
     }
   }
@@ -34,7 +62,11 @@ class StoresPage {
     const storesTopBar = new CreateTopBarStores({
       selector: ['div'],
       style: ['top-bar'],
-      modifier: [`--size--medium${isIos ? '--ios' : ''}`],
+      modifier: [
+        `--size--medium${isIos ? '--ios' : ''}`,
+        '--theme--dark',
+        '-stores',
+      ],
       eventOpenSearch: [
         {
           type: 'click',
@@ -54,6 +86,10 @@ class StoresPage {
       style: ['maps'],
       modifier: [`${isIos ? '--ios' : ''}`],
     });
+    const search = new CreateFormMapSearch({
+      selector: ['form'],
+      style: ['map-search'],
+    });
 
     const storesMapItemWraper = new CreateMapItemStoresWraper({
       selector: ['div'],
@@ -69,6 +105,7 @@ class StoresPage {
     this.modalPageContent.append(storesTopBar.create());
     this.modalPageContent.append(storesMap.create());
     this.modalPageContent.append(storesMapItemWraper.create());
+    this.modalPageContent.append(search.create());
 
 
     function renderStores(stores, page) {
@@ -249,22 +286,15 @@ class StoresPage {
     renderStores(storesDataObj, this.modalPageContent);
 
     setTimeout(() => {
-      if (!isEmptyObj(userStore)) {
-        const radioInputs = this.modalPageContent.querySelectorAll('.radio__input');
-        [...radioInputs].forEach((item) => {
-          const inputId = item.getAttribute('data-id');
-          if (userStore.store.id === Number(inputId)) {
-            item.checked = true;
-          }
-        });
-      }
       const mapItem = this.modalPageContent.querySelector('.map__item');
       if (mapItem) {
         mapItem.addEventListener('mousedown', () => false);
       }
 
+      this.checkRadioInputs();
       this.chooseShop(this.modalPageContent);
-    }, 300);
+      this.initInput();
+    }, 3000);
 
     const topBarSearch = this.modalPageContent.querySelector('.top-bar-search--size--small');
     const mapList = document.querySelector('.map');
@@ -275,77 +305,121 @@ class StoresPage {
     this.activeMapTouch(mapList);
   }
 
-  activeMapTouch(container) {
-    let dragStart = 0;
-    let dragEnd = 0;
-    let offsetY = 0;
-    let offsetYOnStart = 0;
-    let isOpen = false;
-    const isMapOpen = localStorage.getItem('isMapListOpen');
+  checkRadioInputs() {
+    if (!isEmptyObj(userStore)) {
+      const radioInputs = this.modalPageContent.querySelectorAll('.radio__input');
+      [...radioInputs].forEach((item) => {
+        const inputId = item.getAttribute('data-id');
+        if (userStore.store.id === Number(inputId)) {
+          item.checked = true;
+        }
+      });
+    }
+  }
 
-    if (isMapOpen === 'false') {
-      offsetY = container.offsetHeight;
-      offsetYOnStart = container.offsetHeight;
+  activeMapTouch(container) {
+    let dragStart = 182;
+    let dragEnd = 182;
+    let offsetY = 182;
+    let offsetYOnStart = 182;
+    let isOpen = false;
+    let delta = 81;
+    const isMapOpen = storesOpened;
+    let windowHeight = container.clientHeight || window.innerHeight;
+    if (isMapOpen === false) {
+      offsetY = windowHeight - delta;
+      offsetYOnStart = windowHeight - delta;
       container.style.transform = `translate3d(0,${offsetY}px,0)`;
     }
-
-    function mapAnimation(action) {
-      if (offsetY > 50 && !isOpen && action === 'end') {
-        offsetY = container.offsetHeight - 43;
-        offsetYOnStart = container.offsetHeight - 43;
+    window.storesAnimation = storesAnimation;
+    function storesAnimation(action) {
+      windowHeight = container.clientHeight || window.innerHeight;
+      const stores = document.querySelector('.modal-page-stores');
+      const mapSearch = document.querySelector('.map-search');
+      const modalPage = document.querySelector('.modal-page-stores');
+      stores.classList.contains('stores--fullscreen') ? delta = 60 : delta = 81;
+      if (offsetY > (windowHeight / 5) && !isOpen && action === 'end') {
+        offsetY = windowHeight - delta;
+        offsetYOnStart = windowHeight - delta;
         isOpen = !isOpen;
-        localStorage.setItem('isMapListOpen', 'false');
-      } else if (offsetY > (container.offsetHeight - 43) && action === 'move' && isOpen) {
-        offsetY = container.offsetHeight - 43;
-        offsetYOnStart = container.offsetHeight - 43;
-      } else if (offsetY < (container.offsetHeight - 100) && action === 'end' && isOpen) {
-        offsetY = 0;
-        offsetYOnStart = 0;
+        storesOpened = false;
+        if (modalPage.classList.contains('modal-page--open-nav')) {
+          mapSearch.classList.remove('map-search--show');
+        }
+      } else if (offsetY > (windowHeight - delta) && action === 'move' && isOpen) {
+        offsetY = windowHeight - delta;
+        offsetYOnStart = windowHeight - delta;
+        dragStart = windowHeight - delta;
+        dragEnd = windowHeight - delta;
+      } else if (offsetY < (windowHeight) && action === 'end' && isOpen) {
+        offsetY = 182;
+        offsetYOnStart = 182;
         isOpen = !isOpen;
-        localStorage.setItem('isMapListOpen', 'true');
-      }
-      if (offsetY < 0) {
-        // тут действия, если тянется дальше максимума
-        if (action === 'end') {
-          offsetY = 0;
-          dragStart = 0;
-          dragEnd = 0;
-          offsetYOnStart = 0;
-        } else if (action === 'move') {
-          offsetY = 0;// уменьшапем скорость смещения в 2 раза
+        storesOpened = true;
+        if (modalPage.classList.contains('modal-page--open-nav')) {
+          mapSearch.classList.add('map-search--show');
         }
       }
+      if (offsetY < 182) {
+        // тут действия, если тянется дальше максимума
+        if (action === 'end') {
+          offsetY = 182;
+          dragStart = 182;
+          dragEnd = 182;
+          offsetYOnStart = 182;
+        } else if (action === 'move') {
+          offsetY = 182;// уменьшапем скорость смещения в 2 раза
+        }
+      }
+      if (action === 'open') {
+        container.classList.add('stores__list--animation');
+        offsetY = 182;
+        dragStart = 182;
+        dragEnd = 182;
+        offsetYOnStart = 182;
+        container.style.transform = `translate3d(0,${offsetY}px,0)`;
+        setTimeout(() => {
+          container.classList.remove('stores__list--animation');
+        }, 300);
+        return;
+      }
       // console.log(offsetY, dragStart, dragEnd, offsetYOnStart);
-
       container.style.transform = `translate3d(0,${offsetY}px,0)`;
+      // let s = document.querySelector(".stores__name")
+      // s.textContent = "offsetY - " + offsetY +"; windowHeight - " + windowHeight + "; container.scrollHeight - " + container.scrollHeight;
     }
-    /**
-     * Панель за которую тянется весь контейнер panelTouch
-     * */
-    const panelTouch = container.querySelector('.top-bar-search--size--small');
+
+    const panelTouch = container.querySelector('.top-bar-search');
     panelTouch.addEventListener('touchstart', (event) => {
+      container.classList.remove('stores__list--animation');
+      event.preventDefault();
       dragStart = event.touches[0].clientY;
-      container.classList.add('map--with-animation');
     }, { passive: false });
 
     panelTouch.addEventListener('touchmove', (event) => {
+      event.preventDefault();
       dragEnd = event.touches[0].clientY;
       offsetY = offsetYOnStart + dragEnd - dragStart;
-      mapAnimation('move');
+      storesAnimation('move');
     }, { passive: false });
 
     panelTouch.addEventListener('touchend', (event) => {
+      event.preventDefault();
       offsetYOnStart = offsetY;
-      container.classList.add('map--with-animation');
-      mapAnimation('end');
+      container.classList.add('stores__list--animation');
+      storesAnimation('end');
+      const page = document.querySelector('.stores');
+      if (page) page.classList.toggle('stores--list-open');
     }, { passive: false });
   }
 
   chooseShop(page) {
     const storesButtonBottomBar = document.querySelector('.bottom-bar__select-item');
+    const shopSelector = document.querySelector('.shop-selector');
     const modalPageReview = document.querySelector('.modal-page-order-review');
     const radioInputs = page.querySelectorAll('.radio__input');
     const mapItem = page.querySelectorAll('.map__item');
+    checkStore();
     console.log(radioInputs);
     [...radioInputs].forEach((radio) => {
       const radioId = radio.getAttribute('data-id');
@@ -364,6 +438,7 @@ class StoresPage {
                 api.getShopOutOfStockItemsAndModifiers(el.id);
                 userStore.store = el;
                 localStorage.setItem('userStore', JSON.stringify(userStore));
+                checkStore();
                 if (modalPageReview) {
                   toggleModalPageReviewOrder.deletePage();
                   setTimeout(() => toggleModalPageReviewOrder.rendering(), 100);
@@ -373,6 +448,33 @@ class StoresPage {
                 }
               }
             });
+          }
+        });
+        shopSelector.classList.remove('shop-selector--show');
+      });
+    });
+  }
+
+  initInput() {
+    const inputHeader = document.querySelector('.header__input');
+    const inputFloat = document.querySelector('.map-search__input');
+
+    [inputHeader, inputFloat].forEach((input) => {
+      const AllStores = document.querySelectorAll('.map__item');
+
+      input.addEventListener('click', () => {
+        if (!storesOpened) {
+          window.storesAnimation('end');
+        }
+      });
+      console.log(AllStores, 'AllStores');
+      input.addEventListener('input', () => {
+        AllStores.forEach((store) => {
+          const title = store.querySelector('.map__item-title').textContent.toLowerCase();
+          if (title.indexOf(input.value.toLowerCase()) !== -1) {
+            store.classList.remove('map__item--hide');
+          } else {
+            store.classList.add('map__item--hide');
           }
         });
       });

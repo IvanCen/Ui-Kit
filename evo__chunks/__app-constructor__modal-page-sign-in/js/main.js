@@ -99,6 +99,7 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
     const numbersElements = this.modalPageSignIn.querySelectorAll('.last-number-input');
     const linkBack = this.modalPageSignIn.querySelector('.form__link--type--back');
     const input = this.modalPageSignIn.querySelector('.form__input');
+    const form = this.modalPageSignIn.querySelector('.form');
 
     const phoneNumber = inputArea.value;
 
@@ -112,6 +113,7 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
       callContainer.classList.add('form__call-container--open');
       input.classList.add('form__input--close');
       accessButton.classList.add('form__button--hide');
+      form.classList.remove('form--indentation');
       numberForRegistrationEl.textContent = phoneNumber;
       textError.textContent = '';
 
@@ -123,6 +125,34 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
         api.authorizeCallInApi(this.regSuccess, code, phoneNumber);
       });
 
+      function checkCodeIsEntered() {
+        let emptyInputs = 0;
+        document.querySelectorAll('.last-number-input').forEach((el) => {
+          if (el.value !== '') emptyInputs++;
+        });
+        return emptyInputs === 4;
+      }
+
+      document.querySelectorAll('.last-number-input').forEach((el, index) => {
+        el.addEventListener('focus', (e) => {
+          e.target.classList.add('last-number-input--not-empty');
+        });
+        el.addEventListener('blur', (e) => {
+          if (el.value === '') el.classList.remove('last-number-input--not-empty');
+        });
+        el.addEventListener('keyup', (e) => {
+          if (el.getAttribute('data-pos') === 'last' && checkCodeIsEntered()) {
+            // document.querySelector(".form[data-id='code']").submit();
+            callButton.classList.remove('button--type--disabled');
+            callButton.removeAttribute('disabled');
+            console.log('submit');
+          } else {
+            callButton.classList.add('button--type--disabled');
+            callButton.setAttribute('disabled', true);
+          }
+        });
+      });
+
       linkBack.addEventListener('click', () => {
         textErrorPhone.classList.add('form__text--close', 'form__text--hide');
         textError.classList.add('form__text--hide');
@@ -131,7 +161,11 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
         accessButton.classList.remove('form__button--hide');
         textError.textContent = '';
         textErrorPhone.textContent = '';
-        numbersElements.forEach((item) => item.value = '');
+        numbersElements.forEach((item) => {
+          item.value = '';
+          item.classList.remove('last-number-input--not-empty');
+        });
+        form.classList.add('form--indentation');
       });
       setTimeout(() => numbersElements[0].focus(), 200);
       [...numbersElements].forEach((el) => {
@@ -187,13 +221,18 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
   /* метод вызывающийся после успешной авторизации */
   regSuccess(infoSuccess) {
     const textErrorPhone = this.modalPageSignIn.querySelector('.form__text--error-phone');
+    const textErrorCode = this.modalPageSignIn.querySelector('.form__text--error-code');
+    const textInfoNumber = this.modalPageSignIn.querySelector('.form__text-info-number');
     const callContainer = this.modalPageSignIn.querySelector('.form__call-container');
     const formInput = this.modalPageSignIn.querySelector('.form__input');
     const buttonSignIn = this.modalPageSignIn.querySelector('.form__button--type--sign-in');
     const againButton = this.modalPageSignIn.querySelector('.form__button--type--again');
+    const callButton = this.modalPageSignIn.querySelector('.form__button--type--call');
+    const numbersElements = this.modalPageSignIn.querySelectorAll('.last-number-input');
 
     if (infoSuccess.success) {
       textErrorPhone.classList.add('form__text--close', 'form__text--hide');
+      textInfoNumber.classList.add('form__text--indentation--small');
       callContainer.remove();
       if (infoSuccess.isStartApp && infoSuccess.name === '') {
         formInput.remove();
@@ -203,19 +242,39 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
         api.getClientApi(this.returnPage);
       }
     } else {
-      textErrorPhone.innerHTML = infoSuccess.errors[0];
-      textErrorPhone.classList.remove('form__text--close', 'form__text--hide');
+      textErrorCode.innerHTML = `*${infoSuccess.errors[0]}`;
+      textErrorCode.classList.remove('form__text--close', 'form__text--hide');
+      callButton.classList.add('button--type--disabled');
+      callButton.disabled = true;
       againButton.classList.remove('form__button--hide');
+      textInfoNumber.classList.remove('form__text--indentation--small');
     }
   }
 
   /* метод запроса данных о пользователе */
   askUserInfo(userInfo) {
     console.log(userInfo);
+    const loginContainer = document.querySelector('.login__container');
+    const loginContainerForSwipSubmitAll = document.querySelectorAll('.login__container-for-swip .button[type=submit]');
+    loginContainerForSwipSubmitAll.forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        // Отправкаданных на сервак
+        e.preventDefault();
+        window.swipLoginForms.slideNext();
+      });
+    });
 
+    const loginContainerForSwipSkipAll = document.querySelectorAll('.login__container-for-swip .button[type=skip]');
+    loginContainerForSwipSkipAll.forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.swipLoginForms.slideNext();
+      });
+    });
     if (userInfo.success) {
       api.getClientApi();
 
+      loginContainer.classList.add('login__container--visible');
       localStorage.setItem('user-sign-in', 'true');
       const { birthday, email, name } = userInfo.successData;
       const objUserAskInfo = {
@@ -263,7 +322,7 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
     const textError = this.modalPageSignIn.querySelector('.form__text--error');
     textError.classList.remove('form__text--close', 'form__text--hide');
     if (info.errors[0] !== undefined) {
-      textError.textContent = info.errors[0];
+      textError.textContent = `*${info.errors[0]}`;
     } else {
       textError.classList.add('form__text--close', 'form__text--hide');
     }
@@ -310,11 +369,10 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
   rendering() {
     super.rendering();
     /* создание компонентов страницы */
-    this.signInTopBar = new CreateTopBarWithCloseIcon({
+    this.signInTopBar = new CreateTopBarSignIn({
       selector: ['div'],
-      style: ['top-bar'],
+      style: ['login__header'],
       modifier: [`--size--medium${isIos ? '--ios' : ''}`],
-      textTitle: ['Вход'],
       eventCloseIcon: [
         { type: 'click', callback: this.closePage },
         { type: 'click', callback: this.deletePage },
@@ -324,7 +382,7 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
       selector: ['div'],
       style: ['form'],
       modifier: [
-        '--indentation--sign-in',
+        '--size--full',
         '--indentation',
       ],
       events: [
@@ -393,7 +451,18 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
     setTimeout(() => {
       this.inputArea.focus();
     }, 400);
-
+    this.onDOMContentLoaded();
     this.openPage();
+  }
+
+  onDOMContentLoaded() {
+    window.swipLoginForms = new Swiper('.login__container-for-swip', {
+      spaceBetween: 32,
+      slidesPerView: 'auto',
+      pagination: {
+        el: '.swiper-pagination',
+        type: 'bullets',
+      },
+    });
   }
 }

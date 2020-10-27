@@ -8,7 +8,7 @@ class BalancePage {
   }
 
   closePage() {
-    this.topBarTabs = document.querySelector('.header__top-tabs');
+    this.topBarTabs = document.querySelector('.header__top-tabs-balance');
     this.mainPageContent.classList.remove('main-page__content--size--small');
     this.mainPageContent.classList.remove('main-page__content--opened-with-tabs');
     this.mainPageContent.classList.remove('main-page__content--opened');
@@ -17,7 +17,7 @@ class BalancePage {
 
   openPage() {
     this.mainPageContent = document.querySelector('.main-page__content-balance');
-    this.topBarTabs = document.querySelector('.header__top-tabs');
+    this.topBarTabs = document.querySelector('.header__top-tabs-balance');
     this.headerTitle = document.querySelector('.header__status');
     this.topBarTabs.classList.remove('header__top-tabs--hide');
     setTimeout(() => {
@@ -50,6 +50,7 @@ class BalancePage {
     const tobBarTabs = new CreateTopBarTabsBalance({
       selector: ['div'],
       style: ['header__top-tabs'],
+      modifier: ['-balance'],
     });
     const buttonJoinOrange = new CreateButton({
       selector: ['button'],
@@ -122,7 +123,7 @@ class BalancePage {
       });
     });
 
-    const tabs = document.querySelectorAll('.header__top-tabs-element');
+    const tabs = document.querySelectorAll('.header__top-tabs-balance .header__top-tabs-element');
     tabs.forEach((tab) => {
       tab.addEventListener('click', () => {
         tabs.forEach((tab) => {

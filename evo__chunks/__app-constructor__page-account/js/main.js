@@ -39,7 +39,7 @@ class AccountPage {
       const buttonLogout = document.querySelector('.profile__logout');
       userInfoSection.classList.add('profile__data--hide');
       buttonJoin.classList.remove('button--hide');
-      buttonLogout.classList.add('button--hide');
+      buttonLogout.classList.add('profile__logout--hide');
     }
   }
 

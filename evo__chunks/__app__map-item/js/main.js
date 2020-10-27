@@ -21,9 +21,9 @@ class CreateMapItemStoresWraper extends CreateItem {
     this.parameters = parameters;
     this.element = document.createElement(this.parameters.selector);
     this.template = `
-        <div class="top-bar-search top-bar-search--size--small top-bar-search--theme--dark">
+        <div class="top-bar-search top-bar-search--size--small top-bar-search--theme--light">
         <div class="top-bar-search__icon top-bar-search__icon--type--touch"></div>
-          <span class="top-bar-search__info">пекарни рядом</span>
+          <div class="top-bar-search__info">Пекарни рядом</div>
         </div>
         <div class="map__container map__container--theme--light">
         </div>`;
@@ -42,40 +42,6 @@ class CreateMapItemStores extends CreateItem {
     this.parameters = parameters;
 
     this.create = this.create.bind(this);
-  }
-
-  get day() {
-    this.date = new Date();
-    this.weekday = this.date.getDay();
-    this.daysArr = [
-      {
-        ru: 'Воскресенье',
-        en: 'sunday',
-      },
-      {
-        ru: 'Понедельник',
-        en: 'monday',
-      },
-      {
-        ru: 'Вторник',
-        en: 'tuesday',
-      }, {
-        ru: 'Среда',
-        en: 'wednesday',
-      },
-      {
-        ru: 'Четверг',
-        en: 'thursday',
-      },
-      {
-        ru: 'Пятница',
-        en: 'friday',
-      },
-      {
-        ru: 'Суббота',
-        en: 'saturday',
-      }];
-    return this.daysArr[this.weekday];
   }
 
   create(store, placemark, myMap, id, page = document) {
@@ -99,38 +65,63 @@ class CreateMapItemStores extends CreateItem {
             <div class="map__content">
               <input type="radio" class="radio__input map__radio-input" data-id="${identity()}${store.id}" name="radio"/>
               <label class="map__item-title radio__label map__radio-label radio__label--available" for="${identity()}${store.id}">${store.shortTitle} <br>
-                <span class="map__item-text">${store.longTitle} <br>
+                <div class="map__item-text">${store.longTitle} <br>
                 <span class="map__item-dist"></span>
-                </span>
+                </div>
               </label>
               <div class="map__button-container">
-                <svg class="map__button map__button--type--like"  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path class="map__icon map__icon--type--like" d="M23 8.28003C23 5.10003 20.41 2.53003 17.25 2.53003C14.96 2.53003 12.98 3.87003 12.05 5.82003C12.03 5.86003 11.97 5.86003 11.96 5.82003C11.04 3.88003 9.05 2.53003 6.76 2.53003C3.58 2.53003 1 5.10003 1 8.28003C1 8.95003 1.11 9.59003 1.33 10.19C1.57 10.87 1.94 11.5 2.4 12.03C2.6 12.26 2.81 12.47 3.04 12.67L11.82 21.39C11.87 21.44 11.94 21.47 12.02 21.47C12.1 21.47 12.16 21.45 12.22 21.39L21.33 12.34C21.92 11.75 22.39 11.03 22.67 10.23C22.88 9.62003 23 8.96003 23 8.28003Z"/>
+                <svg class="map__button map__button--type--like" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path class="map__icon map__icon--type--like" d="M17 3H7C5.9 3 5.01 3.9 5.01 5L5 21L12 18L19 21V5C19 3.9 18.1 3 17 3ZM17 18L12 15.82L7 18V5H17V18Z"/>
                 </svg>
-                
               </div>
             </div>
-            <div class="map__content map__content--indentation--normal map__content--time">
-             <h3 class="map__item-text map__item-text--indentation--right">${this.day.ru}:</h3>
-             <span class="map__item-text">${store[this.day.en]}</span>
+            <div class="map__content-container map__content--indentation--normal">
+              <div class="map__content map__content--time">
+               <h3 class="map__item-text map__item-text--indentation--right">Понедельник:</h3>
+               <span class="map__item-text">${store.monday[0]}</span>
+              </div>
+              <div class="map__content--time">
+               <h3 class="map__item-text map__item-text--indentation--right">Вторник:</h3>
+               <span class="map__item-text">${store.tuesday[0]}</span>
+              </div>
+              <div class="map__content--time">
+               <h3 class="map__item-text map__item-text--indentation--right">Среда:</h3>
+               <span class="map__item-text">${store.wednesday[0]}</span>
+              </div>
+              <div class="map__content--time">
+               <h3 class="map__item-text map__item-text--indentation--right">Четверг:</h3>
+               <span class="map__item-text">${store.thursday[0]}</span>
+              </div>
+              <div class="map__content--time">
+               <h3 class="map__item-text map__item-text--indentation--right">Пятница:</h3>
+               <span class="map__item-text">${store.friday[0]}</span>
+              </div>
+              <div class="map__content--time">
+               <h3 class="map__item-text map__item-text--indentation--right">Суббота:</h3>
+               <span class="map__item-text">${store.saturday[0]}</span>
+              </div>
+              <div class="map__content--time">
+               <h3 class="map__item-text map__item-text--indentation--right">Воскресенье:</h3>
+               <span class="map__item-text">${store.sunday[0]}</span>
+              </div>
             </div>
-            <div class="map__content map__content--info">
+            <div class="map__content--info stores__list-element-add-info">
               <div class="map__container-phone">
-                <a class="map__item-phone" href="tel:${store.phone}">
-                 <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-phone.svg]]" alt="" class="text-area__icon text-area__icon--position--center text-area__icon--phone">
-                </a>
-                <a href="tel:${store.phone}" class="text-area__title text-area__title--size--small text-area__title--type--bold">${phone || store.phone}</a>
+                <a href="tel:${store.phone}" class="stores__list-element-phone">${phone || store.phone}</a>
               </div>
-              <a href="https://www.google.ru/maps/place/${store.shortTitle}/@${store.latitude},${store.longitude}z?hl=ru" target="_blank" class="shop-info__direction">
-                <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-on-map.svg]]" alt="" class="text-area__icon text-area__icon--position--center">
-              </a>
+              <div class="stores__list-element-add-info-group">
+                <a class="map__item-phone stores__list-element-phone-icon" href="tel:${store.phone}">
+                    <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/phone.svg]]" alt="" class="text-area__icon text-area__icon--position--center text-area__icon--phone">
+                  </a>
+                <a href="https://www.google.ru/maps/place/${store.shortTitle}/@${store.latitude},${store.longitude}z?hl=ru" target="_blank" class="shop-info__direction stores__list-element-map-icon">
+                  <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/map.svg]]" alt="" class="text-area__icon text-area__icon--position--center">
+                </a>
+              </div>
             </div>  
             `;
     this.element.insertAdjacentHTML('beforeend', this.template);
-    this.buttonDetails = this.element.querySelector('.map__button--type--details');
     this.buttonLike = this.element.querySelector('.map__button--type--like');
     this.iconLike = this.element.querySelector('.map__icon--type--like');
-    this.mapContent = this.element.querySelector('.map__content');
 
     if (!isEmptyObj(userFavoriteStore)) {
       for (const shop of Object.values(userFavoriteStore)) {
@@ -142,10 +133,7 @@ class CreateMapItemStores extends CreateItem {
     }
 
     const radioInputEl = this.element.querySelector('.radio__input');
-    /* console.log(radioInputEl, `${identity()}${store.id}`, identity());
-    if (!isEmptyObj(userStore) && userStore.store.id === Number(`${identity()}${store.id}`)) {
-      radioInputEl.checked = 'checked';
-    } */
+
 
     this.element.addEventListener('click', (e) => {
       if (e.target.classList.contains('map__content--info')
@@ -155,23 +143,21 @@ class CreateMapItemStores extends CreateItem {
         || e.target.classList.contains('map__item-text')
       ) {
         radioInputEl.checked = 'checked';
-        storesPage.closePage();
         if (placemark && myMap) {
           placemark.options.set('iconImageHref', 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-point-select.svg]]');
           myMap.panTo([Number(store.latitude), Number(store.longitude)], {
             delay: 1000,
           });
         }
-        /* .then(() => {
-          myMap.setZoom(15);
-        }); */
       }
     });
 
     this.buttonLike.addEventListener('click', function () {
       const icon = this.firstElementChild;
+      const el = this.closest('.map__item');
       if (icon.classList.contains('map__icon--liked')) {
         icon.classList.remove('map__icon--liked');
+        el.classList.remove('map__item--position--top');
         for (const shop of Object.values(userFavoriteStore)) {
           if (shop.id === store.id) {
             delete userFavoriteStore[shop.id];
@@ -184,6 +170,7 @@ class CreateMapItemStores extends CreateItem {
           if (item.id === store.id) {
             userFavoriteStore[store.id] = item;
             localStorage.setItem('userFavoriteStore', JSON.stringify(userFavoriteStore));
+            el.classList.add('map__item--position--top');
           }
         });
       }

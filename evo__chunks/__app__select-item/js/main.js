@@ -57,3 +57,26 @@ class CreateSelectItem extends CreateItem {
     return super.create(this.element);
   }
 }
+
+class CreateShopSelect extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+    this.element = document.createElement('div');
+    this.template = `
+      <span>Для отображения цен выберите магазин</span>
+      <button class="button button--theme--tangerin-border button--size--medium">Выбрать</button>
+        `;
+  }
+
+  create() {
+    this.element.insertAdjacentHTML('beforeend', this.template);
+
+    this.button = this.element.querySelector('.button');
+    this.button.addEventListener('click', () => {
+      storesPage.openPage();
+    });
+
+    return super.create(this.element);
+  }
+}

@@ -10,7 +10,7 @@ class Api {
     };
   }
 
-  productApi() {
+  productApi(func) {
     const request = {
       method: 'get-catalog',
       view: 'both',
@@ -33,6 +33,7 @@ class Api {
         localStorage.setItem('productData', JSON.stringify(dataProductApi));
         return productsInfo;
       })
+      .then(func)
       .catch((err) => {
         console.log('Ошибка. Запрос не выполнен: ', err);
       });
@@ -658,7 +659,7 @@ class Api {
       })
       .then((res) => {
         let needVibrate = false;
-        if (res.successData) {
+        if (res.success) {
           res.successData.messages.forEach((mess) => {
             if (mess.id > Number(lastUserMessagesId)) {
               lastUserMessagesId = mess.id;

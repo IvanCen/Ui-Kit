@@ -172,6 +172,7 @@ function initCategories() {
   const categories = document.querySelectorAll('.catalog .catalog__categories-element');
   const lists = document.querySelectorAll('.catalog .catalog__list');
   const tags = document.querySelectorAll('.catalog .catalog__tags');
+  const tagsElements = document.querySelectorAll(`.catalog .catalog__tags-element`);
   categories.forEach((cat) => {
     cat.addEventListener('click', (e) => {
       categories.forEach((btn) => {
@@ -183,10 +184,15 @@ function initCategories() {
       tags.forEach((tag) => {
         tag.classList.remove('catalog__tags--show');
       });
+      tagsElements.forEach((tag) => {
+        tag.classList.remove('catalog__tags-element--selected');
+      });
       const list = document.querySelector(`.catalog .catalog__list[data-id='${cat.getAttribute('data-id')}']`);
       const tag = document.querySelector(`.catalog .catalog__tags[data-id='${cat.getAttribute('data-id')}']`);
+      const tagElement = document.querySelector(`.catalog .catalog__tags-element[data-id='${cat.getAttribute('data-id')}']`);
       if (list) list.classList.add('catalog__list--show');
       if (tag) tag.classList.add('catalog__tags--show');
+      if (tagElement) tagElement.classList.add('catalog__tags-element--selected');
       cat.classList.add('catalog__categories-element--active');
     });
   });
@@ -321,12 +327,12 @@ function getNowDay() {
 
 const transformationUtcToLocalDate = (data, options = {
   year: 'numeric',
-  month: 'long',
+  month: 'short',
   day: 'numeric',
   hour: 'numeric',
   minute: 'numeric',
 }) => {
-  return new Date(`${data.replace(/-/g, '/')} UTC`).toLocaleString('ru', options).replace('.', '')
+  return new Date(`${data.replace(/-/g, '/')} UTC`).toLocaleString('ru', options).replace('.', '').replace(' г.', '')
 };
 
 function counterBasket() {
@@ -483,8 +489,7 @@ function closePages() {
 }
 
 function closeStores() {
-  toggleModalPage.closePage();
-  toggleModalPage.deletePage();
+  storesPage.closePage();
   window.history.back()
 }
 
@@ -778,6 +783,15 @@ function checkEmptyBasket() {
 function clearFriendDataInfo() {
   delete orderFriendData.friendName;
   delete orderFriendData.friendPhone;
+}
+
+function checkStore() {
+  const shopSelect = document.querySelector('.shop-selector')
+  if(isEmptyObj(userStore)){
+    shopSelect.classList.add('shop-selector--show')
+  } else {
+    shopSelect.classList.remove('shop-selector--show')
+  }
 }
 
 class CreateItem {
@@ -1694,9 +1708,11 @@ class ToggleModalPageOrderHistoryRoot {
 
   openPage() {
     this.modalPageOrderHistory = document.querySelector('.modal-page-order-history');
+    this.headerTitle = document.querySelector('.header__status');
     setTimeout(() => {
       this.modalPageOrderHistory.classList.add(this.classOpen);
       this.body.classList.add('body');
+      this.headerTitle.textContent = 'История заказов';
     }, 100);
     history.pushState({state: '#modal-page-order-history'}, null, '#modal-page-order-history');
   }
@@ -1871,9 +1887,11 @@ class ToggleInboxTabContent {
     }
   }
 
-  rendering() {
+  rendering(dataId ,isOpen) {
     this.pageTabContent = document.createElement('div');
-    this.pageTabContent.classList.add('main-page__tab-content-inbox');
+    this.className = `${isOpen ? 'main-page__tab-content--open' : 'main-page__tab-content'}`
+    this.pageTabContent.classList.add('main-page__tab-content','main-page__tab-content-inbox', `${this.className}`);
+    this.pageTabContent.setAttribute('data-id', `${dataId}`)
     this.pageContent = document.querySelector('.main-page__content-inbox');
   }
 

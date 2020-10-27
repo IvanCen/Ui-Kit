@@ -128,6 +128,34 @@ class CreateTopBarWithCloseIcon extends CreateItem {
   }
 }
 
+class CreateTopBarSignIn extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+    this.element = document.createElement(this.parameters.selector);
+    this.template = `
+      <div class="login__close">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15.7502 0L8.9992 6.75L2.2498 0L0 2.25L6.7494 9L0 15.75L2.2498 18L8.9992 11.25L15.7502 18L18 15.75L11.2506 9L18 2.25L15.7502 0Z" fill="#919191"/>
+            </svg>
+        </div>
+        <div class="login__header-title">Вход</div>`;
+  }
+
+  create() {
+    this.element.insertAdjacentHTML('beforeend', this.template);
+    this.iconClose = this.element.querySelector('.login__close');
+    if (typeof this.parameters.eventCloseIcon === 'object') {
+      for (const event of this.parameters.eventCloseIcon) {
+        this.iconClose.addEventListener(event.type, event.callback);
+      }
+    }
+    this.iconClose.addEventListener('click', () => window.history.back());
+
+    return super.create(this.element);
+  }
+}
+
 class CreateTopBarDarkWithCloseIcon extends CreateItem {
   constructor(parameters) {
     super();
@@ -232,6 +260,24 @@ class CreateTopBarTabsBalance extends CreateItem {
     this.template = `
       <div class="header__top-tabs-element header__top-tabs-element--active" data-id="1">Счет</div>
       <div class="header__top-tabs-element" data-id="2">Бонусы</div>
+      `;
+  }
+
+  create() {
+    this.element.insertAdjacentHTML('beforeend', this.template);
+
+    return super.create(this.element);
+  }
+}
+
+class CreateTopBarTabsInbox extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+    this.element = document.createElement(this.parameters.selector);
+    this.template = `
+      <div class="header__top-tabs-element header__top-tabs-element--active" data-id="1">Входящие</div>
+      <div class="header__top-tabs-element" data-id="2">Последние предложения</div>
       `;
   }
 
@@ -469,26 +515,29 @@ class CreateTopBarStores extends CreateItem {
     super();
     this.parameters = parameters;
     this.element = document.createElement(this.parameters.selector);
-    // <button class="button button--size--small top-bar__filter-button">Фильтр</button> кнопка фильтра, добавить позже
     this.template = `
       <div class="top-bar__content-container top-bar__content-container--size--medium">
-        <div class="top-bar__header">
+        <div class="top-bar__header-search">
           <button class="top-bar__button">
-            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-close.svg]]" alt="Кнопка закрытия" class="top-bar__icon top-bar__icon--type--close">
+            <svg class="top-bar__icon top-bar__icon--type--close" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M16.192 6.34399L11.949 10.586L7.707 6.34399L6.293 7.75799L10.535 12L6.293 16.242L7.707 17.656L11.949 13.414L16.192 17.656L17.606 16.242L13.364 12L17.606 7.75799L16.192 6.34399Z" fill="white"/>
+            </svg>
           </button>
-          <button class="button top-bar__search-button top-bar__search-button--store button-route">
-            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-search.svg]]" alt="Кнопка поиска" class="top-bar__icon">
-          </button>
+          <div class="header__search">
+              <input class="header__input" type="text">
+              <button class="header__reset"></button>
+          </div>
         </div>
-      </div>`;
+      </div>
+      `;
   }
 
   create() {
     this.element.insertAdjacentHTML('beforeend', this.template);
 
-    // this.buttonFilter = this.element.querySelector('.top-bar__filter-button');
-    this.buttonSearch = this.element.querySelector('.top-bar__search-button');
     this.iconClose = this.element.querySelector('.top-bar__icon--type--close');
+    this.resetButton = this.element.querySelector('.header__reset');
+    this.searchInput = this.element.querySelector('.header__input');
 
     this.iconClose.addEventListener('click', () => window.history.back());
 
@@ -497,17 +546,11 @@ class CreateTopBarStores extends CreateItem {
         this.iconClose.addEventListener(event.type, event.callback);
       }
     }
-    /* if (typeof this.parameters.eventOpenFilter === 'object') {
-      for (const event of this.parameters.eventOpenFilter) {
-        this.buttonFilter.addEventListener(event.type, event.callback);
-      }
-    } */
-    if (typeof this.parameters.eventOpenSearch === 'object') {
-      for (const event of this.parameters.eventOpenSearch) {
-        this.buttonSearch.addEventListener(event.type, event.callback);
-      }
-    }
-
+    this.resetButton.addEventListener('click', () => {
+      this.searchInput.value = '';
+      this.mapItems = document.querySelectorAll('.map__item');
+    this.mapItems.forEach((item) => item.classList.remove('map__item--hide'));
+    });
     return super.create(this.element);
   }
 }
