@@ -80,13 +80,6 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
     if (!/\d/.test(e.key)) e.preventDefault();
   }
 
-  regCallAgain() {
-    const inputArea = this.modalPageSignIn.querySelector('.form__input-area--type--phone-sign-in');
-    const phoneNumber = inputArea.value;
-    const code = localStorage.getItem('authorizationCode');
-    api.authorizeCallInApi(this.regSuccess, code, phoneNumber);
-  }
-
   /* метод показа ввода полей кода и его отправка на сервер */
   regCall(info) {
     const inputArea = this.modalPageSignIn.querySelector('.form__input-area--type--phone-sign-in');
@@ -239,7 +232,7 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
         buttonSignIn.remove();
         api.getClientApi(this.askUserInfo);
       } else {
-        api.getClientApi(this.returnPage);
+        api.getClientApi(this.askUserInfo);
       }
     } else {
       textErrorCode.innerHTML = `*${infoSuccess.errors[0]}`;
@@ -253,30 +246,18 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
 
   /* метод запроса данных о пользователе */
   askUserInfo(userInfo) {
-    console.log(userInfo);
-    const loginContainer = document.querySelector('.login__container');
-    const loginContainerForSwipSubmitAll = document.querySelectorAll('.login__container-for-swip .button[type=submit]');
-    loginContainerForSwipSubmitAll.forEach((btn) => {
-      btn.addEventListener('click', (e) => {
-        // Отправкаданных на сервак
-        e.preventDefault();
-        window.swipLoginForms.slideNext();
-      });
-    });
-
-    const loginContainerForSwipSkipAll = document.querySelectorAll('.login__container-for-swip .button[type=skip]');
-    loginContainerForSwipSkipAll.forEach((btn) => {
-      btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        window.swipLoginForms.slideNext();
-      });
-    });
     if (userInfo.success) {
       api.getClientApi();
 
+      console.log(userInfo);
+      const loginContainer = document.querySelector('.login__container');
+      const loginContainerForSwipSubmitAll = this.modalPageSignIn.querySelectorAll('.button--type--next-swiper');
+      const inputs = this.modalPageSignIn.querySelectorAll('.form__input-area');
+      console.log(inputs, loginContainerForSwipSubmitAll);
+
       loginContainer.classList.add('login__container--visible');
-      localStorage.setItem('user-sign-in', 'true');
-      const { birthday, email, name } = userInfo.successData;
+      loginContainer.classList.remove('form__inputs-container--hide');
+
       const objUserAskInfo = {
         name: {
           nameInfo: 'name',
@@ -291,11 +272,73 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
           errorText: 'Укажите email',
         },
       };
+
+      loginContainerForSwipSubmitAll.forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+
+          const swiperSlide = btn.closest('.swiper-slide');
+
+          const nameInfo = swiperSlide.getAttribute('data-id');
+          const inputArea = swiperSlide.querySelector(`.form__input-area--type--${nameInfo}`);
+          const textError = document.querySelector('.form__text--error');
+          const input = swiperSlide.querySelector('.form__input-area');
+          console.log(swiperSlide, input);
+          if (input.value !== '') {
+            textError.textContent = '';
+            textError.classList.add('form__text--close', 'form__text--hide');
+            this.sendData(nameInfo, inputArea.value);
+
+            if (nameInfo === 'email') {
+              toggleModal.renderingEmail();
+              toggleModal.openPage();
+              api.getClientApi();
+              this.returnPage();
+              (async () => {
+                await rateLastOrder();
+              })();
+            }
+            window.swipLoginForms.slideNext();
+          } else {
+            textError.classList.remove('form__text--close', 'form__text--hide');
+            textError.textContent = objUserAskInfo[nameInfo].errorText;
+          }
+        });
+      });
+
+      inputs.forEach((input) => {
+        const swiperSlide = input.closest('.swiper-slide');
+        if (swiperSlide) {
+          const bnt = swiperSlide.querySelector('.button--type--next-swiper');
+          console.log(bnt, swiperSlide);
+          input.addEventListener('keyup', () => {
+            if (input.value === '') {
+              bnt.classList.add('button--type--disabled');
+              bnt.setAttribute('disabled', 'true');
+            } else {
+              bnt.classList.remove('button--type--disabled');
+              bnt.removeAttribute('disabled');
+            }
+          });
+        }
+      });
+
+      const loginContainerForSwipSkipAll = document.querySelectorAll('.login__container-for-swip .button[type=skip]');
+      loginContainerForSwipSkipAll.forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          this.closePage();
+        });
+      });
+
+
+      localStorage.setItem('user-sign-in', 'true');
+      const { birthday, email, name } = userInfo.successData;
+
       const inputsContainer = this.modalPageSignIn.querySelector('.form__inputs-container');
       const textSuccess = this.modalPageSignIn.querySelector('.form__text--success');
-
+      textSuccess.classList.add('form__text--close');
       if (textSuccess && inputsContainer) {
-        textSuccess.classList.add('form__text--close');
         inputsContainer.classList.remove('form__inputs-container--hide');
       }
 
@@ -332,7 +375,7 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
   askUserData({ nameInfo, errorText }) {
     const inputContainer = this.modalPageSignIn.querySelector(`.form__input-container--${nameInfo}`);
     const inputArea = this.modalPageSignIn.querySelector(`.form__input-area--type--${nameInfo}`);
-    const buttonAgree = this.modalPageSignIn.querySelector('.form__button--type--agree');
+    const buttonAgree = this.modalPageSignIn.querySelector(`.form__button--type--next-${nameInfo}`);
     const textError = this.modalPageSignIn.querySelector('.form__text--error');
 
     if (inputContainer && buttonAgree) {
@@ -354,7 +397,7 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
             toggleModal.renderingEmail();
             toggleModal.openPage();
             api.getClientApi();
-            this.returnPage();
+            // this.returnPage();
             (async () => {
               await rateLastOrder();
             })();
@@ -438,6 +481,15 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
       }
     });
 
+    window.swipLoginForms = new Swiper('.login__container-for-swip', {
+      spaceBetween: 90,
+      slidesPerView: '1',
+      pagination: {
+        el: '.swiper-pagination',
+        type: 'bullets',
+      },
+    });
+
     IMask(
       this.inputArea, {
         mask: '+{7}(000)000-00-00',
@@ -451,18 +503,6 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
     setTimeout(() => {
       this.inputArea.focus();
     }, 400);
-    this.onDOMContentLoaded();
     this.openPage();
-  }
-
-  onDOMContentLoaded() {
-    window.swipLoginForms = new Swiper('.login__container-for-swip', {
-      spaceBetween: 32,
-      slidesPerView: 'auto',
-      pagination: {
-        el: '.swiper-pagination',
-        type: 'bullets',
-      },
-    });
   }
 }

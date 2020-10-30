@@ -4005,9 +4005,9 @@ body {
   box-shadow: none !important;
 }
 
-/*.swiper-slide{
-  width: auto !important;
-}*/
+.swiper-slide--indentation {
+  margin-right: 30px;
+}
 
 .swiper-pagination-bullet.swiper-pagination-bullet-active{
   background-color: $color;

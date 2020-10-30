@@ -17,6 +17,17 @@ class CreateCardItemProductCardNew extends CreateItem {
       weight = '';
     }
 
+    let price;
+    if (!isEmptyObj(userStore)) {
+      if (userStore.store.priceGroup === null) {
+        price = `${dataProductApi.successData.items[productInfo.id].price} ₽`
+      } else {
+        price = dataProductApi.successData.items[productInfo.id][`price${userStore.store.priceGroup} ₽`];
+      }
+    } else {
+      price = '';
+    }
+
     this.template = `
                 <div class="catalog__list-element-image">
                     <div class="catalog__stickers"></div>
@@ -24,7 +35,7 @@ class CreateCardItemProductCardNew extends CreateItem {
                 <div class="catalog__list-element-detail catalog__list-element-detail--type--border">
                     <div class="catalog__list-element-title">
                         <div class="catalog__list-element-name">${productInfo.name}</div>
-                        <div class="catalog__list-element-price">${productInfo.price} ₽</div>
+                        <div class="catalog__list-element-price">${price}</div>
                     </div>
                     <div class="catalog__list-element-additional">
                         <div class="catalog__list-element-name">${weight}</div>

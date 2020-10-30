@@ -123,8 +123,9 @@
     color: $alizarinCrimson;
   }
 
-  &--type--disabled {
+  &--type--disabled .button {
     background: $gainsboroGray;
+    border: 1px solid $gainsboroGray;
   }
 
   &--indentation--top {
