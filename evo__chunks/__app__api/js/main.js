@@ -673,6 +673,8 @@ class Api {
             if (typeof navigator.vibrate === 'function') {
               navigator.vibrate(3000);
             }
+            emitter.emit('msgrecive');
+            togglePageInboxDetails.rendering(res.successData.messages[0]);
           }
 
           userMessages = res;

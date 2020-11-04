@@ -213,41 +213,11 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
       selector: ['div'],
       style: ['accordion-section'],
     });
-    const reviewCardItemContainer = new CreateCardItemContainerFavAndHisOrder({
-      selector: ['div'],
-      style: ['card-item__container'],
-      modifier: [
-        '--indentation--top',
-        '--type--review',
-      ],
-    });
     const cardItemReviewContainer = new CreateCardItemReviewContainer({
       selector: ['div'],
       style: ['card-item__container'],
       modifier: [
         '--type--review',
-      ],
-    });
-
-    /* const reviewCheckboxTextSlide = new CreateCheckboxTextSlide({
-      selector: ['div'],
-      style: ['checkbox-textslide'],
-    }); */
-    const reviewButton = new CreateButton({
-      selector: ['button'],
-      style: ['button'],
-      modifier: ['--color-5',
-        '--type--make-order',
-      ],
-      typeSubmit: true,
-      text: ['Пополнить'],
-    });
-
-    const reviewCardItem = new CreateCardItemReviewOrder({
-      style: ['banner__container'],
-      modifier: [
-        '--type--swipe',
-        '--border--bottom',
       ],
     });
     const reviewCardItemNew = new CreateCardItemReview({
@@ -257,21 +227,6 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
       ],
     });
 
-    const backButton = new CreateButton({
-      selector: ['button'],
-      style: ['button'],
-      modifier: ['--size--big',
-        '--theme--tangerin',
-        '--type--fixed-low',
-        '--theme--shadow-big',
-      ],
-    });
-    const titleBarEmptyBasket = new CreateTitleBar({
-      selector: ['div'],
-      style: ['title-bar'],
-      modifier: ['--indentation--top', '--size--medium'],
-      text: ['Добавьте товары в корзину, чтобы продолжить'],
-    });
     const textAreaNoBasket = new CreateTextAreaNoBasket({
       selector: ['div'],
       style: ['text-area-container'],
@@ -286,9 +241,19 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
         },
       ],
     });
-    const checkboxSelect = new CreateCheckboxTextSlide({
+    const textAreaNoSignIn = new CreateTextAreaNoSignIn({
       selector: ['div'],
-      style: ['checkbox-textslide'],
+      style: ['text-area-container'],
+      eventsButton: [
+        {
+          type: 'click',
+          callback: () => {
+            this.closePage();
+            this.deletePage();
+            toggleModalPageSignIn.rendering();
+          },
+        },
+      ],
     });
     const textAreaResult = new CreateTextAreaResult({
       selector: ['div'],
@@ -297,8 +262,11 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
 
     this.modalPageOrderReview.append(createTopBarIos());
     this.modalPageOrderReview.append(reviewTopBarNew.create());
-
-    if (basketArray.length !== 0) {
+    if (isEmptyObj(userInfoObj)) {
+      this.modalPageOrderReview.append(textAreaNoSignIn.create());
+      this.title = document.querySelector('.header__status-basket');
+      this.title.textContent = 'Корзина';
+    } else if (basketArray.length !== 0) {
       this.modalPageOrderReview.append(cardItemReviewContainer.create());
       this.modalPageOrderReview.append(formDeliver.create());
       this.modalPageOrderReview.append(formStores.create());
@@ -307,8 +275,6 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
       this.modalPageOrderReview.append(formComment.create());
       this.modalPageOrderReview.append(formFriendPay.create());
       this.modalPageOrderReview.append(textAreaResult.create());
-
-      // this.modalPageOrderReview.append(reviewButton.create());
 
       this.accordContainer = document.querySelector('.accordion__container-review');
 
@@ -371,8 +337,6 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
     }
 
     function onDOMContentLoaded(e) {
-
-
       const accordionTriggers = document.querySelectorAll('.accordion__trigger');
       accordionTriggers.forEach((trigger) => {
         trigger.addEventListener('click', (e) => {
@@ -396,7 +360,7 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
       groups.forEach((group) => {
         group.addEventListener('click', (e) => {
           group.classList.add('form__group--focused');
-          //group.querySelector('input').focus();
+          // group.querySelector('input').focus();
         });
         group.querySelector('input').addEventListener('blur', (e) => {
           group.classList.remove('form__group--focused');

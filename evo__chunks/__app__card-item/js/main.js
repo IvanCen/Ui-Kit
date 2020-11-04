@@ -40,11 +40,7 @@ class CreateCardItemProductCardNew extends CreateItem {
                     <div class="catalog__list-element-additional">
                         <div class="catalog__list-element-name">${weight}</div>
                         <div class="catalog__list-element-plus element-plus">
-                            <svg class="element-plus" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle class="element-plus" opacity="0.12" cx="12.0001" cy="12" r="12" fill="#E6551E"/>
-                                <path class="element-plus" d="M12.0001 6.75V17.25" stroke="#E6551E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path class="element-plus" d="M6.75006 12H17.2501" stroke="#E6551E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
+                            <div class="catalog__list-element-plus-icon"></div>
                         </div>
                     </div>
                 </div>`;
@@ -71,14 +67,19 @@ class CreateCardItemProductCardNew extends CreateItem {
 
     this.element.addEventListener('click', (e) => {
       console.log(e.target);
-      if (!e.target.classList.contains('element-plus')) {
+      if (!e.target.classList.contains('catalog__list-element-plus-icon')) {
         stopAction(() => {
           toggleModalPageCard.rendering(dataProductApi.successData.items[productInfo.id]);
         });
       }
     });
 
-    this.iconsPlus.addEventListener('click', () => {
+    this.iconsPlus.addEventListener('click', function(){
+      this.iconsPlusIcon = this.querySelector('.catalog__list-element-plus-icon');
+      this.iconsPlusIcon.classList.add('catalog__list-element-plus-icon--active');
+      setTimeout(() => {
+        this.iconsPlusIcon.classList.remove('catalog__list-element-plus-icon--active');
+      }, 1000);
       basketArray.push({ id: productInfo.id, modifiers: [] });
       localStorage.setItem('basket', JSON.stringify(basketArray));
       checkEmptyBasket();
@@ -496,31 +497,6 @@ class CreateCardItemReview extends CreateItem {
     this.element = document.createElement('div');
     console.log(productInfo);
 
-    /* this.template = `
-          <div class="card-item__container--direction--row-small banners__banner">
-            <div class="card-item__image card-item__image--size--small"></div>
-            <div class="card-item__content-container">
-              <h3 class="card-item__title card-item__title--text--bold">${dataProductApi.successData.items[productInfo.id].name}</h3>
-              <span class="card-item__info card-item__info--indentation--bottom card-item__info--theme--shadow card-item__info--type--energy">${this.energy}</span>
-              <ul class="card-item__list"></ul>
-              <span class="card-item__price"></span>
-              <div class="card-item__icon-container">
-                <button class="card-item__button card-item__button--type--minus">
-                 <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-remove-circle.svg]]" alt=""
-                       class="card-item__icon card-item__icon--type--minus">
-                </button>
-                <button class="card-item__button card-item__button--type--plus">
-                  <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-add-circle-plus.svg]]" alt=""
-                       class="card-item__icon card-item__icon--type--plus">
-                </button>
-              </div>
-              <div class="main-card__figure main-card__figure--theme--blood main-card__figure--size--normal main-card__figure--hide"><span class="main-card__info main-card__info--out-of">Закончилось</span></div>
-            </div>
-          </div>
-          <div class="card-item__zone card-item__zone--type--delete banners__banner">
-            <img class="card-item__icon card-item__icon--size--big" src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-delete-basket.svg]]" alt="">
-          </div>
-        `; */
     let price;
     if (!isEmptyObj(userStore)) {
       if (userStore.store.priceGroup === null) {
@@ -543,7 +519,7 @@ class CreateCardItemReview extends CreateItem {
         }
       });
     }
-    console.log(price);
+
     this.template = `
           <div class="basket__offers-element banners__banner">
             <div class="basket__offers-element-image"></div>
@@ -556,7 +532,7 @@ class CreateCardItemReview extends CreateItem {
                     <div class="basket__offers-element-name">${dataProductApi.successData.items[productInfo.id].volume || ''}</div>
                     <div class="basket__offers-element-count">
                         <div class="basket__offers-element-plus">
-                            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-plus.svg]]" alt="" class="basket__offers-element-plus-icon">
+                            <div class="basket__offers-element-plus-icon"></div>
                         </div>
                     </div>
                 </div>
@@ -641,16 +617,21 @@ class CreateCardItemReview extends CreateItem {
       }
     }
 
-    this.iconsPlus.addEventListener('click', () => {
+    this.iconsPlus.addEventListener('click', function() {
+      this.iconsPlusIcon = this.querySelector('.basket__offers-element-plus-icon');
+      this.iconsPlusIcon.classList.add('basket__offers-element-plus-icon--active');
+      setTimeout(() => {
+        this.iconsPlusIcon.classList.remove('basket__offers-element-plus-icon--active');
+      }, 1000);
       basketArray.push(productInfo);
       localStorage.setItem('basket', JSON.stringify(basketArray));
       emitter.emit('event:counter-changed');
       const cardItemContainer = document.querySelector('.accordion__container-review');
-      const title = document.querySelector('.basket__title-products');
-      title.textContent = `Товаров (${basketArray.length})`;
+      checkBasketCounter();
       cardItemContainer.append(this.create(productInfo));
       countResultPriceAndAllProductCounter();
       activeBanners(this.element, true, checkEmptyBasket);
+      checkEmptyBasket();
       const accordionTriggers = document.querySelectorAll('.basket__header-review');
       accordionTriggers.forEach((trigger) => {
         const container = document.querySelector(`.accordion__container[data-id='${trigger.dataset.id}']`);
@@ -884,11 +865,7 @@ class CreateCardItemHistory extends CreateItem {
                     <div class="catalog__list-element-additional">
                         <div class="catalog__list-element-name">${weight}</div>
                         <div class="catalog__list-element-plus element-plus">
-                            <svg class="element-plus" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle class="element-plus" opacity="0.12" cx="12.0001" cy="12" r="12" fill="#E6551E"/>
-                                <path class="element-plus" d="M12.0001 6.75V17.25" stroke="#E6551E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path class="element-plus" d="M6.75006 12H17.2501" stroke="#E6551E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
+                            <div class="catalog__list-element-plus-icon"></div>
                         </div>
                     </div>
                 </div>`;
@@ -906,7 +883,12 @@ class CreateCardItemHistory extends CreateItem {
           }
         });
 
-        this.iconsPlus.addEventListener('click', () => {
+        this.iconsPlus.addEventListener('click', function () {
+          this.iconsPlusIcon = this.querySelector('.catalog__list-element-plus');
+          this.iconsPlusIcon.classList.add('catalog__list-element-plus--active');
+          setTimeout(() => {
+            this.iconsPlusIcon.classList.remove('basket__offers-element-plus-icon--active');
+          }, 1000);
           basketArray.push({ id: item.id, modifiers: [...items.modifiers] });
           localStorage.setItem('basket', JSON.stringify(basketArray));
           checkEmptyBasket();

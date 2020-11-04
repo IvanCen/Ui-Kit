@@ -148,7 +148,6 @@ function countResultPriceAndAllProductCounter() {
   let sumPrice = 0;
   const allPriceEl = document.querySelectorAll('.basket__offers-element-price-number');
   const resultPrice = document.querySelector('.basket__result-price');
-  const title = document.querySelector('.basket__title-products');
   const labelPackage = document.querySelector('.form__label--type--package');
   const input = labelPackage.querySelector('input')
   if (allPriceEl && resultPrice) {
@@ -161,9 +160,6 @@ function countResultPriceAndAllProductCounter() {
       }
     }
     resultPrice.textContent = `${sumPrice} ₽`;
-  }
-  if (title) {
-    title.textContent = `Товаров (${basketArray.length})`
   }
 
 }
@@ -291,6 +287,13 @@ function createTopBarIos() {
   return el;
 }
 
+function checkBasketCounter() {
+  const headerCounterTitle = document.querySelector('.top-bar__all-counter-order')
+  const basketTitleProductsCounter = document.querySelector('.basket__title-products')
+  basketTitleProductsCounter.textContent = `Товаров (${basketArray.length})`;
+  headerCounterTitle.textContent = basketArray.length;
+}
+
 function getNowDay() {
   const date = new Date();
   const weekday = date.getDay();
@@ -385,12 +388,6 @@ function switchActive(nodeList, activeClass) {
       this.classList.add(activeClass);
     });
   });
-}
-
-function setRandomPhraseTobBarMain() {
-  const phrases = ['Отличный день для кофе ☕', 'Отличный день для булочки 🥐'];
-  const title = document.querySelector('.top-bar__title--type--single');
-  title.textContent = phrases[Math.floor(Math.random() * phrases.length)];
 }
 
 function doubleFav(productInfo) {
@@ -740,6 +737,7 @@ function checkEmptyBasket() {
 
   if (basketArray.length === 0) {
     basket.classList.remove('header__basket--not-empty')
+    basket.classList.remove('header__basket--animation')
     /*const backButton = new CreateButton({
       selector: ['button'],
       style: ['button'],
@@ -776,7 +774,12 @@ function checkEmptyBasket() {
     modalPageOrderReview.append(titleBarEmptyBasket.create());
     modalPageOrderReview.append(backButton.create());*/
   } else {
-    basket.classList.add('header__basket--not-empty')
+    basket.classList.remove('header__basket--animation')
+    basket.classList.add('header__basket--not-empty');
+    basket.classList.add('header__basket--animation')
+    setTimeout(()=>{
+      basket.classList.remove('header__basket--animation')
+    },1000)
   }
 }
 

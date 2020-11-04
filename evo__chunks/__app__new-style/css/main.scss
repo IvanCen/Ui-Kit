@@ -1084,6 +1084,21 @@ body {
         padding-top: 16px;
       }
 
+      &-plus {
+        width: 24px;
+        height: 24px;
+      }
+
+      &-plus-icon {
+        background: url("[+chunkWebPath+]/img/icon-plus.svg") no-repeat;
+        width: 24px;
+        height: 24px;
+
+        &--active {
+          background: url("[+chunkWebPath+]/img/icon-plus--active.svg") no-repeat;
+        }
+      }
+
       &-title {
         display: grid;
         grid-gap: 30px;
@@ -1214,6 +1229,14 @@ body {
         }
       }
     }
+  }
+
+  &__sign-in-button {
+    margin-top: 32px;
+    width: 100%;
+    height: 48px;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.24);
+    border-radius: 24px;
   }
 
   &__empty-section {
@@ -1966,6 +1989,21 @@ body {
       grid-template-columns: auto 1fr;
       margin-bottom: 16px;
 
+      &-plus {
+        width: 24px;
+        height: 24px;
+      }
+
+      &-plus-icon {
+        background: url("[+chunkWebPath+]/img/icon-plus.svg") no-repeat;
+        width: 24px;
+        height: 24px;
+
+        &--active {
+          background: url("[+chunkWebPath+]/img/icon-plus--active.svg") no-repeat;
+        }
+      }
+
       &--indentation {
         padding: 0 16px;
       }
@@ -1997,7 +2035,7 @@ body {
       &-detail {
 
 
-        &--type--border{
+        &--type--border {
           border-bottom: 1px solid #EFEFEF;
         }
       }
@@ -2336,7 +2374,6 @@ body {
 
     &--not-empty {
       &:after {
-        display: block;
         position: absolute;
         content: "";
         top: 0;
@@ -2346,6 +2383,12 @@ body {
         background-color: $color;
         border: 2px solid #221D18;
         border-radius: 50%;
+      }
+    }
+
+    &--animation {
+      &:after {
+        animation: ease-in-out 1s flashing;
       }
     }
   }
@@ -2445,7 +2488,7 @@ body {
 
     }
 
-    &::after {
+    &-element::after {
       display: block;
       content: "";
       background-repeat: no-repeat;
@@ -2741,7 +2784,7 @@ body {
       user-input: none;
     }
 
-    &::after {
+    &-element::after {
       display: block;
       content: "";
       background-repeat: no-repeat;
@@ -3874,7 +3917,7 @@ body {
   }
 }
 
-.login{
+.login {
   position: fixed;
   left: 0;
   overflow: auto;
@@ -3888,16 +3931,20 @@ body {
   z-index: 100;
   flex-direction: column;
   justify-content: space-between;
-  &__close{
+
+  &__close {
     margin-bottom: 19px;
   }
-  &.page--show{
+
+  &.page--show {
     display: flex;
   }
-  &__header{
+
+  &__header {
     display: flex;
     flex-direction: column;
-    &-title{
+
+    &-title {
       font-weight: 500;
       font-size: 34px;
       line-height: 41px;
@@ -3906,11 +3953,12 @@ body {
     }
   }
 
-  &__container{
+  &__container {
     display: none;
     overflow: hidden;
     max-width: 100%;
-    &--visible{
+
+    &--visible {
       display: flex;
       flex: 1 0 auto;
       flex-direction: column;
@@ -3918,25 +3966,29 @@ body {
     }
   }
 
-  &__code{
+  &__code {
     font-weight: normal;
     font-size: 14px;
     line-height: 17px;
     color: #919191;
     justify-content: flex-start;
+
     & b {
       display: block;
       margin-bottom: 9px;
       font-weight: bold;
       color: #000;
     }
-    &-text-top{
+
+    &-text-top {
       margin-top: 32px;
     }
-    & .button[type=submit]{
+
+    & .button[type=submit] {
       margin-top: 59px;
     }
-    & .button[type=reset]{
+
+    & .button[type=reset] {
       margin: 8px auto 0;
       display: block;
     }
@@ -3951,28 +4003,31 @@ body {
   pointer-events: none;
 }
 
-.form__phone .button{
+.form__phone .button {
   margin-top: 24px;
 }
 
-.login .swiper-container{
+.login .swiper-container {
   //padding-bottom: 60px;
   //max-width: calc(100vw - 32px);
   //height: calc(100vh - 150px);
   //padding-top: 32px;
   //width: 100%;
 }
-.login .swiper-slide{
+
+.login .swiper-slide {
   max-width: 100%;
   min-width: 100%;
   //min-height: 100%;
 }
-.swiper-wrapper{
+
+.swiper-wrapper {
   display: flex;
   justify-content: flex-start;
 }
+
 //.login .swiper-container-autoheight, .swiper-container-autoheight .swiper-slide
-.login .slide-wrapper{
+.login .slide-wrapper {
   max-width: 100%;
   display: flex;
   flex-direction: column;
@@ -3981,12 +4036,12 @@ body {
   padding: 24px 0;
 }
 
-.login__container-for-swip .form__group{
+.login__container-for-swip .form__group {
   //margin-top: 40px;
 }
 
 
-.login .button[type=skip]{
+.login .button[type=skip] {
   display: block;
   margin: 0 auto;
   color: #919191;
@@ -3995,13 +4050,13 @@ body {
 
 .login__name-text,
 .login__date-text,
-.login__email-text{
+.login__email-text {
   font-weight: bold;
   display: inline-block;
   margin-bottom: 44px;
 }
 
-.login .button{
+.login .button {
   box-shadow: none !important;
 }
 
@@ -4009,7 +4064,20 @@ body {
   margin-right: 30px;
 }
 
-.swiper-pagination-bullet.swiper-pagination-bullet-active{
+.swiper-pagination-bullet.swiper-pagination-bullet-active {
   background-color: $color;
 }
 
+@keyframes flashing {
+  0% {
+    box-shadow: 0 0 0 0 #ff6900;
+  }
+
+  50% {
+    box-shadow: 0 0 7px 3px #ff6900;
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 #ff6900;
+  }
+}

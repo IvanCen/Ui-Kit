@@ -1514,19 +1514,19 @@ class CreateTextAreaProfile extends CreateItem {
         <div class="profile__title">Персональные данные</div>
       </div>
       <form class="form profile__form">
-        <div class="form__group profile__group" data-id="name">
+        <div class="form__group profile__group profile__group-element" data-id="name">
             <label class="profile__form-label">Имя</label>
             <input class="profile__form-input" type="text" value="${name}" readonly>
         </div>
-        <div class="form__group profile__group" data-id="birthday">
+        <div class="form__group profile__group profile__group-element" data-id="birthday">
             <label class="profile__form-label">День рождения</label>
             <input class="profile__form-input" type="text" value="${shortDateBirthday}" readonly>
         </div>
-        <div class="form__group profile__group">
+        <div class="form__group profile__group profile__group-element">
             <label class="profile__form-label">Телефон</label>
             <input class="profile__form-input" type="text" value="${phoneFormatted}" readonly>
         </div>
-        <div class="form__group profile__group" data-id="email">
+        <div class="form__group profile__group profile__group-element" data-id="email">
             <label class="profile__form-label">Email</label>
             <input class="profile__form-input" type="text" value="${email}" readonly>
         </div>
@@ -1548,14 +1548,19 @@ class CreateTextAreaProfile extends CreateItem {
       });
     });
 
-    this.buttonBirthday.addEventListener('click', () => {
-      toggleSubPageEditUser.rendering({
-        titleTopBar: 'Редактировать',
-        inputLabel: 'Введите дату рождения',
-        identifier: 'birthday',
-        inputType: 'date',
+    if (userInfoObj.successData.birthday === '') {
+      this.buttonBirthday.addEventListener('click', () => {
+        toggleSubPageEditUser.rendering({
+          titleTopBar: 'Редактировать',
+          inputLabel: '',
+          identifier: 'birthday',
+          inputType: 'date',
+        });
       });
-    });
+    } else {
+      this.buttonBirthday.classList.remove('profile__group-element');
+    }
+
 
     this.buttonEmail.addEventListener('click', () => {
       toggleSubPageEditUser.rendering({
@@ -1711,11 +1716,11 @@ class CreateTextAreaBalanceTabs extends CreateItem {
     this.balanceContainer = this.element.querySelector('.balance__container[data-id="1"]');
     this.bonusContainer = this.element.querySelector('.balance__container[data-id="2"]');
 
-    if(!isEmptyObj(userBonusLog)) {
+    if (!isEmptyObj(userBonusLog)) {
       this.renderContent(this.balanceContainer);
       this.renderContent(this.bonusContainer, true);
     }
-    
+
     return super.create(this.element);
   }
 
@@ -1797,7 +1802,6 @@ class CreateTextAreaInboxTabs extends CreateItem {
   }
 
   renderContent(container) {
-
     Object.entries(reformattedLog).forEach(([key, value]) => {
       let temp = '';
       value.forEach((el) => {
@@ -1980,6 +1984,33 @@ class CreateTextAreaNoBasket extends CreateItem {
     `;
     this.element.insertAdjacentHTML('beforeend', this.template);
     this.button = this.element.querySelector('.basket__empty-section-button');
+    if (typeof this.parameters.eventsButton === 'object') {
+      for (const event of this.parameters.eventsButton) {
+        this.button.addEventListener(event.type, event.callback);
+      }
+    }
+    return super.create(this.element);
+  }
+}
+
+class CreateTextAreaNoSignIn extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+    this.element = document.createElement(this.parameters.selector);
+  }
+
+  create() {
+    this.template = `
+      <div class="basket__empty-section">
+        <img src="[+chunkWebPath+]/img/no-sign-in.svg" class="basket__empty-section-img" alt="">
+        <div class="basket__empty-section-title">Упс! Вход не выполнен</div>
+        <div class="basket__empty-section-text">Для продолжения покупок Вам необходимо авторизоваться</div>
+        <button class="basket__sign-in-button button button--color-5">Перейти к авторизации</button>
+    </img>
+    `;
+    this.element.insertAdjacentHTML('beforeend', this.template);
+    this.button = this.element.querySelector('.basket__sign-in-button');
     if (typeof this.parameters.eventsButton === 'object') {
       for (const event of this.parameters.eventsButton) {
         this.button.addEventListener(event.type, event.callback);

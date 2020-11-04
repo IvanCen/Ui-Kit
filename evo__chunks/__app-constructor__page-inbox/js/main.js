@@ -4,6 +4,7 @@ class InboxPage {
     this.rendering = this.rendering.bind(this);
     this.closePage = this.closePage.bind(this);
     this.openPage = this.openPage.bind(this);
+    this.refreshData = this.refreshData.bind(this);
     this.checkMessages = this.checkMessages.bind(this);
     this.body = document.querySelector('body');
     this.mainPage = document.querySelector('.main-page');
@@ -29,6 +30,19 @@ class InboxPage {
     this.mainPageContent.classList.remove('main-page__content--opened-with-tabs');
     this.mainPageContent.classList.remove('main-page__content--opened');
     this.topBarTabs.classList.add('header__top-tabs--hide');
+    this.checkMessages();
+  }
+
+  refreshData() {
+    this.topBarTabs = document.querySelectorAll('.main-page__tab-content-inbox');
+    this.topBarTabs.forEach((item) => {
+      item.remove();
+    });
+    function render() {
+      toggleInboxTabMessagesContent.rendering(1, true);
+      toggleInboxTabLastOffersContent.rendering(2);
+    }
+    api.getMessages(render);
     this.checkMessages();
   }
 
@@ -68,7 +82,6 @@ class InboxPage {
       modifier: [`${isIos ? '--indentation--top' : ''}`],
       eventBack: [
         { type: 'click', callback: this.closePage },
-        { type: 'click', callback: this.deletePage },
         {
           type: 'click',
           callback: () => {
@@ -76,7 +89,7 @@ class InboxPage {
             userMessages.successData.messages.every((message) => {
               if (message.wasRead !== null) {
                 dotMessage.classList.add('top-bar__icon-dot--hide');
-                return false;
+                return false;й
               }
               return true;
             });
@@ -95,7 +108,7 @@ class InboxPage {
 
 
     this.mainPageContent.append(createTopBarIos());
-    this.topBar = document.querySelector('.header');
+    this.topBar = document.querySelector('.header--main');
     this.topBar.append(tobBarTabs.create());
 
     // this.mainPageContent.append(content.create());

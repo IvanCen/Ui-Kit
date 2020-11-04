@@ -45,6 +45,7 @@ function activeBanners(containerBanners, isSwipe, funcCheckBasket = () => {}) {
 
             checkEmptyBasket();
             containerBanners.remove();
+            checkBasketCounter();
             countResultPriceAndAllProductCounter();
           }, 300);
           containerBanners.classList.add('stop-action');

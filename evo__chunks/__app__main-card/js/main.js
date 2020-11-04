@@ -298,7 +298,7 @@ class CreateInboxMainCardNews extends CreateItem {
 
     this.element = document.createElement(this.parameters.selector);
     this.template = `
-        <div class="messages__element-icon messages__element-icon--shop"></div>
+        <div class="messages__element-icon messages__element-icon--heart"></div>
           <div class="messages__element-body">
               <div class="messages__element-title">${subject}</div>
               <div class="messages__element-wrapper">
@@ -315,7 +315,7 @@ class CreateInboxMainCardNews extends CreateItem {
       title.classList.add('main-card__title--font-weight--normal');
     }
     this.element.addEventListener('click', () => {
-      toggleModal.renderingInbox(messageInfo);
+      togglePageInboxDetails.rendering(messageInfo);
       inboxPage.checkMessages();
       if (!wasRead) {
         api.markMessageRead(client, timestamp, id);

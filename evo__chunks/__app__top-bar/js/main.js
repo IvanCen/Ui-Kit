@@ -724,7 +724,7 @@ class CreateTopBarReview extends CreateItem {
             <button class="top-bar__button top-bar__button--type--close">
               <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-close-white.svg]]" alt="Кнопка закрытия" class="top-bar__icon top-bar__icon--type--close">
             </button>
-            <div class="header__status">Корзина (<span class="top-bar__all-counter-order"></span>)</div>
+            <div class="header__status header__status-basket">Корзина (<span class="top-bar__all-counter-order"></span>)</div>
         </div>
     </div>`;
     this.element.insertAdjacentHTML('beforeend', this.template);

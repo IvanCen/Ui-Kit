@@ -244,6 +244,7 @@ api.promoApi();
 api.postsApi();
 api.getSeasons();
 api.getClientSeasons();
+setInterval(api.getMessages, 30000);
 api.getMessages();
 
 const toggleOrderMenuContent = new ToggleOrderMenuContent({ api });
@@ -256,6 +257,9 @@ const toggleInboxTabLastOffersContent = new ToggleInboxTabLastOffersContent();
 const toggleSubscriptionTabActual = new ToggleSubscriptionTabActual();
 const toggleSubscriptionTabMy = new ToggleSubscriptionTabMy();
 
+const togglePageInboxDetails = new TogglePageInboxDetails({
+  classOpen: ['page--opened'],
+});
 const toggleModalPageStoresSearch = new ToggleModalPageStoresSearch({
   classOpen: ['modal-page-search--opened-stores'],
 });
@@ -389,10 +393,9 @@ const Navigation = new CreateNavigation({
     {
       type: 'click',
       callback: () => {
-        stopAction(() => {
-          closePages();
-          balancePage.openPage();
-        });
+        closePages();
+        const balanceButton = document.querySelector('.main-panel__button--type--balance');
+        balanceButton.click();
       },
     },
   ],
@@ -400,12 +403,10 @@ const Navigation = new CreateNavigation({
     {
       type: 'click',
       callback: () => {
-        stopAction(() => {
-          closePages();
-          setTimeout(() => {
-            toggleModalPageOrderHistory.rendering();
-          }, 200);
-        });
+        closePages();
+        setTimeout(() => {
+          toggleModalPageOrderHistory.rendering();
+        }, 200);
       },
     },
   ],
@@ -413,10 +414,9 @@ const Navigation = new CreateNavigation({
     {
       type: 'click',
       callback: () => {
-        stopAction(() => {
-          closePages();
-          mainPage.openPage();
-        });
+        closePages();
+        const mainButton = document.querySelector('.main-panel__button--type--main');
+        mainButton.click();
       },
     },
   ],
@@ -424,10 +424,9 @@ const Navigation = new CreateNavigation({
     {
       type: 'click',
       callback: () => {
-        stopAction(() => {
-          closePages();
-          inboxPage.openPage();
-        });
+        closePages();
+        const inboxButton = document.querySelector('.main-panel__button--type--messages');
+        inboxButton.click();
       },
     },
   ],
@@ -435,10 +434,9 @@ const Navigation = new CreateNavigation({
     {
       type: 'click',
       callback: () => {
-        stopAction(() => {
-          closePages();
-          accountPage.openPage();
-        });
+        closePages();
+        const profileButton = document.querySelector('.main-panel__button--type--profile');
+        profileButton.click();
       },
     },
   ],
@@ -446,9 +444,7 @@ const Navigation = new CreateNavigation({
     {
       type: 'click',
       callback: () => {
-        stopAction(() => {
-          storesPage.openPage(true);
-        });
+        storesPage.openPage(true);
       },
     },
   ],
@@ -475,6 +471,7 @@ console.log(isIos);
 const mainPageTopBar = new CreateTopBar({
   selector: ['div'],
   style: ['header'],
+  modifier: ['--main'],
   eventOpenBasket: [{
     type: 'click',
     callback: () => {
@@ -484,9 +481,7 @@ const mainPageTopBar = new CreateTopBar({
             toggleModalPageReviewOrder.rendering();
           });
         } else {
-          stopAction(() => {
-            storesPage.openPage();
-          });
+          storesPage.openPage();
         }
       });
     },
@@ -503,13 +498,8 @@ const mainPageFooter = new CreateFooter({
     {
       type: 'click',
       callback: () => {
-        stopAction(() => {
-          /* renderMainPage.closePage();
-          renderMainPage.clearPage();
-          renderMainPage.rendering(); */
-          closePages();
-          mainPage.openPage();
-        });
+        closePages();
+        mainPage.openPage();
       },
     },
   ],
@@ -517,9 +507,6 @@ const mainPageFooter = new CreateFooter({
     {
       type: 'click',
       callback: () => {
-        /* toggleBalance.closePage();
-        toggleBalance.clearPage();
-        toggleBalance.rendering(); */
         closePages();
         balancePage.openPage();
       },
@@ -529,6 +516,7 @@ const mainPageFooter = new CreateFooter({
     {
       type: 'click',
       callback: () => {
+        inboxPage.refreshData();
         inboxPage.openPage();
         closePages();
       },
@@ -547,10 +535,8 @@ const mainPageFooter = new CreateFooter({
     {
       type: 'click',
       callback: () => {
-        stopAction(() => {
-          storesPage.openPage(true);
-          closePages();
-        });
+        storesPage.openPage(true);
+        closePages();
       },
     },
   ],

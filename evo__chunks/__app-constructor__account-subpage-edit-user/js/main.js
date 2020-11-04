@@ -81,7 +81,7 @@ class ToggleSubPageEditUser extends ToggleSubPage {
       style: ['form'],
       modifier: [
         '--indentation--sign-in',
-        '--indentation',
+        '__edit-user',
       ],
       identifier: parameters.identifier,
       inputLabelName: parameters.inputLabel,
@@ -122,6 +122,11 @@ class ToggleSubPageEditUser extends ToggleSubPage {
     if (parameters.inputType !== 'date') {
       validation();
       inputFlyLabel();
+    } else {
+      this.inputDate = document.querySelector('.form__input-area--type--birthday');
+      this.inputDate.addEventListener('click', () => {
+        emitter.emit('inputdate', this.inputDate);
+      });
     }
 
     this.openPage();
