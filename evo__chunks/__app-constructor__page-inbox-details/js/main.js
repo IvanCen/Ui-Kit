@@ -7,7 +7,6 @@ class TogglePageInboxDetails extends TogglePage {
 
   rendering(messageInfo) {
     super.rendering();
-    console.log(messageInfo);
     const topBar = new CreateTopBarWithBackButton({
       selector: ['div'],
       style: ['top-bar'],

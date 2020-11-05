@@ -154,6 +154,10 @@
     background-color: $white;
     padding-top: 85%;
 
+    &--indentation {
+      margin: 47px 0;
+    }
+
     &--size--small {
       padding-top: 54%;
     }

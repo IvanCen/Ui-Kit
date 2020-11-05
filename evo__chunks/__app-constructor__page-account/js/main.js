@@ -23,6 +23,16 @@ class AccountPage {
   openPage() {
     this.mainPageContent = document.querySelector('.main-page__content-profile');
     this.headerTitle = document.querySelector('.header__status');
+    this.profileData = document.querySelector('.profile__data');
+    if (this.profileData) {
+      this.profileData.remove();
+    }
+    const userProfileTextArea = new CreateTextAreaProfile({
+      selector: ['section'],
+      style: ['profile__data'],
+      modifier: [isEmptyObj(userInfoObj) ? '--hide' : ''],
+    });
+    this.mainPageContent.prepend(userProfileTextArea.create());
     setTimeout(() => {
       if (this.mainPageContent) {
         this.mainPageContent.classList.add('main-page__content--opened');
@@ -94,16 +104,10 @@ class AccountPage {
       selector: ['div'],
       style: ['wraper'],
     });
-    const userProfileTextArea = new CreateTextAreaProfile({
-      selector: ['section'],
-      style: ['profile__data'],
-      modifier: [isEmptyObj(userInfoObj) ? '--hide' : ''],
-    });
 
     this.buttonContainer = document.createElement('div');
     this.mainPageContent.prepend(createTopBarIos());
     this.buttonContainer.append(accountButtonJoinTangerin.create());
-    this.mainPageContent.append(userProfileTextArea.create());
     if (!isEmptyObj(userInfoObj)) {
       this.buttonContainer.append(accountButtonLogoutTangerin.create());
     }

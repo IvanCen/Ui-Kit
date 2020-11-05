@@ -255,73 +255,6 @@ class CreateFormInputSignIn extends CreateItem {
       <p class="form__text form__text--success form__text--hide">Вы авторизованны!</p>
       <p class="form__text form__text--error form__text--hide"></p>
      <button class="button button--theme--tangerin button--size--large button--theme--shadow-big form__button form__button--type--sign-in">Подтвердить</button>
-     <div class="swiper-container login__container-for-swip login__container--visible login__container form__inputs-container form__inputs-container--hide">
-      <div class="swiper-wrapper">
-        <div class="swiper-slide swiper-slide--indentation" data-id="name">
-          <div class="slide-wrapper">
-            <div class="form__input-container form__input-container--name">
-              <h2 class="form__title">Давайте знакомиться, меня зовут Хлебник, а вас?</h2>
-                <div class="form__input">
-                  <label class="form__input-underlined">
-                    <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--name" minlength="2">
-                    <span class="form__input-label">Имя</span>
-                    <ul class="form__input-requirements">
-                      <li class="form__input-requirement form__input-requirement--type--name">Имя должно содержать больше двух букв</li>
-                    </ul>
-                 </label>
-                </div>
-              </div>
-              <div class="login__buttons-for-form">
-                  <button type="submit" class="button form__button--type--next-name button--type--next-swiper button--color-5 button--type--disabled" disabled>Далее</button>
-                  <button type="skip" class="button button--size--large">Пропустить</button>
-              </div>
-              </div>
-          </div>
-          <div class="swiper-slide swiper-slide--indentation" data-id="birthday">
-              <div class="slide-wrapper">
-                  <div class="form__input-container form__input-container--birthday">
-                    <h2 class="form__title">Хотите рассказать нам о своей дате рождения? Мы регулярно проводим специальные акции для именинников</h2>  
-                    <div class="form__input">
-                      <label class="form__input-underlined">
-                        <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--birthday" type="date" min="1900-01-01">
-                        <button class="date__picker"></button>
-                        <span class="form__input-label form__input--focused">День рождения</span>
-                        <ul class="form__input-requirements"></ul>
-                      </label>
-                    </div>
-                  </div>
-                  <div class="login__buttons-for-form">
-                      <button type="submit" class="button form__button--type--next-birthday button--type--next-swiper button--color-5 button--type--disabled" disabled>Далее</button>
-                      <button type="skip" class="button button--size--large">Пропустить</button>
-                  </div>
-              </div>
-          </div>
-          <div class="swiper-slide swiper-slide--indentation" data-id="email">
-              <div class="slide-wrapper">
-                  <div class="form__input-container form__input-container--email">
-                    <h2 class="form__title">Поделитесь своим email адресом, чтобы первым узнавать о новинках</h2> 
-                    <div class="form__input">
-                      <label class="form__input-underlined">
-                        <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--email" type="email">
-                        <span class="form__input-label">Email</span>
-                        <ul class="form__input-requirements">
-                          <li class="form__input-requirement form__input-requirement--type--email">Пожалуйста введите правильный email адрес</li>
-                        </ul>
-                        <div class="form__input-icon-container">
-                          <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-attention-triangle.svg]]" alt="" class="form__input-icon form__input-icon-error">
-                        </div>
-                      </label>
-                    </div>
-                  </div>
-                  <div class="login__buttons-for-form">
-                      <button type="submit" class="button form__button--type--next-email button--type--next-swiper button--color-5 button--type--disabled" disabled>Готово</button>
-                      <button type="skip" class="button button--size--large">Пропустить</button>
-                  </div>
-              </div>
-          </div>
-        </div>
-        <div class="swiper-pagination"></div>
-      </div>
    `;
   }
 
@@ -352,6 +285,103 @@ class CreateFormInputSignIn extends CreateItem {
         });
       }
     }
+
+    return super.create(this.element);
+  }
+}
+
+class CreateFormInputSignInQuestions extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+    this.element = document.createElement(this.parameters.selector);
+  }
+
+  create(userInfo) {
+    if (userInfo.name === '') {
+      this.templateName = `
+        <div class="swiper-slide swiper-slide--indentation" data-id="name">
+          <div class="slide-wrapper">
+            <div class="form__input-container form__input-container--name">
+              <h2 class="form__title">Давайте знакомиться, меня зовут Хлебник, а вас?</h2>
+                <div class="form__input">
+                  <label class="form__input-underlined">
+                    <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--name" minlength="2">
+                    <span class="form__input-label">Имя</span>
+                    <ul class="form__input-requirements">
+                      <li class="form__input-requirement form__input-requirement--type--name">Имя должно содержать больше двух букв</li>
+                    </ul>
+                 </label>
+                </div>
+              </div>
+              <div class="login__buttons-for-form">
+                  <button type="submit" class="button form__button--type--next-name button--type--next-swiper button--color-5 button--type--disabled" disabled>Далее</button>
+                  <button type="skip" class="button button--size--large">Пропустить</button>
+              </div>
+              </div>
+          </div>
+        `;
+    }
+    if (userInfo.birthday === '') {
+      this.templateBirthday = `
+        <div class="swiper-slide swiper-slide--indentation" data-id="birthday">
+              <div class="slide-wrapper">
+                  <div class="form__input-container form__input-container--birthday">
+                    <h2 class="form__title">Хотите рассказать нам о своей дате рождения? Мы регулярно проводим специальные акции для именинников</h2>  
+                    <div class="form__input">
+                      <label class="form__input-underlined">
+                        <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--birthday" type="date" min="1900-01-01">
+                        <button class="date__picker"></button>
+                        <span class="form__input-label form__input--focused">День рождения</span>
+                        <ul class="form__input-requirements"></ul>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="login__buttons-for-form">
+                      <button type="submit" class="button form__button--type--next-birthday button--type--next-swiper button--color-5 button--type--disabled" disabled>Далее</button>
+                      <button type="skip" class="button button--size--large">Пропустить</button>
+                  </div>
+              </div>
+          </div>
+        `;
+    }
+    if (userInfo.email === '') {
+      this.templateEmail = `
+        <div class="swiper-slide swiper-slide--indentation" data-id="email">
+              <div class="slide-wrapper">
+                  <div class="form__input-container form__input-container--email">
+                    <h2 class="form__title">Поделитесь своим email адресом, чтобы первым узнавать о новинках</h2> 
+                    <div class="form__input">
+                      <label class="form__input-underlined">
+                        <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--email" type="email">
+                        <span class="form__input-label">Email</span>
+                        <ul class="form__input-requirements">
+                          <li class="form__input-requirement form__input-requirement--type--email">Пожалуйста введите правильный email адрес</li>
+                        </ul>
+                        <div class="form__input-icon-container">
+                          <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-attention-triangle.svg]]" alt="" class="form__input-icon form__input-icon-error">
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="login__buttons-for-form">
+                      <button type="submit" class="button form__button--type--next-email button--type--next-swiper button--color-5 button--type--disabled" disabled>Готово</button>
+                      <button type="skip" class="button button--size--large">Пропустить</button>
+                  </div>
+              </div>
+          </div>
+        `;
+    }
+    this.template = `
+        <div class="swiper-wrapper">
+          ${this.templateName || ''}
+          ${this.templateBirthday || ''}
+          ${this.templateEmail || ''}
+        </div>
+        <div class="swiper-pagination"></div>
+   `;
+
+    this.element.insertAdjacentHTML('beforeend', this.template);
 
     return super.create(this.element);
   }

@@ -229,8 +229,8 @@ class CreateBannersMain extends CreateItem {
           toggleModal.openPage();
         });
 
-        const imgEl = this.element.querySelector('.shares__list-element-image');
-
+        const imgEl = this.el.querySelector('.shares__list-element-image');
+        console.log(imgEl);
         if (!canUseWebP()) {
           loadImgNotSquare(banner, imgEl, 'jpg');
         } else {

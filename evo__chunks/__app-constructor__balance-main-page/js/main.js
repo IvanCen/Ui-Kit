@@ -17,9 +17,20 @@ class BalancePage {
 
   openPage() {
     this.mainPageContent = document.querySelector('.main-page__content-balance');
+    this.mainPageContentContainerBalance = document.querySelector('.main-page__content-container-balance');
+    this.textAreaContainerSignIn = this.mainPageContent.querySelector('.text-area-container--type--sign-in');
     this.topBarTabs = document.querySelector('.header__top-tabs-balance');
     this.headerTitle = document.querySelector('.header__status');
     this.topBarTabs.classList.remove('header__top-tabs--hide');
+
+    if (isEmptyObj(userInfoObj)) {
+      this.mainPageContentContainerBalance.classList.add('main-page__content-container--hide');
+      this.textAreaContainerSignIn.classList.remove('text-area-container--hide');
+    } else {
+      this.mainPageContentContainerBalance.classList.remove('main-page__content-container--hide');
+      this.textAreaContainerSignIn.classList.add('text-area-container--hide');
+    }
+
     setTimeout(() => {
       if (this.mainPageContent) {
         this.mainPageContent.classList.add('main-page__content--opened-with-tabs');
@@ -97,14 +108,39 @@ class BalancePage {
         },
       ],
     });
+    const textAreaNoSignIn = new CreateTextAreaNoSignIn({
+      selector: ['div'],
+      style: ['text-area-container'],
+      modifier: [
+        '--hide',
+        '--type--sign-in',
+        '--indentation--big',
+      ],
+      eventsButton: [
+        {
+          type: 'click',
+          callback: () => {
+            this.closePage();
+            toggleModalPageSignIn.rendering();
+          },
+        },
+      ],
+    });
+
+    this.mainPageContentContainer = document.createElement('div');
+    this.mainPageContentContainer.classList.add('main-page__content-container', 'main-page__content-container-balance');
+
     this.mainPageContent.append(createTopBarIos());
 
     this.topBar = document.querySelector('.header');
     this.topBar.append(tobBarTabs.create());
 
-    this.mainPageContent.append(buttonJoinOrange.create());
-    this.mainPageContent.append(content.create());
-    this.mainPageContent.append(buttonFill.create());
+
+    this.mainPageContent.append(textAreaNoSignIn.create());
+    this.mainPageContentContainer.append(content.create());
+    this.mainPageContentContainer.append(buttonFill.create());
+    this.mainPageContent.append(this.mainPageContentContainer);
+
 
     this.initBalance();
   }

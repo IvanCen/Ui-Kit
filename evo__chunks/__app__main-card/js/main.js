@@ -102,10 +102,10 @@ class CreateNoSubscriptionsMainCard extends CreateItem {
     this.element = document.createElement(this.parameters.selector);
     this.template = `
         <div class="main-card__img-container">
-          <div style="background-image: url('[+chunkWebPath+]/img/no-subscriptions.png')" class="main-card__img"></div>
+          <div style="background-image: url('[+chunkWebPath+]/img/no-subscriptions.png')" class="main-card__img main-card__img--indentation"></div>
         </div>
-        <div class="main-card__text-area main-card__text-area--pisition--center">
-        <h2 class="main-card__title main-card__title--size--normal">У вас еще нет активных абонементов</h2>
+        <div class="main-card__text-area main-card__text-area--position--center">
+          <h2 class="main-card__title main-card__title--size--normal">У вас еще нет активных абонементов</h2>
           <p class="main-card__text main-card__text--size--small main-card__text--theme--shadow">Приобрести их вы можете в любом магазине сети Хлебник</p>
         </div>`;
   }
@@ -289,7 +289,6 @@ class CreateInboxMainCardNews extends CreateItem {
     const {
       id, subject, client, timestamp, wasRead, message,
     } = messageInfo;
-    console.log(messageInfo);
     this.date = transformationUtcToLocalDate(timestamp, {
       year: 'numeric',
       month: 'short',

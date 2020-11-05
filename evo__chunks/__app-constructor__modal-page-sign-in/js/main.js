@@ -248,12 +248,21 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
   askUserInfo(userInfo) {
     if (userInfo.success) {
       api.getClientApi();
+      const loginHeader = document.querySelector('.login__header');
+      const formInputSignInQuestions = new CreateFormInputSignInQuestions({
+        selector: ['div'],
+        style: ['login__container'],
+      });
+      loginHeader.after(formInputSignInQuestions.create(userInfo.successData));
 
+      const loginContainerEl = document.querySelector('.login__container');
+      const form = document.querySelector('.form--size--full');
+      loginContainerEl.classList.add('login__container-for-swip', 'login__container--visible', 'form__inputs-container', 'form__inputs-container--hide', 'swiper-container');
+      form.classList.add('form--hide');
       console.log(userInfo);
       const loginContainer = document.querySelector('.login__container');
       const loginContainerForSwipSubmitAll = this.modalPageSignIn.querySelectorAll('.button--type--next-swiper');
       const inputs = this.modalPageSignIn.querySelectorAll('.form__input-area');
-      console.log(inputs, loginContainerForSwipSubmitAll);
 
       loginContainer.classList.add('login__container--visible');
       loginContainer.classList.remove('form__inputs-container--hide');

@@ -50,6 +50,14 @@ class InboxPage {
     this.mainPageContent = document.querySelector('.main-page__content-inbox');
     this.topBarTabs = document.querySelector('.header__top-tabs-inbox');
     this.headerTitle = document.querySelector('.header__status');
+    this.textAreaContainerSignIn = this.mainPageContent.querySelector('.text-area-container--type--sign-in');
+
+    if (isEmptyObj(userInfoObj)) {
+      this.textAreaContainerSignIn.classList.remove('text-area-container--hide');
+    } else {
+      this.textAreaContainerSignIn.classList.add('text-area-container--hide');
+    }
+
     setTimeout(() => {
       if (this.mainPageContent) {
         this.mainPageContent.classList.add('main-page__content--opened-with-tabs');
@@ -89,7 +97,7 @@ class InboxPage {
             userMessages.successData.messages.every((message) => {
               if (message.wasRead !== null) {
                 dotMessage.classList.add('top-bar__icon-dot--hide');
-                return false;й
+                return false; й;
               }
               return true;
             });
@@ -105,11 +113,30 @@ class InboxPage {
         { type: 'click', callback: toggleInboxTabLastOffersContent.rendering },
       ],
     });
-
+    const textAreaNoSignIn = new CreateTextAreaNoSignIn({
+      selector: ['div'],
+      style: ['text-area-container'],
+      modifier: [
+        '--hide',
+        '--type--sign-in',
+        '--indentation--big',
+      ],
+      eventsButton: [
+        {
+          type: 'click',
+          callback: () => {
+            this.closePage();
+            toggleModalPageSignIn.rendering();
+          },
+        },
+      ],
+    });
 
     this.mainPageContent.append(createTopBarIos());
     this.topBar = document.querySelector('.header--main');
     this.topBar.append(tobBarTabs.create());
+
+    this.mainPageContent.append(textAreaNoSignIn.create());
 
     // this.mainPageContent.append(content.create());
     function render() {

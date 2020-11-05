@@ -265,7 +265,7 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
     if (isEmptyObj(userInfoObj)) {
       this.modalPageOrderReview.append(textAreaNoSignIn.create());
       this.title = document.querySelector('.header__status-basket');
-      this.title.textContent = 'Корзина';
+      this.title.textContent = 'Корзина'
     } else if (basketArray.length !== 0) {
       this.modalPageOrderReview.append(cardItemReviewContainer.create());
       this.modalPageOrderReview.append(formDeliver.create());

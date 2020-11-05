@@ -458,6 +458,16 @@ const Navigation = new CreateNavigation({
       },
     },
   ],
+  eventOpenSubscriptionPage: [
+    {
+      type: 'click',
+      callback: () => {
+        stopAction(() => {
+          toggleModalPageSubscription.rendering();
+        });
+      },
+    },
+  ],
 });
 
 function closeOrderPage() {

@@ -593,7 +593,6 @@ async function load_image_with_correct_extension_and_resolution(productInfo, img
   let regExp = /(assets\/images\/docs)(\/\d*\/)([\d\D]*\.)(\D+)/g;
   let productName = image.name.replace(regExp, '$3');
   let source = `https://app.xleb.ru/${image.name}_cache/${image.edit}/${imageBlockWidth}x${imageBlockHeight}/${productName}${extension}`;
-
   if (aspectRatio === 1 && document.location.hash !== 'debug' && document.location.hash !== '#debug') {
 
     imgEl.style.backgroundImage = `url(${source})`;
@@ -725,7 +724,7 @@ async function load_image_with_correct_extension_and_resolution(productInfo, img
 }
 
 function loadImgNotSquare(productInfo, imgEl, expansion, timer) {
-  let aspectRatio = 0.85;
+  let aspectRatio = 1/*0.85*/;
   (() => {
     load_image_with_correct_extension_and_resolution(productInfo, imgEl, expansion, 1000, aspectRatio);
   })();

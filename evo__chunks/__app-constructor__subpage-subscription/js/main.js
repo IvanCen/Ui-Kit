@@ -12,7 +12,7 @@ class ToggleModalPageSubscription extends ToggleSubPage {
       style: ['top-bar'],
       modifier: [
         `${isIos ? '--indentation--top' : ''}`,
-        '--theme--dark-perl',
+        '--theme--dark',
       ],
       eventBack: [
         {

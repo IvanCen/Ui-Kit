@@ -24,12 +24,13 @@ class CreateNavigation extends CreateItem {
         </div>
         <div class="navigation-element navigation-element-main navigation-element--active">Главная</div>
         <div class="navigation-element navigation-element-stores">Магазины</div>
-        <div class="navigation-element navigation-element-history">История заказов</div>
-        <div class="navigation-element navigation-element-favorite">Избранное</div>
-        <div class="navigation-element navigation-element-basket">Корзина</div>
         <div class="navigation-element navigation-element-balance">Баланс</div>
-        <div class="navigation-element navigation-element-profile">Личный кабинет</div>
         <div class="navigation-element navigation-element-inbox">Сообщения</div>
+        <div class="navigation-element navigation-element-profile">Личный кабинет</div>
+        <div class="navigation-element navigation-element-basket">Корзина</div>
+        <div class="navigation-element navigation-element-history">История заказов</div>
+        <div class="navigation-element navigation-element-subscription">Абонементы</div>
+        <div class="navigation-element navigation-element-favorite">Избранное</div>
         <div class="navigation-element--close">
             <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle opacity="0.38" cx="24" cy="24" r="23.5" stroke="white"/>
@@ -48,10 +49,16 @@ class CreateNavigation extends CreateItem {
     this.buttonProfile = this.element.querySelector('.navigation-element-profile');
     this.buttonInbox = this.element.querySelector('.navigation-element-inbox');
     this.buttonHistory = this.element.querySelector('.navigation-element-history');
+    this.buttonSubscription = this.element.querySelector('.navigation-element-subscription');
 
     if (typeof this.parameters.eventOpenMainPage === 'object') {
       for (const event of this.parameters.eventOpenMainPage) {
         this.buttonMain.addEventListener(event.type, event.callback);
+      }
+    }
+    if (typeof this.parameters.eventOpenSubscriptionPage === 'object') {
+      for (const event of this.parameters.eventOpenSubscriptionPage) {
+        this.buttonSubscription.addEventListener(event.type, event.callback);
       }
     }
     if (typeof this.parameters.eventOpenBalancePage === 'object') {

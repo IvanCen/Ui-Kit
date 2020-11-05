@@ -1548,7 +1548,7 @@ class CreateTextAreaProfile extends CreateItem {
       });
     });
 
-    if (userInfoObj.successData.birthday === '') {
+    if (!isEmptyObj(userInfoObj) && userInfoObj.successData.birthday === '') {
       this.buttonBirthday.addEventListener('click', () => {
         toggleSubPageEditUser.rendering({
           titleTopBar: 'Редактировать',

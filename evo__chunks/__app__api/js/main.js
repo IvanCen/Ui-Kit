@@ -85,6 +85,7 @@ class Api {
   promoApi(func) {
     const request = {
       method: 'get-promo',
+      format: 'universal',
       offset: 0,
       length: 3,
       outputFormat: 'json',
@@ -115,6 +116,7 @@ class Api {
   postsApi(func) {
     const request = {
       method: 'get-posts',
+      format: 'universal',
       offset: 0,
       length: 2,
       outputFormat: 'json',
@@ -586,7 +588,10 @@ class Api {
         if (res.success === true) {
           localStorage.removeItem('user-sign-in');
           localStorage.removeItem('authorizationCode');
+          localStorage.removeItem('authorizationPhone');
           localStorage.removeItem('userAchievements');
+          authorizationPhone = '';
+          authorizationCode = '';
           delete userAchievements.successData;
           delete userInfoObj.successData;
           localStorage.setItem('userInfo', JSON.stringify(userInfoObj));

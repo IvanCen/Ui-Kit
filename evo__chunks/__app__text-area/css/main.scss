@@ -17,6 +17,14 @@
 
 .text-area-container {
   padding: 0 16px 20px;
+
+  &--indentation--big {
+    padding: 0 16px 80px;
+  }
+
+  &--hide {
+    display: none;
+  }
 }
 
 .text-area {
