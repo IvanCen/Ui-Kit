@@ -134,7 +134,7 @@ class TogglePageBalanceFill extends TogglePage {
     if (payInfo.success) {
       document.location.href = payInfo.successData.payUrl;
     } else {
-      toggleModal.rendering(payInfo.errors[0]);
+      toggleModal.rendering({ subject: 'Ошибка', text: payInfo.errors[0] });
     }
   }
 
@@ -154,14 +154,14 @@ class TogglePageBalanceFill extends TogglePage {
           embedded_3ds: true,
           newDesign: true,
           error_callback(error) {
-            toggleModal.rendering(error);
+            toggleModal.rendering({ subject: 'Ошибка', text: error });
           },
         });
 
         // Отображение платежной формы в контейнере
         checkout.render('payment-form');
       } else {
-        toggleModal.rendering(payInfo.errors[0]);
+        toggleModal.rendering({ subject: 'Ошибка', text: payInfo.errors[0] });
       }
     } catch (e) {
       alert(e);

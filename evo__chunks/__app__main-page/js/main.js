@@ -311,6 +311,9 @@ const toggleSubPageProductCard = new ToggleSubPageProductCard({
 const toggleSubPageGiftCard = new ToggleSubPageGiftCard({
   classOpen: ['subpage--opened'],
 });
+const toggleSubPageSupport = new ToggleSubPageSupport({
+  classOpen: ['subpage--opened'],
+});
 const toggleSubPageApplication = new ToggleSubPageApplication({
   classOpen: ['subpage--opened'],
 });

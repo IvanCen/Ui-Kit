@@ -21,7 +21,7 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
 
   makeOrder(info) {
     if (info.success === false) {
-      toggleModal.rendering('Что то пошло не так');
+      toggleModal.rendering({ subject: 'Ошибка', text: 'Что то пошло не так' });
       toggleModal.openPage();
     } else if (info.success === true) {
       if (!isEmptyObj(basketArray)) {
@@ -72,10 +72,10 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
             this.renderPayOrderPage,
           );
         } else {
-          toggleModal.rendering(info.successData.timeStatePickUp);
+          toggleModal.rendering({ subject: 'Информация', text: info.successData.timeStatePickUp });
         }
       } else {
-        toggleModal.rendering('Вы ничего не положили в корзину');
+        toggleModal.rendering({ subject: 'Информация', text: 'Вы ничего не положили в корзину' });
         toggleModal.openPage();
       }
     }
@@ -117,10 +117,10 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
         emitter.emit('event:counter-changed');
 
         setTimeout(() => {
-          toggleModal.rendering(successText);
+          toggleModal.rendering({ subject: 'Информация', text: successText });
         }, successTextTimeout);
       } else {
-        toggleModal.rendering(info.errors[0]);
+        toggleModal.rendering({ subject: 'Ошибка', text: payInfo.errors[0] });
       }
     }
     const sectionPayment = document.querySelector('.basket__payment');
@@ -135,7 +135,7 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
       });
       // toggleModalPagePaymentOrder.rendering(info);
     } else {
-      toggleModal.rendering(info.errors[0]);
+      toggleModal.rendering({ subject: 'Ошибка', text: info.errors[0] });
     }
   }
 
@@ -265,7 +265,7 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
     if (isEmptyObj(userInfoObj)) {
       this.modalPageOrderReview.append(textAreaNoSignIn.create());
       this.title = document.querySelector('.header__status-basket');
-      this.title.textContent = 'Корзина'
+      this.title.textContent = 'Корзина';
     } else if (basketArray.length !== 0) {
       this.modalPageOrderReview.append(cardItemReviewContainer.create());
       this.modalPageOrderReview.append(formDeliver.create());

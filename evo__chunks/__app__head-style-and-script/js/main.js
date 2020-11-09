@@ -731,6 +731,14 @@ function loadImgNotSquare(productInfo, imgEl, expansion, timer) {
   return '';
 }
 
+function loadImgPostsAndPromos(productInfo, imgEl, expansion, timer) {
+  let aspectRatio = 0.85;
+  (() => {
+    load_image_with_correct_extension_and_resolution(productInfo, imgEl, expansion, 1000, aspectRatio);
+  })();
+  return '';
+}
+
 function checkEmptyBasket() {
   const basket = document.querySelector('.header__basket')
 

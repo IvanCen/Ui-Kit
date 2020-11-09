@@ -1158,64 +1158,38 @@ class CreateTextAreaAccount extends CreateItem {
 
   create() {
     this.element = document.createElement(this.parameters.selector);
-    this.template = `
-      <!--<div class="text-area text-area&#45;&#45;type&#45;&#45;privacy">
-        <div class="text-area__container text-area__container&#45;&#45;indentation&#45;&#45;small">
-          <div class="text-area__content-container text-area__content-container&#45;&#45;direction&#45;&#45;column">
-            <h2 class="text-area__title text-area__title&#45;&#45;size&#45;&#45;small text-area__title&#45;&#45;type&#45;&#45;bold">Политика конфиденциальности</h2>
-          </div>
-          <button class="button">
-            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-right.svg]]" alt="" class="text-area__icon text-area__icon&#45;&#45;position&#45;&#45;center">
-          </button>
-        </div>
-      </div>
-      <div class="text-area text-area&#45;&#45;type&#45;&#45;terms">
-        <div class="text-area__container text-area__container&#45;&#45;indentation&#45;&#45;small">
-          <h2 class="text-area__title text-area__title&#45;&#45;size&#45;&#45;small text-area__title&#45;&#45;type&#45;&#45;bold">Пользовательское соглашение</h2>
-          <button class="button">
-            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-right.svg]]" alt="" class="text-area__icon text-area__icon&#45;&#45;position&#45;&#45;center">
-          </button>
-         </div>
-       </div>  
-       <div class="text-area text-area&#45;&#45;type&#45;&#45;public">
-        <div class="text-area__container text-area__container&#45;&#45;indentation&#45;&#45;small">
-          <h2 class="text-area__title text-area__title&#45;&#45;size&#45;&#45;small text-area__title&#45;&#45;type&#45;&#45;bold">Публичная оферта</h2>
-          <button class="button">
-            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-right.svg]]" alt="" class="text-area__icon text-area__icon&#45;&#45;position&#45;&#45;center">
-          </button>
-         </div>
-       </div>  
-       <div class="text-area text-area&#45;&#45;type&#45;&#45;subscription">
-        <div class="text-area__container text-area__container&#45;&#45;indentation&#45;&#45;small">
-          <h2 class="text-area__title text-area__title&#45;&#45;size&#45;&#45;small text-area__title&#45;&#45;type&#45;&#45;bold">Абонементы</h2>
-          <button class="button">
-            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-right.svg]]" alt="" class="text-area__icon text-area__icon&#45;&#45;position&#45;&#45;center">
-          </button>
-         </div>
-       </div>-->
-       
+    this.template = `       
         <section class="profile__info">
           <div class="profile__header">
               <div class="profile__title">Информация</div>
           </div>
-          <div class="form__group profile__group text-area--type--privacy">
+          <div class="form__group profile__group profile__group-element text-area--type--support">
+              <label>Поддержка</label>
+          </div>
+          <div class="form__group profile__group profile__group-element text-area--type--privacy">
               <label>Политика конфиденциальности</label>
           </div>
-          <div class="form__group profile__group text-area--type--terms">
+          <div class="form__group profile__group profile__group-element text-area--type--terms">
               <label>Пользовательское соглашение</label>
           </div>
-          <div class="form__group profile__group text-area--type--public">
+          <div class="form__group profile__group profile__group-element text-area--type--public">
               <label>Публичная оферта</label>
           </div>
         </section>
     `;
     this.element.insertAdjacentHTML('beforeend', this.template);
 
+    this.buttonSupport = this.element.querySelector('.text-area--type--support');
     this.buttonPrivacy = this.element.querySelector('.text-area--type--privacy');
     this.buttonTerms = this.element.querySelector('.text-area--type--terms');
     this.buttonPublic = this.element.querySelector('.text-area--type--public');
     // this.buttonSubscription = this.element.querySelector('.text-area--type--subscription');
 
+    this.buttonSupport.addEventListener('click', () => {
+      stopAction(() => {
+        toggleSubPageSupport.rendering();
+      });
+    });
     this.buttonPrivacy.addEventListener('click', () => {
       stopAction(() => {
         toggleSubPageApplication.rendering(this.setData('privacy-policy'));

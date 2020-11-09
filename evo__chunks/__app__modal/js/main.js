@@ -10,14 +10,15 @@ function closeModal() {
   });
 }
 
-function createModal(text) {
+function createModal({subject, text}) {
   const element = document.createElement('div');
   element.classList.add('modal');
   const template = `
     <div class="modal__content-container modal__content-container--visible">
-      <h2 class="modal__title">${text}</h2>
+      <h2 class="modal__title">${subject}</h2>
+      <p class="modal__text modal__text--theme--shadow">${text}</p>
       <div class="modal__button-container">
-        <button class="button button--size--small button--theme--tangerin modal__button modal__button-accept">Закрыть</button>
+        <button class="button button--size--small button--theme--oranges-transparent modal__button modal__button-accept">ОК</button>
       </div>
     </div>`;
 

@@ -210,32 +210,31 @@ class CreateBannersMain extends CreateItem {
 
     if (!isEmptyObj(dataPromo)) {
       dataPromo.successData.forEach((banner) => {
+        this.swiperSlide = document.createElement('div');
+        this.swiperSlide.classList.add('swiper-slide');
         this.templateSlide = ` 
-            <div class="swiper-slide">
                 <div class="shares__list-element">
                     <div class="shares__list-element-image"></div>
                     <div class="shares__list-element-desc">
                         <div class="shares__list-element-title">${banner.title}</div>
                         <div class="shares__list-element-text">${banner.intro}</div>
                     </div>
-                </div>
-            </div>`;
-        this.wraper = this.element.querySelector('.swiper-wrapper');
-        this.wraper.insertAdjacentHTML('beforeend', this.templateSlide);
-
-        this.el = this.wraper.querySelector('.swiper-slide');
-        this.el.addEventListener('click', () => {
+              </div>`;
+        this.swiperSlide.insertAdjacentHTML('beforeend', this.templateSlide);
+        this.swiperSlide.addEventListener('click', () => {
           toggleModal.renderingPost(banner);
           toggleModal.openPage();
         });
 
-        const imgEl = this.el.querySelector('.shares__list-element-image');
+        const imgEl = this.swiperSlide.querySelector('.shares__list-element-image');
         console.log(imgEl);
         if (!canUseWebP()) {
-          loadImgNotSquare(banner, imgEl, 'jpg');
+          loadImgPostsAndPromos(banner, imgEl, 'jpg');
         } else {
-          loadImgNotSquare(banner, imgEl, 'webp');
+          loadImgPostsAndPromos(banner, imgEl, 'webp');
         }
+        this.wraper = this.element.querySelector('.swiper-wrapper');
+        this.wraper.append(this.swiperSlide);
       });
     }
 

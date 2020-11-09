@@ -424,6 +424,46 @@ class CreateFormInput extends CreateItem {
   }
 }
 
+class CreateFormInputSupport extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+  }
+
+  create() {
+    this.element = document.createElement(this.parameters.selector);
+    this.template = `
+      <div class="form__input">
+        <label class="form__input-underlined">
+          <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--subject" type="text">
+          <span class="form__input-label">Тема</span>
+          <ul class="form__input-requirements">
+            
+          </ul>
+          <div class="form__input-icon-container">
+            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-attention-triangle.svg]]" alt="" class="form__input-icon form__input-icon-error">
+          </div>
+        </label>
+      </div>
+      <div class="form__input">
+        <label class="form__input-underlined">
+          <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--message" type="text" required>
+          <span class="form__input-label">Комментарий</span>
+          <ul class="form__input-requirements">
+            
+          </ul>
+          <div class="form__input-icon-container">
+            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-attention-triangle.svg]]" alt="" class="form__input-icon form__input-icon-error">
+          </div>
+        </label>
+      </div>
+   `;
+    this.element.insertAdjacentHTML('beforeend', this.template);
+
+    return super.create(this.element);
+  }
+}
+
 class CreateFormGiftCard extends CreateItem {
   constructor(parameters) {
     super();
