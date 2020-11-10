@@ -109,7 +109,7 @@ class MainPage {
     initCategories();
     checkEmptyBasket();
     checkStore();
-    this.removeLastItemLine();
+    //this.removeLastItemLine();
     /* renderPromo(dataPromo);
     renderPosts(dataPosts);
     this.promoContainer.append(ourHistoryMainCard.create()); */
@@ -118,7 +118,9 @@ class MainPage {
   removeLastItemLine() {
     document.querySelectorAll('.catalog__list').forEach((item) => {
       const lastEl = item.lastElementChild.querySelector('.catalog__list-element-detail');
-      lastEl.classList.remove('catalog__list-element-detail--type--border');
+      if(lastEl) {
+        lastEl.classList.remove('catalog__list-element-detail--type--border');
+      }
     });
   }
 }

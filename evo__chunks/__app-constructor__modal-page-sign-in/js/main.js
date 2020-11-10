@@ -230,7 +230,7 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
       if (infoSuccess.isStartApp && infoSuccess.name === '') {
         formInput.remove();
         buttonSignIn.remove();
-        api.getClientApi(this.askUserInfo);
+        api.getClientApi();
       } else {
         api.getClientApi(this.askUserInfo);
       }
@@ -254,12 +254,19 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
         style: ['login__container'],
       });
       loginHeader.after(formInputSignInQuestions.create(userInfo.successData));
-
       const loginContainerEl = document.querySelector('.login__container');
       const form = document.querySelector('.form--size--full');
       loginContainerEl.classList.add('login__container-for-swip', 'login__container--visible', 'form__inputs-container', 'form__inputs-container--hide', 'swiper-container');
       form.classList.add('form--hide');
       console.log(userInfo);
+      window.swipLoginForms = new Swiper('.login__container-for-swip', {
+        spaceBetween: 90,
+        slidesPerView: '1',
+        pagination: {
+          el: '.swiper-pagination',
+          type: 'bullets',
+        },
+      });
       const loginContainer = document.querySelector('.login__container');
       const loginContainerForSwipSubmitAll = this.modalPageSignIn.querySelectorAll('.button--type--next-swiper');
       const inputs = this.modalPageSignIn.querySelectorAll('.form__input-area');
@@ -314,7 +321,6 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
           }
         });
       });
-
       inputs.forEach((input) => {
         const swiperSlide = input.closest('.swiper-slide');
         if (swiperSlide) {
@@ -329,6 +335,20 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
               bnt.removeAttribute('disabled');
             }
           });
+          input.addEventListener('click', () => {
+            const calendarAcceptButton = document.querySelector('.datepicker__calendar-accept');
+            if (calendarAcceptButton) {
+              calendarAcceptButton.addEventListener('click', () => {
+                if (input.value === '') {
+                  bnt.classList.add('button--type--disabled');
+                  bnt.setAttribute('disabled', 'true');
+                } else {
+                  bnt.classList.remove('button--type--disabled');
+                  bnt.removeAttribute('disabled');
+                }
+              });
+            }
+          });
         }
       });
 
@@ -337,9 +357,12 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
         btn.addEventListener('click', (e) => {
           e.preventDefault();
           this.closePage();
+          closePages();
+          accountPage.openPage();
         });
       });
 
+      inputFlyLabel();
 
       localStorage.setItem('user-sign-in', 'true');
       const { birthday, email, name } = userInfo.successData;
@@ -411,7 +434,7 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
               await rateLastOrder();
             })();
           } else {
-            api.getClientApi(this.askUserInfo);
+            api.getClientApi(/* this.askUserInfo */);
           }
         }
       });
@@ -488,15 +511,6 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
       if (event.code === 'Enter' || event.code === 'Go' || event.code === 13) {
         this.registrationNumber(this);
       }
-    });
-
-    window.swipLoginForms = new Swiper('.login__container-for-swip', {
-      spaceBetween: 90,
-      slidesPerView: '1',
-      pagination: {
-        el: '.swiper-pagination',
-        type: 'bullets',
-      },
     });
 
     IMask(

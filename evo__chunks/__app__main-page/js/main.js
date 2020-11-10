@@ -448,6 +448,7 @@ const Navigation = new CreateNavigation({
       type: 'click',
       callback: () => {
         storesPage.openPage(true);
+        closePages();
       },
     },
   ],

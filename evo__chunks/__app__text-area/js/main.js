@@ -1475,12 +1475,14 @@ class CreateTextAreaProfile extends CreateItem {
       email = userInfoObj.successData.email;
       const { phone } = userInfoObj.successData;
       const { birthday } = userInfoObj.successData;
+      if (birthday !== '') {
+        shortDateBirthday = new Date(`${birthday.replace(/-/g, '/')} UTC`).toLocaleString('ru', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+        }).replace('.', '').replace(' г.', '');
+      }
       phoneFormatted = phone.replace(/(\+\d)(\d{3})(\d{3})(\d{2})(\d{2})/g, '$1 ($2) $3-$4-$5') || '';
-      shortDateBirthday = new Date(`${birthday.replace(/-/g, '/')} UTC`).toLocaleString('ru', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-      }).replace('.', '').replace(' г.', '');
     }
 
     this.template = `

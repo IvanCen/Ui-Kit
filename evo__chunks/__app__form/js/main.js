@@ -383,6 +383,14 @@ class CreateFormInputSignInQuestions extends CreateItem {
 
     this.element.insertAdjacentHTML('beforeend', this.template);
 
+    this.inputAreaBirthday = this.element.querySelector('.form__input-area--type--birthday');
+    if (this.inputAreaBirthday) {
+      this.inputAreaBirthday.addEventListener('click', () => {
+        emitter.emit('inputdate', this.inputAreaBirthday);
+      });
+    }
+
+
     return super.create(this.element);
   }
 }

@@ -65,6 +65,16 @@ class CreateCatalogMain extends CreateItem {
                     <span>Хиты</span>
                 </div>
             </div>
+            <div class="swiper-slide">
+                <div class="catalog__categories-element catalog__categories-element--favorite" data-id="favorite">
+                    <div class="catalog__categories-element-image">
+                        <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M25.9627 10.017C25.8731 9.7412 25.6348 9.5402 25.3479 9.49856L17.2878 8.3273L13.6831 1.02361C13.5548 0.763611 13.29 0.59903 13.0001 0.59903C12.7101 0.59903 12.4453 0.763611 12.317 1.02361L8.71216 8.3273L0.652192 9.49856C0.365329 9.5402 0.126912 9.7412 0.0373345 10.0169C-0.052294 10.2927 0.0224557 10.5954 0.230099 10.7978L6.0622 16.4829L4.68563 24.5106C4.63657 24.7964 4.75408 25.0851 4.98864 25.2556C5.12133 25.352 5.2785 25.401 5.43643 25.401C5.55769 25.401 5.67936 25.3721 5.79078 25.3135L13 21.5233L20.2089 25.3135C20.4656 25.4484 20.7766 25.4259 21.0111 25.2555C21.2457 25.0851 21.3632 24.7963 21.3142 24.5105L19.9372 16.4829L25.77 10.7977C25.9776 10.5954 26.0524 10.2927 25.9627 10.017Z" fill="#7E7E7E"/>
+                        </svg>
+                    </div>
+                    <span>Избранное</span>
+                </div>
+            </div>
             <!--<div class="swiper-slide">
                 <div class="catalog__categories-element" data-id="4">
                     <div class="catalog__categories-element-image">
@@ -225,6 +235,7 @@ class CreateCatalogMain extends CreateItem {
         <div class="catalog__list catalog__list--show catalog__list-food" data-id="34"></div>
         <div class="catalog__list catalog__list-drinks" data-id="33"></div>
         <div class="catalog__list catalog__list-hit" data-id="hits"></div>
+        <div class="catalog__list catalog__list-favorite" data-id="favorite"></div>
     </div>
 
     `;
@@ -236,7 +247,13 @@ class CreateCatalogMain extends CreateItem {
     const foodContainer = this.element.querySelector('.catalog__list-food');
     const hitContainer = this.element.querySelector('.catalog__list-hit');
     const searchButton = this.element.querySelector('.catalog__categories-element--search');
+    const favoriteContainer = this.element.querySelector('.catalog__list-favorite');
+    const favoriteButton = this.element.querySelector('.catalog__categories-element--favorite');
 
+    favoriteButton.addEventListener('click', () => {
+      [...favoriteContainer.children].forEach((el) => el.remove());
+      this.renderFavoriteCategory(favoriteContainer, card);
+    });
     searchButton.addEventListener('click', this.openSearchPage);
 
     this.renderFoodCategory(foodContainer, card);
@@ -283,6 +300,15 @@ class CreateCatalogMain extends CreateItem {
   renderHitsCategory(container, el) {
     Object.values(dataProductApi.successData.hits).forEach((item) => {
       container.append(el.create(dataProductApi.successData.items[item]));
+    });
+  }
+
+  renderFavoriteCategory(container, el) {
+    const productsItems = dataProductApi.successData.items;
+    itemsArray.forEach((item) => {
+      if (productsItems[item.id] !== undefined && !isEmptyObj(item) && item.id === productsItems[item.id].id) {
+        container.append(el.create(dataProductApi.successData.items[item.id]));
+      }
     });
   }
 }
