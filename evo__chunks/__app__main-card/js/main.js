@@ -299,7 +299,7 @@ class CreateInboxMainCardNews extends CreateItem {
     this.template = `
         <div class="messages__element-icon messages__element-icon--heart"></div>
           <div class="messages__element-body">
-              <div class="messages__element-title">${subject}</div>
+              <div class="messages__element-title">Системные сообщения</div>
               <div class="messages__element-wrapper">
                   <div class="messages__element-text">${message}</div>
                   <div class="messages__element-date">${this.date}</div>

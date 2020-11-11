@@ -17,10 +17,10 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
 
   /* метод возврата на прошлую страницу, берет boolean из глобального объекта выставляемое перед отрисовкой страницы */
   returnPage() {
-    accountPage.deletePage();
-    accountPage.rendering();
     toggleModalPageSignIn.closePage();
     toggleModalPageSignIn.deletePage();
+    this.buttonAccount = document.querySelector('.main-panel__button--type--profile');
+    this.buttonAccount.click();
     if (returnPageObj.returnMainPageAfterSignIn) {
       mainPage.openPage();
       history.pushState({ state: '#' }, null, '#');
@@ -249,6 +249,10 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
     if (userInfo.success) {
       api.getClientApi();
       const loginHeader = document.querySelector('.login__header');
+      const buttonJoin = document.querySelector('.button--join');
+      if (buttonJoin) {
+        buttonJoin.classList.add('button--hide');
+      }
       const formInputSignInQuestions = new CreateFormInputSignInQuestions({
         selector: ['div'],
         style: ['login__container'],
@@ -369,6 +373,7 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
 
       const inputsContainer = this.modalPageSignIn.querySelector('.form__inputs-container');
       const textSuccess = this.modalPageSignIn.querySelector('.form__text--success');
+
       textSuccess.classList.add('form__text--close');
       if (textSuccess && inputsContainer) {
         inputsContainer.classList.remove('form__inputs-container--hide');

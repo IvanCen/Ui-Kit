@@ -1498,7 +1498,7 @@ class CreateTextAreaProfile extends CreateItem {
             <label class="profile__form-label">День рождения</label>
             <input class="profile__form-input" type="text" value="${shortDateBirthday}" readonly>
         </div>
-        <div class="form__group profile__group profile__group-element">
+        <div class="form__group profile__group">
             <label class="profile__form-label">Телефон</label>
             <input class="profile__form-input" type="text" value="${phoneFormatted}" readonly>
         </div>

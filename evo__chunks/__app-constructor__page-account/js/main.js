@@ -24,6 +24,8 @@ class AccountPage {
     this.mainPageContent = document.querySelector('.main-page__content-profile');
     this.headerTitle = document.querySelector('.header__status');
     this.profileData = document.querySelector('.profile__data');
+    const buttonLogout = document.querySelector('.profile__logout');
+
     if (this.profileData) {
       this.profileData.remove();
     }
@@ -40,6 +42,11 @@ class AccountPage {
       }
     }, 100);
     history.pushState({ state: '#' }, null, '#');
+    if (!isEmptyObj(userInfoObj)) {
+      buttonLogout.classList.remove('profile__logout--hide');
+    } else {
+      buttonLogout.classList.add('profile__logout--hide');
+    }
   }
 
   logout(info) {
@@ -108,9 +115,8 @@ class AccountPage {
     this.buttonContainer = document.createElement('div');
     this.mainPageContent.prepend(createTopBarIos());
     this.buttonContainer.append(accountButtonJoinTangerin.create());
-    if (!isEmptyObj(userInfoObj)) {
-      this.buttonContainer.append(accountButtonLogoutTangerin.create());
-    }
+    this.buttonContainer.append(accountButtonLogoutTangerin.create());
+
     this.mainPageContent.append(accountTextArea.create());
     this.mainPageContent.append(this.buttonContainer);
   }

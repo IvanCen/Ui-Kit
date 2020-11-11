@@ -54,6 +54,10 @@
     left: 0;
   }
 
+  &--opened .shop-selector--show {
+    display: flex;
+  }
+
   &--opened-with-tabs {
     height: 100%;
     padding: 126px 16px 0;

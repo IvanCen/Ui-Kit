@@ -27,7 +27,10 @@ class TogglePageInboxDetails extends TogglePage {
     const containerMessages = document.createElement('div');
     containerMessages.classList.add('messages__detail-container');
 
-    containerMessages.append(message.create(messageInfo));
+    userMessages.successData.messages.forEach((item) => {
+      containerMessages.append(message.create(item));
+    });
+    //containerMessages.append(message.create(messageInfo));
 
     this.page.append(createTopBarIos());
     this.page.append(topBar.create());

@@ -237,7 +237,6 @@ class CreateCatalogMain extends CreateItem {
         <div class="catalog__list catalog__list-hit" data-id="hits"></div>
         <div class="catalog__list catalog__list-favorite" data-id="favorite"></div>
     </div>
-
     `;
 
     this.element.insertAdjacentHTML('beforeend', this.template);

@@ -225,11 +225,11 @@ function initSliders() {
     slidesPerView: 'auto',
     autoHeight: true,
   });
-  /*const swipCat = new Swiper('.catalog__categories', {
+  const swipCat = new Swiper('.catalog__categories', {
     spaceBetween: 8,
     slidesPerView: 'auto',
     autoHeight: true,
-  });*/
+  });
 
   const swipTagsFoods = new Swiper('.catalog__tags-container-foods', {
     slidesPerView: 'auto',
@@ -400,9 +400,10 @@ function doubleFav(productInfo) {
 }
 
 function addProductToBasket(productInfo) {
-  const basketPopupIcon = document.querySelector('.bottom-bar__icon-popup');
-  const basketPopupIconImg = document.querySelector('.bottom-bar__icon-popup-img');
+  /*const basketPopupIcon = document.querySelector('.bottom-bar__icon-popup');
+  const basketPopupIconImg = document.querySelector('.bottom-bar__icon-popup-img');*/
   const sizeBarButtons = document.querySelectorAll('.size-bar__button');
+  const cardButton = document.querySelector('.card__button');
   let multiplier;
   if (sizeBarButtons.length !== 0 && sizeBarButtons[0].getAttribute('multiplier') !== undefined) {
     multiplier = sizeBarButtons[0].getAttribute('multiplier');
@@ -430,7 +431,9 @@ function addProductToBasket(productInfo) {
     localStorage.setItem('basket', JSON.stringify(basketArray));
     emitter.emit('event:counter-changed');
   }
-  if (!canUseWebP()) {
+  cardButton.textContent = 'Добавлено'
+  setTimeout(()=> {cardButton.textContent = 'В корзину'}, 1000)
+  /*if (!canUseWebP()) {
     loadImg(productInfo, basketPopupIconImg, 'jpg');
   } else {
     loadImg(productInfo, basketPopupIconImg, 'webp');
@@ -439,7 +442,7 @@ function addProductToBasket(productInfo) {
   setTimeout(() => {
     basketPopupIcon.classList.remove('bottom-bar__icon-popup--open');
     basketPopupIconImg.style.backgroundImage = '';
-  }, 3000);
+  }, 3000);*/
 
   emitter.emit('event:counter-changed', {counter: basketArray.length});
 }
