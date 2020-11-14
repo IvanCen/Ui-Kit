@@ -110,7 +110,6 @@ class ToggleSubPageEditUser extends ToggleSubPage {
       ],
     });
 
-    this.subPage.append(createTopBarIos());
     this.subPage.append(topBar.create());
     this.subPage.append(formInput.create(parameters.text));
     this.formEl = this.subPage.querySelector('.form');

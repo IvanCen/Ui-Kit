@@ -18,13 +18,15 @@
   top: 0;
 
   &--opened {
-    height: calc(100vh - 56px);
+    //height: calc(100vh - 56px);
     left: 0;
+    height: 100vh;
   }
 
   &--opened--bottom-bar {
     left: 0;
-    height: calc(100vh - 132px);
+    //height: calc(100vh - 132px);
+    height: 100vh;
   }
 
   &--focus-input{

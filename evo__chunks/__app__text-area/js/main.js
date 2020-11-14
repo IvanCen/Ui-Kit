@@ -1530,7 +1530,7 @@ class CreateTextAreaProfile extends CreateItem {
           titleTopBar: 'Редактировать',
           inputLabel: '',
           identifier: 'birthday',
-          inputType: 'date',
+          inputType: 'text',
         });
       });
     } else {
@@ -1692,17 +1692,17 @@ class CreateTextAreaBalanceTabs extends CreateItem {
     this.balanceContainer = this.element.querySelector('.balance__container[data-id="1"]');
     this.bonusContainer = this.element.querySelector('.balance__container[data-id="2"]');
 
-    if (!isEmptyObj(userBonusLog)) {
-      this.renderContent(this.balanceContainer);
-      this.renderContent(this.bonusContainer, true);
-    }
+    this.renderContent(this.balanceContainer);
+    this.renderContent(this.bonusContainer, true);
 
     return super.create(this.element);
   }
 
+
   renderContent(container, isBonus = false) {
     const reformattedLog = {};
     const log = isBonus ? userBonusLog : userBalanceLog;
+    console.log(log, 'log');
 
     log.successData.forEach((item) => {
       const dateElems = new Date(`${item.timestamp.replace(/-/g, '/')} UTC`).toLocaleString('ru', {

@@ -101,7 +101,7 @@ class StoresPage {
       style: ['map__item'],
     });
 
-    this.modalPageContent.append(createTopBarIos());
+
     this.modalPageContent.append(storesTopBar.create());
     this.modalPageContent.append(storesMap.create());
     this.modalPageContent.append(storesMapItemWraper.create());
@@ -228,7 +228,7 @@ class StoresPage {
                   balloonContentFooter: `
                 <div class="map__content map__content--direction--column">
                   <span class="map__item-text map__item-text--indentation--bottom">Для заказа выбрана эта точка</span>
-                  <button onclick="closeStores()" class="button button--size--small button--theme--tangerin button--position--right map__button map__button--type--balloon">Закрыть</button>
+                  <button onclick="document.querySelector('.main-panel__button--type--main').click()" class="button button--size--small button--theme--tangerin button--position--right map__button map__button--type--balloon">Закрыть</button>
                 </div>`,
                 }, {
                   iconLayout: 'default#image',

@@ -19,14 +19,15 @@
   background-color: $white;
 
   &--opened {
-    height: calc(100vh - 56px);
+    //height: calc(100vh - 56px);
+    height: 100vh;
     left: 0;
     background-color: $white;
   }
 
   &--opened--bottom-bar {
     left: 0;
-    height: calc(100vh - 132px);
+    height: 100vh;
     background-color: $white;
   }
 

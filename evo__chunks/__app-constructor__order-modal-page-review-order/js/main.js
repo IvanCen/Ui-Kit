@@ -109,7 +109,7 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
           link.href = payInfo.successData.payUrl;
           link.click();
         }
-        closePages();
+
         while (basketArray.length > 0) {
           basketArray.pop();
         }
@@ -126,6 +126,10 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
     const sectionPayment = document.querySelector('.basket__payment');
     const inputsPayment = sectionPayment.querySelectorAll('.form__input');
     console.log(inputsPayment);
+    checkEmptyBasket();
+    closePages();
+    const buttonMain = document.querySelector('.main-panel__button--type--main');
+    buttonMain.click();
     if (info.success) {
       [...inputsPayment].forEach((item) => {
         if (item.checked) {
@@ -230,6 +234,10 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
     const textAreaNoBasket = new CreateTextAreaNoBasket({
       selector: ['div'],
       style: ['text-area-container'],
+      modifier: [
+        '--hide',
+        '--empty-basket',
+      ],
       textButton: ['К меню'],
       eventsButton: [
         {
@@ -258,23 +266,30 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
     const textAreaResult = new CreateTextAreaResult({
       selector: ['div'],
       style: ['text-area-container'],
+      modifier: [
+        `${isIos ? '--ios' : ''}`,
+      ],
     });
 
-    this.modalPageOrderReview.append(createTopBarIos());
+
     this.modalPageOrderReview.append(reviewTopBarNew.create());
+    this.modalPageOrderReview.append(textAreaNoBasket.create());
     if (isEmptyObj(userInfoObj)) {
       this.modalPageOrderReview.append(textAreaNoSignIn.create());
       this.title = document.querySelector('.header__status-basket');
       this.title.textContent = 'Корзина';
     } else if (basketArray.length !== 0) {
-      this.modalPageOrderReview.append(cardItemReviewContainer.create());
-      this.modalPageOrderReview.append(formDeliver.create());
-      this.modalPageOrderReview.append(formStores.create());
-      this.modalPageOrderReview.append(formPay.create());
-      this.modalPageOrderReview.append(formPromoCode.create());
-      this.modalPageOrderReview.append(formComment.create());
-      this.modalPageOrderReview.append(formFriendPay.create());
-      this.modalPageOrderReview.append(textAreaResult.create());
+      this.container = document.createElement('div');
+      this.container.classList.add('modal-page-order-review__content-container', `${isIos ? 'modal-page-order-review__content-container--ios' : 'modal-page-order-review__content-container--not-ios'}`);
+      this.container.append(cardItemReviewContainer.create());
+      this.container.append(formDeliver.create());
+      this.container.append(formStores.create());
+      this.container.append(formPay.create());
+      this.container.append(formPromoCode.create());
+      this.container.append(formComment.create());
+      this.container.append(formFriendPay.create());
+      this.container.append(textAreaResult.create());
+      this.modalPageOrderReview.append(this.container);
 
       this.accordContainer = document.querySelector('.accordion__container-review');
 
@@ -321,7 +336,8 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
         });
       });
     } else {
-      this.modalPageOrderReview.append(textAreaNoBasket.create());
+      this.emptyBasketContainerEl = document.querySelector('.text-area-container--empty-basket');
+      this.emptyBasketContainerEl.classList.remove('text-area-container--hide');
     }
 
     function initImages() {

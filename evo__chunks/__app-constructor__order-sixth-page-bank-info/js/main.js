@@ -30,7 +30,6 @@ class ToggleSixthPageReviewOrder extends ToggleSixthPage {
       ],
       text: ['Теперь вы можете вернуться в приложение'],
     });
-    this.sixthPage.append(createTopBarIos());
     this.sixthPage.append(topBar.create());
     this.sixthPage.append(textArea.create());
     this.openPage();

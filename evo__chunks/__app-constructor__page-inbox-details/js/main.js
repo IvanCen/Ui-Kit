@@ -32,7 +32,7 @@ class TogglePageInboxDetails extends TogglePage {
     });
     //containerMessages.append(message.create(messageInfo));
 
-    this.page.append(createTopBarIos());
+
     this.page.append(topBar.create());
     this.page.append(containerMessages);
 

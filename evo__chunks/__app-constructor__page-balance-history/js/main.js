@@ -42,7 +42,6 @@ class TogglePageBalanceHistory extends TogglePage {
       ],
     });
 
-    this.page.prepend(createTopBarIos());
     this.page.append(topBar.create());
     this.page.append(textAreaBonus.create());
     this.page.append(сardItemsContainer.create());

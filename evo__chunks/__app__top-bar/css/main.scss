@@ -17,7 +17,6 @@
 
     &--ios {
       position: fixed;
-      top: 38px;
       left: 0;
       z-index: 1;
       background: white;
@@ -25,7 +24,6 @@
 
     &--ios-small {
       position: fixed;
-      top: 10px;
       left: 0;
       z-index: 1;
     }
@@ -39,7 +37,6 @@
 
     &--ios {
       position: sticky;
-      top: 38px;
       left: 0;
       z-index: 1;
     }

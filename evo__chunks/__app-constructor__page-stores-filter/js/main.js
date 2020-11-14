@@ -120,7 +120,7 @@ class TogglePageStoresFilter extends TogglePage {
       ],
       text: ['Показать 35'],
     });
-    this.page.append(createTopBarIos());
+
     this.page.append(topBar.create());
     this.page.append(storeHoursTitleBarSmall.create());
     this.buttonContainer = document.createElement('div');

@@ -112,7 +112,6 @@ class ToggleThirdPageEditUser extends ToggleThirdPage {
       ],
     });
 
-    this.thirdPage.append(createTopBarIos());
     this.thirdPage.append(topBar.create());
     this.thirdPage.append(formInput.create(parameters.text));
     this.thirdPage.append(buttonEdit.create());

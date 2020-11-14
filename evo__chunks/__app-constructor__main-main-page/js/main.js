@@ -27,7 +27,7 @@ class MainPage {
 
   rendering() {
     this.mainPageContent = document.createElement('div');
-    this.mainPageContent.classList.add('main-page__content', 'main-page__content--size--small', 'main-page__content-main');
+    this.mainPageContent.classList.add('main-page__content', 'main-page__content--size--small', 'main-page__content-main', `${isIos ? 'main-page__content--ios' : 'main-page__content--no-ios'}`);
     this.mainPage.prepend(this.mainPageContent);
 
     const shopSelector = new CreateShopSelect({ style: ['shop-selector'] });
@@ -109,7 +109,7 @@ class MainPage {
     initCategories();
     checkEmptyBasket();
     checkStore();
-    //this.removeLastItemLine();
+    // this.removeLastItemLine();
     /* renderPromo(dataPromo);
     renderPosts(dataPosts);
     this.promoContainer.append(ourHistoryMainCard.create()); */
@@ -118,7 +118,7 @@ class MainPage {
   removeLastItemLine() {
     document.querySelectorAll('.catalog__list').forEach((item) => {
       const lastEl = item.lastElementChild.querySelector('.catalog__list-element-detail');
-      if(lastEl) {
+      if (lastEl) {
         lastEl.classList.remove('catalog__list-element-detail--type--border');
       }
     });

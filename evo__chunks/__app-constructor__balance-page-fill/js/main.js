@@ -204,7 +204,6 @@ class TogglePageBalanceFill extends TogglePage {
       style: ['balance__detail-container'],
     });
 
-    this.page.append(createTopBarIos());
     this.page.append(this.cardTopBar.create());
     this.page.append(this.textAreaFill.create());
     this.textArea = this.page.querySelector('.balance__detail-container');

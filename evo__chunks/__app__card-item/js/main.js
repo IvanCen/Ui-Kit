@@ -20,7 +20,7 @@ class CreateCardItemProductCardNew extends CreateItem {
     let price;
     if (!isEmptyObj(userStore)) {
       if (userStore.store.priceGroup === null) {
-        price = `${dataProductApi.successData.items[productInfo.id].price} ₽`
+        price = `${dataProductApi.successData.items[productInfo.id].price} ₽`;
       } else {
         price = dataProductApi.successData.items[productInfo.id][`price${userStore.store.priceGroup} ₽`];
       }
@@ -74,7 +74,7 @@ class CreateCardItemProductCardNew extends CreateItem {
       }
     });
 
-    this.iconsPlus.addEventListener('click', function(){
+    this.iconsPlus.addEventListener('click', function () {
       this.iconsPlusIcon = this.querySelector('.catalog__list-element-plus-icon');
       this.iconsPlusIcon.classList.add('catalog__list-element-plus-icon--active');
       setTimeout(() => {
@@ -617,7 +617,14 @@ class CreateCardItemReview extends CreateItem {
       }
     }
 
-    this.iconsPlus.addEventListener('click', function() {
+    const cardItem = new CreateCardItemReview({
+      style: ['banner__container'],
+      modifier: [
+        '--type--swipe',
+      ],
+    });
+
+    this.iconsPlus.addEventListener('click', function () {
       this.iconsPlusIcon = this.querySelector('.basket__offers-element-plus-icon');
       this.iconsPlusIcon.classList.add('basket__offers-element-plus-icon--active');
       setTimeout(() => {
@@ -628,9 +635,10 @@ class CreateCardItemReview extends CreateItem {
       emitter.emit('event:counter-changed');
       const cardItemContainer = document.querySelector('.accordion__container-review');
       checkBasketCounter();
-      cardItemContainer.append(this.create(productInfo));
+      const cardItemEl = cardItem.create(productInfo);
+      cardItemContainer.append(cardItemEl);
       countResultPriceAndAllProductCounter();
-      activeBanners(this.element, true, checkEmptyBasket);
+      activeBanners(cardItemEl, true, checkEmptyBasket);
       checkEmptyBasket();
       const accordionTriggers = document.querySelectorAll('.basket__header-review');
       accordionTriggers.forEach((trigger) => {

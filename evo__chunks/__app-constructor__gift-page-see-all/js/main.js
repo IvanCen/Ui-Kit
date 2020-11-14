@@ -46,7 +46,6 @@ class TogglePageSeeAll extends TogglePage {
       title: ['You’re My Hero'],
     });
 
-    this.page.append(createTopBarIos());
     this.page.append(giftSeeAllTopBar.create());
     this.page.append(giftMainCard.create());
     this.page.append(giftMainCard2.create());

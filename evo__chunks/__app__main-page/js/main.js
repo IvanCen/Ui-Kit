@@ -244,6 +244,8 @@ api.promoApi();
 api.postsApi();
 api.getSeasons();
 api.getClientSeasons();
+api.getClientBonusLog();
+api.getClientBalanceLog();
 setInterval(api.getMessages, 30000);
 api.getMessages();
 
@@ -408,8 +410,8 @@ const Navigation = new CreateNavigation({
       callback: () => {
         closePages();
         setTimeout(() => {
-          toggleModalPageOrderHistory.rendering();
-        }, 200);
+          api.getClientOrdersApi(toggleModalPageOrderHistory.rendering);
+        }, 100);
       },
     },
   ],
@@ -485,7 +487,10 @@ console.log(isIos);
 const mainPageTopBar = new CreateTopBar({
   selector: ['div'],
   style: ['header'],
-  modifier: ['--main'],
+  modifier: [
+    '--main',
+    `${isIos ? '--ios' : ''}`,
+  ],
   eventOpenBasket: [{
     type: 'click',
     callback: () => {
@@ -558,7 +563,6 @@ const mainPageFooter = new CreateFooter({
 
 function renderMain() {
   mainPageEl.prepend(mainPageTopBar.create());
-  mainPageEl.prepend(createTopBarIos());
   mainPage.rendering();
   balancePage.rendering();
   storesPage.rendering();

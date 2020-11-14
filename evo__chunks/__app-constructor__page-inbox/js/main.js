@@ -60,7 +60,7 @@ class InboxPage {
 
     setTimeout(() => {
       if (this.mainPageContent) {
-        this.mainPageContent.classList.add('main-page__content--opened-with-tabs');
+        this.mainPageContent.classList.add('main-page__content--opened-with-tabs', `${isIos ? 'main-page__content--opened-with-tabs--ios' : 'main-page__content--opened-with-tabs--not--ios'}`);
         this.mainPageContent.classList.add('main-page__content--opened');
         this.headerTitle.textContent = 'Сообщения';
         this.topBarTabs.classList.remove('header__top-tabs--hide');
@@ -71,7 +71,7 @@ class InboxPage {
 
   rendering() {
     this.mainPageContent = document.createElement('div');
-    this.mainPageContent.classList.add('main-page__content', 'main-page__content--size--small', 'main-page__content-inbox');
+    this.mainPageContent.classList.add('main-page__content', 'main-page__content--size--small', 'main-page__content-inbox', `${isIos ? 'main-page__content--ios' : 'main-page__content--no-ios'}`);
     this.mainPage.append(this.mainPageContent);
 
     const tobBarTabs = new CreateTopBarTabsInbox({
@@ -80,39 +80,6 @@ class InboxPage {
       modifier: ['-inbox'],
     });
 
-    const content = new CreateTextAreaBalanceTabs({
-      selector: ['div'],
-      style: ['tab-content'],
-    });
-    const inboxTopBar = new CreateTopBarInbox({
-      selector: ['div'],
-      style: ['top-bar'],
-      modifier: [`${isIos ? '--indentation--top' : ''}`],
-      eventBack: [
-        { type: 'click', callback: this.closePage },
-        {
-          type: 'click',
-          callback: () => {
-            const dotMessage = document.querySelector('.top-bar__icon-dot');
-            userMessages.successData.messages.every((message) => {
-              if (message.wasRead !== null) {
-                dotMessage.classList.add('top-bar__icon-dot--hide');
-                return false; й;
-              }
-              return true;
-            });
-          },
-        },
-      ],
-      eventToggleMessages: [
-        { type: 'click', callback: toggleInboxTabMessagesContent.clearPage },
-        { type: 'click', callback: toggleInboxTabMessagesContent.rendering },
-      ],
-      eventToggleLastOffers: [
-        { type: 'click', callback: toggleInboxTabLastOffersContent.clearPage },
-        { type: 'click', callback: toggleInboxTabLastOffersContent.rendering },
-      ],
-    });
     const textAreaNoSignIn = new CreateTextAreaNoSignIn({
       selector: ['div'],
       style: ['text-area-container'],
@@ -132,7 +99,6 @@ class InboxPage {
       ],
     });
 
-    this.mainPageContent.append(createTopBarIos());
     this.topBar = document.querySelector('.header--main');
     this.topBar.append(tobBarTabs.create());
 

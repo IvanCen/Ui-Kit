@@ -62,9 +62,10 @@ class CreateFooter extends CreateItem {
   constructor(parameters) {
     super();
     this.parameters = parameters;
+    this.switchNavElem = this.switchNavElem.bind(this);
     this.element = document.createElement(this.parameters.selector);
     this.template = `
-      <div class="main-panel">
+      <div class="main-panel ${isIos ? 'main-panel--ios' : ''}">
         <button class="main-panel__button main-panel__button--type--main main-panel__button--active" data-page="main" data-page-title="Отличный день для кофе ☕">
             <svg version="1.1" id="Слой_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                          viewBox="0 0 207.59 186.67" style="enable-background:new 0 0 207.59 186.67;" xml:space="preserve" width="20" height="20">
@@ -106,8 +107,19 @@ class CreateFooter extends CreateItem {
     </div>`;
   }
 
+  switchNavElem(activeClassName) {
+    this.navElems = document.querySelectorAll('.navigation-element');
+    this.activeEl = document.querySelector(`.navigation-element-${activeClassName}`);
+
+    this.navElems.forEach((el) => {
+      el.classList.remove('navigation-element--active');
+    });
+    this.activeEl.classList.add('navigation-element--active');
+  }
+
   create() {
     this.element.insertAdjacentHTML('beforeend', this.template);
+
 
     this.buttonMain = this.element.querySelector('.main-panel__button--type--main');
     this.buttonBalance = this.element.querySelector('.main-panel__button--type--balance');
@@ -117,30 +129,45 @@ class CreateFooter extends CreateItem {
 
     if (typeof this.parameters.eventOpenMainPage === 'object') {
       for (const event of this.parameters.eventOpenMainPage) {
-        this.buttonMain.addEventListener(event.type, event.callback);
+        this.buttonMain.addEventListener(event.type, () => {
+          event.callback();
+          this.switchNavElem('main');
+        });
       }
     }
     if (typeof this.parameters.eventOpenBalancePage === 'object') {
       for (const event of this.parameters.eventOpenBalancePage) {
-        this.buttonBalance.addEventListener(event.type, event.callback);
+        this.buttonBalance.addEventListener(event.type, () => {
+          event.callback();
+          this.switchNavElem('balance');
+        });
       }
     }
 
     if (typeof this.parameters.eventOpenMessagesPage === 'object') {
       for (const event of this.parameters.eventOpenMessagesPage) {
-        this.buttonMessages.addEventListener(event.type, event.callback);
+        this.buttonMessages.addEventListener(event.type, () => {
+          event.callback();
+          this.switchNavElem('inbox');
+        });
       }
     }
 
     if (typeof this.parameters.eventOpenProfilePage === 'object') {
       for (const event of this.parameters.eventOpenProfilePage) {
-        this.buttonProfile.addEventListener(event.type, event.callback);
+        this.buttonProfile.addEventListener(event.type, () => {
+          event.callback();
+          this.switchNavElem('profile');
+        });
       }
     }
 
     if (typeof this.parameters.eventOpenStoresPage === 'object') {
       for (const event of this.parameters.eventOpenStoresPage) {
-        this.buttonStores.addEventListener(event.type, event.callback);
+        this.buttonStores.addEventListener(event.type, () => {
+          event.callback();
+          this.switchNavElem('stores');
+        });
       }
     }
 

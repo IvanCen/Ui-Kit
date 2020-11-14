@@ -330,7 +330,7 @@ class CreateFormInputSignInQuestions extends CreateItem {
                     <h2 class="form__title">Хотите рассказать нам о своей дате рождения? Мы регулярно проводим специальные акции для именинников</h2>  
                     <div class="form__input">
                       <label class="form__input-underlined">
-                        <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--birthday" type="date" min="1900-01-01">
+                        <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--birthday" type="text" min="1900-01-01">
                         <button class="date__picker"></button>
                         <span class="form__input-label form__input--focused">День рождения</span>
                         <ul class="form__input-requirements"></ul>
@@ -385,6 +385,12 @@ class CreateFormInputSignInQuestions extends CreateItem {
 
     this.inputAreaBirthday = this.element.querySelector('.form__input-area--type--birthday');
     if (this.inputAreaBirthday) {
+      ['click', 'keydown', 'focus', 'keyup'].forEach((event) => {
+        this.inputAreaBirthday.addEventListener(event, (e) => {
+          console.log(this.element);
+          e.preventDefault();
+        }, false);
+      });
       this.inputAreaBirthday.addEventListener('click', (e) => {
         e.preventDefault();
         emitter.emit('inputdate', this.inputAreaBirthday);

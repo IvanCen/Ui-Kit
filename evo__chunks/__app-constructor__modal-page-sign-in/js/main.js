@@ -452,7 +452,7 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
     this.signInTopBar = new CreateTopBarSignIn({
       selector: ['div'],
       style: ['login__header'],
-      modifier: [`--size--medium${isIos ? '--ios' : ''}`],
+      modifier: [`${isIos ? '--ios' : ''}`],
       eventCloseIcon: [
         { type: 'click', callback: this.closePage },
         { type: 'click', callback: this.deletePage },
@@ -507,7 +507,6 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
     });
 
     /* добавление компонентов на страницу */
-    this.modalPageSignIn.append(createTopBarIos());
     this.modalPageSignIn.append(this.signInTopBar.create());
     this.modalPageSignIn.append(this.formInputSignIn.create());
 

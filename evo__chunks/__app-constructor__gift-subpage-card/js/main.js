@@ -32,7 +32,7 @@ class ToggleSubPageGiftCard extends ToggleSubPage {
       ],
     });
 
-    this.subPage.append(createTopBarIos());
+
     this.subPage.append(giftCardTopBar.create());
     this.subPage.append(giftSelectItem.create());
     this.subPage.append(giftForm.create());

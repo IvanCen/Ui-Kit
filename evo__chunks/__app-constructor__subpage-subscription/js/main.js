@@ -46,7 +46,7 @@ class ToggleModalPageSubscription extends ToggleSubPage {
     });
 
     this.subPage.prepend(topBar.create());
-    this.subPage.prepend(createTopBarIos());
+
 
     const topBarTabs = this.subPage.querySelectorAll('.top-bar__tab');
     switchActive(topBarTabs, 'top-bar__tab--active-light');

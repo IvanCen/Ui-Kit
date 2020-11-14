@@ -87,7 +87,6 @@ class ToggleOrder extends ToggleMainPage {
       ],
     });
 
-    this.mainPageContent.prepend(createTopBarIos());
     this.mainPageContent.prepend(orderTopBar.create());
     const footer = document.querySelector('.footer');
     footer.before(orderBottomBar.create());

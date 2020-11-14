@@ -2,6 +2,10 @@ class BalancePage {
   constructor(parameters) {
     this.parameters = parameters;
     this.rendering = this.rendering.bind(this);
+    this.render = this.render.bind(this);
+    this.initBalance = this.initBalance.bind(this);
+    this.closePage = this.closePage.bind(this);
+    this.openPage = this.openPage.bind(this);
     this.body = document.querySelector('body');
     this.mainPage = document.querySelector('.main-page');
     this.mainPageContent = document.querySelector('.main-page__content');
@@ -24,7 +28,9 @@ class BalancePage {
     this.topBarTabs.classList.remove('header__top-tabs--hide');
 
     if (isEmptyObj(userInfoObj)) {
-      this.mainPageContentContainerBalance.classList.add('main-page__content-container--hide');
+      if (this.mainPageContentContainerBalance) {
+        this.mainPageContentContainerBalance.classList.add('main-page__content-container--hide');
+      }
       this.textAreaContainerSignIn.classList.remove('text-area-container--hide');
     } else {
       this.mainPageContentContainerBalance.classList.remove('main-page__content-container--hide');
@@ -33,7 +39,7 @@ class BalancePage {
 
     setTimeout(() => {
       if (this.mainPageContent) {
-        this.mainPageContent.classList.add('main-page__content--opened-with-tabs');
+        this.mainPageContent.classList.add('main-page__content--opened-with-tabs', `${isIos ? 'main-page__content--opened-with-tabs--ios' : 'main-page__content--opened-with-tabs--not--ios'}`);
         this.mainPageContent.classList.add('main-page__content--opened');
         this.headerTitle.textContent = 'Баланс';
       }
@@ -43,49 +49,54 @@ class BalancePage {
 
   rendering() {
     this.mainPageContent = document.createElement('div');
-    this.mainPageContent.classList.add('main-page__content', 'main-page__content--size--small', 'main-page__content-balance');
+    this.mainPageContent.classList.add('main-page__content', 'main-page__content--size--small', 'main-page__content-balance', `${isIos ? 'main-page__content--ios' : 'main-page__content--no-ios'}`);
     this.mainPage.prepend(this.mainPageContent);
     api.getClientApi();
     this.mainPageContent.classList.add('main-page__content--size--small');
 
-    const card = new CreateTextMainCard({
-      selector: ['div'],
-      style: ['main-card'],
-      modifier: ['--indentation--top'],
-      text: ['Войдите, что бы увидеть свой баланс'],
-    });
-    const content = new CreateTextAreaBalanceTabs({
-      selector: ['div'],
-      style: ['tab-content'],
-    });
     const tobBarTabs = new CreateTopBarTabsBalance({
       selector: ['div'],
       style: ['header__top-tabs'],
       modifier: ['-balance'],
     });
-    const buttonJoinOrange = new CreateButton({
-      selector: ['button'],
-      style: ['button'],
+
+    const textAreaNoSignIn = new CreateTextAreaNoSignIn({
+      selector: ['div'],
+      style: ['text-area-container'],
       modifier: [
-        '--size--big',
-        '--theme--tangerin',
-        '--theme--shadow-big',
-        '--type--fixed',
-        '-route',
+        '--hide',
+        '--type--sign-in',
+        '--indentation--big',
       ],
-      text: ['Войти'],
-      eventsOpen: [
+      eventsButton: [
         {
           type: 'click',
           callback: () => {
-            stopAction(() => {
-              returnPageObj.returnBalanceAfterSignIn = true;
-              toggleModalPageSignIn.rendering();
-            });
+            toggleModalPageSignIn.rendering();
           },
         },
       ],
     });
+
+
+    this.topBar = document.querySelector('.header--main');
+    this.topBar.append(tobBarTabs.create());
+
+    this.mainPageContent.append(textAreaNoSignIn.create());
+
+    api.getClientBonusLog();
+    api.getClientBalanceLog(this.render);
+  }
+
+  render() {
+    this.mainPageContentContainer = document.createElement('div');
+    this.mainPageContentContainer.classList.add('main-page__content-container', 'main-page__content-container-balance');
+
+    const content = new CreateTextAreaBalanceTabs({
+      selector: ['div'],
+      style: ['tab-content'],
+    });
+
     const buttonFill = new CreateButton({
       selector: ['button'],
       style: ['button'],
@@ -108,42 +119,14 @@ class BalancePage {
         },
       ],
     });
-    const textAreaNoSignIn = new CreateTextAreaNoSignIn({
-      selector: ['div'],
-      style: ['text-area-container'],
-      modifier: [
-        '--hide',
-        '--type--sign-in',
-        '--indentation--big',
-      ],
-      eventsButton: [
-        {
-          type: 'click',
-          callback: () => {
-            this.closePage();
-            toggleModalPageSignIn.rendering();
-          },
-        },
-      ],
-    });
 
-    this.mainPageContentContainer = document.createElement('div');
-    this.mainPageContentContainer.classList.add('main-page__content-container', 'main-page__content-container-balance');
-
-    this.mainPageContent.append(createTopBarIos());
-
-    this.topBar = document.querySelector('.header');
-    this.topBar.append(tobBarTabs.create());
-
-
-    this.mainPageContent.append(textAreaNoSignIn.create());
     this.mainPageContentContainer.append(content.create());
     this.mainPageContentContainer.append(buttonFill.create());
     this.mainPageContent.append(this.mainPageContentContainer);
 
-
     this.initBalance();
   }
+
 
   initBalance() {
     const sectionGroupTriggers = document.querySelectorAll('.balance__history-section-group');

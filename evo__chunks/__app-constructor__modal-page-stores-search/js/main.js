@@ -88,7 +88,6 @@ class ToggleModalPageStoresSearch extends ToggleModalPageSearch {
       modifier: ['--type--search'],
     });
 
-    this.modalPageSearch.append(createTopBarIos());
     this.modalPageSearch.append(topBar.create());
     this.modalPageSearch.append(mapItemStoresSearchWraper.create());
     const inputSearch = this.modalPageSearch.querySelector('.top-bar-search__input-area');

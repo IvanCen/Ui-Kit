@@ -8,7 +8,6 @@ class CreateNavigation extends CreateItem {
 
   create() {
     this.template = `
-
         <div class="navigation-element">
             <svg version="1.1" id="Слой_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                  viewBox="0 0 207.59 186.67" style="enable-background:new 0 0 207.59 186.67;" xml:space="preserve" width="38" height="38">
@@ -37,7 +36,6 @@ class CreateNavigation extends CreateItem {
                 <path d="M31 18.41L29.59 17L24 22.59L18.41 17L17 18.41L22.59 24L17 29.59L18.41 31L24 25.41L29.59 31L31 29.59L25.41 24L31 18.41Z" fill="white"/>
             </svg>
         </div>
-
     `;
 
     this.element.insertAdjacentHTML('beforeend', this.template);

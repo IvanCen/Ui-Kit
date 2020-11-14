@@ -62,7 +62,7 @@ class AccountPage {
 
   rendering() {
     this.mainPageContent = document.createElement('div');
-    this.mainPageContent.classList.add('main-page__content', 'main-page__content--size--small', 'main-page__content-profile');
+    this.mainPageContent.classList.add('main-page__content', 'main-page__content--size--small', 'main-page__content-profile', `${isIos ? 'main-page__content--ios' : 'main-page__content--no-ios'}`);
     this.mainPage.append(this.mainPageContent);
     const accountButtonJoinTangerin = new CreateButton(
       {
@@ -113,7 +113,6 @@ class AccountPage {
     });
 
     this.buttonContainer = document.createElement('div');
-    this.mainPageContent.prepend(createTopBarIos());
     this.buttonContainer.append(accountButtonJoinTangerin.create());
     this.buttonContainer.append(accountButtonLogoutTangerin.create());
 

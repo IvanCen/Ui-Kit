@@ -150,7 +150,6 @@ class ToggleModalPageOrderSearch extends ToggleModalPageSearch {
       ],
     });
 
-    this.modalPageSearch.append(createTopBarIos());
     this.modalPageSearch.append(textAreaSearch.create());
     /* this.modalPageSearch.append(cardItemContainerSearch.create('search'));
     const inputSearch = document.querySelector('.top-bar-search__input-area');
@@ -301,7 +300,11 @@ class ToggleModalPageOrderSearch extends ToggleModalPageSearch {
 
       const iconsPlus = element.querySelector('.search__list-element-plus-icon');
 
-      iconsPlus.addEventListener('click', () => {
+      iconsPlus.addEventListener('click', function () {
+        iconsPlus.classList.add('search__list-element-plus-icon--active');
+        setTimeout(() => {
+          iconsPlus.classList.remove('search__list-element-plus-icon--active');
+        }, 1000);
         basketArray.push({ id: item.id, modifiers: [] });
         localStorage.setItem('basket', JSON.stringify(basketArray));
         checkEmptyBasket();

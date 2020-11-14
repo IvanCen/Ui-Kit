@@ -60,7 +60,6 @@ class ToggleSubPageSupport extends ToggleSubPage {
     this.subPageContent = this.subPage.querySelector('.subpage__content');
     this.subPageContent.classList.add('subpage__content--indentation');
 
-    this.subPage.prepend(createTopBarIos());
     this.subPage.prepend(topBar.create());
     this.subPageContent.append(formInput.create());
     this.subPageContent.append(buttonSend.create());

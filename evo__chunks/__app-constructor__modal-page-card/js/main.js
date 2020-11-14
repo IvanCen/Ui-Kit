@@ -13,7 +13,6 @@ class ToggleModalPageCard extends ToggleModalPageCardDef {
       style: ['product-card'],
     });
 
-    this.modalPageCard.append(createTopBarIos());
     this.modalPageCard.append(textArea.create(productInfo));
 
     window.addEventListener('resize', test);
@@ -53,10 +52,10 @@ class ToggleModalPageCard extends ToggleModalPageCardDef {
     }
 
     function activeTouch(container) {
-      let dragStart = 0;
-      let dragEnd = 0;
-      let offsetY = 0;
-      let offsetYOnStart = 0;
+      let dragStart = 24;
+      let dragEnd = 24;
+      let offsetY = 24;
+      let offsetYOnStart = 24;
       let isOpen = false;
       const isMapOpen = cardOpened;
 
@@ -77,28 +76,28 @@ class ToggleModalPageCard extends ToggleModalPageCardDef {
           offsetY = container.clientHeight;
           offsetYOnStart = container.clientHeight;
         } else if (offsetY < (container.clientHeight) && action === 'end' && isOpen) {
-          offsetY = 0;
-          offsetYOnStart = 0;
+          offsetY = 24;
+          offsetYOnStart = 24;
           isOpen = !isOpen;
           cardOpened = true;
         }
         if (offsetY < 0) {
           // тут действия, если тянется дальше максимума
           if (action === 'end') {
-            offsetY = 0;
-            dragStart = 0;
-            dragEnd = 0;
-            offsetYOnStart = 0;
+            offsetY = 24;
+            dragStart = 24;
+            dragEnd = 24;
+            offsetYOnStart = 24;
           } else if (action === 'move') {
-            offsetY = 0;// уменьшапем скорость смещения в 2 раза
+            offsetY = 24;// уменьшапем скорость смещения в 2 раза
           }
         }
         if (action === 'open') {
           container.classList.add('card--animation');
-          offsetY = 0;
-          dragStart = 0;
-          dragEnd = 0;
-          offsetYOnStart = 0;
+          offsetY = 24;
+          dragStart = 24;
+          dragEnd = 24;
+          offsetYOnStart = 24;
           container.style.transform = `translate3d(0,${offsetY}px,0)`;
           setTimeout(() => {
             container.classList.remove('card--animation');

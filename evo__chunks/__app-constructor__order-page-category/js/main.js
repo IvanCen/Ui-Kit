@@ -49,7 +49,6 @@ class TogglePageOrderCategory extends TogglePageOrderCard {
     const cardItemContainer = new CreateCardItemContainerProductCard();
     const cardItemProductCard = new CreateCardItemOrderProductCard();
 
-    this.page.append(createTopBarIos());
     this.page.append(orderCardTopBar.create());
     this.page.append(cardItemContainer.create());
     const cardItemContainerSelector = this.page.querySelector('.card-item__container');
@@ -118,7 +117,6 @@ class TogglePageOrderCategoryAll extends TogglePage {
     const orderCardBannersContainer = new CreateBannersContainerOrder();
     const orderCardBanners = new CreateBannersOrder();
 
-    this.page.append(createTopBarIos());
     this.page.append(orderCardTopBar.create());
 
     function rendered(arr, container) {
