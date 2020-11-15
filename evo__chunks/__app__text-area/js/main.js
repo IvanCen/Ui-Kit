@@ -758,6 +758,12 @@ class CreateTextAreaProductCard extends CreateItem {
     this.containerIngredients = this.element.querySelector('.card__info-section--ingredients');
     this.iconsLike = this.element.querySelector('.card__bookmark-icon');
     this.buttonReset = this.element.querySelector('.card__modifiers-reset');
+    this.cardContainer = this.element.querySelector('.card__container');
+
+    if (isIos) {
+      this.buttonAdd.classList.add('card__button--ios');
+      this.cardContainer.classList.add('card__container--ios');
+    }
 
     if (!isEmptyObj(outOfStock) && outOfStock.successData.itemsAndModifiers.length !== 0) {
       let active = true;
@@ -768,27 +774,25 @@ class CreateTextAreaProductCard extends CreateItem {
           break;
         }
       }
-      if (active) {
-        this.buttonAdd.addEventListener('click', () => {
-          addProductToBasket(productInfo);
-          this.cardPage.classList.add('card--animation');
-          this.cardPage.style = 'transform: translate3d(0px, 760.2283px, 0px);';
-          setTimeout(() => {
-            toggleModalPageCard.deletePage();
-          }, 1000);
-        });
-        this.iconAdd.addEventListener('click', () => {
-          addProductToBasket(productInfo);
-          this.cardPage = document.querySelector('.card');
-          this.cardPage.classList.add('card--animation');
-          this.cardPage.style = 'transform: translate3d(0px, 760.2283px, 0px);';
-          setTimeout(() => {
-            toggleModalPageCard.deletePage();
-          }, 1000);
-        });
-      }
     }
 
+    this.buttonAdd.addEventListener('click', () => {
+      addProductToBasket(productInfo);
+      this.cardPage.classList.add('card--animation');
+      this.cardPage.style = 'transform: translate3d(0px, 760.2283px, 0px);';
+      setTimeout(() => {
+        toggleModalPageCard.deletePage();
+      }, 1000);
+    });
+    this.iconAdd.addEventListener('click', () => {
+      addProductToBasket(productInfo);
+      this.cardPage = document.querySelector('.card');
+      this.cardPage.classList.add('card--animation');
+      this.cardPage.style = 'transform: translate3d(0px, 760.2283px, 0px);';
+      setTimeout(() => {
+        toggleModalPageCard.deletePage();
+      }, 1000);
+    });
 
     this.buttonReset.addEventListener('click', () => {
       delete userDataObj[productInfo.id];
@@ -1952,7 +1956,7 @@ class CreateTextAreaNoBasket extends CreateItem {
   create() {
     this.template = `
       <div class="basket__empty-section">
-        <img src="[+chunkWebPath+]/img/empty-basket.svg" class="basket__empty-section-img" alt="">
+        <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/empty-basket.svg]]" class="basket__empty-section-img" alt="">
         <div class="basket__empty-section-title">У вас еще нет товаров в корзине</div>
         <div class="basket__empty-section-text">Переходите в меню, делайте заказ и наслаждайтесь</div>
         <button class="basket__empty-section-button button button--color-5">${this.parameters.textButton}</button>
@@ -1979,7 +1983,7 @@ class CreateTextAreaNoSignIn extends CreateItem {
   create() {
     this.template = `
       <div class="basket__empty-section">
-        <img src="[+chunkWebPath+]/img/no-sign-in.svg" class="basket__empty-section-img" alt="">
+        <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/no-sign-in.svg]]" class="basket__empty-section-img" alt="">
         <div class="basket__empty-section-title">Упс! Вход не выполнен</div>
         <div class="basket__empty-section-text">Для продолжения покупок Вам необходимо авторизоваться</div>
         <button class="basket__sign-in-button button button--color-5">Перейти к авторизации</button>

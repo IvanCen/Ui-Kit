@@ -4,7 +4,6 @@ const body = document.querySelector('body');
 /* window.onerror = (message, url, lineNo) => {
   api.sendDebugMessage(`App-test. Error: ${message} Line Number: ${lineNo}`);
 }; */
-
 const api = new Api();
 api.getDefaultBagItemForOrder();
 
@@ -483,7 +482,6 @@ function closeOrderPage() {
   });
 }
 
-console.log(isIos);
 const mainPageTopBar = new CreateTopBar({
   selector: ['div'],
   style: ['header'],

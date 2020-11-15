@@ -30,7 +30,12 @@ class MainPage {
     this.mainPageContent.classList.add('main-page__content', 'main-page__content--size--small', 'main-page__content-main', `${isIos ? 'main-page__content--ios' : 'main-page__content--no-ios'}`);
     this.mainPage.prepend(this.mainPageContent);
 
-    const shopSelector = new CreateShopSelect({ style: ['shop-selector'] });
+    const shopSelector = new CreateShopSelect(
+      {
+        style: ['shop-selector'],
+        modifier: [`${isIos ? '--ios' : ''}`],
+      },
+    );
     const textAreaBalanceMain = new CreateTextAreaBalanceMain({
       selector: ['section'],
       style: ['balance-section'],

@@ -781,7 +781,7 @@ body {
       position: absolute;
       background-position: center center;
       background-repeat: no-repeat;
-      background-image: url("[+chunkWebPath+]/img/arrow-up.svg");
+      background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/arrow-up.svg]]");
     }
 
     &--active {
@@ -1094,12 +1094,12 @@ body {
       }
 
       &-plus-icon {
-        background: url("[+chunkWebPath+]/img/icon-plus.svg") no-repeat;
+        background: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-plus.svg]]") no-repeat;
         width: 24px;
         height: 24px;
 
         &--active {
-          background: url("[+chunkWebPath+]/img/icon-plus--active.svg") no-repeat;
+          background: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-plus--active.svg]]") no-repeat;
         }
       }
 
@@ -1162,7 +1162,7 @@ body {
           background-size: contain;
           background-repeat: no-repeat;
           background-position: center center;
-          background-image: url("[+chunkWebPath+]/img/clock.svg");
+          background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/clock.svg]]");
         }
 
         .basket__offers-element-image {
@@ -1348,7 +1348,7 @@ body {
     padding-bottom: 178px;
     background-repeat: no-repeat;
     background-position: center center;
-    background-image: url("[+chunkWebPath+]/img/balance.svg");
+    background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/balance.svg]]");
   }
 
   &__container {
@@ -1388,7 +1388,7 @@ body {
           display: block;
           background-repeat: no-repeat;
           background-position: center;
-          background-image: url("[+chunkWebPath+]/img/arrow-up.svg");
+          background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/arrow-up.svg]]");
           width: 12px;
           height: 8px;
           position: absolute;
@@ -1478,6 +1478,10 @@ body {
     left: 16px;
     box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.24);
     border-radius: 24px;
+
+    &--ios {
+      bottom: 104px;
+    }
   }
 
   &__bookmark {
@@ -1498,7 +1502,7 @@ body {
     background-color: white;
     background-position: center 40%;
     background-repeat: no-repeat;
-    background-image: url("[+chunkWebPath+]/img/touch.svg");
+    background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/touch.svg]]");
     border-radius: 14px 14px 0px 0px;
   }
 
@@ -1520,7 +1524,7 @@ body {
       background-position: center center;
 
       &--hit {
-        background-image: url("[+chunkWebPath+]/img/star-w.svg");
+        background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/star-w.svg]]");
       }
     }
   }
@@ -1532,6 +1536,10 @@ body {
     max-height: calc(100vh - 32px);
     height: 100%;
     padding-bottom: 24px;
+
+    &--ios {
+      padding-bottom: 104px;
+    }
   }
 
   &__image {
@@ -1662,11 +1670,11 @@ body {
             }
 
             &-plus {
-              background-image: url("[+chunkWebPath+]/img/plus.svg");
+              background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/plus.svg]]");
             }
 
             &-minus {
-              background-image: url("[+chunkWebPath+]/img/minus.svg");
+              background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/minus.svg]]");
             }
           }
 
@@ -1737,7 +1745,7 @@ body {
           display: block;
           background-repeat: no-repeat;
           background-position: center;
-          background-image: url("[+chunkWebPath+]/img/arrow-up.svg");
+          background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/arrow-up.svg]]");
           width: 12px;
           height: 8px;
           position: absolute;
@@ -2000,12 +2008,12 @@ body {
       }
 
       &-plus-icon {
-        background: url("[+chunkWebPath+]/img/icon-plus.svg") no-repeat;
+        background: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-plus.svg]]") no-repeat;
         width: 24px;
         height: 24px;
 
         &--active {
-          background: url("[+chunkWebPath+]/img/icon-plus--active.svg") no-repeat;
+          background: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-plus--active.svg]]") no-repeat;
         }
       }
 
@@ -2070,7 +2078,7 @@ body {
           background-size: contain;
           background-repeat: no-repeat;
           background-position: center center;
-          background-image: url("[+chunkWebPath+]/img/clock.svg");
+          background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/clock.svg]]");
         }
 
         .catalog__list-element-image {
@@ -2099,15 +2107,15 @@ body {
       background-position: center center;
 
       &--hit {
-        background-image: url("[+chunkWebPath+]/img/star.svg");
+        background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/star.svg]]");
       }
 
       &--clock {
-        background-image: url("[+chunkWebPath+]/img/clock.svg");
+        background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/clock.svg]]");
       }
 
       &--warning {
-        background-image: url("[+chunkWebPath+]/img/warning.svg");
+        background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/warning.svg]]");
       }
     }
   }
@@ -2246,6 +2254,10 @@ body {
   padding: 0 16px;
   z-index: 2;
 
+  &--ios {
+    bottom: 76px;
+  }
+
   & > span {
     font-size: 13px;
     line-height: 15px;
@@ -2365,7 +2377,7 @@ body {
     height: 48px;
     width: 48px;
     content: "";
-    background-image: url("[+chunkWebPath+]/img/search-reset.svg");
+    background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/search-reset.svg]]");
     background-position: center center;
     background-repeat: no-repeat;
   }
@@ -2508,7 +2520,7 @@ body {
       right: 0;
       transform: translateY(-50%);
       height: 24px;
-      background-image: url("[+chunkWebPath+]/img/arrow.svg");
+      background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/arrow.svg]]");
     }
   }
 
@@ -2600,7 +2612,7 @@ body {
         position: absolute;
         background-position: center center;
         background-repeat: no-repeat;
-        background-image: url("[+chunkWebPath+]/img/search-close.svg");
+        background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/search-close.svg]]");
       }
     }
   }
@@ -2619,12 +2631,12 @@ body {
       margin-bottom: 16px;
 
       &-plus-icon {
-        background: url("[+chunkWebPath+]/img/icon-plus.svg") no-repeat;
+        background: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-plus.svg]]") no-repeat;
         width: 24px;
         height: 24px;
 
         &--active {
-          background: url("[+chunkWebPath+]/img/icon-plus--active.svg") no-repeat;
+          background: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-plus--active.svg]]") no-repeat;
         }
       }
 
@@ -2710,7 +2722,7 @@ body {
         padding-bottom: 100%;
         background-position: center center;
         background-repeat: no-repeat;
-        background-image: url("[+chunkWebPath+]/img/search-bg.svg");
+        background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/search-bg.svg]]");
       }
 
       &-text {
@@ -2814,7 +2826,7 @@ body {
       right: 0;
       transform: translateY(-50%);
       height: 24px;
-      background-image: url("[+chunkWebPath+]/img/arrow.svg");
+      background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/arrow.svg]]");
     }
   }
 
@@ -2975,7 +2987,7 @@ body {
     padding-bottom: 178px;
     background-repeat: no-repeat;
     background-position: center center;
-    background-image: url("[+chunkWebPath+]/img/balance.svg");
+    background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/balance.svg]]");
   }
 
   &__container {
@@ -3023,7 +3035,8 @@ body {
           display: block;
           background-repeat: no-repeat;
           background-position: center;
-          background-image: url("[+chunkWebPath+]/img/arrow-up.svg");
+          background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/arrow-up.svg]]");
+
           width: 12px;
           height: 8px;
           position: absolute;
@@ -3162,7 +3175,7 @@ body {
       background-repeat: no-repeat;
       background-size: contain;
       background-position: center center;
-      background-image: url("[+chunkWebPath+]/img/balance1.svg");
+      background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/balance1.svg]]");
       width: 100%;
       padding-bottom: 57%;
       margin: 62px 0 74px 0;
@@ -3386,7 +3399,7 @@ body {
           background-size: contain;
           background-repeat: no-repeat;
           background-position: center center;
-          background-image: url("[+chunkWebPath+]/img/clock.svg");
+          background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/clock.svg]]");
         }
 
         .order-history__offers-element-image {
@@ -3405,7 +3418,7 @@ body {
     display: none;
 
     &-img {
-      background-image: url("[+chunkWebPath+]/img/empty-order-history.svg");
+      background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/empty-order-history.svg]]");
       background-position: center center;
       background-repeat: no-repeat;
       width: 100%;
@@ -3485,14 +3498,14 @@ body {
       background-position: center center;
       width: 40px;
       height: 40px;
-      background-image: url("[+chunkWebPath+]/img/loc.svg");
+      background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/loc.svg]]");
 
       &--shop {
-        background-image: url("[+chunkWebPath+]/img/loc.svg");
+        background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/loc.svg]]");
       }
 
       &--heart {
-        background-image: url("[+chunkWebPath+]/img/heart.svg");
+        background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/heart.svg]]");
       }
     }
 
@@ -3700,7 +3713,7 @@ body {
       height: 48px;
       width: 48px;
       content: "";
-      background-image: url("[+chunkWebPath+]/img/search-reset.svg");
+      background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/search-reset.svg]]");
       background-position: center center;
       background-repeat: no-repeat;
     }
@@ -3742,7 +3755,7 @@ body {
     background-color: white;
     background-position: center 40%;
     background-repeat: no-repeat;
-    background-image: url("[+chunkWebPath+]/img/touch.svg");
+    background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/touch.svg]]");
     border-radius: 14px 14px 0px 0px;
   }
 
@@ -3814,7 +3827,7 @@ body {
       height: 24px;
       background-position: center center;
       background-repeat: no-repeat;
-      background-image: url("[+chunkWebPath+]/img/store-bookmark.svg");
+      background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/store-bookmark.svg]]");
     }
 
     &-address {
@@ -3866,7 +3879,7 @@ body {
         width: 24px;
         height: 24px;
         background-position: center center;
-        background-image: url("[+chunkWebPath+]/img/phone.svg");
+        background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/phone.svg]]");
       }
     }
 
@@ -3887,7 +3900,7 @@ body {
       width: 24px;
       height: 24px;
       background-position: center center;
-      background-image: url("[+chunkWebPath+]/img/map.svg");
+      background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/map.svg]]");
     }
   }
 }
@@ -3925,7 +3938,7 @@ body {
     height: 48px;
     width: 48px;
     content: "";
-    background-image: url("[+chunkWebPath+]/img/search-reset.svg");
+    background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/search-reset.svg]]");
     background-position: center center;
     background-repeat: no-repeat;
   }
@@ -3946,7 +3959,7 @@ body {
   background-color: white;
   background-repeat: no-repeat;
   background-position: right top;
-  background-image: url("[+chunkWebPath+]/img/big-logo.svg");
+  background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/big-logo.svg]]");
   z-index: 100;
   flex-direction: column;
   justify-content: space-between;
