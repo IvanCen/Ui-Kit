@@ -92,7 +92,7 @@ class CreateFooter extends CreateItem {
             </svg>
             <span>Баланс</span>
         </button>
-        <button class="main-panel__button main-panel__button--type--messages main-panel__button--notification" data-page="messages">
+        <button class="main-panel__button main-panel__button--type--messages" data-page="messages">
             <svg width="18" height="20" viewBox="0 0 18 18" fill="#FF6000" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12.6 0H5.4C2.4219 0 0 2.4219 0 5.4V17.1C0 17.5977 0.4023 18 0.9 18H12.6C15.5781 18 18 15.5781 18 12.6V5.4C18 2.4219 15.5781 0 12.6 0ZM10.8 11.7H4.5V9.9H10.8V11.7ZM13.5 8.1H4.5V6.3H13.5V8.1Z" fill="#FF6000"/>
             </svg>

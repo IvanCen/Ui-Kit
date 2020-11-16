@@ -19,17 +19,20 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
   returnPage() {
     toggleModalPageSignIn.closePage();
     toggleModalPageSignIn.deletePage();
-    this.buttonAccount = document.querySelector('.main-panel__button--type--profile');
-    this.buttonAccount.click();
+    console.log(returnPageObj);
     if (returnPageObj.returnMainPageAfterSignIn) {
-      mainPage.openPage();
-      history.pushState({ state: '#' }, null, '#');
+      this.buttonMain = document.querySelector('.main-panel__button--type--main');
+      this.buttonMain.click();
+      returnPageObj.returnMainPageAfterSignIn = false;
     } else if (returnPageObj.returnBalanceAfterSignIn) {
-      balancePage.openPage();
-      history.pushState({ state: '#' }, null, '#');
+      this.buttonBalance = document.querySelector('.main-panel__button--type--balance');
+      this.buttonBalance.click();
+      returnPageObj.returnBalanceAfterSignIn = false;
     } else {
-      mainPage.openPage();
+      this.buttonAccount = document.querySelector('.main-panel__button--type--profile');
+      this.buttonAccount.click();
     }
+    history.pushState({ state: '#' }, null, '#');
   }
 
   /* метод отправки телефона пользователя на сервер */
@@ -360,9 +363,7 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
       loginContainerForSwipSkipAll.forEach((btn) => {
         btn.addEventListener('click', (e) => {
           e.preventDefault();
-          this.closePage();
-          closePages();
-          accountPage.openPage();
+          this.returnPage();
         });
       });
 

@@ -352,17 +352,19 @@ function addProductToBasket(productInfo) {
 }
 
 function checkMessageInbox() {
-  const dotMessage = document.querySelector('.top-bar__icon-dot');
-  if (dotMessage && !isEmptyObj(userMessages) && userMessages.success !== false && userMessages.successData.messages.length !== 0) {
+  const buttonMessages = document.querySelector('.main-panel__button--type--messages');
+  if(buttonMessages) {
+    buttonMessages.classList.remove('main-panel__button--notification');
+  if (!isEmptyObj(userMessages) && userMessages.success !== false && userMessages.successData.messages.length !== 0 && !isEmptyObj(userInfoObj)) {
     userMessages.successData.messages.every((message) => {
       if (message.wasRead === null) {
-        dotMessage.classList.remove('top-bar__icon-dot--hide');
+        buttonMessages.classList.add('main-panel__button--notification');
         return false;
       }
       return true;
     });
+    }
   }
-
 }
 
 function closePages() {
@@ -1500,7 +1502,12 @@ class ToggleModalPageCardDef {
       this.body.classList.add('body');
     }, 100);
     history.pushState({state: '#card'}, null, '#card');
-    window.cardAnimation('open');
+    if(window.cardAnimation) {
+      window.cardAnimation('open');
+    }
+    if(window.sharesAnimation) {
+      window.sharesAnimation('open');
+    }
   }
 
   rendering() {

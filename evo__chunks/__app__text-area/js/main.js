@@ -971,6 +971,42 @@ class CreateTextAreaAddins extends CreateItem {
   }
 }
 
+class CreateTextAreaSharesDetail extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+  }
+
+  create(productInfo) {
+    this.element = document.createElement(this.parameters.selector);
+
+    this.template = `
+      <div class="shares-detail__touch"></div>
+        <div class="shares-detail__container">
+            <div class="shares-detail__title">Получи 7-й кофе в подарок</div>
+            <ul class="shares-detail__terms">
+                <div>Условия акции</div>
+                <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do</li>
+                <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do</li>
+                <li>eiusmod tempor incididunt ut</li>
+                <li>incididunt ut labore et dolore magna aliqua.</li>
+            </ul>
+            <div class="shares-detail__images-list">
+                <div class="shares-detail__images-list-element shares-detail__images-list-element--not-empty"></div>
+                <div class="shares-detail__images-list-element shares-detail__images-list-element--not-empty"></div>
+                <div class="shares-detail__images-list-element shares-detail__images-list-element--not-empty"></div>
+                <div class="shares-detail__images-list-element shares-detail__images-list-element--not-empty"></div>
+                <div class="shares-detail__images-list-element shares-detail__images-list-element--not-empty"></div>
+                <div class="shares-detail__images-list-element"></div>
+            </div>
+            <button class="button button--color-5 shares-detail__button">Получить кофе в подарок</button>
+        </div>
+    `;
+    this.element.insertAdjacentHTML('beforeend', this.template);
+    return super.create(this.element);
+  }
+}
+
 class CreateTextAreaAddin extends CreateItem {
   constructor(parameters) {
     super();
@@ -1670,7 +1706,7 @@ class CreateTextAreaBalanceTabs extends CreateItem {
       <div class="balance__container balance__container--show" data-id="1">
         <div class="balance__image balance__image--balance"></div>
         <div class="balance__content">
-            <div class="balance__currency">${balance} ₽</div>
+            <div class="balance__currency balance__currency-balance">${balance} ₽</div>
             <div class="balance__date">сегодня, ${timeNow}</div>
         </div>
         <div class="balance__history">
@@ -1681,7 +1717,7 @@ class CreateTextAreaBalanceTabs extends CreateItem {
     <div class="balance__container" data-id="2">
         <div class="balance__image balance__image--balance"></div>
         <div class="balance__content">
-            <div class="balance__currency">${bonus} ❤️</div>
+            <div class="balance__currency balance__currency-bonus">${bonus} ❤️</div>
             <div class="balance__date">сегодня, ${timeNow}</div>
         </div>
         <div class="balance__history">
@@ -1993,7 +2029,10 @@ class CreateTextAreaNoSignIn extends CreateItem {
     this.button = this.element.querySelector('.basket__sign-in-button');
     if (typeof this.parameters.eventsButton === 'object') {
       for (const event of this.parameters.eventsButton) {
-        this.button.addEventListener(event.type, event.callback);
+        this.button.addEventListener(event.type, () => {
+          returnPageObj.returnBalanceAfterSignIn = true;
+          event.callback();
+        });
       }
     }
     return super.create(this.element);

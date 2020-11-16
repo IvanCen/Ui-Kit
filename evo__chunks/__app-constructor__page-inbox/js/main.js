@@ -12,15 +12,18 @@ class InboxPage {
   }
 
   checkMessages() {
-    const dotMessage = document.querySelector('.main-panel__button--type--messages');
-    if (dotMessage && !isEmptyObj(userMessages)) {
-      userMessages.successData.messages.every((message) => {
-        if (message.wasRead !== null) {
-          dotMessage.classList.remove('main-panel__button--notification');
-          return false;
-        }
-        return true;
-      });
+    const buttonMessages = document.querySelector('.main-panel__button--type--messages');
+    if (buttonMessages) {
+      buttonMessages.classList.remove('main-panel__button--notification');
+      if (!isEmptyObj(userMessages) && userMessages.success !== false && userMessages.successData.messages.length !== 0 && !isEmptyObj(userInfoObj)) {
+        userMessages.successData.messages.every((message) => {
+          if (message.wasRead === null) {
+            buttonMessages.classList.add('main-panel__button--notification');
+            return false;
+          }
+          return true;
+        });
+      }
     }
   }
 

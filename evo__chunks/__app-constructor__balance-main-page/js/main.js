@@ -26,6 +26,16 @@ class BalancePage {
     this.topBarTabs = document.querySelector('.header__top-tabs-balance');
     this.headerTitle = document.querySelector('.header__status');
     this.topBarTabs.classList.remove('header__top-tabs--hide');
+    this.balance = document.querySelector('balance__currency-balance');
+    this.bonus = document.querySelector('balance__currency-bonus');
+
+    if (!isEmptyObj(userInfoObj)) {
+      this.balance = userInfoObj.successData.balance;
+      this.bonus = userInfoObj.successData.bonus;
+    } else {
+      this.balance = '0';
+      this.bonus = '0';
+    }
 
     if (isEmptyObj(userInfoObj)) {
       if (this.mainPageContentContainerBalance) {

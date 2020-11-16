@@ -190,7 +190,7 @@ class CreateSubscriptionsMainCard extends CreateItem {
       this.qrImage = this.element.querySelector('.main-card__img-qr');
       const qr = new QRCode(this.qrImage,
         {
-          text: authorizationPhone,
+          text: authorizationPhone.substr(1),
           colorDark: '#000000',
           colorLight: '#ffffff',
           correctLevel: QRCode.CorrectLevel.H,

@@ -641,15 +641,15 @@ class CreateFormPay extends CreateItem {
         </div>
         <section class="basket__payment accordion__container" data-id="1">
             <div class="form__group basket__group">
-                <label class="form__label">
-                    <input id="creditCard" type="radio" class="form__input" name="payment">
+                <label class="form__label form__label--creditCard">
+                    <input id="creditCard" type="radio" class="form__input" name="payment" checked>
                     Банковская карта
                 </label>
-                <label class="form__label">
-                    <input id="balance" type="radio" class="form__input" name="payment" checked>
+                <label class="form__label form__label--balance">
+                    <input id="balance" type="radio" class="form__input" name="payment">
                     Баланс ${balance || ''}
                 </label>
-                <label class="form__label">
+                <label class="form__label form__label--bonus">
                     <input id="bonus" type="radio" class="form__input" name="payment">
                     Бонусы ${bonus || ''}
                 </label>
@@ -660,7 +660,18 @@ class CreateFormPay extends CreateItem {
 
   create() {
     this.element.insertAdjacentHTML('beforeend', this.template);
-
+    if (userInfoObj.successData.balance === '0') {
+      this.inputBalance = this.element.querySelector('#balance');
+      this.labelBalance = this.element.querySelector('.form__label--balance');
+      this.labelBalance.classList.add('form__label--disabled');
+      this.inputBalance.disabled = true;
+    }
+    if (userInfoObj.successData.bonus === '0') {
+      this.inputBonus = this.element.querySelector('#bonus');
+      this.labelBonus = this.element.querySelector('.form__label--bonus');
+      this.labelBonus.classList.add('form__label--disabled');
+      this.inputBonus.disabled = true;
+    }
     return super.create(this.element);
   }
 }

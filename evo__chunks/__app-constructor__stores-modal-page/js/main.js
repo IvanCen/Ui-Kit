@@ -89,12 +89,14 @@ class StoresPage {
     const search = new CreateFormMapSearch({
       selector: ['form'],
       style: ['map-search'],
+      modifier: [`${isIos ? '--ios' : ''}`],
     });
 
     const storesMapItemWraper = new CreateMapItemStoresWraper({
       selector: ['div'],
       style: ['map'],
       modifier: ['--default'],
+
     });
     const storesMapItem = new CreateMapItemStores({
       selector: ['div'],
@@ -318,12 +320,13 @@ class StoresPage {
   }
 
   activeMapTouch(container) {
-    let dragStart = 182;
-    let dragEnd = 182;
-    let offsetY = 182;
-    let offsetYOnStart = 182;
+    const INDENT = isIos ? 242 : 182;
+    let dragStart = INDENT;
+    let dragEnd = INDENT;
+    let offsetY = INDENT;
+    let offsetYOnStart = INDENT;
     let isOpen = false;
-    let delta = 81;
+    let delta = isIos ? 101 : 81;
     const isMapOpen = storesOpened;
     let windowHeight = container.clientHeight || window.innerHeight;
     if (isMapOpen === false) {
@@ -337,7 +340,11 @@ class StoresPage {
       const stores = document.querySelector('.modal-page-stores');
       const mapSearch = document.querySelector('.map-search');
       const modalPage = document.querySelector('.modal-page-stores');
-      stores.classList.contains('stores--fullscreen') ? delta = 60 : delta = 81;
+      if(isIos) {
+        stores.classList.contains('stores--fullscreen') ? delta = 30 : delta = 101;
+      } else {
+        stores.classList.contains('stores--fullscreen') ? delta = 60 : delta = 81;
+      }
       if (offsetY > (windowHeight / 5) && !isOpen && action === 'end') {
         offsetY = windowHeight - delta;
         offsetYOnStart = windowHeight - delta;
@@ -352,31 +359,31 @@ class StoresPage {
         dragStart = windowHeight - delta;
         dragEnd = windowHeight - delta;
       } else if (offsetY < (windowHeight) && action === 'end' && isOpen) {
-        offsetY = 182;
-        offsetYOnStart = 182;
+        offsetY = INDENT;
+        offsetYOnStart = INDENT;
         isOpen = !isOpen;
         storesOpened = true;
         if (modalPage.classList.contains('modal-page--open-nav')) {
           mapSearch.classList.add('map-search--show');
         }
       }
-      if (offsetY < 182) {
+      if (offsetY < INDENT) {
         // тут действия, если тянется дальше максимума
         if (action === 'end') {
-          offsetY = 182;
-          dragStart = 182;
-          dragEnd = 182;
-          offsetYOnStart = 182;
+          offsetY = INDENT;
+          dragStart = INDENT;
+          dragEnd = INDENT;
+          offsetYOnStart = INDENT;
         } else if (action === 'move') {
-          offsetY = 182;// уменьшапем скорость смещения в 2 раза
+          offsetY = INDENT;// уменьшапем скорость смещения в 2 раза
         }
       }
       if (action === 'open') {
         container.classList.add('stores__list--animation');
-        offsetY = 182;
-        dragStart = 182;
-        dragEnd = 182;
-        offsetYOnStart = 182;
+        offsetY = INDENT;
+        dragStart = INDENT;
+        dragEnd = INDENT;
+        offsetYOnStart = INDENT;
         container.style.transform = `translate3d(0,${offsetY}px,0)`;
         setTimeout(() => {
           container.classList.remove('stores__list--animation');
@@ -385,8 +392,7 @@ class StoresPage {
       }
       // console.log(offsetY, dragStart, dragEnd, offsetYOnStart);
       container.style.transform = `translate3d(0,${offsetY}px,0)`;
-      // let s = document.querySelector(".stores__name")
-      // s.textContent = "offsetY - " + offsetY +"; windowHeight - " + windowHeight + "; container.scrollHeight - " + container.scrollHeight;
+
     }
 
     const panelTouch = container.querySelector('.top-bar-search');

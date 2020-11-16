@@ -270,6 +270,9 @@ const toggleModalPageOrderSearch = new ToggleModalPageOrderSearch({
 const toggleModalPageCard = new ToggleModalPageCard({
   classOpen: ['modal-page-card--opened'],
 });
+const toggleModalPageSharesDetail = new ToggleModalPageSharesDetail({
+  classOpen: ['modal-page-card--opened'],
+});
 const togglePageStoresFilter = new TogglePageStoresFilter({
   classOpen: ['page--opened'],
 });
