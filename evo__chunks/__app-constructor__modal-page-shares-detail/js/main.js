@@ -77,7 +77,6 @@ class ToggleModalPageSharesDetail extends ToggleModalPageCardDef {
           }, 300);
           return;
         }
-        console.log(offsetY, dragStart, dragEnd, offsetYOnStart, `translate3d(0,${offsetY}px,0)`);
         container.style.transform = `translate3d(0,${offsetY}px,0)`;
       }
 

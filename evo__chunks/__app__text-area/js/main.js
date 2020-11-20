@@ -986,23 +986,32 @@ class CreateTextAreaSharesDetail extends CreateItem {
             <div class="shares-detail__title">Получи 7-й кофе в подарок</div>
             <ul class="shares-detail__terms">
                 <div>Условия акции</div>
-                <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do</li>
-                <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do</li>
-                <li>eiusmod tempor incididunt ut</li>
-                <li>incididunt ut labore et dolore magna aliqua.</li>
+                <li>Покупай кофе в магазинах и называй свой номер на кассе</li>
+                <li>Получай каждый шестой кофе в подарок</li>
             </ul>
             <div class="shares-detail__images-list">
-                <div class="shares-detail__images-list-element shares-detail__images-list-element--not-empty"></div>
-                <div class="shares-detail__images-list-element shares-detail__images-list-element--not-empty"></div>
-                <div class="shares-detail__images-list-element shares-detail__images-list-element--not-empty"></div>
-                <div class="shares-detail__images-list-element shares-detail__images-list-element--not-empty"></div>
-                <div class="shares-detail__images-list-element shares-detail__images-list-element--not-empty"></div>
+                <div class="shares-detail__images-list-element"></div>
+                <div class="shares-detail__images-list-element"></div>
+                <div class="shares-detail__images-list-element"></div>
+                <div class="shares-detail__images-list-element"></div>
+                <div class="shares-detail__images-list-element"></div>
                 <div class="shares-detail__images-list-element"></div>
             </div>
-            <button class="button button--color-5 shares-detail__button">Получить кофе в подарок</button>
         </div>
     `;
     this.element.insertAdjacentHTML('beforeend', this.template);
+
+    if (productInfo.success) {
+      this.imageListElements = this.element.querySelectorAll('.shares-detail__images-list-element');
+      for (let i = 0; i < productInfo.successData.count; i++) {
+        if (this.imageListElements[i]) {
+          this.imageListElements[i].classList.add('shares-detail__images-list-element--not-empty');
+        }
+      }
+    } else {
+      toggleModal.rendering({ subject: 'Ошибка', text: productInfo.errors[0] });
+    }
+
     return super.create(this.element);
   }
 }
@@ -1203,6 +1212,9 @@ class CreateTextAreaAccount extends CreateItem {
           <div class="profile__header">
               <div class="profile__title">Информация</div>
           </div>
+          <div class="form__group profile__group profile__group-element text-area--type--gift form__group--hide">
+              <label>6 кофе в подарок</label>
+          </div>
           <div class="form__group profile__group profile__group-element text-area--type--support">
               <label>Поддержка</label>
           </div>
@@ -1223,6 +1235,7 @@ class CreateTextAreaAccount extends CreateItem {
     this.buttonPrivacy = this.element.querySelector('.text-area--type--privacy');
     this.buttonTerms = this.element.querySelector('.text-area--type--terms');
     this.buttonPublic = this.element.querySelector('.text-area--type--public');
+    this.buttonGift = this.element.querySelector('.text-area--type--gift');
     // this.buttonSubscription = this.element.querySelector('.text-area--type--subscription');
 
     this.buttonSupport.addEventListener('click', () => {
@@ -1245,11 +1258,11 @@ class CreateTextAreaAccount extends CreateItem {
         toggleSubPageApplication.rendering(this.setData('public-offer'));
       });
     });
-    /*    this.buttonSubscription.addEventListener('click', () => {
+    this.buttonGift.addEventListener('click', () => {
       stopAction(() => {
-        toggleModalPageSubscription.rendering();
+        api.getСlientСoffeeСount(toggleModalPageSharesDetail.rendering);
       });
-    }); */
+    });
 
     return super.create(this.element);
   }
@@ -1635,7 +1648,7 @@ class CreateTextAreaSearch extends CreateItem {
     this.element = document.createElement(this.parameters.selector);
 
     this.template = `
-    <div class="search__header">
+    <div class="search__header ${isIos ? 'search__header--ios' : 'search__header--no-ios'}">
         <div class="search__top">
             <button class="search__close">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

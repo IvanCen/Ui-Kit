@@ -24,6 +24,7 @@ class AccountPage {
     this.mainPageContent = document.querySelector('.main-page__content-profile');
     this.headerTitle = document.querySelector('.header__status');
     this.profileData = document.querySelector('.profile__data');
+    this.textAreaGift = document.querySelector('.text-area--type--gift');
     const buttonLogout = document.querySelector('.profile__logout');
 
     if (this.profileData) {
@@ -44,8 +45,10 @@ class AccountPage {
     history.pushState({ state: '#' }, null, '#');
     if (!isEmptyObj(userInfoObj)) {
       buttonLogout.classList.remove('profile__logout--hide');
+      this.textAreaGift.classList.remove('form__group--hide');
     } else {
       buttonLogout.classList.add('profile__logout--hide');
+      this.textAreaGift.classList.add('form__group--hide');
     }
   }
 
@@ -53,10 +56,12 @@ class AccountPage {
     if (info.success) {
       const userInfoSection = document.querySelector('.profile__data');
       const buttonJoin = document.querySelector('.button--join');
+      const textAreaGift = document.querySelector('.text-area--type--gift');
       const buttonLogout = document.querySelector('.profile__logout');
       userInfoSection.classList.add('profile__data--hide');
       buttonJoin.classList.remove('button--hide');
       buttonLogout.classList.add('profile__logout--hide');
+      textAreaGift.classList.add('form__group--hide');
     }
   }
 

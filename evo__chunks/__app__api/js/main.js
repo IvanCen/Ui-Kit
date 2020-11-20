@@ -957,6 +957,36 @@ class Api {
         console.log('Ошибка. Запрос не выполнен: ', err);
       });
   }
+
+  getСlientСoffeeСount(func) {
+    const request = {
+      method: 'get-client-coffee-count',
+      phone: authorizationPhone,
+      code: authorizationCode,
+      outputFormat: 'json',
+    };
+
+    fetch(this.options.baseUrl, {
+      method: 'POST',
+      headers: this.options.headers,
+      body: JSON.stringify(request),
+
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+      .then((res) => {
+        console.log(res);
+        return res;
+      })
+      .then(func)
+      .catch((err) => {
+        console.log('Ошибка. Запрос не выполнен: ', err);
+      });
+  }
 }
 
 const scriptPromise = new Promise((resolve, reject) => {
@@ -971,3 +1001,4 @@ const scriptPromise = new Promise((resolve, reject) => {
 scriptPromise.then((res) => {
   console.log(res);
 });
+

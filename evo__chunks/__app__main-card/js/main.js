@@ -137,13 +137,14 @@ class CreateSubscriptionsMainCard extends CreateItem {
       minute: 'numeric',
     }).replace('.', '').replace(' г.', ''));
     let templateAddress;
+    let shopName = '';
     if (subscriptionUserInfo) {
       date = `Действителен до ${transformationUtcToLocalDate(subscriptionUserInfo.endDate, {
         year: 'numeric',
         month: 'short',
         day: 'numeric',
       }).replace('г.', '')}`;
-      const shopName = storesDataObj.successData[subscriptionUserInfo.shopId].longTitle;
+      shopName = storesDataObj.successData[subscriptionUserInfo.shopId].longTitle;
       templateAddress = `<div class="main-card__address-container">
           <div style="background-image: url('data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-point.svg]]')" class="main-card__icon--type--point"></div>
           <span class="main-card__address">${shopName}</span>
@@ -171,7 +172,7 @@ class CreateSubscriptionsMainCard extends CreateItem {
           <div class="main-card__img-qr"></div>
         </div>
         <div class="main-card__text-area main-card__text-area--position--center">
-          <span class="main-card__text main-card__text--type--address main-card__text--indentation--bottom-small">г. Санкт-Петербург, проспект Металлистов, д 110</span>
+          <span class="main-card__text main-card__text--type--address main-card__text--indentation--bottom-small">${shopName}</span>
           <span class="main-card__text main-card__text--size--small main-card__text--theme--shadow main-card__text--indentation--bottom-small">${dateNowLocal}</span>
         </div>
       </div>`;

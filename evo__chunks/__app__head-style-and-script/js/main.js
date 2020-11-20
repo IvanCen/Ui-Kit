@@ -19,10 +19,8 @@ let isIos = true;
      } else {
        isIos = true
      }
-     console.log(isIos, 'dsadas')
    });
  })()
-console.log(isIos, '213')
 try {
   let link = document.createElement('link');
   link.rel = "manifest";
