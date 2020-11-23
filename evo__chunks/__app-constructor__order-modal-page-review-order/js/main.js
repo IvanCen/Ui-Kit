@@ -188,6 +188,7 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
           callback: () => {
             this.closePage();
             this.deletePage();
+            checkEmptyBasket();
           },
         },
       ],
@@ -245,6 +246,9 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
           callback: () => {
             this.closePage();
             this.deletePage();
+            this.mainButton = document.querySelector('.main-panel__button--type--main');
+            this.mainButton.click();
+            checkEmptyBasket();
           },
         },
       ],

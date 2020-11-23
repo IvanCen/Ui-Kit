@@ -982,34 +982,64 @@ class CreateTextAreaSharesDetail extends CreateItem {
 
     this.template = `
       <div class="shares-detail__touch"></div>
-        <div class="shares-detail__container">
-            <div class="shares-detail__title">Получи 7-й кофе в подарок</div>
-            <ul class="shares-detail__terms">
-                <div>Условия акции</div>
-                <li>Покупай кофе в магазинах и называй свой номер на кассе</li>
-                <li>Получай каждый шестой кофе в подарок</li>
-            </ul>
-            <div class="shares-detail__images-list">
-                <div class="shares-detail__images-list-element"></div>
-                <div class="shares-detail__images-list-element"></div>
-                <div class="shares-detail__images-list-element"></div>
-                <div class="shares-detail__images-list-element"></div>
-                <div class="shares-detail__images-list-element"></div>
-                <div class="shares-detail__images-list-element"></div>
-            </div>
-        </div>
+      <div class="shares-detail__container">
+          <div class="shares-detail__title">Получи 6-й кофе в подарок</div>
+          <ul class="shares-detail__terms">
+              <div>Условия акции</div>
+              <li>Покупай кофе в магазинах и называй свой номер на кассе</li>
+              <li>Получай каждый шестой кофе в подарок</li>
+          </ul>
+          <div class="shares-detail__images-list">
+              <div class="shares-detail__images-list-element"></div>
+              <div class="shares-detail__images-list-element"></div>
+              <div class="shares-detail__images-list-element"></div>
+              <div class="shares-detail__images-list-element"></div>
+              <div class="shares-detail__images-list-element"></div>
+              <div class="shares-detail__images-list-element"></div>
+          </div>
+      </div>
+      <div class="shares-detail__img-container shares-detail__img-container--hide">
+        <div class="shares-detail__img-qr"></div>
+      </div>
+      
+      <button class="shares-detail__button button button--size--large button--theme--tangerin">Показать QR</button>
     `;
     this.element.insertAdjacentHTML('beforeend', this.template);
 
-    if (productInfo.success) {
+    this.button = this.element.querySelector('.shares-detail__button');
+
+    if (productInfo.success && authorizationPhone) {
       this.imageListElements = this.element.querySelectorAll('.shares-detail__images-list-element');
       for (let i = 0; i < productInfo.successData.count; i++) {
         if (this.imageListElements[i]) {
           this.imageListElements[i].classList.add('shares-detail__images-list-element--not-empty');
         }
       }
+
+
+      const qrImg = new QRCode(this.element.querySelector('.shares-detail__img-qr'),
+        {
+          text: authorizationPhone.substr(1),
+          colorDark: '#000000',
+          colorLight: '#ffffff',
+          correctLevel: QRCode.CorrectLevel.H,
+        });
+      let openQr = false;
+      this.button.addEventListener('click', () => {
+        openQr = !openQr;
+        this.container = this.element.querySelector('.shares-detail__container');
+        this.imageContainer = this.element.querySelector('.shares-detail__img-container');
+        this.container.classList.toggle('shares-detail__container--hide');
+        this.imageContainer.classList.toggle('shares-detail__img-container--hide');
+        if (openQr) {
+          this.button.textContent = 'Скрыть QR';
+        } else {
+          this.button.textContent = 'Показать QR';
+        }
+      });
     } else {
-      toggleModal.rendering({ subject: 'Ошибка', text: productInfo.errors[0] });
+      toggleModal.rendering({ subject: 'Ошибка', text: productInfo.errors[0] || 'Требуется авторизация для просмотра прогресса по акции' });
+      this.button.classList.add('button--type--disabled');
     }
 
     return super.create(this.element);

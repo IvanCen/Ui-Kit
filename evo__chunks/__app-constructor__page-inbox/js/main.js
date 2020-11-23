@@ -15,7 +15,7 @@ class InboxPage {
     const buttonMessages = document.querySelector('.main-panel__button--type--messages');
     if (buttonMessages) {
       buttonMessages.classList.remove('main-panel__button--notification');
-      if (!isEmptyObj(userMessages) && userMessages.success !== false && userMessages.successData.messages.length !== 0 && !isEmptyObj(userInfoObj)) {
+      if (!isEmptyObj(userMessages) && userMessages.success && userMessages.successData.messages.length !== 0 && !isEmptyObj(userInfoObj)) {
         userMessages.successData.messages.every((message) => {
           if (message.wasRead === null) {
             buttonMessages.classList.add('main-panel__button--notification');
@@ -53,8 +53,10 @@ class InboxPage {
     this.mainPageContent = document.querySelector('.main-page__content-inbox');
     this.topBarTabs = document.querySelector('.header__top-tabs-inbox');
     this.headerTitle = document.querySelector('.header__status');
+    this.tabButtonInbox = document.querySelector('.header__top-tabs-inbox .header__top-tabs-element[data-id="1"]');
     this.textAreaContainerSignIn = this.mainPageContent.querySelector('.text-area-container--type--sign-in');
 
+    this.tabButtonInbox.click();
     if (isEmptyObj(userInfoObj)) {
       this.textAreaContainerSignIn.classList.remove('text-area-container--hide');
     } else {

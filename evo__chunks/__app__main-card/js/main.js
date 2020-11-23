@@ -316,10 +316,17 @@ class CreateInboxMainCardNews extends CreateItem {
     }
     this.element.addEventListener('click', () => {
       togglePageInboxDetails.rendering(messageInfo);
-      inboxPage.checkMessages();
-      if (!wasRead) {
-        api.markMessageRead(client, timestamp, id);
+      if (!isEmptyObj(userMessages) && userMessages.success && userMessages.successData.messages.length !== 0 && !isEmptyObj(userInfoObj)) {
+        userMessages.successData.messages.forEach((messageInfos) => {
+          if (messageInfos.wasRead === null) {
+            api.markMessageRead(messageInfos.client, messageInfos.timestamp, messageInfos.id);
+          }
+        });
       }
+      inboxPage.checkMessages();
+      /*if (!wasRead) {
+        api.markMessageRead(client, timestamp, id);
+      }*/
       title.classList.add('main-card__title--font-weight--normal');
     });
     return super.create(this.element);

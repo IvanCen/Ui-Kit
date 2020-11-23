@@ -60,8 +60,13 @@ class ToggleSubPageSupport extends ToggleSubPage {
     this.subPageContent = this.subPage.querySelector('.subpage__content');
     this.subPageContent.classList.add('subpage__content--indentation');
 
+    this.text = document.createElement('p');
+    this.text.classList.add('text');
+    this.text.textContent = 'Если желаете получить обратную связь, в теме или комментарии укажите ваш телефон (и желаемый способ связи - смс, мессенджеры) или email.';
+
     this.subPage.prepend(topBar.create());
     this.subPageContent.append(formInput.create());
+    this.subPageContent.append(this.text);
     this.subPageContent.append(buttonSend.create());
 
     inputFlyLabel();

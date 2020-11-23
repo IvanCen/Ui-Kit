@@ -486,3 +486,8 @@
 .text-area__application > p {
   margin-bottom: 10px;
 }
+
+.text {
+  @extend %style-3-5;
+
+}

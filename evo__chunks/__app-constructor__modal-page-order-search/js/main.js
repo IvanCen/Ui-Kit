@@ -308,6 +308,7 @@ class ToggleModalPageOrderSearch extends ToggleModalPageSearch {
         basketArray.push({ id: item.id, modifiers: [] });
         localStorage.setItem('basket', JSON.stringify(basketArray));
         checkEmptyBasket();
+        animationAddProduct();
       });
 
       container.append(element);

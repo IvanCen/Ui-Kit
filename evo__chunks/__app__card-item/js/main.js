@@ -83,6 +83,7 @@ class CreateCardItemProductCardNew extends CreateItem {
       basketArray.push({ id: productInfo.id, modifiers: [] });
       localStorage.setItem('basket', JSON.stringify(basketArray));
       checkEmptyBasket();
+      animationAddProduct();
     });
 
     const imgEl = this.element.querySelector('.catalog__list-element-image');
@@ -640,6 +641,7 @@ class CreateCardItemReview extends CreateItem {
       countResultPriceAndAllProductCounter();
       activeBanners(cardItemEl, true, checkEmptyBasket);
       checkEmptyBasket();
+      animationAddProduct();
       const accordionTriggers = document.querySelectorAll('.basket__header-review');
       accordionTriggers.forEach((trigger) => {
         const container = document.querySelector(`.accordion__container[data-id='${trigger.dataset.id}']`);
@@ -800,6 +802,8 @@ class CreateCardItemReviewOrder extends CreateItem {
       cardItemContainer.append(this.create(productInfo));
       activeBanners(this.element, true, checkEmptyBasket);
       checkEmptyBasket();
+      animationAddProduct();
+      animationAddProduct();
     });
     return super.create(this.element);
   }
@@ -900,6 +904,7 @@ class CreateCardItemHistory extends CreateItem {
           basketArray.push({ id: item.id, modifiers: [...items.modifiers] });
           localStorage.setItem('basket', JSON.stringify(basketArray));
           checkEmptyBasket();
+          animationAddProduct();
         });
 
         const imgEl = this.element.querySelector('.catalog__list-element-image');

@@ -753,11 +753,14 @@ class Api {
         if (res.success) {
           outOfStock.successData = res.successData;
           localStorage.setItem('outOfStock', JSON.stringify(outOfStock));
-          /* for (const id in outOfStock.successData.itemsAndModifiers) {
-            delete dataProductApi.successData.items[id];
-            delete dataProductApi.successData.modifiers[id];
-            delete dataProductApi.successData.ingredients[id];
-          } */
+          const catalogElements = document.querySelectorAll('.catalog__list-element');
+          catalogElements.forEach((el) => el.classList.remove('catalog__list-element--ended'));
+          Object.values(outOfStock.successData.itemsAndModifiers).forEach((id) => {
+            const cardElement = document.querySelector(`.catalog__list-element[id="${id}"]`);
+            if (cardElement) {
+              cardElement.classList.add('catalog__list-element--ended');
+            }
+          });
         }
         return res;
       })
@@ -928,7 +931,9 @@ class Api {
   }
 
   sendMessageToSupport(messageInfo, func) {
-    const { subject = '', message = '' } = messageInfo;
+    let { subject = '', message = '' } = messageInfo;
+    const { phone, email, name } = userInfoObj.successData;
+    subject += `(Пользователь: ${phone}, ${email}, ${name})`;
     const request = {
       method: 'send-message-to-support',
       subject,
@@ -959,6 +964,7 @@ class Api {
   }
 
   getСlientСoffeeСount(func) {
+    console.log(authorizationPhone, authorizationCode);
     const request = {
       method: 'get-client-coffee-count',
       phone: authorizationPhone,
@@ -1001,4 +1007,3 @@ const scriptPromise = new Promise((resolve, reject) => {
 scriptPromise.then((res) => {
   console.log(res);
 });
-
