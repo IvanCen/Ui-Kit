@@ -229,14 +229,12 @@ class ToggleModalPageOrderSearch extends ToggleModalPageSearch {
           searchResult.classList.add('search__result--empty');
         } else {
           searchResult.classList.remove('search__result--empty');
-          let count = 0;
           for (const id in AllItemsForSearch) {
             if (id.indexOf(searchField.value) !== -1) {
-              count++;
               founded[id] = AllItemsForSearch[id];
             }
           }
-          searchCount.textContent = `${count} товаров`;
+          searchCount.textContent = `${Object.keys(founded).length} товаров`;
           console.log(founded);
           searchResult.querySelector('.search__result-container').innerHTML = '';
           this.createFoundedElements(founded);

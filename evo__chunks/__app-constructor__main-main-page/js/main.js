@@ -71,28 +71,6 @@ class MainPage {
       buttonText: ['Читать подробнее'],
     });
 
-    const mainPageButtonJoinOrange = new CreateButton({
-      selector: ['button'],
-      style: ['button'],
-      modifier: ['--size--big',
-        '--theme--tangerin',
-        '--position--right',
-        '--theme--shadow-big',
-        '--type--fixed',
-      ],
-      text: ['Войти'],
-      events: [{
-        type: 'click',
-        callback: () => {
-          stopAction(() => {
-            returnPageObj.returnMainPageAfterSignIn = true;
-            toggleModalPageSignIn.rendering();
-          });
-        },
-      }],
-    });
-
-
     this.postContainer = document.createElement('div');
     this.promoContainer = document.createElement('div');
 

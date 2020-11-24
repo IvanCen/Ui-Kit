@@ -260,7 +260,7 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
       price = 0;
     }
 
-    if (!isEmptyObj(dataUserSeasons)) {
+    /* if (!isEmptyObj(dataUserSeasons)) {
       Object.values(dataUserSeasons.successData).forEach((item) => {
         if (dataSeasons.successData[item.id]) {
           Object.values(dataSeasons.successData[item.id].items).forEach((el) => {
@@ -270,7 +270,7 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
           });
         }
       });
-    }
+    } */
 
     this.template = `
       <button class="button text-area__button text-area__button--type--like text-area__button--position--absolute">
@@ -656,7 +656,7 @@ class CreateTextAreaProductCard extends CreateItem {
       price = 0;
     }
 
-    if (!isEmptyObj(dataUserSeasons)) {
+    /* if (!isEmptyObj(dataUserSeasons)) {
       Object.values(dataUserSeasons.successData).forEach((item) => {
         if (dataSeasons.successData[item.id]) {
           Object.values(dataSeasons.successData[item.id].items).forEach((el) => {
@@ -666,7 +666,7 @@ class CreateTextAreaProductCard extends CreateItem {
           });
         }
       });
-    }
+    } */
 
     this.template = `
       <div class="card__touch"></div>
@@ -1002,15 +1002,15 @@ class CreateTextAreaSharesDetail extends CreateItem {
         <div class="shares-detail__img-qr"></div>
       </div>
       
-      <button class="shares-detail__button button button--size--large button--theme--tangerin">Показать QR</button>
+      <button class="shares-detail__button ${isIos ? 'shares-detail__button--ios' : 'shares-detail__button--no-ios'} button button--size--large button--theme--tangerin">Показать QR</button>
     `;
     this.element.insertAdjacentHTML('beforeend', this.template);
 
     this.button = this.element.querySelector('.shares-detail__button');
 
-    if (productInfo.success && authorizationPhone) {
+    if (productInfo.success) {
       this.imageListElements = this.element.querySelectorAll('.shares-detail__images-list-element');
-      for (let i = 0; i < productInfo.successData.count; i++) {
+      for (let i = 0; i < productInfo.successData.count % 6; i++) {
         if (this.imageListElements[i]) {
           this.imageListElements[i].classList.add('shares-detail__images-list-element--not-empty');
         }
@@ -1019,7 +1019,7 @@ class CreateTextAreaSharesDetail extends CreateItem {
 
       const qrImg = new QRCode(this.element.querySelector('.shares-detail__img-qr'),
         {
-          text: authorizationPhone.substr(1),
+          text: userInfoObj.successData.phone.substr(1),
           colorDark: '#000000',
           colorLight: '#ffffff',
           correctLevel: QRCode.CorrectLevel.H,
@@ -1143,7 +1143,7 @@ class CreateTextAreaAddinNew extends CreateItem {
       this.template = `
         <div id="${item.id}" class="card__modifiers-section-list-element">
             <div class="card__modifiers-section-list-element-promo">
-                <div class="card__modifiers-section-list-element-image" data-img="[+chunkWebPath+]/img/mod1.png">
+                <div class="card__modifiers-section-list-element-image" data-img="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-default-modif.svg]]">
                   <div class="card__modifiers-section-list-element-quantity"></div>
                 </div>
                 <div class="card__modifiers-section-list-element-count">
@@ -1191,7 +1191,7 @@ class CreateTextAreaAddinNew extends CreateItem {
               this.template = `
                 <div id="${item.id}" class="card__modifiers-section-list-element text-area--type--add-ins">
                     <div class="card__modifiers-section-list-element-promo">
-                        <div class="card__modifiers-section-list-element-image" data-img="[+chunkWebPath+]/img/mod2.png">
+                        <div class="card__modifiers-section-list-element-image" data-img="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-default-modif.svg]]">
                             <div class="card__modifiers-section-list-element-quantity">${counter}</div>
                         </div>
                         <div class="card__modifiers-section-list-element-count">
@@ -1787,51 +1787,53 @@ class CreateTextAreaBalanceTabs extends CreateItem {
     const log = isBonus ? userBonusLog : userBalanceLog;
     console.log(log, 'log');
 
-    log.successData.forEach((item) => {
-      const dateElems = new Date(`${item.timestamp.replace(/-/g, '/')} UTC`).toLocaleString('ru', {
-        year: 'numeric',
-        month: 'long',
-      }).replace('.', '').replace(' г', '');
-      const dateEl = dateElems[0].toUpperCase() + dateElems.slice(1);
-      if (!reformattedLog[dateEl]) {
-        reformattedLog[dateEl] = [];
-      }
-      reformattedLog[dateEl].push(item);
-    });
-    Object.entries(reformattedLog).forEach(([key, value]) => {
-      let temp = '';
-      value.forEach((el) => {
-        const date = new Date(`${el.timestamp.replace(/-/g, '/')} UTC`).toLocaleString('ru', {
+    if (!isEmptyObj(log)) {
+      log.successData.forEach((item) => {
+        const dateElems = new Date(`${item.timestamp.replace(/-/g, '/')} UTC`).toLocaleString('ru', {
           year: 'numeric',
-          month: 'short',
-          day: 'numeric',
-          hour: 'numeric',
-          minute: 'numeric',
-        }).replace('.', '').replace(' г.', '');
-        let classValue = '';
-
-        if (Math.sign(el.amount) === 1) {
-          classValue = 'balance__history-transaction-value--up';
-        } else {
-          classValue = 'balance__history-transaction-value--down';
+          month: 'long',
+        }).replace('.', '').replace(' г', '');
+        const dateEl = dateElems[0].toUpperCase() + dateElems.slice(1);
+        if (!reformattedLog[dateEl]) {
+          reformattedLog[dateEl] = [];
         }
-        this.templateBalanceEl = `
+        reformattedLog[dateEl].push(item);
+      });
+      Object.entries(reformattedLog).forEach(([key, value]) => {
+        let temp = '';
+        value.forEach((el) => {
+          const date = new Date(`${el.timestamp.replace(/-/g, '/')} UTC`).toLocaleString('ru', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+          }).replace('.', '').replace(' г.', '');
+          let classValue = '';
+
+          if (Math.sign(el.amount) === 1) {
+            classValue = 'balance__history-transaction-value--up';
+          } else {
+            classValue = 'balance__history-transaction-value--down';
+          }
+          this.templateBalanceEl = `
           <div class="balance__history-transaction">
               <div class="balance__history-transaction-date">${date}</div>
               <div class="balance__history-transaction-value ${classValue}">${el.amount} ${isBonus ? '❤' : '₽'}️</div>
           </div>
         `;
-        temp += this.templateBalanceEl;
-      });
-      this.bonusSection = document.createElement('div');
-      this.bonusSection.classList.add('balance__history-section');
-      this.templateEl = `
+          temp += this.templateBalanceEl;
+        });
+        this.bonusSection = document.createElement('div');
+        this.bonusSection.classList.add('balance__history-section');
+        this.templateEl = `
               <div class="balance__history-section-group">${key}</div>
               <div class="balance__history-section-list">${temp}</div>
             `;
-      this.bonusSection.insertAdjacentHTML('beforeend', this.templateEl);
-      container.append(this.bonusSection);
-    });
+        this.bonusSection.insertAdjacentHTML('beforeend', this.templateEl);
+        container.append(this.bonusSection);
+      });
+    }
   }
 }
 

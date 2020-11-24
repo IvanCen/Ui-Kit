@@ -239,7 +239,6 @@ if (authorizationCode !== '' && authorizationPhone !== '') {
 api.productApi(renderMain);
 api.getClientAchievements();
 api.getClientOrdersApi();
-api.promoApi();
 api.postsApi();
 api.getSeasons();
 api.getClientSeasons();
@@ -564,7 +563,7 @@ const mainPageFooter = new CreateFooter({
 
 function renderMain() {
   mainPageEl.prepend(mainPageTopBar.create());
-  mainPage.rendering();
+  api.promoApi(mainPage.rendering);
   balancePage.rendering();
   storesPage.rendering();
   inboxPage.rendering();

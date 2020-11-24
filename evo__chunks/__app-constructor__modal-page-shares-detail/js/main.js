@@ -103,19 +103,8 @@ class ToggleModalPageSharesDetail extends ToggleModalPageCardDef {
       window.sharesAnimation = sharesAnimation;
     }
 
-    function onDOMContentLoaded() {
-      const container = document.querySelector('.shares-detail');
-      activeSharesTouch(container);
-      const offersFromCatalog = document.querySelectorAll('.shares__list-element');
-      offersFromCatalog.forEach((offer) => {
-        offer.addEventListener('click', () => {
-          window.sharesAnimation('open');
-        });
-      });
-    }
     const container = document.querySelector('.shares-detail');
     activeSharesTouch(container);
-    // onDOMContentLoaded();
     this.openPage();
   }
 }

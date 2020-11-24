@@ -509,7 +509,7 @@ class CreateCardItemReview extends CreateItem {
       price = 0;
     }
 
-    if (!isEmptyObj(dataUserSeasons)) {
+    /*if (!isEmptyObj(dataUserSeasons)) {
       Object.values(dataUserSeasons.successData).forEach((item) => {
         if (dataSeasons.successData[item.id]) {
           Object.values(dataSeasons.successData[item.id].items).forEach((el) => {
@@ -519,7 +519,7 @@ class CreateCardItemReview extends CreateItem {
           });
         }
       });
-    }
+    }*/
 
     this.template = `
           <div class="basket__offers-element banners__banner">
@@ -760,7 +760,7 @@ class CreateCardItemReviewOrder extends CreateItem {
       }
     }
 
-    if (!isEmptyObj(dataUserSeasons)) {
+    /* if (!isEmptyObj(dataUserSeasons)) {
       Object.values(dataUserSeasons.successData).forEach((item) => {
         if (dataSeasons.successData[item.id]) {
           Object.values(dataSeasons.successData[item.id].items).forEach((el) => {
@@ -770,7 +770,7 @@ class CreateCardItemReviewOrder extends CreateItem {
           });
         }
       });
-    }
+    } */
 
     this.iconsMinus.addEventListener('click', function () {
       (() => {

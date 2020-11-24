@@ -36,6 +36,10 @@
     &__unavaible {
       display: none;
     }
+
+    &--ios {
+      bottom: 140px;
+    }
   }
 
   &__touch {

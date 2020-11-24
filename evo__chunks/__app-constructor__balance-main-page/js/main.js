@@ -17,6 +17,11 @@ class BalancePage {
     this.mainPageContent.classList.remove('main-page__content--opened-with-tabs');
     this.mainPageContent.classList.remove('main-page__content--opened');
     this.topBarTabs.classList.add('header__top-tabs--hide');
+    this.buttonFill = document.querySelector('.button--type--fill');
+
+    if (this.buttonFill) {
+      this.buttonFill.classList.add('button--hide');
+    }
   }
 
   openPage() {
@@ -28,7 +33,9 @@ class BalancePage {
     this.topBarTabs.classList.remove('header__top-tabs--hide');
     this.balance = document.querySelector('.balance__currency-balance');
     this.bonus = document.querySelector('.balance__currency-bonus');
+    this.buttonFill = document.querySelector('.button--type--fill');
 
+    this.buttonFill.classList.remove('button--hide');
     if (!isEmptyObj(userInfoObj)) {
       this.balance.textContent = `${userInfoObj.successData.balance} ₽`;
       this.bonus.textContent = `${userInfoObj.successData.bonus} ❤`;
@@ -98,7 +105,8 @@ class BalancePage {
     api.getClientBalanceLog(this.render);
   }
 
-  render() {
+  render(info) {
+    console.log(info, 'dsadasdasdsad');
     this.mainPageContentContainer = document.createElement('div');
     this.mainPageContentContainer.classList.add('main-page__content-container', 'main-page__content-container-balance');
 
@@ -115,7 +123,7 @@ class BalancePage {
         '--theme--tangerin',
         '--theme--shadow-big',
         '--type--fixed',
-        '-route',
+        '--type--fill',
       ],
       text: ['Пополнить'],
       eventsOpen: [
@@ -133,7 +141,7 @@ class BalancePage {
     this.mainPageContentContainer.append(content.create());
     this.mainPageContentContainer.append(buttonFill.create());
     this.mainPageContent.append(this.mainPageContentContainer);
-
+    console.log(this.mainPageContentContainer);
     this.initBalance();
   }
 

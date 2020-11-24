@@ -246,6 +246,9 @@ class StoresPage {
                     store[day] = store[day].join(', ');
                   }
                 }
+                const shopSelect = document.querySelector('.shop-selector')
+                shopSelect.classList.remove('shop-selector--show')
+                changePriceAfterChooseStore();
                 api.checkWorkTimeStore(store);
               });
               const classIdentifier = 'radio__input-default';
@@ -340,7 +343,7 @@ class StoresPage {
       const stores = document.querySelector('.modal-page-stores');
       const mapSearch = document.querySelector('.map-search');
       const modalPage = document.querySelector('.modal-page-stores');
-      if(isIos) {
+      if (isIos) {
         stores.classList.contains('stores--fullscreen') ? delta = 30 : delta = 101;
       } else {
         stores.classList.contains('stores--fullscreen') ? delta = 60 : delta = 81;
@@ -392,7 +395,6 @@ class StoresPage {
       }
       // console.log(offsetY, dragStart, dragEnd, offsetYOnStart);
       container.style.transform = `translate3d(0,${offsetY}px,0)`;
-
     }
 
     const panelTouch = container.querySelector('.top-bar-search');
@@ -425,7 +427,7 @@ class StoresPage {
     const modalPageReview = document.querySelector('.modal-page-order-review');
     const radioInputs = page.querySelectorAll('.radio__input');
     const mapItem = page.querySelectorAll('.map__item');
-    checkStore();
+
     console.log(radioInputs);
     [...radioInputs].forEach((radio) => {
       const radioId = radio.getAttribute('data-id');
@@ -457,6 +459,7 @@ class StoresPage {
           }
         });
         shopSelector.classList.remove('shop-selector--show');
+        changePriceAfterChooseStore();
       });
     });
   }

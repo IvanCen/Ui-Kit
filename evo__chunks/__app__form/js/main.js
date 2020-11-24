@@ -551,7 +551,7 @@ class CreateFormDeliver extends CreateItem {
   create() {
     const template = `
         <div class="basket__header accordion__trigger basket__header-should-open" data-id="2">
-            <div class="basket__title">Способ доставки</div>
+            <div class="basket__title">Упаковка</div>
         </div>
         <section class="basket__delivery-type accordion__container" data-id="2">
             <div class="form__group basket__group">

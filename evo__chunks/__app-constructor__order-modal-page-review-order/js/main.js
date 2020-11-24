@@ -53,7 +53,7 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
           this.inputComment = document.querySelector('.form__input-comment');
           let orderComment;
           if (this.inputComment.value !== '') {
-            orderComment = this.inputArea.value;
+            orderComment = this.inputComment.value;
           }
           this.inputPromoCode = document.querySelector('.form__input-promoCode');
           let orderPromoCode;

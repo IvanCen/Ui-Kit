@@ -723,6 +723,15 @@ function checkStore() {
   }
 }
 
+function changePriceAfterChooseStore() {
+  const catalogElements = document.querySelectorAll('.catalog__list-element');
+  catalogElements.forEach((el) => {
+    const id = el.getAttribute('id');
+    const cardElementPrice = el.querySelector('.catalog__list-element-price');
+    cardElementPrice.textContent = `${dataProductApi.successData.items[id].price} ₽`;
+  });
+}
+
 class CreateItem {
   constructor(parameters) {
     this.parameters = parameters;
