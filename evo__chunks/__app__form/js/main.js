@@ -387,7 +387,6 @@ class CreateFormInputSignInQuestions extends CreateItem {
     if (this.inputAreaBirthday) {
       ['click', 'keydown', 'focus', 'keyup'].forEach((event) => {
         this.inputAreaBirthday.addEventListener(event, (e) => {
-          console.log(this.element);
           e.preventDefault();
         }, false);
       });

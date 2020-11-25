@@ -66,7 +66,6 @@ class CreateCardItemProductCardNew extends CreateItem {
     }
 
     this.element.addEventListener('click', (e) => {
-      console.log(e.target);
       if (!e.target.classList.contains('catalog__list-element-plus-icon')) {
         stopAction(() => {
           toggleModalPageCard.rendering(dataProductApi.successData.items[productInfo.id]);

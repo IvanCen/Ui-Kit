@@ -114,7 +114,6 @@ class TogglePageBalanceFill extends TogglePage {
                 } else {
                   ApplePay.completeLastTransaction('failure');
                 }
-                //   console.log(JSON.parse(await rawResponse.text()));
               })();
             })
             .catch((e) => {

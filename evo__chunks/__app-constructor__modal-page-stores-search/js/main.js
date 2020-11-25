@@ -10,12 +10,10 @@ class ToggleModalPageStoresSearch extends ToggleModalPageSearch {
     const modalPageReview = document.querySelector('.modal-page-order-review');
     const radioInputs = page.querySelectorAll('.radio__input');
     const mapItem = page.querySelectorAll('.map__item');
-    console.log(page.querySelectorAll('.radio__input'));
     [...radioInputs].forEach((radio) => {
       const radioId = radio.getAttribute('data-id');
       if (!isEmptyObj(userStore) && `0${userStore.store.id}` === radioId) {
         radio.checked = true;
-        console.log('checked');
       }
     });
     [...mapItem].forEach((input) => {
@@ -61,7 +59,6 @@ class ToggleModalPageStoresSearch extends ToggleModalPageSearch {
       if (store.longTitle.toLowerCase().indexOf(this.searchString) > -1) {
         find++;
         this.mapItemsContainer.append(this.storesMapItem.create(store, undefined, undefined, 0, this.modalPageSearch));
-        console.log(this.modalPageSearch);
       }
     }
   }

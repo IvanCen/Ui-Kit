@@ -337,8 +337,6 @@ const toggleModalPageOrderHistory = new ToggleModalPageOrderHistory({
 });
 const searchClassMethod = new Search();
 const balancePage = new BalancePage();
-const toggleOrder = new ToggleOrder();
-const toggleReward = new ToggleReward();
 const storesPage = new StoresPage({
   api,
   classOpen: ['modal-page--opened'],

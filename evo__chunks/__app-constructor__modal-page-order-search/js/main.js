@@ -37,7 +37,6 @@ class ToggleModalPageOrderSearch extends ToggleModalPageSearch {
         searchItems[numberOfHits].push(dataProductApi.successData.items[item]);
       }
     }
-    console.log(searchItems);
 
     if (cardItemContainerSearchEl !== null) {
       if (cardItemContainerSearchEl.childNodes.length !== 0) {
@@ -74,17 +73,11 @@ class ToggleModalPageOrderSearch extends ToggleModalPageSearch {
      * если задана категория для поиска
      */
     const categoryForSearch = categoryId;
-    console.log('Категория в которой ищем');
-    console.log(categoryForSearch);
     let availableItems;
     if (typeof categoryForSearch !== 'undefined') {
       const availableCategories = searchClassMethod.getChildrenCategories(categoryForSearch, dataProductApi.successData.categoriesTree);
       availableItems = searchClassMethod.getChildrenItems(availableCategories);
-      // console.log('Массив товаров для фильтрации');
-      // console.log(categoryForSearch);
       availableItems = searchClassMethod.convertItemsArrayToObject(availableItems);
-      // console.log('Массив товаров для фильтрации идентификатрами, как нужно');
-      // console.log(availableItems);
     }
 
 
@@ -111,7 +104,6 @@ class ToggleModalPageOrderSearch extends ToggleModalPageSearch {
         searchItems[numberOfHits].push(dataProductApi.successData.items[item]);
       }
     }
-    // console.log(searchItems);
 
     if (cardItemContainerSearchEl !== null) {
       if (cardItemContainerSearchEl.childNodes.length !== 0) {
@@ -174,7 +166,6 @@ class ToggleModalPageOrderSearch extends ToggleModalPageSearch {
       } else if (isCategory) {
         toggleModalPageOrderSearch.searchItemCategory(categoryId);
       } else {
-        console.log(isCategory);
         toggleModalPageOrderSearch.searchItem();
       }
     });

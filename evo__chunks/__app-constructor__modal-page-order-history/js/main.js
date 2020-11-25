@@ -23,7 +23,9 @@ class ToggleModalPageOrderHistory extends ToggleModalPage {
 
   openPage() {
     super.openPage(this.modalPageOrderHistory);
-
+    if (isIos) {
+      this.modalPageOrderHistory.classList.add('modal-page-order-history--ios');
+    }
     this.headerTitle = document.querySelector('.header__status');
     this.headerTitle.textContent = 'История заказов';
 

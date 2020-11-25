@@ -54,8 +54,6 @@ class CreateMapItemStores extends CreateItem {
     this.element = document.createElement('div');
     this.element.classList.add('map__item');
     this.element.setAttribute('data-id', `${identity()}${store.id}`);
-    console.log(this.element.getAttribute('data-id'));
-    console.log(id);
     let phone;
     if (store.phone !== null) {
       const regExp = /(\+\d)(\d{3})(\d{3})(\d{2})(\d{2})/g;

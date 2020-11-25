@@ -39,7 +39,6 @@ function switchAdd(productInfo) {
     }
 
     function setUserDataObj() {
-      console.log(productInfo);
       if (typeof userDataObj[productInfo.id] !== 'object') {
         userDataObj[productInfo.id] = {};
       }
@@ -108,7 +107,6 @@ function switchAddNew(productInfo, el) {
     }
 
     function setUserDataObj() {
-      console.log(productInfo);
       if (typeof userDataObj[productInfo.id] !== 'object') {
         userDataObj[productInfo.id] = {};
       }
@@ -248,7 +246,6 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
   }
 
   create(productInfo) {
-    console.log(productInfo);
     let price;
     if (!isEmptyObj(userStore)) {
       if (userStore.store.priceGroup === null) {
@@ -439,7 +436,6 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
     this.blockLike.addEventListener('click', () => {
       this.iconsLike.classList.toggle('text-area__icon--liked');
       if (this.iconsLike.classList.contains('text-area__icon--liked')) {
-        console.log(productInfo);
         if (productInfo.modifiers !== null) {
           const modifiersArr = [];
           for (const modif in userDataObj[productInfo.id]) {
@@ -644,7 +640,6 @@ class CreateTextAreaProductCard extends CreateItem {
   }
 
   create(productInfo) {
-    console.log(productInfo);
     let price;
     if (!isEmptyObj(userStore)) {
       if (userStore.store.priceGroup === null) {
@@ -857,7 +852,6 @@ class CreateTextAreaProductCard extends CreateItem {
     this.iconsLike.addEventListener('click', () => {
       this.iconsLike.classList.toggle('card__bookmark-icon--liked');
       if (this.iconsLike.classList.contains('card__bookmark-icon--liked')) {
-        console.log(productInfo);
         if (productInfo.modifiers !== null) {
           const modifiersArr = [];
           for (const modif in userDataObj[productInfo.id]) {
@@ -1305,7 +1299,6 @@ class CreateTextAreaApplication extends CreateItem {
   }
 
   create(info) {
-    console.log(info);
     this.element = document.createElement(this.parameters.selector);
     this.template = `
       <div class="text-area text-area--indentation--normal">
@@ -1785,7 +1778,6 @@ class CreateTextAreaBalanceTabs extends CreateItem {
   renderContent(container, isBonus = false) {
     const reformattedLog = {};
     const log = isBonus ? userBonusLog : userBalanceLog;
-    console.log(log, 'log');
 
     if (!isEmptyObj(log)) {
       log.successData.forEach((item) => {

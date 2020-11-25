@@ -106,7 +106,6 @@ class BalancePage {
   }
 
   render(info) {
-    console.log(info, 'dsadasdasdsad');
     this.mainPageContentContainer = document.createElement('div');
     this.mainPageContentContainer.classList.add('main-page__content-container', 'main-page__content-container-balance');
 
@@ -142,7 +141,6 @@ class BalancePage {
     this.mainPageContentContainer.append(content.create());
     this.mainPageContentContainer.append(buttonFill.create());
     this.mainPageContent.append(this.mainPageContentContainer);
-    console.log(this.mainPageContentContainer);
     this.initBalance();
   }
 

@@ -33,7 +33,6 @@ function activeBanners(containerBanners, isSwipe, funcCheckBasket = () => {}) {
         if (!containerBanners.classList.contains('stop-action')) {
           setTimeout(() => {
             for (const [index, item] of Object.entries(basketArray)) {
-              console.log(item.id, Number(containerBanners.getAttribute('id')), item.id === Number(containerBanners.getAttribute('id')));
               if (item.id === Number(containerBanners.getAttribute('id'))) {
                 basketArray.splice(index, 1);
                 break;
@@ -115,7 +114,6 @@ class CreateBannersOrder extends CreateItem {
   }
 
   create(productInfo) {
-    console.log(productInfo);
     this.element = document.createElement('div');
     this.element.classList.add('banners__banner', 'banners__banner---type--circle');
     this.template = `
@@ -227,7 +225,6 @@ class CreateBannersMain extends CreateItem {
         });
 
         const imgEl = this.swiperSlide.querySelector('.shares__list-element-image');
-        console.log(imgEl);
         if (!canUseWebP()) {
           loadImgPostsAndPromos(banner, imgEl, 'jpg');
         } else {

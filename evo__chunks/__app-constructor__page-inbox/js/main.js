@@ -144,7 +144,6 @@ class InboxPage {
         const detail = document.querySelector('.messages__detail');
         const container = document.querySelector('.messages__detail-container');
         container.style.height = `calc(100vh - ${document.querySelector('.messages__detail .header').clientHeight}px)`;
-        console.log(document.querySelector('.messages__detail .header').clientHeight);
         if (detail) detail.classList.add('messages__detail--opened');
         const backBtn = document.querySelector('.messages__detail .header__back');
         backBtn.addEventListener('click', () => {

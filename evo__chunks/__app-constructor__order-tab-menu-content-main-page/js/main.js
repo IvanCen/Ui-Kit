@@ -35,7 +35,6 @@ class ToggleOrderMenuContent extends ToggleOrderTabContent {
     const renderProduct = (data) => {
       if (!isEmptyObj(data)) {
         const products = data.successData;
-        console.log(products);
         const drinks = [];
         const food = [];
 

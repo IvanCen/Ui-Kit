@@ -12,7 +12,6 @@ class Search {
   }
 
   getChildrenItems(category) {
-    console.log(category);
     let items = [];
     if (typeof category.items === 'object') {
       items = items.concat(category.items);
@@ -30,16 +29,11 @@ class Search {
       return categories[id];
     }
     for (const categoryId of Object.keys(categories)) {
-      // console.log(id);
-      // console.log(categories);
-      // console.log(categoryId);
-      // console.log(categories[categoryId].children);
       if (typeof categories[categoryId].children === 'undefined') {
         // eslint-disable-next-line no-continue
         continue;
       }
       const result = this.getChildrenCategories(id, categories[categoryId].children);
-      // console.log(result);
       if (result !== false) {
         return result;
       }

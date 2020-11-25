@@ -112,7 +112,6 @@ class StoresPage {
 
     function renderStores(stores, page) {
       try {
-        console.log(stores.successData);
         if (ymaps) {
           ymaps.ready(() => {
             const myMap = new ymaps.Map('map', {
@@ -166,17 +165,8 @@ class StoresPage {
                     const regExp = /(\d+\.?\d)\D+\d+;(\D+)/gi;
                     distEl.textContent = ymaps.formatter.distance(distance).replace(regExp, '$1 $2');
                   }
-
-
-                  // console.log(storesElems[index], index, item, order);
-                  /* console.log(ymaps.formatter.distance(distance));
-                  console.log(distance); */
                 });
 
-                console.log('Ваше текущее метоположение:');
-                console.log(`Широта: ${crd.latitude}`);
-                console.log(`Долгота: ${crd.longitude}`);
-                console.log(`Плюс-минус ${crd.accuracy} метров.`);
               }
 
               function error(err) {
@@ -196,7 +186,6 @@ class StoresPage {
             Object.values(stores.successData).forEach((store) => {
               let placemark;
               if (store.priceGroup === 'BreadRiots') {
-                console.log(store);
                 placemark = new ymaps.Placemark([store.latitude, store.longitude], {}, {
                   iconLayout: 'default#image',
                   iconImageHref: 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-xleb-point.svg]]',
@@ -271,7 +260,6 @@ class StoresPage {
               }
             });
 
-            console.log(userLocation);
             myMap.geoObjects.add(myCollection);
             myMap.geoObjects.add(userLocation);
             /* myMap.events.add('click', (event) => {
@@ -393,7 +381,6 @@ class StoresPage {
         }, 300);
         return;
       }
-      // console.log(offsetY, dragStart, dragEnd, offsetYOnStart);
       container.style.transform = `translate3d(0,${offsetY}px,0)`;
     }
 
@@ -428,7 +415,6 @@ class StoresPage {
     const radioInputs = page.querySelectorAll('.radio__input');
     const mapItem = page.querySelectorAll('.map__item');
 
-    console.log(radioInputs);
     [...radioInputs].forEach((radio) => {
       const radioId = radio.getAttribute('data-id');
       if (!isEmptyObj(userStore) && userStore.store.id === Number(radioId)) {
@@ -476,7 +462,6 @@ class StoresPage {
           window.storesAnimation('end');
         }
       });
-      console.log(AllStores, 'AllStores');
       input.addEventListener('input', () => {
         AllStores.forEach((store) => {
           const title = store.querySelector('.map__item-title').textContent.toLowerCase();

@@ -46,7 +46,6 @@ class TogglePageBalanceHistory extends TogglePage {
     this.page.append(textAreaBonus.create());
     this.page.append(сardItemsContainer.create());
     this.сardItemsContainer = this.page.querySelector('.card-item__container');
-    console.log(this.parameters.userLog);
     this.parameters.userLog.successData.forEach((item) => {
       this.сardItemsContainer.append(сardItem.create(item, option));
     });

@@ -19,7 +19,6 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
   returnPage() {
     toggleModalPageSignIn.closePage();
     toggleModalPageSignIn.deletePage();
-    console.log(returnPageObj);
     if (returnPageObj.returnMainPageAfterSignIn) {
       this.buttonMain = document.querySelector('.main-panel__button--type--main');
       this.buttonMain.click();
@@ -99,8 +98,6 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
 
     const phoneNumber = inputArea.value;
 
-    console.log(info);
-
     if (info.success === true) {
       localStorage.setItem('authorizationPhone', info.successData.phone);
       authorizationPhone = info.successData.phone;
@@ -141,7 +138,6 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
             // document.querySelector(".form[data-id='code']").submit();
             callButton.classList.remove('button--type--disabled');
             callButton.removeAttribute('disabled');
-            console.log('submit');
           } else {
             callButton.classList.add('button--type--disabled');
             callButton.setAttribute('disabled', true);
@@ -265,7 +261,6 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
       const form = document.querySelector('.form--size--full');
       loginContainerEl.classList.add('login__container-for-swip', 'login__container--visible', 'form__inputs-container', 'form__inputs-container--hide', 'swiper-container');
       form.classList.add('form--hide');
-      console.log(userInfo);
       window.swipLoginForms = new Swiper('.login__container-for-swip', {
         spaceBetween: 90,
         slidesPerView: '1',
@@ -306,7 +301,6 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
           const inputArea = swiperSlide.querySelector(`.form__input-area--type--${nameInfo}`);
           const textError = document.querySelector('.form__text--error');
           const input = swiperSlide.querySelector('.form__input-area');
-          console.log(swiperSlide, input);
           if (input.value !== '') {
             textError.textContent = '';
             textError.classList.add('form__text--close', 'form__text--hide');
@@ -332,7 +326,6 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
         const swiperSlide = input.closest('.swiper-slide');
         if (swiperSlide) {
           const bnt = swiperSlide.querySelector('.button--type--next-swiper');
-          console.log(bnt, swiperSlide);
           input.addEventListener('keyup', () => {
             if (input.value === '') {
               bnt.classList.add('button--type--disabled');

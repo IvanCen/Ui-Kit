@@ -97,7 +97,6 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
 
   renderPayOrderPage(info) {
     function resPayOrder(payInfo) {
-      console.log(payInfo);
       if (payInfo.success) {
         let successText = 'Ваш заказ успешно оплачен';
         let successTextTimeout = 300;
@@ -125,7 +124,6 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
     }
     const sectionPayment = document.querySelector('.basket__payment');
     const inputsPayment = sectionPayment.querySelectorAll('.form__input');
-    console.log(inputsPayment);
     checkEmptyBasket();
     closePages();
     const buttonMain = document.querySelector('.main-panel__button--type--main');
@@ -133,7 +131,6 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
     if (info.success) {
       [...inputsPayment].forEach((item) => {
         if (item.checked) {
-          console.log(resPayOrder, item.id);
           api.payOrderApi(item.id, orderInfo.successData, resPayOrder);
         }
       });

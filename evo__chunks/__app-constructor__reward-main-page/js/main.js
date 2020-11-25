@@ -33,7 +33,5 @@ class ToggleReward extends ToggleMainPage {
     } else {
       this.mainPageContent.append(cardText.create());
     }
-
-
   }
 }
