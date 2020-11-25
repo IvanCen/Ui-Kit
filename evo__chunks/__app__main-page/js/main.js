@@ -335,8 +335,6 @@ const toggleModalPageReviewOrder = new ToggleModalPageReviewOrder({
 const toggleModalPageOrderHistory = new ToggleModalPageOrderHistory({
   classOpen: ['modal-page-order-history--opened'],
 });
-
-
 const searchClassMethod = new Search();
 const balancePage = new BalancePage();
 const toggleOrder = new ToggleOrder();
@@ -377,9 +375,6 @@ const toggleModalPageSearch = new ToggleModalPageSearch({
 const toggleModalPageOrderReview = new ToggleModalPageOrderReviewRoot({
   classOpen: ['modal-page-order-review--opened'],
 });
-const toggleModalPageOrderPayment = new ToggleModalPageOrderHistoryRoot({
-  classOpen: ['modal-page-order-payment--opened'],
-});
 const toggleModalPageSignIn = new ToggleModalPageSignIn({
   classOpen: ['modal-page-sign-in--opened'],
   api,
@@ -410,9 +405,7 @@ const Navigation = new CreateNavigation({
       type: 'click',
       callback: () => {
         closePages();
-        setTimeout(() => {
-          api.getClientOrdersApi(toggleModalPageOrderHistory.rendering);
-        }, 100);
+        api.getClientOrdersApi(toggleModalPageOrderHistory.rendering);
       },
     },
   ],
@@ -500,7 +493,7 @@ const mainPageTopBar = new CreateTopBar({
             toggleModalPageReviewOrder.rendering();
           });
         } else {
-          storesPage.openPage();
+          storesPage.openPage(true);
         }
       });
     },

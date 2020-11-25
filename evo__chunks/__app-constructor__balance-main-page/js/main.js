@@ -124,6 +124,7 @@ class BalancePage {
         '--theme--shadow-big',
         '--type--fixed',
         '--type--fill',
+        '--hide',
       ],
       text: ['Пополнить'],
       eventsOpen: [

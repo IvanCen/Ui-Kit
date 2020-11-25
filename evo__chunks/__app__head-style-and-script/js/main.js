@@ -407,23 +407,6 @@ function stopAction(func) {
   setTimeout(() => body.classList.remove('stop-action'), 1000);
 }
 
-function openHistory() {
-  mainPage.clearPage();
-  toggleOrder.rendering();
-  toggleOrder.openPage();
-  toggleOrderHistoryContent.rendering();
-  toggleOrderMenuContent.rendering();
-  toggleOrderHitsContent.rendering();
-
-  const elements = document.querySelectorAll('.main-page__tab-content');
-  const elementsTab = document.querySelectorAll('.top-bar__tab');
-  [...elements, ...elementsTab].forEach((item) => item.classList.remove('main-page__tab-content--open', 'top-bar__tab--active'));
-  const element = document.querySelector('.main-page__tab-content--history');
-  const elementTabHistory = document.querySelector('.top-bar__tab--history');
-  element.classList.add('main-page__tab-content--open');
-  elementTabHistory.classList.add('top-bar__tab--active');
-}
-
 function isEmptyObj(obj) {
   for (const key in obj) {
     return false;
@@ -985,6 +968,45 @@ class TogglePageOrderCard {
       this.page = window.preRenderPages[hash];
     }*/
     // this.openPage();
+  }
+}
+
+class ToggleModalPage {
+  constructor(parameters) {
+    this.body = document.querySelector('body');
+
+    this.parameters = parameters;
+    if (typeof this.parameters !== 'object') {
+      this.parameters = {};
+    }
+  }
+
+  closePage(el) {
+    if (el) {
+      if (typeof this.parameters.classOpen === 'object') {
+        for (const style of this.parameters.classOpen) {
+          el.classList.remove(style);
+        }
+      }
+    }
+    setTimeout(() => this.body.classList.remove('body'), 100);
+  }
+
+  deletePage(el) {
+    setTimeout(() => {
+      if (el) {
+        el.remove();
+      }
+    }, 100);
+  }
+
+  openPage(el) {
+    setTimeout(() => {
+      el.classList.add(this.parameters.classOpen);
+
+      this.body.classList.add('body');
+      this.body.append(el);
+    }, 100);
   }
 }
 
@@ -1596,75 +1618,6 @@ class ToggleModalPageOrderReviewRoot {
     this.body.append(createModalPageOrderReview());
     this.modalPageOrderReview = document.querySelector('.modal-page-order-review');
     this.modalPageOrderReviewContent = document.querySelector('.modal-page-order-review__content');
-  }
-}
-
-class ToggleModalPageOrderHistoryRoot {
-  constructor(parameters) {
-    this.parameters = parameters;
-    this.body = document.querySelector('body');
-    this.modalPageOrderHistory = document.querySelector('.modal-page-order-history');
-    this.modalPageOrderHistoryContent = document.querySelector('.modal-page-order-history__content');
-    this.classOpen = this.parameters.classOpen;
-
-    this.closePage = this.closePage.bind(this);
-    this.deletePage = this.deletePage.bind(this);
-    this.openPage = this.openPage.bind(this);
-
-    if (typeof this.parameters !== 'object') {
-      this.parameters = {};
-    }
-  }
-
-  clearPage() {
-    this.modalPageOrderHistory = document.querySelector('.modal-page-order-history');
-    if (this.modalPageOrderHistory !== null) {
-      if (this.modalPageOrderHistory.childNodes.length !== 0) {
-        this.arrHtml = Array.from(this.modalPageOrderHistory.children);
-        this.arrHtml.forEach((item) => item.remove());
-      }
-    }
-  }
-
-  deletePage() {
-    setTimeout(() => {
-      if (this.modalPageOrderHistory) {
-        this.modalPageOrderHistory.remove()
-      }
-    }, 100);
-  }
-
-  closePage() {
-    this.modalPageOrderHistory = document.querySelector('.modal-page-order-history');
-    if (this.modalPageOrderHistory) {
-      this.modalPageOrderHistory.querySelectorAll('button').forEach((button) => {
-        button.remove();
-      });
-      if (typeof this.parameters.classOpen === 'object') {
-        for (const style of this.parameters.classOpen) {
-          this.modalPageOrderHistory.classList.remove(style);
-        }
-      }
-      setTimeout(() => this.body.classList.remove('body'), 100);
-    }
-  }
-
-  openPage() {
-    this.modalPageOrderHistory = document.querySelector('.modal-page-order-history');
-    this.headerTitle = document.querySelector('.header__status');
-    setTimeout(() => {
-      this.modalPageOrderHistory.classList.add(this.classOpen);
-      this.body.classList.add('body');
-      this.headerTitle.textContent = 'История заказов';
-    }, 100);
-    history.pushState({state: '#modal-page-order-history'}, null, '#modal-page-order-history');
-  }
-
-  rendering() {
-    this.body = document.querySelector('body');
-    this.body.append(createModalPageOrderHistory());
-    this.modalPageOrderHistory = document.querySelector('.modal-page-order-history');
-    this.modalPageOrderHistoryContent = document.querySelector('.modal-page-order-history__content');
   }
 }
 
