@@ -107,7 +107,7 @@ class CreateFooter extends CreateItem {
     </div>`;
   }
 
-  switchNavElem(activeClassName) {
+  switchNavElem(activeClassName, showBasket = true) {
     this.navElems = document.querySelectorAll('.navigation-element');
     this.activeEl = document.querySelector(`.navigation-element-${activeClassName}`);
     this.headerBasket = document.querySelector('.header__basket');
@@ -116,7 +116,9 @@ class CreateFooter extends CreateItem {
       el.classList.remove('navigation-element--active');
     });
     this.activeEl.classList.add('navigation-element--active');
-    this.headerBasket.classList.remove('header__basket--hide');
+    if (showBasket) {
+      this.headerBasket.classList.remove('header__basket--hide');
+    }
   }
 
   create() {
@@ -168,7 +170,7 @@ class CreateFooter extends CreateItem {
       for (const event of this.parameters.eventOpenStoresPage) {
         this.buttonStores.addEventListener(event.type, () => {
           event.callback();
-          this.switchNavElem('stores');
+          this.switchNavElem('stores', false);
         });
       }
     }

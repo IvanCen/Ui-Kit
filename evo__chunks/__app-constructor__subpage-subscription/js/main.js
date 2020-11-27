@@ -31,6 +31,8 @@ class ToggleModalPageSubscription extends ToggleModalPage {
   openPage() {
     super.openPage(this.modalPageEl);
     toggleSubscriptionTabContentActual.rendering(this.modalPageEl);
+    this.headerTitle = document.querySelector('.header__status');
+    this.headerTitle.textContent = 'Абонементы';
 
     history.pushState({ state: `#modal-page-${this.className}` }, null, `#modal-page-${this.className}`);
   }

@@ -18,6 +18,9 @@ class StoresPage {
     this.mapSearchInput = document.querySelector('.map-search__input');
     this.mapSearchHeaderInput = document.querySelector('.header__input');
     this.mapItems = document.querySelectorAll('.map__item');
+    this.headerBasket = document.querySelector('.header__basket');
+    this.headerBasket.classList.add('header__basket--hide');
+
     this.mapItems.forEach((item) => item.classList.remove('map__item--hide'));
     this.mapSearchInput.value = '';
     this.mapSearchHeaderInput.value = '';
@@ -166,7 +169,6 @@ class StoresPage {
                     distEl.textContent = ymaps.formatter.distance(distance).replace(regExp, '$1 $2');
                   }
                 });
-
               }
 
               function error(err) {
@@ -235,8 +237,8 @@ class StoresPage {
                     store[day] = store[day].join(', ');
                   }
                 }
-                const shopSelect = document.querySelector('.shop-selector')
-                shopSelect.classList.remove('shop-selector--show')
+                const shopSelect = document.querySelector('.shop-selector');
+                shopSelect.classList.remove('shop-selector--show');
                 changePriceAfterChooseStore();
                 api.checkWorkTimeStore(store);
               });

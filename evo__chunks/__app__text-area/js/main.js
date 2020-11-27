@@ -1260,7 +1260,16 @@ class CreateTextAreaAccount extends CreateItem {
     this.buttonTerms = this.element.querySelector('.text-area--type--terms');
     this.buttonPublic = this.element.querySelector('.text-area--type--public');
     this.buttonGift = this.element.querySelector('.text-area--type--gift');
+    this.title = this.element.querySelector('.profile__title');
     // this.buttonSubscription = this.element.querySelector('.text-area--type--subscription');
+    let count = 0;
+
+    this.title.addEventListener('click', () => {
+      count++;
+      if (count % 5 === 0) {
+        alert('[~30~]');
+      }
+    });
 
     this.buttonSupport.addEventListener('click', () => {
       stopAction(() => {
