@@ -8,7 +8,7 @@ class CreateNavigation extends CreateItem {
 
   create() {
     this.template = `
-        <div class="navigation-element">
+        <div class="navigation__logo">
             <svg version="1.1" id="Слой_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                  viewBox="0 0 207.59 186.67" style="enable-background:new 0 0 207.59 186.67;" xml:space="preserve" width="38" height="38">
                 <style type="text/css">

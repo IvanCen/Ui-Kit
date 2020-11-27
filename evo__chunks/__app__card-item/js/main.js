@@ -823,11 +823,11 @@ class CreateCardItemHistory extends CreateItem {
     if (productInfo.orderStateName === 'Создан' && productInfo.paid !== 0) {
       orderStateName = 'Оплачен';
     }
-    this.templateTitle = `<div class="title-bar title-bar--theme--dark title-bar--indentation--top title-bar--indentation--bottom-small">
+    this.templateTitle = `<div class="title-bar title-bar--indentation--top title-bar--indentation--bottom-small">
                             <div class="title-bar__text-container">
                             <div>
-                              <span class="title-bar__text title-bar__text--theme--shadow">№${productInfo.orderId}</span>
-                              <span class="title-bar__text title-bar__text--theme--shadow">${orderStateName}</span>
+                              <span class="title-bar__text title-bar__text--type--bold">№${productInfo.orderId}</span>
+                              <span class="title-bar__text title-bar__text--type--bold">${orderStateName}</span>
                             </div>
                             <span class="title-bar__title title-bar__title--size--small title-bar__title--theme--shadow">${date}</span>
                             </div>

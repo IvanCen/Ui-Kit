@@ -36,6 +36,7 @@
 
 
   &__title {
+    padding-top: 6px;
 
     &--size--medium {
       @extend %style-2;
@@ -55,16 +56,20 @@
     }
 
     &--theme--shadow {
-      color: $gray;
+      color: $SuvaGrey;
     }
 
   }
 
   &__text {
-    @extend %style-5;
+    @extend %style-4;
 
     &--theme--shadow {
       color: $lightGrey;
+    }
+
+    &--type--bold {
+      font-weight: 500;
     }
   }
 
@@ -76,6 +81,6 @@
   &__button {
     @extend %style-5;
     color: $orange;
-    font-weight: bold;
+    font-weight: 500;
   }
 }

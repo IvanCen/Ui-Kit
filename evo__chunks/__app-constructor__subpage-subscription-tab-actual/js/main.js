@@ -1,12 +1,13 @@
-class ToggleSubscriptionTabActual extends ToggleSubscriptionTabContent {
+class ToggleSubscriptionTabContentActual extends ToggleTabContent {
   constructor(parameters) {
-    super();
-    this.parameters = parameters;
+    super(parameters);
+
     this.rendering = this.rendering.bind(this);
   }
 
-  rendering() {
+  rendering(el) {
     super.rendering();
+
     this.mainCardSubsription = new CreateSubscriptionsMainCard({
       selector: ['div'],
       style: ['main-card'],
@@ -17,11 +18,11 @@ class ToggleSubscriptionTabActual extends ToggleSubscriptionTabContent {
         '--indentation--bottom',
       ],
     });
-    this.subPageContent.append(this.subPageTabContent);
+    el.append(this.tabContent);
 
     if (!isEmptyObj(dataSeasons)) {
       Object.values(dataSeasons.successData).forEach((item) => {
-        this.subPageTabContent.append(this.mainCardSubsription.create(item));
+        this.tabContent.append(this.mainCardSubsription.create(item));
       });
     }
   }

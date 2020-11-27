@@ -377,14 +377,6 @@ class CreateTopBarSubscription extends CreateItem {
     this.parameters = parameters;
     this.element = document.createElement(this.parameters.selector);
     this.template = `
-      <div class="top-bar__content-container top-bar__content-container--size--small">
-        <div class="top-bar__header">
-         <button class="button top-bar__back-button">
-            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-back.svg]]" alt="Кнопка назад" class="top-bar__icon top-bar__icon-back">
-          </button>
-          <h1 class="top-bar__title top-bar__title--size--small top-bar__title--theme--light">Абонементы</h1>
-        </div>
-      </div>
       <div class="top-bar__tab-container top-bar__tab-container--type--grid-equal">
         <button class="top-bar__tab top-bar__tab--actual top-bar__tab--active-light">Актуальные</button>
         <button class="top-bar__tab top-bar__tab--my">Мои</button>
@@ -396,9 +388,6 @@ class CreateTopBarSubscription extends CreateItem {
 
     this.topBarTabActual = this.element.querySelector('.top-bar__tab--actual');
     this.topBarTabMy = this.element.querySelector('.top-bar__tab--my');
-    this.iconBack = this.element.querySelector('.top-bar__back-button');
-
-    this.iconBack.addEventListener('click', () => window.history.back());
 
     if (typeof this.parameters.eventToggleActualSubscription === 'object') {
       for (const event of this.parameters.eventToggleActualSubscription) {
@@ -408,11 +397,6 @@ class CreateTopBarSubscription extends CreateItem {
     if (typeof this.parameters.eventToggleMySubscription === 'object') {
       for (const event of this.parameters.eventToggleMySubscription) {
         this.topBarTabMy.addEventListener(event.type, event.callback);
-      }
-    }
-    if (typeof this.parameters.eventBack === 'object') {
-      for (const event of this.parameters.eventBack) {
-        this.iconBack.addEventListener(event.type, event.callback);
       }
     }
 

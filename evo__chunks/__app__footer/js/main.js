@@ -110,11 +110,13 @@ class CreateFooter extends CreateItem {
   switchNavElem(activeClassName) {
     this.navElems = document.querySelectorAll('.navigation-element');
     this.activeEl = document.querySelector(`.navigation-element-${activeClassName}`);
+    this.headerBasket = document.querySelector('.header__basket');
 
     this.navElems.forEach((el) => {
       el.classList.remove('navigation-element--active');
     });
     this.activeEl.classList.add('navigation-element--active');
+    this.headerBasket.classList.remove('header__basket--hide');
   }
 
   create() {

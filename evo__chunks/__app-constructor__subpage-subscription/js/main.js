@@ -1,35 +1,55 @@
-class ToggleModalPageSubscription extends ToggleSubPage {
+class ToggleModalPageSubscription extends ToggleModalPage {
   constructor(parameters) {
     super(parameters);
-    this.parameters = parameters;
+
+    this.className = 'subscription';
+
+    this.body.append(createModalPage(this.className));
+
+    this.modalPageEl = document.querySelector(`.modal-page-${this.className}`);
+    this.modalPageContentEl = document.querySelector(`.modal-page-${this.className}__content`);
+
+    this.closePage = this.closePage.bind(this);
+    this.deletePage = this.deletePage.bind(this);
+    this.openPage = this.openPage.bind(this);
     this.rendering = this.rendering.bind(this);
+    this.clearPage = this.clearPage.bind(this);
+  }
+
+  clearPage() {
+    super.clearPage(this.modalPageEl);
+  }
+
+  deletePage() {
+    super.deletePage(this.modalPageEl);
+  }
+
+  closePage() {
+    super.closePage(this.modalPageEl);
+  }
+
+  openPage() {
+    super.openPage(this.modalPageEl);
+    toggleSubscriptionTabContentActual.rendering(this.modalPageEl);
+
+    history.pushState({ state: `#modal-page-${this.className}` }, null, `#modal-page-${this.className}`);
   }
 
   rendering() {
-    super.rendering();
-    const topBar = new CreateTopBarSubscription({
+    this.topBar = new CreateTopBarSubscription({
       selector: ['div'],
       style: ['top-bar'],
       modifier: [
         `${isIos ? '--indentation--top' : ''}`,
         '--theme--dark',
       ],
-      eventBack: [
-        {
-          type: 'click',
-          callback: () => {
-            this.closePage();
-            this.deletePage();
-          },
-        },
-      ],
       eventToggleActualSubscription: [
         {
           type: 'click',
           callback: () => {
-            toggleSubscriptionTabMy.clearPage();
-            toggleSubscriptionTabActual.clearPage();
-            toggleSubscriptionTabActual.rendering();
+            toggleSubscriptionTabContentMy.clearPage();
+            toggleSubscriptionTabContentActual.clearPage();
+            toggleSubscriptionTabContentActual.rendering(this.modalPageEl);
           },
         },
       ],
@@ -37,20 +57,22 @@ class ToggleModalPageSubscription extends ToggleSubPage {
         {
           type: 'click',
           callback: () => {
-            toggleSubscriptionTabActual.clearPage();
-            toggleSubscriptionTabMy.clearPage();
-            toggleSubscriptionTabMy.rendering();
+            toggleSubscriptionTabContentActual.clearPage();
+            toggleSubscriptionTabContentMy.clearPage();
+            toggleSubscriptionTabContentMy.rendering(this.modalPageEl);
           },
         },
       ],
     });
 
-    this.subPage.prepend(topBar.create());
+    this.modalPageEl.prepend(this.topBar.create());
 
 
-    const topBarTabs = this.subPage.querySelectorAll('.top-bar__tab');
-    switchActive(topBarTabs, 'top-bar__tab--active-light');
-    toggleSubscriptionTabActual.rendering();
+    this.activeTobBar();
     this.openPage();
+  }
+
+  activeTobBar() {
+    switchActive(this.modalPageEl.querySelectorAll('.top-bar__tab'), 'top-bar__tab--active-light');
   }
 }

@@ -386,6 +386,9 @@ function closePages() {
   toggleModalPageSignIn.deletePage()
   toggleModalPageOrderHistory.closePage()
   toggleModalPageOrderHistory.deletePage()
+  toggleModalPageSubscription.closePage()
+  toggleModalPageSubscription.clearPage()
+  toggleModalPageSubscription.deletePage()
   toggleModalPageOrderReview.closePage()
   toggleModalPageOrderReview.deletePage()
   toggleModalPageSearch.closePage()
@@ -981,6 +984,15 @@ class ToggleModalPage {
     }
   }
 
+  clearPage(el) {
+    if (el !== null) {
+      if (el.childNodes.length !== 0) {
+        this.arrHtml = Array.from(el.children);
+        this.arrHtml.forEach((item) => item.remove());
+      }
+    }
+  }
+
   closePage(el) {
     if (el) {
       if (typeof this.parameters.classOpen === 'object') {
@@ -1002,6 +1014,11 @@ class ToggleModalPage {
 
   openPage(el) {
     setTimeout(() => {
+      this.headerBasket = document.querySelector('.header__basket');
+      this.headerBasket.classList.add('header__basket--hide')
+      if (isIos) {
+        el.classList.add('modal-page--ios');
+      }
       el.classList.add(this.parameters.classOpen);
 
       this.body.classList.add('body');
@@ -1799,28 +1816,28 @@ class ToggleInboxTabContent {
   }
 }
 
-class ToggleSubscriptionTabContent {
+class ToggleTabContent {
   constructor(parameters) {
     this.parameters = parameters;
     this.body = document.querySelector('body');
-    this.subPage = document.querySelector('.subpage');
 
     this.clearPage = this.clearPage.bind(this);
+
     if (typeof this.parameters !== 'object') {
       this.parameters = {};
     }
+
+
   }
 
   rendering() {
-    this.subPageTabContent = document.createElement('div');
-    this.subPageTabContent.classList.add('subpage__tab-content');
-    this.subPageContent = document.querySelector('.subpage__content');
+    this.tabContent = document.createElement('div');
+    this.tabContent.classList.add('subpage__tab-content');
   }
 
   clearPage() {
-    this.subPageContent = document.querySelector('.subpage__tab-content');
-    if (this.subPageTabContent) {
-      this.subPageTabContent.remove();
+    if (this.tabContent) {
+      this.tabContent.remove();
     }
   }
 }

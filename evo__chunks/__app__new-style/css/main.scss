@@ -1570,6 +1570,7 @@ body {
     font-weight: 500;
     font-size: 24px;
     line-height: 28px;
+    margin-right: 20px;
   }
 
   &__description {
@@ -1643,7 +1644,7 @@ body {
             top: 0;
             justify-content: center;
             align-items: center;
-           // background-color: rgba(0, 0, 0, .4);
+            // background-color: rgba(0, 0, 0, .4);
             font-weight: 500;
             font-size: 18px;
             line-height: 21px;
@@ -2308,6 +2309,14 @@ body {
     transform: translateY(-5%);
   }
 
+  &__logo {
+    height: 56px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+  }
+
   &-element {
     height: 56px;
     display: flex;
@@ -2416,6 +2425,10 @@ body {
       &:after {
         animation: ease-in-out 1s flashing;
       }
+    }
+
+    &--hide {
+      display: none;
     }
   }
 

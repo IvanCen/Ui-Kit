@@ -395,7 +395,7 @@
     position: relative;
 
     &--hide {
-      display: none;
+      opacity: 0;
     }
 
     &--size--big {

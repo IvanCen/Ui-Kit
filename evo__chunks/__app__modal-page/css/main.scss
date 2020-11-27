@@ -1,11 +1,11 @@
 @import "../../__app__head-style-and-script/css/main.scss";
 
-.modal-page-order-history {
+.modal-page {
   position: fixed;
   top: 100%;
   width: 100%;
   left: 0;
-  z-index: 9;
+  z-index: 140;
   flex-grow: 1;
   transition: all .3s ease-out;
   background-color: $white;
@@ -16,15 +16,14 @@
   flex-direction: column;
   justify-content: flex-start;
   height: 100%;
-  padding-top: 79px;
-  padding-bottom: 56px;
 
   &--opened {
-    top: 0;
-  }
+    top: 71px;
+    padding-bottom: 71px;
 
-  &--ios {
-    padding-top: 103px;
-    padding-bottom: 76px;
+    &-ios {
+      top: 153px;
+      padding-bottom: 153px;
+    }
   }
 }

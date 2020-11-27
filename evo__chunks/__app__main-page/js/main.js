@@ -254,8 +254,8 @@ const toggleOrderFavoriteContent = new ToggleOrderFavoriteContent();
 
 const toggleInboxTabMessagesContent = new ToggleInboxTabMessagesContent();
 const toggleInboxTabLastOffersContent = new ToggleInboxTabLastOffersContent();
-const toggleSubscriptionTabActual = new ToggleSubscriptionTabActual();
-const toggleSubscriptionTabMy = new ToggleSubscriptionTabMy();
+const toggleSubscriptionTabContentActual = new ToggleSubscriptionTabContentActual();
+const toggleSubscriptionTabContentMy = new ToggleSubscriptionTabContentMy();
 
 const togglePageInboxDetails = new TogglePageInboxDetails({
   classOpen: ['page--opened'],
@@ -321,7 +321,7 @@ const toggleSubPageApplication = new ToggleSubPageApplication({
   classOpen: ['subpage--opened'],
 });
 const toggleModalPageSubscription = new ToggleModalPageSubscription({
-  classOpen: ['subpage--opened'],
+  classOpen: ['modal-page--opened'],
 });
 const toggleSubPageEditUser = new ToggleSubPageEditUser({
   classOpen: ['subpage--opened'],
@@ -333,7 +333,7 @@ const toggleModalPageReviewOrder = new ToggleModalPageReviewOrder({
   classOpen: ['modal-page-order-review--opened'],
 });
 const toggleModalPageOrderHistory = new ToggleModalPageOrderHistory({
-  classOpen: ['modal-page-order-history--opened'],
+  classOpen: [`${isIos ? 'modal-page--opened-ios' : 'modal-page--opened'}`],
 });
 const searchClassMethod = new Search();
 const balancePage = new BalancePage();
@@ -461,7 +461,8 @@ const Navigation = new CreateNavigation({
       type: 'click',
       callback: () => {
         stopAction(() => {
-          toggleModalPageSubscription.rendering();
+          closePages();
+          api.getSeasons(toggleModalPageSubscription.rendering);
         });
       },
     },
