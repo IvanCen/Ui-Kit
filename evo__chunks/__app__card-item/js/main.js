@@ -96,44 +96,6 @@ class CreateCardItemProductCardNew extends CreateItem {
   }
 }
 
-class CreateCardItemOrder extends CreateItem {
-  constructor(parameters) {
-    super();
-    this.parameters = parameters;
-  }
-
-  create(productInfo, products) {
-    this.element = document.createElement('div');
-    this.element.classList.add('card-item', 'card-item--direction--row');
-    this.element.id = productInfo.id;
-    const { id } = this.element;
-    this.element.addEventListener('click', () => {
-      const category = [];
-      for (const item of Object.values(products.items)) {
-        if (item.category === Number(id)) {
-          category.push(item);
-        }
-      }
-      togglePageOrderCategory.rendering(productInfo.name, category, Number(id));
-      togglePageOrderCategory.openPage();
-    });
-    this.template = `
-      <div class="card-item__image card-item__image--size--small"></div>
-      <h3 class="card-item__title card-item__title--text--bold">${productInfo.name}</h3>`;
-
-    this.element.insertAdjacentHTML('beforeend', this.template);
-
-    const imgEl = this.element.querySelector('.card-item__image');
-    if (!canUseWebP()) {
-      loadImg(productInfo, imgEl, 'jpg');
-    } else {
-      loadImg(productInfo, imgEl, 'webp');
-    }
-
-    return this.element;
-  }
-}
-
 class CreateCardItemOrderProductCard extends CreateItem {
   constructor(parameters) {
     super();
@@ -374,8 +336,6 @@ class CreateCardItemFavAndHisOrder extends CreateItem {
             itemsArray.splice(index, 1);
           }
         });
-        toggleOrderHistoryContent.clearTab();
-        toggleOrderHistoryContent.rendering();
         localStorage.setItem('items', JSON.stringify(itemsArray));
         setTimeout(() => el.remove(), 200);
       });

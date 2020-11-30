@@ -1,53 +1,70 @@
-class ToggleModalPageOrderSearch extends ToggleModalPageSearch {
+class ToggleModalPageOrderSearch extends ToggleModalPage {
   constructor(parameters) {
     super(parameters);
     this.parameters = parameters;
+
+    this.className = 'search';
+
+    this.body.append(createModalPage(this.className));
+
+    this.modalPageEl = document.querySelector(`.modal-page-${this.className}`);
+    this.modalPageContentEl = document.querySelector(`.modal-page-${this.className}__content`);
+
+    this.closePage = this.closePage.bind(this);
+    this.openPage = this.openPage.bind(this);
     this.rendering = this.rendering.bind(this);
     this.activeSearch = this.activeSearch.bind(this);
     this.createFoundedElements = this.createFoundedElements.bind(this);
   }
 
-  rendering(isCategory, categoryId) {
-    super.rendering();
+  closePage() {
+    super.closePage(this.modalPageEl);
+  }
 
+  openPage() {
+    this.body.append(this.modalPageEl);
+    this.body.classList.add('body');
+    setTimeout(() => {
+      if (isIos) {
+        this.modalPageEl.classList.add('modal-page--ios');
+      }
+      this.modalPageEl.classList.add(this.parameters.classOpen);
+    }, 100);
+
+
+    this.activeSearch(this.modalPageEl);
+    history.pushState({ state: `#modal-page-${this.className}` }, null, `#modal-page-${this.className}`);
+  }
+
+  rendering() {
     const textAreaSearch = new CreateTextAreaSearch({
       selector: ['div'],
       style: ['search'],
-      modifier: ['--opened'],
       eventCloseIcon: [
-        { type: 'click', callback: this.closePage },
-        { type: 'click', callback: this.deletePage },
+        {
+          type: 'click',
+          callback: () => {
+            this.closePage();
+            this.clearButton.click();
+          },
+        },
       ],
     });
 
-    this.modalPageSearch.append(textAreaSearch.create());
-
-    this.activeSearch();
-    this.openPage();
+    this.modalPageContentEl.append(textAreaSearch.create());
+    this.clearButton = this.modalPageEl.querySelector('.search__form-input-clear');
   }
 
   activeSearch() {
     const newAllItemsForSearch = {};
-    for (const id in dataProductApi.successData.items) {
+    Object.keys(dataProductApi.successData.items).forEach((id) => {
       newAllItemsForSearch[dataProductApi.successData.items[id].name.toLowerCase()] = dataProductApi.successData.items[id];
-    }
-    AllItemsForSearch = newAllItemsForSearch;
-    const searchBtn = document.querySelector('.catalog__categories-element--search');
-    if (!searchBtn) return;
-    const search = document.querySelector('.search');
-    const closeBtn = document.querySelector('.search__close');
-    const clearBtn = document.querySelector('.search__form-input-clear');
-    const searchField = document.querySelector('.search__form-input');
-    const searchResult = document.querySelector('.search__result');
-    const searchCount = document.querySelector('.search__result-count');
-    searchBtn.addEventListener('click', () => {
-      search.classList.add('search--opened');
     });
-    if (closeBtn) {
-      closeBtn.addEventListener('click', () => {
-        search.classList.remove('search--opened');
-      });
-    }
+    AllItemsForSearch = newAllItemsForSearch;
+    const clearBtn = this.modalPageEl.querySelector('.search__form-input-clear');
+    const searchField = this.modalPageEl.querySelector('.search__form-input');
+    const searchResult = this.modalPageEl.querySelector('.search__result');
+    const searchCount = this.modalPageEl.querySelector('.search__result-count');
     if (clearBtn) {
       clearBtn.addEventListener('click', () => {
         clearBtn.parentElement.querySelector('input').value = '';
@@ -74,7 +91,6 @@ class ToggleModalPageOrderSearch extends ToggleModalPageSearch {
             }
           }
           searchCount.textContent = `${Object.keys(founded).length} товаров`;
-          console.log(founded);
           searchResult.querySelector('.search__result-container').innerHTML = '';
           this.createFoundedElements(founded);
         }
@@ -84,15 +100,18 @@ class ToggleModalPageOrderSearch extends ToggleModalPageSearch {
   }
 
   createFoundedElements(founded) {
-    const container = document.querySelector('.search__result-container');
+    const container = this.modalPageEl.querySelector('.search__result-container');
     for (const id in founded) {
       const item = founded[id];
       console.log(item);
-      let {
-        name, price, weight, netWeight, volume,
+      const {
+        name, price, netWeight, volume,
       } = item;
-      const element = document.createElement('div');
-      element.classList.add('search__list-element');
+      let {
+        weight,
+      } = item;
+
+      const element = document.createElement('div').classList.add('search__list-element');
 
       if (netWeight) {
         weight = `${netWeight} г`;
@@ -144,10 +163,9 @@ class ToggleModalPageOrderSearch extends ToggleModalPageSearch {
       }
 
       iconsPlus.addEventListener('click', function () {
-        const iconsPlusIcon = this.querySelector('.catalog__list-element-plus-icon');
-        iconsPlusIcon.classList.add('catalog__list-element-plus-icon--active');
+        this.classList.add('search__list-element-plus-icon--active');
         setTimeout(() => {
-          iconsPlusIcon.classList.remove('catalog__list-element-plus-icon--active');
+          this.classList.remove('search__list-element-plus-icon--active');
         }, 1000);
         basketArray.push({ id: item.id, modifiers: [] });
         localStorage.setItem('basket', JSON.stringify(basketArray));

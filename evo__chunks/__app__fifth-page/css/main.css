@@ -1,1 +1,0 @@
-.fifth-page{position:fixed;left:100%;width:100%;bottom:0;z-index:50;flex-grow:1;transition:all .3s ease-out;background-color:#fff;display:flex;align-items:stretch;overflow-x:hidden;overflow-y:scroll;flex-direction:column;justify-content:flex-start;top:0;height:100%}.fifth-page--focus-input{padding-bottom:calc(50vh)}.fifth-page--opened{left:0}

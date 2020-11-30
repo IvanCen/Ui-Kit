@@ -1682,12 +1682,11 @@ class CreateTextAreaSearch extends CreateItem {
     this.template = `
     <div class="search__header ${isIos ? 'search__header--ios' : 'search__header--no-ios'}">
         <div class="search__top">
-            <button class="search__close">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M18 6L6 18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M6 6L18 18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        
+        <svg class="search__close" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M10.192 0.343994L5.949 4.58599L1.707 0.343994L0.292999 1.75799L4.535 5.99999L0.292999 10.242L1.707 11.656L5.949 7.41399L10.192 11.656L11.606 10.242L7.364 5.99999L11.606 1.75799L10.192 0.343994Z" fill="white"/>
                 </svg>
-            </button>
+            
             <div class="search__status">Поиск</div>
         </div>
         <form action="" class="form search__form">
@@ -1717,8 +1716,10 @@ class CreateTextAreaSearch extends CreateItem {
 
     if (typeof this.parameters.eventCloseIcon === 'object') {
       for (const event of this.parameters.eventCloseIcon) {
-        this.iconClose.addEventListener('click', () => window.history.back());
-        this.iconClose.addEventListener(event.type, event.callback);
+        this.iconClose.addEventListener(event.type, () => {
+          window.history.back();
+          event.callback();
+        });
       }
     }
 

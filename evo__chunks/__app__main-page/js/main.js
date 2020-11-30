@@ -247,11 +247,6 @@ api.getClientBalanceLog();
 setInterval(api.getMessages, 30000);
 api.getMessages();
 
-const toggleOrderMenuContent = new ToggleOrderMenuContent({ api });
-const toggleOrderHitsContent = new ToggleOrderHitsContent({ api });
-const toggleOrderHistoryContent = new ToggleOrderHistoryContent();
-const toggleOrderFavoriteContent = new ToggleOrderFavoriteContent();
-
 const toggleInboxTabMessagesContent = new ToggleInboxTabMessagesContent();
 const toggleInboxTabLastOffersContent = new ToggleInboxTabLastOffersContent();
 const toggleSubscriptionTabContentActual = new ToggleSubscriptionTabContentActual();
@@ -272,44 +267,9 @@ const toggleModalPageCard = new ToggleModalPageCard({
 const toggleModalPageSharesDetail = new ToggleModalPageSharesDetail({
   classOpen: ['modal-page-card--opened'],
 });
-const togglePageStoresFilter = new TogglePageStoresFilter({
-  classOpen: ['page--opened'],
-});
+
 const togglePageOurHistory = new TogglePageOurHistory({
   classOpen: ['page--opened'],
-});
-const togglePageOrderCategoryAll = new TogglePageOrderCategoryAll({
-  classOpen: ['page--opened--bottom-bar'],
-});
-const togglePageOrderCategory = new TogglePageOrderCategory({
-  classOpen: ['page-order--opened--bottom-bar'],
-});
-const togglePageBalanceHistoryScore = new TogglePageBalanceHistory({
-  classOpen: ['page--opened'],
-  titleNameTopBar: ['Баланс'],
-  text: ['Ваш баланс'],
-  number() {
-    if (!isEmptyObj(userInfoObj)) {
-      return userInfoObj.successData.balance;
-    }
-    return '0';
-  },
-  userLog: userBalanceLog,
-});
-const togglePageBalanceHistoryBonus = new TogglePageBalanceHistory({
-  classOpen: ['page--opened'],
-  titleNameTopBar: ['Бонусы'],
-  text: ['Ваши бонусы'],
-  number() {
-    if (!isEmptyObj(userInfoObj)) {
-      return userInfoObj.successData.bonus;
-    }
-    return '0';
-  },
-  userLog: userBonusLog,
-});
-const toggleSubPageProductCard = new ToggleSubPageProductCard({
-  classOpen: ['subpage--opened--bottom-bar'],
 });
 const toggleSubPageGiftCard = new ToggleSubPageGiftCard({
   classOpen: ['subpage--opened'],
@@ -335,7 +295,6 @@ const toggleModalPageReviewOrder = new ToggleModalPageReviewOrder({
 const toggleModalPageOrderHistory = new ToggleModalPageOrderHistory({
   classOpen: [`${isIos ? 'modal-page--opened-ios' : 'modal-page--opened'}`],
 });
-const searchClassMethod = new Search();
 const balancePage = new BalancePage();
 const storesPage = new StoresPage({
   api,
@@ -346,9 +305,6 @@ const mainPage = new MainPage({ api });
 const togglePage = new TogglePage({
   classOpen: ['page--opened--bottom-bar', 'page--opened'],
 });
-const togglePageOrderCard = new TogglePageOrderCard({
-  classOpen: ['page-order--opened--bottom-bar', 'page-order--opened'],
-});
 const toggleSubPage = new ToggleSubPage({
   classOpen: ['subpage--opened--bottom-bar', 'subpage--opened'],
 });
@@ -358,15 +314,6 @@ const toggleThirdPage = new ToggleThirdPage({
 const toggleFourthPage = new ToggleFourthPage({
   classOpen: ['fourth-page--opened'],
 });
-const toggleFifthPage = new ToggleFifthPage({
-  classOpen: ['fifth-page--opened'],
-});
-const toggleSixthPage = new ToggleSixthPage({
-  classOpen: ['sixth-page--opened'],
-});
-/* const toggleModalPage = new ToggleModalPageStores({
-  classOpen: ['modal-page--open'],
-}); */
 const toggleModalPageSearch = new ToggleModalPageSearch({
   classOpen: ['modal-page-search--opened'],
 });
@@ -561,6 +508,7 @@ function renderMain() {
   inboxPage.rendering();
   accountPage.rendering();
   toggleInboxTabMessagesContent.rendering();
+  toggleModalPageOrderSearch.rendering();
 
   mainPageEl.after(Navigation.create());
   mainPageEl.after(mainPageFooter.create());

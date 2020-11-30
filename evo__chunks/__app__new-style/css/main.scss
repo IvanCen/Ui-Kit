@@ -2555,22 +2555,6 @@ body {
 
 
 .search {
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-  position: fixed;
-  left: 0;
-  top: 100%;
-  width: 100%;
-  background-color: white;
-  max-height: 100vh;
-  height: 100vh;
-  overflow: auto;
-  transition: top .6s ease;
-
-  &--opened {
-    top: 0px;
-  }
 
   &__header {
     background-color: #35302B;
@@ -2596,6 +2580,8 @@ body {
     display: grid;
     grid-template-columns: auto 1fr;
     grid-gap: 32px;
+    justify-content: center;
+    align-items: center;
   }
 
   &__form {

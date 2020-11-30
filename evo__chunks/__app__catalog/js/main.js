@@ -263,7 +263,7 @@ class CreateCatalogMain extends CreateItem {
   }
 
   openSearchPage() {
-    toggleModalPageOrderSearch.rendering();
+    toggleModalPageOrderSearch.openPage();
   }
 
   renderFoodCategory(container, el) {

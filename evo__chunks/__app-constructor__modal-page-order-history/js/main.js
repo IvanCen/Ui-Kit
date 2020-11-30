@@ -25,7 +25,6 @@ class ToggleModalPageOrderHistory extends ToggleModalPage {
 
   openPage() {
     super.openPage(this.modalPageEl);
-
     this.headerTitle = document.querySelector('.header__status');
     this.headerTitle.textContent = 'История заказов';
 
