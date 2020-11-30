@@ -2277,9 +2277,9 @@ body {
   background-color: $color;
   color: white;
 
-  /*&--show {
-    display: flex;
-  }*/
+  &--show ~ .catalog {
+    padding: 16px 16px 50px;
+  }
 }
 
 

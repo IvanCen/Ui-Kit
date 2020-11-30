@@ -564,7 +564,7 @@ function renderMain() {
 
   mainPageEl.after(Navigation.create());
   mainPageEl.after(mainPageFooter.create());
-  // switchActiveFooter();
+
   initMainPanel();
   initTopMenu();
 
@@ -591,8 +591,16 @@ function renderMain() {
       loader.classList.add('loader--hide');
       loader.remove();
     }
-    initSliders();
+    const swiperWraper = document.querySelector('.shares .swiper-wrapper');
+    const catalogWraper = document.querySelector('.catalog .swiper-wrapper');
+    const catalogTagsWraper = document.querySelector('.catalog__tags .swiper-wrapper');
+
+    activeBanners(swiperWraper);
+    activeBanners(catalogWraper);
+    activeBanners(catalogTagsWraper);
+
     checkStore();
+    initCatalog();
   }, 5000);
 }
 

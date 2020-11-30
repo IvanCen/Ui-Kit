@@ -207,11 +207,11 @@ class CreateBannersMain extends CreateItem {
     this.element.insertAdjacentHTML('beforeend', this.template);
 
     if (!isEmptyObj(dataPromo)) {
-      dataPromo.successData.forEach((banner) => {
+      [...dataPosts.successData, ...dataPromo.successData].forEach((banner) => {
         this.swiperSlide = document.createElement('div');
         this.swiperSlide.classList.add('swiper-slide');
         this.templateSlide = ` 
-                <div class="shares__list-element">
+                <div class="shares__list-element banners__banner">
                     <div class="shares__list-element-image"></div>
                     <div class="shares__list-element-desc">
                         <div class="shares__list-element-title">${banner.title}</div>

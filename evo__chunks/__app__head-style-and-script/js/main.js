@@ -108,46 +108,13 @@ function initCategories() {
   });
 }
 
-function initSliders() {
-  const swiperShares = new Swiper('.shares .swiper-container', {
-    slidesPerView: 'auto',
-    spaceBetween: 8,
-    autoHeight: true,
-  });
-
+function initCatalog() {
   const texts = document.querySelectorAll('.shares__list-element-text');
   texts.forEach((text) => {
     if (text.textContent.length > 80) {
       const newString = `${text.textContent.substr(0, 80)}...`;
       text.textContent = newString;
     }
-  });
-
-  const swipTagsDrinks = new Swiper('.catalog__tags-container-drinks', {
-    slidesPerView: 'auto',
-    autoHeight: true,
-  });
-  const swipCat = new Swiper('.catalog__categories', {
-    spaceBetween: 8,
-    slidesPerView: 'auto',
-    autoHeight: true,
-  });
-
-  const swipTagsFoods = new Swiper('.catalog__tags-container-foods', {
-    slidesPerView: 'auto',
-    autoHeight: true,
-  });
-
-  swipTagsDrinks.on('click', () => {
-    setTimeout(() => {
-      swipTagsDrinks.update();
-    }, 500);
-  });
-
-  swipTagsFoods.on('click', () => {
-    setTimeout(() => {
-      swipTagsFoods.update();
-    }, 500);
   });
 
   const tagsContainerFood = document.querySelector('.catalog__tags-container-foods');
