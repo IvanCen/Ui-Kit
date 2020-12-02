@@ -982,6 +982,7 @@ class CreateTextAreaSharesDetail extends CreateItem {
               <div>Условия акции</div>
               <li>Покупай кофе в магазинах и называй свой номер на кассе</li>
               <li>Получай каждый шестой кофе в подарок</li>
+              <li>Кофе добавиться в заказ автоматически после оплаты и при выполнении условий акции</li>
           </ul>
           <div class="shares-detail__images-list">
               <div class="shares-detail__images-list-element"></div>
@@ -996,7 +997,7 @@ class CreateTextAreaSharesDetail extends CreateItem {
         <div class="shares-detail__img-qr"></div>
       </div>
       
-      <button class="shares-detail__button ${isIos ? 'shares-detail__button--ios' : 'shares-detail__button--no-ios'} button button--size--large button--theme--tangerin">Показать QR</button>
+      <button class="button--hide shares-detail__button ${isIos ? 'shares-detail__button--ios' : 'shares-detail__button--no-ios'} button button--size--large button--theme--tangerin">Показать QR</button>
     `;
     this.element.insertAdjacentHTML('beforeend', this.template);
 

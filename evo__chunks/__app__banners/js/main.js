@@ -1,4 +1,5 @@
-function activeBanners(containerBanners, isSwipe, funcCheckBasket = () => {}) {
+function activeBanners(containerBanners, isSwipe, funcCheckBasket = () => {
+}) {
   let dragStart = 0;
   let dragEnd = 0;
   let offsetX = 0;
@@ -59,16 +60,19 @@ function activeBanners(containerBanners, isSwipe, funcCheckBasket = () => {}) {
   const mainImagesCount = mainImages.length;
   let firstImageWidth = mainImages[0].offsetWidth;
 
-  window.addEventListener('resize', () => {
-    firstImageWidth = mainImages[0].offsetWidth;
-  });
+  if (mainImages) {
+    window.addEventListener('resize', () => {
+      firstImageWidth = mainImages[0].offsetWidth;
+    });
+  }
+
 
   containerBanners.addEventListener('touchstart', (event) => {
     // event.preventDefault();
     // event.stopPropagation();
     dragStart = event.touches[0].clientX;
     containerBanners.classList.remove('banner__container--with-animation');
-  }, { passive: false });
+  }, {passive: false});
 
   containerBanners.addEventListener('touchmove', (event) => {
     // event.preventDefault();
@@ -76,7 +80,7 @@ function activeBanners(containerBanners, isSwipe, funcCheckBasket = () => {}) {
     dragEnd = event.touches[0].clientX;
     offsetX = offsetXOnStart + dragEnd - dragStart;
     bannersAnimation('move');
-  }, { passive: false });
+  }, {passive: false});
 
   containerBanners.addEventListener('touchend', (event) => {
     // event.preventDefault();
@@ -85,7 +89,7 @@ function activeBanners(containerBanners, isSwipe, funcCheckBasket = () => {}) {
     offsetXOnStart = offsetX;
     containerBanners.classList.add('banner__container--with-animation');
     bannersAnimation('end');
-  }, { passive: false });
+  }, {passive: false});
 }
 
 
