@@ -197,7 +197,6 @@ const dataPosts = dataPostsLet;
 const dataSeasons = dataSeasonsLet;
 const dataUserSeasons = dataUserSeasonsLet;
 
-
 /* if (isEmptyObj(storesDataObj)) {
     api.storesApi();
   } else if ((Date.now() - storesDataObj.lastEditDateRequest) > (24 * 60 * 60 * 1000)) {

@@ -3968,7 +3968,7 @@ body {
   background-repeat: no-repeat;
   background-position: right top;
   background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/big-logo.svg]]");
-  z-index: 100;
+  z-index: 150;
   flex-direction: column;
   justify-content: space-between;
 

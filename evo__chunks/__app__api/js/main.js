@@ -450,7 +450,7 @@ class Api {
       })
       .then((userLastOrdersInfo) => {
         console.log(userLastOrdersInfo);
-        if (userLastOrdersInfo.success === true) {
+        if (userLastOrdersInfo.success) {
           userLastOrdersObj.successData = userLastOrdersInfo.successData;
           localStorage.setItem('userLastOrders', JSON.stringify(userLastOrdersObj));
         }

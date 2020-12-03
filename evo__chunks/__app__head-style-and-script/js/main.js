@@ -350,6 +350,7 @@ function closePages() {
   toggleModalPageSignIn.closePage()
   toggleModalPageSignIn.deletePage()
   toggleModalPageOrderHistory.closePage()
+  toggleModalPageOrderHistory.clearPage()
   toggleModalPageOrderHistory.deletePage()
   toggleModalPageSubscription.closePage()
   toggleModalPageSubscription.clearPage()
@@ -666,7 +667,7 @@ function clearFriendDataInfo() {
 
 function checkStore() {
   const shopSelect = document.querySelector('.shop-selector')
-  if(isEmptyObj(userStore)){
+  if(isEmptyObj(userStore) && shopSelect){
     shopSelect.classList.add('shop-selector--show')
   } else {
     shopSelect.classList.remove('shop-selector--show')

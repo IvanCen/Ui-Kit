@@ -102,7 +102,7 @@ class CreateNoSubscriptionsMainCard extends CreateItem {
     this.element = document.createElement(this.parameters.selector);
     this.template = `
         <div class="main-card__img-container">
-          <div style="background-image: url('[+chunkWebPath+]/img/no-subscriptions.png')" class="main-card__img main-card__img--indentation"></div>
+          <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/no-subscriptions.svg]]" class="basket__empty-section-img" alt="">
         </div>
         <div class="main-card__text-area main-card__text-area--position--center">
           <h2 class="main-card__title main-card__title--size--normal">У вас еще нет активных абонементов</h2>
@@ -189,9 +189,15 @@ class CreateSubscriptionsMainCard extends CreateItem {
       this.contentContainer.insertAdjacentHTML('afterend', this.qrTemplate);
       this.qr = this.element.querySelector('.main-card__icon--type--qr');
       this.qrImage = this.element.querySelector('.main-card__img-qr');
+      let phone;
+      if (!isEmptyObj(userInfoObj)) {
+        phone = userInfoObj.successData.phone;
+      } else {
+        phone = authorizationPhone;
+      }
       const qr = new QRCode(this.qrImage,
         {
-          text: authorizationPhone.substr(1),
+          text: phone.substr(1),
           colorDark: '#000000',
           colorLight: '#ffffff',
           correctLevel: QRCode.CorrectLevel.H,
@@ -216,9 +222,9 @@ class CreateSubscriptionsMainCard extends CreateItem {
     }
     /* const imgEl = this.element.querySelector('.main-card__img');
     if (!canUseWebP()) {
-      loadImg(productInfo, imgEl, 'jpg');
+      loadImg(subscriptionInfo, imgEl, 'jpg');
     } else {
-      loadImg(productInfo, imgEl, 'webp');
+      loadImg(subscriptionInfo, imgEl, 'webp');
     } */
     return super.create(this.element);
   }
@@ -324,9 +330,9 @@ class CreateInboxMainCardNews extends CreateItem {
         });
       }
       inboxPage.checkMessages();
-      /*if (!wasRead) {
+      /* if (!wasRead) {
         api.markMessageRead(client, timestamp, id);
-      }*/
+      } */
       title.classList.add('main-card__title--font-weight--normal');
     });
     return super.create(this.element);

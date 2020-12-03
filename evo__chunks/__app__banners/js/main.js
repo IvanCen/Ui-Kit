@@ -1,95 +1,97 @@
 function activeBanners(containerBanners, isSwipe, funcCheckBasket = () => {
 }) {
-  let dragStart = 0;
-  let dragEnd = 0;
-  let offsetX = 0;
-  let offsetXOnStart = 0;
+  if (containerBanners) {
+    let dragStart = 0;
+    let dragEnd = 0;
+    let offsetX = 0;
+    let offsetXOnStart = 0;
 
 
-  function bannersAnimation(action) {
-    if (offsetX > 0) {
-      // тут действия, если тянется влево дальше минимума
-      if (action === 'end') {
-        offsetX = 0;
-        dragStart = 0;
-        dragEnd = 0;
-        offsetXOnStart = 0;
-      } else if (action === 'move') {
-        offsetX /= 2; // уменьшапем скорость смещения в 2 раза
-      }
-    }
-    const maxOffsetWidth = -1 * ((mainImagesCount - 1) * firstImageWidth);
-    if (offsetX < maxOffsetWidth) {
-      // тут действия, если тянется вправо дальше максимума
-      if (action === 'end') {
-        offsetX = maxOffsetWidth;
-        dragStart = 0;
-        dragEnd = 0;
-        offsetXOnStart = maxOffsetWidth;
-      } else if (action === 'move') {
-        offsetX = (offsetX + maxOffsetWidth) / 2; // уменьшапем скорость смещения в 2 раза
-      }
-    } else if (maxOffsetWidth / 2 > offsetX && action === 'end' && isSwipe) {
-      (() => {
-        if (!containerBanners.classList.contains('stop-action')) {
-          setTimeout(() => {
-            for (const [index, item] of Object.entries(basketArray)) {
-              if (item.id === Number(containerBanners.getAttribute('id'))) {
-                basketArray.splice(index, 1);
-                break;
-              }
-            }
-
-            localStorage.setItem('basket', JSON.stringify(basketArray));
-
-
-            checkEmptyBasket();
-            containerBanners.remove();
-            checkBasketCounter();
-            countResultPriceAndAllProductCounter();
-          }, 300);
-          containerBanners.classList.add('stop-action');
+    function bannersAnimation(action) {
+      if (offsetX > 0) {
+        // тут действия, если тянется влево дальше минимума
+        if (action === 'end') {
+          offsetX = 0;
+          dragStart = 0;
+          dragEnd = 0;
+          offsetXOnStart = 0;
+        } else if (action === 'move') {
+          offsetX /= 2; // уменьшапем скорость смещения в 2 раза
         }
-        setTimeout(() => containerBanners.classList.remove('stop-action'), 1000);
-      })();
+      }
+      const maxOffsetWidth = -1 * ((mainImagesCount - 1) * firstImageWidth);
+      if (offsetX < maxOffsetWidth) {
+        // тут действия, если тянется вправо дальше максимума
+        if (action === 'end') {
+          offsetX = maxOffsetWidth;
+          dragStart = 0;
+          dragEnd = 0;
+          offsetXOnStart = maxOffsetWidth;
+        } else if (action === 'move') {
+          offsetX = (offsetX + maxOffsetWidth) / 2; // уменьшапем скорость смещения в 2 раза
+        }
+      } else if (maxOffsetWidth / 2 > offsetX && action === 'end' && isSwipe) {
+        (() => {
+          if (!containerBanners.classList.contains('stop-action')) {
+            setTimeout(() => {
+              for (const [index, item] of Object.entries(basketArray)) {
+                if (item.id === Number(containerBanners.getAttribute('id'))) {
+                  basketArray.splice(index, 1);
+                  break;
+                }
+              }
+
+              localStorage.setItem('basket', JSON.stringify(basketArray));
+
+
+              checkEmptyBasket();
+              containerBanners.remove();
+              checkBasketCounter();
+              countResultPriceAndAllProductCounter();
+            }, 300);
+            containerBanners.classList.add('stop-action');
+          }
+          setTimeout(() => containerBanners.classList.remove('stop-action'), 1000);
+        })();
+      }
+      containerBanners.style.transform = `translate3d(${offsetX}px,0,0)`;
     }
-    containerBanners.style.transform = `translate3d(${offsetX}px,0,0)`;
+
+    const mainImages = containerBanners.querySelectorAll('.banners__banner');
+    const mainImagesCount = mainImages.length;
+    let firstImageWidth = mainImages[0].offsetWidth;
+
+    if (mainImages) {
+      window.addEventListener('resize', () => {
+        firstImageWidth = mainImages[0].offsetWidth;
+      });
+    }
+
+
+    containerBanners.addEventListener('touchstart', (event) => {
+      // event.preventDefault();
+      // event.stopPropagation();
+      dragStart = event.touches[0].clientX;
+      containerBanners.classList.remove('banner__container--with-animation');
+    }, { passive: false });
+
+    containerBanners.addEventListener('touchmove', (event) => {
+      // event.preventDefault();
+      // event.stopPropagation();
+      dragEnd = event.touches[0].clientX;
+      offsetX = offsetXOnStart + dragEnd - dragStart;
+      bannersAnimation('move');
+    }, { passive: false });
+
+    containerBanners.addEventListener('touchend', (event) => {
+      // event.preventDefault();
+      // event.stopPropagation();
+      offsetX = Math.round(offsetX / firstImageWidth) * firstImageWidth;
+      offsetXOnStart = offsetX;
+      containerBanners.classList.add('banner__container--with-animation');
+      bannersAnimation('end');
+    }, { passive: false });
   }
-
-  const mainImages = containerBanners.querySelectorAll('.banners__banner');
-  const mainImagesCount = mainImages.length;
-  let firstImageWidth = mainImages[0].offsetWidth;
-
-  if (mainImages) {
-    window.addEventListener('resize', () => {
-      firstImageWidth = mainImages[0].offsetWidth;
-    });
-  }
-
-
-  containerBanners.addEventListener('touchstart', (event) => {
-    // event.preventDefault();
-    // event.stopPropagation();
-    dragStart = event.touches[0].clientX;
-    containerBanners.classList.remove('banner__container--with-animation');
-  }, {passive: false});
-
-  containerBanners.addEventListener('touchmove', (event) => {
-    // event.preventDefault();
-    // event.stopPropagation();
-    dragEnd = event.touches[0].clientX;
-    offsetX = offsetXOnStart + dragEnd - dragStart;
-    bannersAnimation('move');
-  }, {passive: false});
-
-  containerBanners.addEventListener('touchend', (event) => {
-    // event.preventDefault();
-    // event.stopPropagation();
-    offsetX = Math.round(offsetX / firstImageWidth) * firstImageWidth;
-    offsetXOnStart = offsetX;
-    containerBanners.classList.add('banner__container--with-animation');
-    bannersAnimation('end');
-  }, {passive: false});
 }
 
 

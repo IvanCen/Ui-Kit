@@ -17,7 +17,6 @@ class ToggleModalPageSharesDetail extends ToggleModalPageCardDef {
 
     let sharesOpened = true;
 
-
     function activeSharesTouch(container) {
       const INDENT = isIos ? 84 : 24;
       let dragStart = INDENT;

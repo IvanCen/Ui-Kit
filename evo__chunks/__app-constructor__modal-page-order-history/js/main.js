@@ -13,6 +13,11 @@ class ToggleModalPageOrderHistory extends ToggleModalPage {
     this.deletePage = this.deletePage.bind(this);
     this.openPage = this.openPage.bind(this);
     this.rendering = this.rendering.bind(this);
+    this.clearPage = this.clearPage.bind(this);
+  }
+
+  clearPage() {
+    super.clearPage(this.modalPageContentEl);
   }
 
   deletePage() {
@@ -32,11 +37,31 @@ class ToggleModalPageOrderHistory extends ToggleModalPage {
   }
 
   rendering() {
-    const cardSection = new CreateCardItemHistory();
     if (!isEmptyObj(userLastOrdersObj)) {
+      console.log('render');
+
+      this.cardSection = new CreateCardItemHistory();
       for (const item of Object.values(userLastOrdersObj.successData.orders)) {
-        this.modalPageContentEl.prepend(cardSection.create(item));
+        this.modalPageContentEl.prepend(this.cardSection.create(item));
       }
+    } else {
+      this.textAreaNoSignIn = new CreateTextAreaNoSignIn({
+        selector: ['div'],
+        style: ['text-area-container'],
+        modifier: [
+          '--type--sign-in',
+          '--indentation--big',
+        ],
+        eventsButton: [
+          {
+            type: 'click',
+            callback: () => {
+              toggleModalPageSignIn.rendering();
+            },
+          },
+        ],
+      });
+      this.modalPageContentEl.prepend(this.textAreaNoSignIn.create());
     }
     this.openPage();
   }

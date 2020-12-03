@@ -17,7 +17,7 @@ class ToggleModalPageSubscription extends ToggleModalPage {
   }
 
   clearPage() {
-    super.clearPage(this.modalPageEl);
+    super.clearPage(this.modalPageContentEl);
   }
 
   deletePage() {
@@ -30,7 +30,7 @@ class ToggleModalPageSubscription extends ToggleModalPage {
 
   openPage() {
     super.openPage(this.modalPageEl);
-    toggleSubscriptionTabContentActual.rendering(this.modalPageEl);
+    toggleSubscriptionTabContentActual.rendering(this.modalPageContentEl);
     this.headerTitle = document.querySelector('.header__status');
     this.headerTitle.textContent = 'Абонементы';
 
@@ -51,7 +51,7 @@ class ToggleModalPageSubscription extends ToggleModalPage {
           callback: () => {
             toggleSubscriptionTabContentMy.clearPage();
             toggleSubscriptionTabContentActual.clearPage();
-            toggleSubscriptionTabContentActual.rendering(this.modalPageEl);
+            toggleSubscriptionTabContentActual.rendering(this.modalPageContentEl);
           },
         },
       ],
@@ -61,13 +61,13 @@ class ToggleModalPageSubscription extends ToggleModalPage {
           callback: () => {
             toggleSubscriptionTabContentActual.clearPage();
             toggleSubscriptionTabContentMy.clearPage();
-            toggleSubscriptionTabContentMy.rendering(this.modalPageEl);
+            toggleSubscriptionTabContentMy.rendering(this.modalPageContentEl);
           },
         },
       ],
     });
 
-    this.modalPageEl.prepend(this.topBar.create());
+    this.modalPageContentEl.prepend(this.topBar.create());
 
 
     this.activeTobBar();

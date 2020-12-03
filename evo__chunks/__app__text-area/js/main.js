@@ -1012,7 +1012,7 @@ class CreateTextAreaSharesDetail extends CreateItem {
       }
 
 
-      const qrImg = new QRCode(this.element.querySelector('.shares-detail__img-qr'),
+      /*const qrImg = new QRCode(this.element.querySelector('.shares-detail__img-qr'),
         {
           text: userInfoObj.successData.phone.substr(1),
           colorDark: '#000000',
@@ -1031,7 +1031,7 @@ class CreateTextAreaSharesDetail extends CreateItem {
         } else {
           this.button.textContent = 'Показать QR';
         }
-      });
+      });*/
     } else {
       toggleModal.rendering({ subject: 'Ошибка', text: productInfo.errors[0] || 'Требуется авторизация для просмотра прогресса по акции' });
       this.button.classList.add('button--type--disabled');
