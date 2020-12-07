@@ -2689,6 +2689,33 @@ body {
         background-position: center center;
         background-image: url("[+chunkWebPath+]/img/WbZesfqwR-A.png");
       }
+
+      &--ended {
+        position: relative;
+
+        &:before {
+          display: block;
+          content: "";
+          position: absolute;
+          z-index: 1;
+          left: (76px - 24px);
+          width: 24px;
+          height: 24px;
+          background-size: contain;
+          background-repeat: no-repeat;
+          background-position: center center;
+          background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/clock.svg]]");
+        }
+
+        .search__list-element-image {
+          filter: grayscale(1);
+        }
+
+        .search__list-element-detail {
+          filter: grayscale(1);
+          opacity: .38;
+        }
+      }
     }
   }
 

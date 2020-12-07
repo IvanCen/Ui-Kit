@@ -882,7 +882,7 @@ class CreateFormFriendPay extends CreateItem {
       <section class="basket__payment accordion__container" data-id="6">
           <div class="form__group form__group--float form__group--bordered">
               <label class="form__label">Номер телефона</label>
-              <input class="form__input form__input-area--type--phone-friend" type="text">
+              <input class="form__input form__input-area--type--phone-friend" inputmode="numeric" type="text">
           </div>
           <div class="form__group form__group--float form__group--bordered">
               <label class="form__label">Имя</label>

@@ -111,7 +111,8 @@ class ToggleModalPageOrderSearch extends ToggleModalPage {
         weight,
       } = item;
 
-      const element = document.createElement('div').classList.add('search__list-element');
+      const element = document.createElement('div');
+      element.classList.add('search__list-element');
 
       if (netWeight) {
         weight = `${netWeight} г`;
@@ -128,7 +129,7 @@ class ToggleModalPageOrderSearch extends ToggleModalPage {
         <div class="search__list-element-detail catalog__list-element-detail--type--border">
             <div class="search__list-element-title">
                 <div class="search__list-element-name">${name}</div>
-                <div class="catalog__list-element-price">${price}</div>
+                <div class="catalog__list-element-price">${price} ₽</div>
             </div>
             <div class="search__list-element-additional">
                 <div class="search__list-element-name">${weight}</div>
@@ -156,7 +157,7 @@ class ToggleModalPageOrderSearch extends ToggleModalPage {
       if (!isEmptyObj(outOfStock) && outOfStock.successData.itemsAndModifiers.length !== 0) {
         for (const id in outOfStock.successData.itemsAndModifiers) {
           if (Number(id) === item.id) {
-            element.classList.add('catalog__list-element--ended');
+            element.classList.add('search__list-element--ended');
             break;
           }
         }
