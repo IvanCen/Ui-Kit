@@ -111,8 +111,8 @@ function initCategories() {
 function initCatalog() {
   const texts = document.querySelectorAll('.shares__list-element-text');
   texts.forEach((text) => {
-    if (text.textContent.length > 80) {
-      const newString = `${text.textContent.substr(0, 80)}...`;
+    if (text.textContent.length > 60) {
+      const newString = `${text.textContent.substr(0, 60)}...`;
       text.textContent = newString;
     }
   });
