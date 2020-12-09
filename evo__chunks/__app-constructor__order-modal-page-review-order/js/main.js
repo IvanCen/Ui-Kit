@@ -21,7 +21,7 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
 
   makeOrder(info) {
     if (info.success === false) {
-      toggleModal.rendering({ subject: 'Ошибка', text: 'Что то пошло не так' });
+      toggleModal.rendering({subject: 'Ошибка', text: 'Что то пошло не так'});
       toggleModal.openPage();
     } else if (info.success === true) {
       if (!isEmptyObj(basketArray)) {
@@ -30,7 +30,7 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
           this.bascketStoresSection = this.modalPageOrderReview.querySelector('.basket__shop');
           this.inputsDelivery = this.bascketDeliverySection.querySelectorAll('.form__input');
           this.inputsStores = this.bascketStoresSection.querySelectorAll('.form__input');
-          const { phone } = userInfoObj.successData;
+          const {phone} = userInfoObj.successData;
           let isToGo;
           let idPackage;
           let idStore;
@@ -48,7 +48,7 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
 
           if (idPackage) {
             this.deleteItem(idPackage);
-            basketArray.push({ id: idPackage, modifier: [] });
+            basketArray.push({id: idPackage, modifier: []});
           }
           this.inputComment = document.querySelector('.form__input-comment');
           let orderComment;
@@ -72,10 +72,10 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
             this.renderPayOrderPage,
           );
         } else {
-          toggleModal.rendering({ subject: 'Информация', text: info.successData.timeStatePickUp });
+          toggleModal.rendering({subject: 'Информация', text: info.successData.timeStatePickUp});
         }
       } else {
-        toggleModal.rendering({ subject: 'Информация', text: 'Вы ничего не положили в корзину' });
+        toggleModal.rendering({subject: 'Информация', text: 'Вы ничего не положили в корзину'});
         toggleModal.openPage();
       }
     }
@@ -116,12 +116,13 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
         emitter.emit('event:counter-changed');
 
         setTimeout(() => {
-          toggleModal.rendering({ subject: 'Информация', text: successText });
+          toggleModal.rendering({subject: 'Информация', text: successText});
         }, successTextTimeout);
       } else {
-        toggleModal.rendering({ subject: 'Ошибка', text: payInfo.errors[0] });
+        toggleModal.rendering({subject: 'Ошибка', text: payInfo.errors[0]});
       }
     }
+
     const sectionPayment = document.querySelector('.basket__payment');
     const inputsPayment = sectionPayment.querySelectorAll('.form__input');
     checkEmptyBasket();
@@ -136,41 +137,69 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
       });
       // toggleModalPagePaymentOrder.rendering(info);
     } else {
-      toggleModal.rendering({ subject: 'Ошибка', text: info.errors[0] });
+      toggleModal.rendering({subject: 'Ошибка', text: info.errors[0]});
     }
+  }
+
+  initContent() {
+    const accordionTriggers = this.modalPageOrderReview.querySelectorAll('.accordion__trigger');
+    const accordionShouldOpen = this.modalPageOrderReview.querySelectorAll('.basket__header-should-open');
+    const groups = this.modalPageOrderReview.querySelectorAll('.form__group--float');
+    const sectionReset = this.modalPageOrderReview.querySelectorAll('.button__reset');
+
+    accordionTriggers.forEach((trigger) => {
+      trigger.addEventListener('click', (e) => {
+        const container = document.querySelector(`.accordion__container[data-id='${trigger.dataset.id}']`);
+        trigger.classList.toggle('accordion__trigger--active');
+        container.classList.toggle('accordion__container--show');
+        if (container.style.maxHeight) {
+          container.style.maxHeight = null;
+        } else {
+          container.style.maxHeight = `${container.scrollHeight}px`;
+        }
+      });
+    });
+
+    accordionShouldOpen.forEach((element) => {
+      element.click();
+    });
+
+    groups.forEach((group) => {
+      group.addEventListener('click', () => {
+        group.classList.add('form__group--focused');
+      });
+      group.querySelector('input').addEventListener('blur', () => {
+        group.classList.remove('form__group--focused');
+        if (group.querySelector('input').value) {
+          group.classList.add('form__group--not-empty');
+        } else {
+          group.classList.remove('form__group--not-empty');
+        }
+      });
+      group.click();
+      setTimeout(() => {
+        group.classList.remove('form__group--focused');
+        if (group.querySelector('input').value) {
+          group.classList.add('form__group--not-empty');
+        } else {
+          group.classList.remove('form__group--not-empty');
+        }
+      }, 40);
+    });
+
+    sectionReset.forEach((reset) => {
+      reset.addEventListener('click', () => {
+        const inputs = reset.closest('section').querySelectorAll('input');
+        inputs.forEach((input) => {
+          input.value = '';
+          input.closest('.form__group').classList.remove('form__group--not-empty');
+        });
+      });
+    });
   }
 
   rendering() {
     super.rendering();
-    const reviewTopBar = new CreateTopBarReviewOrder({
-      selector: ['div'],
-      style: ['top-bar'],
-      modifier: [
-        '--theme--dark',
-        `--size--medium${isIos ? '--ios' : ''}`,
-      ],
-      eventClose: [
-        {
-          type: 'click',
-          callback: () => {
-            this.closePage();
-            this.deletePage();
-          },
-        },
-      ],
-      isClose: true,
-      eventStores: [
-        {
-          type: 'click',
-          callback: () => {
-            stopAction(() => {
-              storesPage.rendering();
-              storesPage.openPage();
-            });
-          },
-        },
-      ],
-    });
     const reviewTopBarNew = new CreateTopBarReview({
       selector: ['div'],
       style: ['top-bar'],
@@ -270,6 +299,16 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
       modifier: [
         `${isIos ? '--ios' : ''}`,
       ],
+      eventButton: [
+        {
+          type: 'click',
+          callback: () => {
+            stopAction(() => {
+              api.getClientApi(this.checkStoreWorkTime);
+            });
+          },
+        },
+      ],
     });
 
 
@@ -292,13 +331,15 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
       this.container.append(textAreaResult.create());
       this.modalPageOrderReview.append(this.container);
 
-      this.accordContainer = document.querySelector('.accordion__container-review');
+      const accordContainer = document.querySelector('.accordion__container-review');
+      const banners = document.querySelectorAll('.banner__container');
+      const inputs = this.modalPageOrderReview.querySelectorAll('.form__input-area');
 
       const productsItems = dataProductApi.successData.items;
 
       basketArray.forEach((item, index) => {
         if (typeof productsItems[Number(item.id)] !== 'undefined' && !isEmptyObj(item)) {
-          this.accordContainer.append(reviewCardItemNew.create(item));
+          accordContainer.append(reviewCardItemNew.create(item));
         } else {
           basketArray.splice(index, 1);
           localStorage.setItem('basket', JSON.stringify(basketArray));
@@ -307,18 +348,13 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
 
       countResultPriceAndAllProductCounter();
 
-      this.reviewButton = document.querySelector('.button--type--make-order');
-
       emitter.emit('event:counter-changed');
-      const banners = document.querySelectorAll('.banner__container');
       if (banners) {
         banners.forEach((banner) => {
           activeBanners(banner, true);
         });
       }
 
-
-      const inputs = this.modalPageOrderReview.querySelectorAll('.form__input-area');
       this.modalPageOrderReview.addEventListener('scroll', () => {
         [...inputs].forEach((el) => {
           if (el.nextElementSibling.classList.contains('form__input--focused')) {
@@ -328,89 +364,13 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
       });
 
       orderComment = '';
-      activeAccordion();
       inputFlyLabel();
-
-      this.reviewButton.addEventListener('click', () => {
-        stopAction(() => {
-          api.getClientApi(this.checkStoreWorkTime);
-        });
-      });
     } else {
       this.emptyBasketContainerEl = document.querySelector('.text-area-container--empty-basket');
       this.emptyBasketContainerEl.classList.remove('text-area-container--hide');
     }
 
-    function initImages() {
-      let images = document.querySelectorAll('.catalog__list-element-image');
-      images.forEach((image) => {
-        image.style.backgroundImage = `url(${image.dataset.image})`;
-      });
-
-      images = document.querySelectorAll('.basket__offers-element-image');
-      images.forEach((image) => {
-        image.style.backgroundImage = `url(${image.dataset.image})`;
-      });
-    }
-
-    function onDOMContentLoaded(e) {
-      const accordionTriggers = document.querySelectorAll('.accordion__trigger');
-      accordionTriggers.forEach((trigger) => {
-        trigger.addEventListener('click', (e) => {
-          const container = document.querySelector(`.accordion__container[data-id='${trigger.dataset.id}']`);
-          trigger.classList.toggle('accordion__trigger--active');
-          container.classList.toggle('accordion__container--show');
-          if (container.style.maxHeight) {
-            container.style.maxHeight = null;
-          } else {
-            container.style.maxHeight = `${container.scrollHeight}px`;
-          }
-        });
-      });
-
-      const accordionShouldOpen = document.querySelectorAll('.basket__header-should-open');
-      accordionShouldOpen.forEach((element) => {
-        element.click();
-      });
-
-      const groups = document.querySelectorAll('.form__group--float');
-      groups.forEach((group) => {
-        group.addEventListener('click', (e) => {
-          group.classList.add('form__group--focused');
-          // group.querySelector('input').focus();
-        });
-        group.querySelector('input').addEventListener('blur', (e) => {
-          group.classList.remove('form__group--focused');
-          if (group.querySelector('input').value) {
-            group.classList.add('form__group--not-empty');
-          } else {
-            group.classList.remove('form__group--not-empty');
-          }
-        });
-        group.click();
-        setTimeout(() => {
-          group.classList.remove('form__group--focused');
-          if (group.querySelector('input').value) {
-            group.classList.add('form__group--not-empty');
-          } else {
-            group.classList.remove('form__group--not-empty');
-          }
-        }, 40);
-      });
-
-      const sectionReset = document.querySelectorAll('.button__reset');
-      sectionReset.forEach((reset) => {
-        reset.addEventListener('click', (e) => {
-          const inputs = reset.closest('section').querySelectorAll('input');
-          inputs.forEach((input) => {
-            input.value = '';
-            input.closest('.form__group').classList.remove('form__group--not-empty');
-          });
-        });
-      });
-    }
-
-    onDOMContentLoaded();
+    this.initContent();
 
     this.openPage();
   }

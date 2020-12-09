@@ -102,6 +102,7 @@ class ToggleModalPageOrderSearch extends ToggleModalPage {
   createFoundedElements(founded) {
     const container = this.modalPageEl.querySelector('.search__result-container');
     for (const id in founded) {
+      console.log(id);
       const item = founded[id];
       console.log(item);
       const {
@@ -144,7 +145,6 @@ class ToggleModalPageOrderSearch extends ToggleModalPage {
       const imgEl = element.querySelector('.search__list-element-image');
       const iconsPlus = element.querySelector('.search__list-element-plus-icon');
 
-
       element.addEventListener('click', (e) => {
         if (!e.target.classList.contains('search__list-element-plus-icon')) {
           toggleModalPageSearch.closePage();
@@ -152,7 +152,6 @@ class ToggleModalPageOrderSearch extends ToggleModalPage {
           toggleModalPageCard.rendering(dataProductApi.successData.items[item.id]);
         }
       });
-
 
       if (!isEmptyObj(outOfStock) && outOfStock.successData.itemsAndModifiers.length !== 0) {
         for (const id in outOfStock.successData.itemsAndModifiers) {
@@ -173,7 +172,6 @@ class ToggleModalPageOrderSearch extends ToggleModalPage {
         checkEmptyBasket();
         animationAddProduct();
       });
-
 
       if (!canUseWebP()) {
         loadImg(dataProductApi.successData.items[item.id], imgEl, 'jpg');
