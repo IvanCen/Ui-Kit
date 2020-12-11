@@ -36,20 +36,7 @@ class MainPage {
         modifier: [`${isIos ? '--ios' : ''}`],
       },
     );
-    const textAreaBalanceMain = new CreateTextAreaBalanceMain({
-      selector: ['section'],
-      style: ['balance-section'],
-      eventsButton: [
-        {
-          type: 'click',
-          callback: () => {
-            stopAction(() => {
-              togglePageBalanceFill.rendering();
-            });
-          },
-        },
-      ],
-    });
+
     const banners = new CreateBannersMain({
       selector: ['section'],
       style: ['shares'],
@@ -58,7 +45,6 @@ class MainPage {
       selector: ['section'],
       style: ['catalog'],
     });
-
 
     const ourHistoryMainCard = new CreateOurHistoryMainCard({
       selector: ['div'],
@@ -80,9 +66,6 @@ class MainPage {
     this.postContainer.classList.add('main-card__container-posts');
     this.mainPageContent.append(banners.create());
     this.mainPageContent.append(shopSelector.create());
-    if (!isEmptyObj(userInfoObj)) {
-      this.mainPageContent.append(textAreaBalanceMain.create());
-    }
     this.mainPageContent.append(catalog.create());
 
     if (!isEmptyObj(userInfoObj)) {

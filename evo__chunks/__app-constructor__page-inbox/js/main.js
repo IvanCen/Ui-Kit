@@ -85,7 +85,7 @@ class InboxPage {
       modifier: ['-inbox'],
     });
 
-    const textAreaNoSignIn = new CreateTextAreaNoSignIn({
+    const textAreaNoSignIn = new TextAreaNoSignIn({
       selector: ['div'],
       style: ['text-area-container'],
       modifier: [

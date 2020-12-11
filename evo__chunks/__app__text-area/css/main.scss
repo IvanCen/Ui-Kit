@@ -217,6 +217,10 @@
       color: $gray;
     }
 
+    &--size--big {
+      @extend %style-5;
+    }
+
     &--indentation--big {
       margin-bottom: 32px;
     }

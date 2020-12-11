@@ -689,18 +689,25 @@ class CreateItem {
     if (typeof this.parameters !== 'object') {
       this.parameters = {};
     }
+    this.element = document.createElement(this.parameters.selector || 'div');
   }
 
-  create(element) {
-    if (typeof this.parameters.style === 'object') {
-      element.classList.add(this.parameters.style);
+  setStyles(element) {
+    const {style, modifier} = this.parameters
+
+    if (typeof style === 'object') {
+      element.classList.add(style);
     }
-    if (typeof this.parameters.modifier === 'object') {
+    if (typeof modifier === 'object') {
       const {className} = element;
-      for (const style of this.parameters.modifier) {
+      for (const style of modifier) {
         element.classList.add(className + style);
       }
     }
+  }
+
+  create(element = this.element) {
+    this.setStyles(element)
     return element;
   }
 }

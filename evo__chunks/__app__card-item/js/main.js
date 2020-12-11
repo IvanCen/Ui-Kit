@@ -468,7 +468,7 @@ class CreateCardItemReview extends CreateItem {
       price = 0;
     }
 
-    /*if (!isEmptyObj(dataUserSeasons)) {
+    /* if (!isEmptyObj(dataUserSeasons)) {
       Object.values(dataUserSeasons.successData).forEach((item) => {
         if (dataSeasons.successData[item.id]) {
           Object.values(dataSeasons.successData[item.id].items).forEach((el) => {
@@ -478,7 +478,7 @@ class CreateCardItemReview extends CreateItem {
           });
         }
       });
-    }*/
+    } */
 
     this.template = `
           <div class="basket__offers-element banners__banner">
@@ -606,163 +606,6 @@ class CreateCardItemReview extends CreateItem {
         const container = document.querySelector(`.accordion__container[data-id='${trigger.dataset.id}']`);
         container.style.maxHeight = `${container.scrollHeight}px`;
       });
-    });
-    return super.create(this.element);
-  }
-}
-
-class CreateCardItemReviewOrder extends CreateItem {
-  constructor(parameters) {
-    super();
-    this.parameters = parameters;
-    this.create.bind(this);
-  }
-
-  create(productInfo, funcCheckBasket) {
-    this.element = document.createElement('div');
-    this.energy = `Калорий ${dataProductApi.successData.items[productInfo.id].energy}`;
-
-    this.template = `
-          <div class="card-item__container--direction--row-small banners__banner">
-            <div class="card-item__image card-item__image--size--small"></div>
-            <div class="card-item__content-container">
-              <h3 class="card-item__title card-item__title--text--bold">${dataProductApi.successData.items[productInfo.id].name}</h3>
-              <span class="card-item__info card-item__info--indentation--bottom card-item__info--theme--shadow card-item__info--type--energy">${this.energy}</span>
-              <ul class="card-item__list"></ul>
-              <span class="card-item__price"></span>
-              <div class="card-item__icon-container">
-                <button class="card-item__button card-item__button--type--minus">
-                 <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-remove-circle.svg]]" alt=""
-                       class="card-item__icon card-item__icon--type--minus">
-                </button>
-                <button class="card-item__button card-item__button--type--plus">
-                  <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-add-circle-plus.svg]]" alt=""
-                       class="card-item__icon card-item__icon--type--plus">
-                </button>
-              </div>
-              <div class="main-card__figure main-card__figure--theme--blood main-card__figure--size--normal main-card__figure--hide"><span class="main-card__info main-card__info--out-of">Закончилось</span></div>
-            </div>
-          </div>
-          <div class="card-item__zone card-item__zone--type--delete banners__banner">
-            <img class="card-item__icon card-item__icon--size--big" src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-delete-basket.svg]]" alt="">
-          </div>  
-        `;
-    this.element.insertAdjacentHTML('beforeend', this.template);
-    this.iconsMinus = this.element.querySelector('.card-item__button--type--minus');
-    this.iconsPlus = this.element.querySelector('.card-item__button--type--plus');
-    this.price = this.element.querySelector('.card-item__price');
-    this.figure = this.element.querySelector('.main-card__figure');
-    this.energyEl = this.element.querySelector('.card-item__info--type--energy');
-    this.element.setAttribute('id', productInfo.id);
-    const el = this.element;
-
-    if (!isEmptyObj(outOfStock) && outOfStock.successData.itemsAndModifiers.length !== 0) {
-      for (const id in outOfStock.successData.itemsAndModifiers) {
-        if (Number(id) === productInfo.id) {
-          this.figure.classList.remove('main-card__figure--hide');
-          break;
-        }
-      }
-    }
-    this.element.addEventListener('click', (e) => {
-      if (!e.target.classList.contains('card-item__button') && !e.target.classList.contains('card-item__icon')) {
-        stopAction(() => {
-          toggleModalPageCard.closePage();
-          toggleModalPageCard.deletePage();
-          toggleThirdPage.closePage();
-          toggleThirdPage.deletePage();
-          setTimeout(() => {
-            toggleModalPageCard.rendering(dataProductApi.successData.items[productInfo.id], false);
-            toggleModalPageReviewOrder.closePage();
-            toggleModalPageReviewOrder.deletePage();
-          }, 300);
-        });
-      }
-    });
-    if (!dataProductApi.successData.items[productInfo.id].energy) {
-      this.energyEl.remove();
-    }
-
-    const imgEl = this.element.querySelector('.card-item__image');
-    if (!canUseWebP()) {
-      loadImg(dataProductApi.successData.items[productInfo.id], imgEl, 'jpg');
-    } else {
-      loadImg(dataProductApi.successData.items[productInfo.id], imgEl, 'webp');
-    }
-
-    let priceAllModifier = 0;
-
-    if (typeof dataProductApi.successData.items[productInfo.id] === 'object' && typeof productInfo.modifiers === 'object') {
-      const cardItemList = this.element.querySelector('.card-item__list');
-      /**
-       * Перебераем их
-       */
-      for (const modifier of productInfo.modifiers) {
-        /**
-         * Если у модификатора есть идентификатор и такой модификатор существует в каталоге, и количество модификаторов определено и больше 0, то добавляем модификаторы к описанию
-         */
-        if (typeof modifier.id === 'number' && typeof dataProductApi.successData.modifiers[modifier.id] !== 'undefined' && typeof modifier.count === 'number' && modifier.count > 0) {
-          priceAllModifier += dataProductApi.successData.modifiers[modifier.id].price * modifier.count;
-          const cardItemListItem = document.createElement('li');
-          cardItemListItem.classList.add('card-item__list-item');
-          cardItemListItem.id = modifier.id;
-          cardItemListItem.textContent = `${modifier.count} добав${number_of(modifier.count, ['ка', 'ки', 'ок'])} ${dataProductApi.successData.modifiers[modifier.id].name}`;
-          cardItemList.append(cardItemListItem);
-        }
-      }
-    }
-    if (!isEmptyObj(userStore)) {
-      if (userStore.store.priceGroup === null) {
-        this.price.textContent = priceAllModifier + dataProductApi.successData.items[productInfo.id].price;
-      } else {
-        this.price.textContent = priceAllModifier + dataProductApi.successData.items[productInfo.id][`price${userStore.store.priceGroup}`];
-      }
-    }
-
-    /* if (!isEmptyObj(dataUserSeasons)) {
-      Object.values(dataUserSeasons.successData).forEach((item) => {
-        if (dataSeasons.successData[item.id]) {
-          Object.values(dataSeasons.successData[item.id].items).forEach((el) => {
-            if (el === productInfo.id) {
-              this.price.textContent = priceAllModifier + dataSeasons.successData[item.id].price;
-            }
-          });
-        }
-      });
-    } */
-
-    this.iconsMinus.addEventListener('click', function () {
-      (() => {
-        if (!this.classList.contains('stop-action')) {
-          el.classList.add('card-item--animation');
-          for (const [index, item] of Object.entries(basketArray)) {
-            console.log(item.id, productInfo.id, item.id === productInfo.id);
-            if (item.id === productInfo.id) {
-              basketArray.splice(index, 1);
-              break;
-            }
-          }
-          localStorage.setItem('basket', JSON.stringify(basketArray));
-          emitter.emit('event:counter-changed');
-
-          checkEmptyBasket();
-          setTimeout(() => el.remove(), 200);
-          this.classList.add('stop-action');
-        }
-        setTimeout(() => this.classList.remove('stop-action'), 1000);
-      })();
-    });
-
-    this.iconsPlus.addEventListener('click', () => {
-      basketArray.push(productInfo);
-      localStorage.setItem('basket', JSON.stringify(basketArray));
-
-      const cardItemContainer = document.querySelector('.card-item__container--type--review');
-      cardItemContainer.append(this.create(productInfo));
-      activeBanners(this.element, true, checkEmptyBasket);
-      checkEmptyBasket();
-      animationAddProduct();
-      animationAddProduct();
     });
     return super.create(this.element);
   }

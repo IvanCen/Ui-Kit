@@ -80,20 +80,7 @@ class MainPages {
     this.mainPage.prepend(this.mainPageContent);
 
     const mainPageMainCard = new CreateMainCard();
-    const textAreaBalanceMain = new CreateTextAreaBalanceMain({
-      selector: ['section'],
-      style: ['balance-section'],
-      eventsButton: [
-        {
-          type: 'click',
-          callback: () => {
-            stopAction(() => {
-              togglePageBalanceFill.rendering();
-            });
-          },
-        },
-      ],
-    });
+
     const banners = new CreateBannersMain({
       selector: ['section'],
       style: ['shares'],
@@ -145,9 +132,7 @@ class MainPages {
     this.promoContainer.classList.add('main-card__container-promo');
     this.postContainer.classList.add('main-card__container-posts');
     this.mainPageContent.append(banners.create());
-    if (!isEmptyObj(userInfoObj)) {
-      this.mainPageContent.append(textAreaBalanceMain.create());
-    }
+
     this.mainPageContent.append(catalog.create());
 
     if (!isEmptyObj(userInfoObj)) {

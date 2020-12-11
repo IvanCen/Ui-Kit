@@ -45,7 +45,7 @@ class ToggleModalPageOrderHistory extends ToggleModalPage {
         this.modalPageContentEl.prepend(this.cardSection.create(item));
       }
     } else {
-      this.textAreaNoSignIn = new CreateTextAreaNoSignIn({
+      this.textAreaNoSignIn = new TextAreaNoSignIn({
         selector: ['div'],
         style: ['text-area-container'],
         modifier: [

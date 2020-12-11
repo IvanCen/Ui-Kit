@@ -146,7 +146,13 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
     const accordionShouldOpen = this.modalPageOrderReview.querySelectorAll('.basket__header-should-open');
     const groups = this.modalPageOrderReview.querySelectorAll('.form__group--float');
     const sectionReset = this.modalPageOrderReview.querySelectorAll('.button__reset');
+    const banners = this.modalPageOrderReview.querySelectorAll('.banner__container');
 
+    if (banners) {
+      banners.forEach((banner) => {
+        activeBanners(banner, true);
+      });
+    }
     accordionTriggers.forEach((trigger) => {
       trigger.addEventListener('click', (e) => {
         const container = document.querySelector(`.accordion__container[data-id='${trigger.dataset.id}']`);
@@ -258,8 +264,7 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
       ],
     });
 
-    const textAreaNoBasket = new CreateTextAreaNoBasket({
-      selector: ['div'],
+    const textAreaNoBasket = new TextAreaNoBasket({
       style: ['text-area-container'],
       modifier: [
         '--hide',
@@ -268,7 +273,6 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
       textButton: ['К меню'],
       eventsButton: [
         {
-          type: 'click',
           callback: () => {
             this.closePage();
             this.deletePage();
@@ -279,7 +283,7 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
         },
       ],
     });
-    const textAreaNoSignIn = new CreateTextAreaNoSignIn({
+    const textAreaNoSignIn = new TextAreaNoSignIn({
       selector: ['div'],
       style: ['text-area-container'],
       eventsButton: [
@@ -299,7 +303,7 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
       modifier: [
         `${isIos ? '--ios' : ''}`,
       ],
-      eventButton: [
+      eventsButton: [
         {
           type: 'click',
           callback: () => {
@@ -332,7 +336,6 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
       this.modalPageOrderReview.append(this.container);
 
       const accordContainer = document.querySelector('.accordion__container-review');
-      const banners = document.querySelectorAll('.banner__container');
       const inputs = this.modalPageOrderReview.querySelectorAll('.form__input-area');
 
       const productsItems = dataProductApi.successData.items;
@@ -349,11 +352,6 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
       countResultPriceAndAllProductCounter();
 
       emitter.emit('event:counter-changed');
-      if (banners) {
-        banners.forEach((banner) => {
-          activeBanners(banner, true);
-        });
-      }
 
       this.modalPageOrderReview.addEventListener('scroll', () => {
         [...inputs].forEach((el) => {
