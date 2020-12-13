@@ -29,7 +29,7 @@
     background: $white;
     max-height: 92%;
     width: calc(100% - 32px);
-    padding: 28px 28px;
+    padding: 27px 24px;
     font-size: 14px;
     box-sizing: border-box;
     box-shadow: 0 10px 60px rgba(0, 0, 0, 0.2);
@@ -38,8 +38,8 @@
   }
 
   &__title {
-    @extend %style-2;
-    margin: 0 0 17px;
+    @extend %style-3-5;
+    margin: 0 0 11px;
   }
 
   &__text {
@@ -85,9 +85,9 @@
 
   &__button {
 
-    &:first-child {
+    /*&:first-child {
       margin-right: 16px;
-    }
+    }*/
 
     &--indentation--top {
       margin-top: 20px;

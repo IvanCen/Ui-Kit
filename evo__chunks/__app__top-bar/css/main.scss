@@ -4,6 +4,10 @@
   width: 100%;
   box-shadow: 0 5px 6px rgba(0, 0, 0, 0.1);
 
+  &--hide {
+    display: none;
+  }
+
   &--fixed {
     position: fixed;
     top: 0;
@@ -13,7 +17,6 @@
 
     &--ios {
       position: fixed;
-      top: 38px;
       left: 0;
       z-index: 1;
       background: white;
@@ -21,7 +24,6 @@
 
     &--ios-small {
       position: fixed;
-      top: 10px;
       left: 0;
       z-index: 1;
     }
@@ -35,7 +37,6 @@
 
     &--ios {
       position: sticky;
-      top: 38px;
       left: 0;
       z-index: 1;
     }
@@ -231,6 +232,16 @@
     min-height: 30px;
     padding-bottom: 17px;
     grid-template-areas: 'back text search';
+
+    &-search {
+      display: grid;
+      grid-template-columns: 1fr 7fr;
+      justify-content: space-between;
+      align-items: center;
+      min-height: 30px;
+      padding-bottom: 12px;
+      grid-auto-flow: column;
+    }
 
     &--indentation--top {
       padding-top: 30px;

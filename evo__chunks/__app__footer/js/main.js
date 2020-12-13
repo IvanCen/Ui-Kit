@@ -18,35 +18,33 @@ function initMainPanel() {
   const pages = document.querySelectorAll('.page');
   const btns = document.querySelectorAll('.main-panel .main-panel__button');
   btns.forEach((btn) => {
-    if (!btn.classList.contains('main-panel__button--type--stores')) {
-      btn.addEventListener('click', (e) => {
-        btns.forEach((btn) => {
-          btn.classList.remove('main-panel__button--active');
-        });
-        btn.classList.add('main-panel__button--active');
-
-        const pageId = btn.getAttribute('data-page');
-        const pageTitle = btn.getAttribute('data-page-title');
-
-        pages.forEach((page) => {
-          page.classList.remove('page--show');
-        });
-
-        const page = document.querySelector(`.page[data-page='${pageId}']`);
-        if (page) {
-          page.classList.add('page--show');
-          const header = page.querySelector('.header');
-          if (header) {
-            document.body.style.paddingTop = `${header.clientHeight}px`;
-          } else document.body.style.paddingTop = '0px';
-        }
-        if (window.swipArray) {
-          window.swipArray.forEach((swip) => {
-            swip.update();
-          });
-        }
+    btn.addEventListener('click', (e) => {
+      btns.forEach((btn) => {
+        btn.classList.remove('main-panel__button--active');
       });
-    }
+      btn.classList.add('main-panel__button--active');
+
+      const pageId = btn.getAttribute('data-page');
+      const pageTitle = btn.getAttribute('data-page-title');
+
+      pages.forEach((page) => {
+        page.classList.remove('page--show');
+      });
+
+      const page = document.querySelector(`.page[data-page='${pageId}']`);
+      if (page) {
+        page.classList.add('page--show');
+        const header = page.querySelector('.header');
+        if (header) {
+          document.body.style.paddingTop = `${header.clientHeight}px`;
+        } else document.body.style.paddingTop = '0px';
+      }
+      if (window.swipArray) {
+        window.swipArray.forEach((swip) => {
+          swip.update();
+        });
+      }
+    });
   });
 }
 
@@ -64,9 +62,10 @@ class CreateFooter extends CreateItem {
   constructor(parameters) {
     super();
     this.parameters = parameters;
+    this.switchNavElem = this.switchNavElem.bind(this);
     this.element = document.createElement(this.parameters.selector);
     this.template = `
-      <div class="main-panel">
+      <div class="main-panel ${isIos ? 'main-panel--ios' : ''}">
         <button class="main-panel__button main-panel__button--type--main main-panel__button--active" data-page="main" data-page-title="Отличный день для кофе ☕">
             <svg version="1.1" id="Слой_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                          viewBox="0 0 207.59 186.67" style="enable-background:new 0 0 207.59 186.67;" xml:space="preserve" width="20" height="20">
@@ -93,7 +92,7 @@ class CreateFooter extends CreateItem {
             </svg>
             <span>Баланс</span>
         </button>
-        <button class="main-panel__button main-panel__button--type--messages main-panel__button--notification" data-page="messages">
+        <button class="main-panel__button main-panel__button--type--messages" data-page="messages">
             <svg width="18" height="20" viewBox="0 0 18 18" fill="#FF6000" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12.6 0H5.4C2.4219 0 0 2.4219 0 5.4V17.1C0 17.5977 0.4023 18 0.9 18H12.6C15.5781 18 18 15.5781 18 12.6V5.4C18 2.4219 15.5781 0 12.6 0ZM10.8 11.7H4.5V9.9H10.8V11.7ZM13.5 8.1H4.5V6.3H13.5V8.1Z" fill="#FF6000"/>
             </svg>
@@ -108,8 +107,23 @@ class CreateFooter extends CreateItem {
     </div>`;
   }
 
+  switchNavElem(activeClassName, showBasket = true) {
+    this.navElems = document.querySelectorAll('.navigation-element');
+    this.activeEl = document.querySelector(`.navigation-element-${activeClassName}`);
+    this.headerBasket = document.querySelector('.header__basket');
+
+    this.navElems.forEach((el) => {
+      el.classList.remove('navigation-element--active');
+    });
+    this.activeEl.classList.add('navigation-element--active');
+    if (showBasket) {
+      this.headerBasket.classList.remove('header__basket--hide');
+    }
+  }
+
   create() {
     this.element.insertAdjacentHTML('beforeend', this.template);
+
 
     this.buttonMain = this.element.querySelector('.main-panel__button--type--main');
     this.buttonBalance = this.element.querySelector('.main-panel__button--type--balance');
@@ -119,30 +133,45 @@ class CreateFooter extends CreateItem {
 
     if (typeof this.parameters.eventOpenMainPage === 'object') {
       for (const event of this.parameters.eventOpenMainPage) {
-        this.buttonMain.addEventListener(event.type, event.callback);
+        this.buttonMain.addEventListener(event.type, () => {
+          event.callback();
+          this.switchNavElem('main');
+        });
       }
     }
     if (typeof this.parameters.eventOpenBalancePage === 'object') {
       for (const event of this.parameters.eventOpenBalancePage) {
-        this.buttonBalance.addEventListener(event.type, event.callback);
+        this.buttonBalance.addEventListener(event.type, () => {
+          event.callback();
+          this.switchNavElem('balance');
+        });
       }
     }
 
     if (typeof this.parameters.eventOpenMessagesPage === 'object') {
       for (const event of this.parameters.eventOpenMessagesPage) {
-        this.buttonMessages.addEventListener(event.type, event.callback);
+        this.buttonMessages.addEventListener(event.type, () => {
+          event.callback();
+          this.switchNavElem('inbox');
+        });
       }
     }
 
     if (typeof this.parameters.eventOpenProfilePage === 'object') {
       for (const event of this.parameters.eventOpenProfilePage) {
-        this.buttonProfile.addEventListener(event.type, event.callback);
+        this.buttonProfile.addEventListener(event.type, () => {
+          event.callback();
+          this.switchNavElem('profile');
+        });
       }
     }
 
     if (typeof this.parameters.eventOpenStoresPage === 'object') {
       for (const event of this.parameters.eventOpenStoresPage) {
-        this.buttonStores.addEventListener(event.type, event.callback);
+        this.buttonStores.addEventListener(event.type, () => {
+          event.callback();
+          this.switchNavElem('stores', false);
+        });
       }
     }
 

@@ -17,7 +17,7 @@ class CreateCatalogMain extends CreateItem {
     </div>
     <div class="swiper-container catalog__categories">
         <div class="swiper-wrapper">
-            <div class="swiper-slide">
+            <div class="swiper-slide banners__banner">
                 <div class="catalog__categories-element catalog__categories-element--active" data-id="34">
                     <div class="catalog__categories-element-image">
                         <svg width="26" height="27" viewBox="0 0 26 27" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -41,7 +41,7 @@ class CreateCatalogMain extends CreateItem {
                     <span>Еда</span>
                 </div>
             </div>
-            <div class="swiper-slide">
+            <div class="swiper-slide banners__banner">
                 <div class="catalog__categories-element" data-id="33">
                     <div class="catalog__categories-element-image">
                         <svg width="20" height="26" viewBox="0 0 20 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -55,7 +55,7 @@ class CreateCatalogMain extends CreateItem {
                     <span>Напитки</span>
                 </div>
             </div>
-            <div class="swiper-slide">
+            <div class="swiper-slide banners__banner">
                 <div class="catalog__categories-element" data-id="hits">
                     <div class="catalog__categories-element-image">
                         <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -65,7 +65,17 @@ class CreateCatalogMain extends CreateItem {
                     <span>Хиты</span>
                 </div>
             </div>
-            <!--<div class="swiper-slide">
+            <div class="swiper-slide banners__banner">
+                <div class="catalog__categories-element catalog__categories-element--favorite" data-id="favorite">
+                    <div class="catalog__categories-element-image">
+                        <svg width="46" height="46" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7.1835 17.9999L7.18335 18.2275L7.39258 18.1379L12.0002 16.1632L16.6077 18.1379L16.8168 18.2275V18V7.33333C16.8168 6.51716 16.1497 5.85 15.3335 5.85H8.66683C7.84971 5.85 7.19021 6.51809 7.19016 7.33324C7.19016 7.33327 7.19016 7.3333 7.19016 7.33333L7.1835 17.9999ZM11.9402 14.4092L8.81683 15.771V7.48333H15.1835V15.771L12.0601 14.4092L12.0002 14.383L11.9402 14.4092Z" fill="#7E7E7E" stroke="#7E7E7E" stroke-width="0.1"/>
+                        </svg>
+                    </div>
+                    <span>Избранное</span>
+                </div>
+            </div>
+            <!--<div class="swiper-slide banners__banner">
                 <div class="catalog__categories-element" data-id="4">
                     <div class="catalog__categories-element-image">
                         <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -75,7 +85,7 @@ class CreateCatalogMain extends CreateItem {
                     <span>Сезонное меню</span>
                 </div>
             </div>
-            <div class="swiper-slide">
+            <div class="swiper-slide banners__banner">
                 <div class="catalog__categories-element" data-id="5">
                     <div class="catalog__categories-element-image">
                         <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -95,7 +105,7 @@ class CreateCatalogMain extends CreateItem {
                     <span>Острое</span>
                 </div>
             </div>
-            <div class="swiper-slide">
+            <div class="swiper-slide banners__banner">
                 <div class="catalog__categories-element" data-id="6">
                     <div class="catalog__categories-element-image">
                         <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -119,7 +129,7 @@ class CreateCatalogMain extends CreateItem {
                     <span>Горячее</span>
                 </div>
             </div>
-            <div class="swiper-slide">
+            <div class="swiper-slide banners__banner">
                 <div class="catalog__categories-element" data-id="7">
                     <div class="catalog__categories-element-image">
                         <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -140,7 +150,7 @@ class CreateCatalogMain extends CreateItem {
                     <span>Холодное</span>
                 </div>
             </div>
-            <div class="swiper-slide">
+            <div class="swiper-slide banners__banner">
                 <div class="catalog__categories-element" data-id="8">
                     <div class="catalog__categories-element-image">
                         <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -151,7 +161,7 @@ class CreateCatalogMain extends CreateItem {
                     <span>Вегетерианское</span>
                 </div>
             </div>
-            <div class="swiper-slide">
+            <div class="swiper-slide banners__banner">
                 <div class="catalog__categories-element" data-id="9">
                     <div class="catalog__categories-element-image">
                         <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -161,8 +171,8 @@ class CreateCatalogMain extends CreateItem {
                     <span>Опасное</span>
                 </div>
             </div>-->
-            <div class="swiper-slide">
-                <div class="catalog__categories-element catalog__categories-element--search">
+            <div class="swiper-slide banners__banner">
+                <div class="catalog__categories-element--search">
                     <div class="catalog__categories-element-image">
                         <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M9.40824 18.8155C11.5792 18.8155 13.5749 18.0687 15.1673 16.8304L20.3371 22L22 20.3372L16.8302 15.1676C18.0697 13.5742 18.8165 11.5786 18.8165 9.40774C18.8165 4.22055 14.5957 0 9.40824 0C4.22077 0 0 4.22055 0 9.40774C0 14.5949 4.22077 18.8155 9.40824 18.8155ZM9.40824 2.35193C13.2997 2.35193 16.4644 5.51646 16.4644 9.40774C16.4644 13.299 13.2997 16.4635 9.40824 16.4635C5.51676 16.4635 2.35206 13.299 2.35206 9.40774C2.35206 5.51646 5.51676 2.35193 9.40824 2.35193Z" fill="white"/>
@@ -176,31 +186,31 @@ class CreateCatalogMain extends CreateItem {
     <div class="catalog__tags catalog__tags--show" data-id="34">
         <div class="swiper-container catalog__tags-container catalog__tags-container-foods">
             <div class="swiper-wrapper">
-                <div class="swiper-slide">
+                <div class="swiper-slide banners__banner">
                     <button class="catalog__tags-element catalog__tags-element--selected" data-id="34">Все</button>
                 </div>
-                <div class="swiper-slide">
+                <div class="swiper-slide banners__banner">
                     <button class="catalog__tags-element" data-id="93">Кулинария</button>
                 </div>
-                <div class="swiper-slide">
+                <div class="swiper-slide banners__banner">
                     <button class="catalog__tags-element" data-id="146">Слойка</button>
                 </div>
-                <div class="swiper-slide">
+                <div class="swiper-slide banners__banner">
                     <button class="catalog__tags-element" data-id="196">Печенье</button>
                 </div>
-                <div class="swiper-slide">
+                <div class="swiper-slide banners__banner">
                     <button class="catalog__tags-element" data-id="201">Пирожные</button>
                 </div>
-                <div class="swiper-slide">
+                <div class="swiper-slide banners__banner">
                     <button class="catalog__tags-element" data-id="234">Сэндвич</button>
                 </div>
-                <div class="swiper-slide">
+                <div class="swiper-slide banners__banner">
                     <button class="catalog__tags-element" data-id="256">Торты</button>
                 </div>
-                <div class="swiper-slide">
+                <div class="swiper-slide banners__banner">
                     <button class="catalog__tags-element" data-id="286">Хлеб</button>
                 </div>
-                <div class="swiper-slide">
+                <div class="swiper-slide banners__banner">
                     <button class="catalog__tags-element" data-id="586">Выпечка</button>
                 </div>
             </div>
@@ -209,13 +219,13 @@ class CreateCatalogMain extends CreateItem {
     <div class="catalog__tags" data-id="33">
         <div class="swiper-container catalog__tags-container catalog__tags-container-drinks">
             <div class="swiper-wrapper">
-                <div class="swiper-slide">
+                <div class="swiper-slide banners__banner">
                     <button class="catalog__tags-element catalog__tags-element--selected" data-id="33">Все</button>
                 </div>
-                <div class="swiper-slide">
+                <div class="swiper-slide banners__banner">
                     <button class="catalog__tags-element" data-id="41">Горячие напитки</button>
                 </div>
-                <div class="swiper-slide">
+                <div class="swiper-slide banners__banner">
                     <button class="catalog__tags-element" data-id="324">Холодные напитки</button>
                 </div>
             </div>
@@ -225,8 +235,8 @@ class CreateCatalogMain extends CreateItem {
         <div class="catalog__list catalog__list--show catalog__list-food" data-id="34"></div>
         <div class="catalog__list catalog__list-drinks" data-id="33"></div>
         <div class="catalog__list catalog__list-hit" data-id="hits"></div>
+        <div class="catalog__list catalog__list-favorite" data-id="favorite"></div>
     </div>
-
     `;
 
     this.element.insertAdjacentHTML('beforeend', this.template);
@@ -236,7 +246,13 @@ class CreateCatalogMain extends CreateItem {
     const foodContainer = this.element.querySelector('.catalog__list-food');
     const hitContainer = this.element.querySelector('.catalog__list-hit');
     const searchButton = this.element.querySelector('.catalog__categories-element--search');
+    const favoriteContainer = this.element.querySelector('.catalog__list-favorite');
+    const favoriteButton = this.element.querySelector('.catalog__categories-element--favorite');
 
+    favoriteButton.addEventListener('click', () => {
+      [...favoriteContainer.children].forEach((el) => el.remove());
+      this.renderFavoriteCategory(favoriteContainer, card);
+    });
     searchButton.addEventListener('click', this.openSearchPage);
 
     this.renderFoodCategory(foodContainer, card);
@@ -247,7 +263,7 @@ class CreateCatalogMain extends CreateItem {
   }
 
   openSearchPage() {
-    toggleModalPageOrderSearch.rendering();
+    toggleModalPageOrderSearch.openPage();
   }
 
   renderFoodCategory(container, el) {
@@ -283,6 +299,15 @@ class CreateCatalogMain extends CreateItem {
   renderHitsCategory(container, el) {
     Object.values(dataProductApi.successData.hits).forEach((item) => {
       container.append(el.create(dataProductApi.successData.items[item]));
+    });
+  }
+
+  renderFavoriteCategory(container, el) {
+    const productsItems = dataProductApi.successData.items;
+    itemsArray.forEach((item) => {
+      if (productsItems[item.id] !== undefined && !isEmptyObj(item) && item.id === productsItems[item.id].id) {
+        container.append(el.create(dataProductApi.successData.items[item.id]));
+      }
     });
   }
 }

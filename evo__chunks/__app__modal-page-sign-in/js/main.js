@@ -1,6 +1,6 @@
 function createModalPageSignIn() {
   const element = document.createElement('div');
-  element.classList.add('modal-page-sign-in');
+  element.classList.add('modal-page-sign-in', 'login');
   const div = document.createElement('div');
   div.classList.add('modal-page-sign-in__content');
   element.append(div);

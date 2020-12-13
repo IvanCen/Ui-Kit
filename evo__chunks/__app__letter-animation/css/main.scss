@@ -1,0 +1,414 @@
+@import "../../_ui-kit/css/main";
+
+.letter-animation{
+  display: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999;
+  &__back{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    backdrop-filter: blur(0px);
+    animation: blurBack .6s cubic-bezier(.58,1.5,.7,1);
+    animation-fill-mode: both;
+  }
+  &--show{
+    display: block;
+  }
+  &--continue{
+    display: block;
+    .letter-animation__back{
+      backdrop-filter: blur(20px);
+      animation: unblurBack .6s cubic-bezier(.58,1.5,.7,1);
+      animation-delay: 2.7s;
+      animation-fill-mode: both;
+    }
+    .letter{
+      animation: letterAnimDowm .6s cubic-bezier(.63,.24,.79,.36);
+      animation-delay: 2.1s;
+      animation-fill-mode: both;
+    }
+    .letter-count{
+      animation-fill-mode: both;
+      animation: countAnimHide .8s ease;
+    }
+    .letter-top{
+      animation: openLetter 1.8s ease;
+      animation-fill-mode: both;
+    }
+    .letter-msg{
+      animation: rotateMsg 1s linear;
+      animation-fill-mode: both;
+      animation-delay: .3s;
+    }
+    .fire-1{
+      animation: fire1 1s ease-out;
+      animation-fill-mode: both;
+      transform-origin: 50% 50%;
+      animation-delay: 0.3s;
+    }
+    .fire-2{
+      animation: fire1 1s ease-out;
+      animation-fill-mode: both;
+      transform-origin: 50% 50%;
+      animation-delay: 1.3s;
+    }
+    .fire-3{
+      animation: fire1 1s ease-out;
+      animation-fill-mode: both;
+      transform-origin: 50% 50%;
+      animation-delay: 0.7s;
+    }
+  }
+}
+
+.letter, .letter *{
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+}
+.letter{
+  z-index: 9;
+  position: absolute;
+  width: 90px;
+  height: 62px;
+  top: calc(50% - 32px);
+  left: calc(50% - 45px);
+  transform: translateY(60vh);
+  animation: letterAnim .6s cubic-bezier(.58,2,.7,1);
+  animation-fill-mode: both;
+  &--hide{
+    animation: letterAnimClose .8s cubic-bezier(.58,1.5,.7,1);
+    animation-fill-mode: both;
+  }
+  &-back{
+    background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/letter-back.svg]]");
+  }
+  &-msg{
+    background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/letter-msg.svg]]");
+    transform-origin: 50% 50%;
+  }
+  &-front{
+    background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/letter-front.svg]]");
+  }
+  &-top{
+    background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/letter-top.svg]]");
+    background-position: center top;
+    transform-origin: 50% 0;
+  }
+  &-bottom{
+    background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/letter-bottom.svg]]");
+    background-position: center bottom;
+  }
+  &-count{
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background-color: #DF2020;
+    display: flex;
+    top: -17px;
+    left: calc(100% - 17px);
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: 500;
+    font-size: 18.4211px;
+    line-height: 22px;
+    animation: countAnim .5s cubic-bezier(.58,2,.7,1);
+    animation-fill-mode: both;
+    animation-delay: .7s;
+    z-index: 99;
+    transform: scale(0);
+  }
+}
+
+.fire{
+  &-1{
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    position: absolute;
+    left: 60%;
+    top: 30%;
+    width: 90px;
+    height: 90px;
+    background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/fire-1.svg]]");
+    transform: scale(1);
+    opacity: 0;
+  }
+  &-2{
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    position: absolute;
+    left: 30%;
+    top: 13%;
+    width: 90px;
+    height: 90px;
+    background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/fire-2.svg]]");
+    transform: scale(1);
+    opacity: 0;
+  }
+  &-3{
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    position: absolute;
+    left: 10%;
+    top: 33%;
+    width: 90px;
+    height: 90px;
+    background-image: url("[+chunkWebPath+]/img/fire-1.svg");
+    background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/fire-1.svg]]");
+    transform: scale(1);
+    opacity: 0;
+  }
+  &--style-1{
+    .fire-1{
+      background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/fireworks-2.svg]]");
+    }
+    .fire-2{
+      background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/fireworks-1.svg]]");
+    }
+    .fire-3{
+      background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/fireworks-3.svg]]");
+    }
+  }
+}
+
+
+@keyframes test {
+  0%{
+    transform: scaleY(1);
+  }
+  100%{
+    transform: scale(3);
+  }
+}
+
+@keyframes blurBack {
+  0%{
+    backdrop-filter: blur(0px);
+  }
+  100%{
+    backdrop-filter: blur(20px);
+  }
+}
+
+@keyframes unblurBack {
+  0%{
+    backdrop-filter: blur(20px);
+  }
+  100%{
+    backdrop-filter: blur(0px);
+  }
+}
+
+@keyframes fire1 {
+  0%{
+    transform: scale(0);
+    opacity: 1;
+  }
+  50%{
+    transform: scale(.9);
+    opacity: 1;
+  }
+  100%{
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes fire2 {
+  0%{
+    transform: scale(0);
+  }
+  40%{
+    transform: scale(.8);
+  }
+  50%{
+    transform: scale(1);
+  }
+  60%{
+    transform: scale(.8);
+  }
+  100%{
+    transform: scale(0);
+  }
+}
+
+@keyframes fire3 {
+  0%{
+    transform: scale(0);
+  }
+  25%{
+    transform: scale(.8);
+  }
+  35%{
+    transform: scale(1);
+  }
+  36%{
+    transform: scale(0);
+  }
+  60%{
+    transform: scale(.8);
+  }
+  100%{
+    transform: scale(0);
+  }
+}
+@keyframes letterAnim {
+  0%{
+    transform: translateY(60vh);
+  }
+  60%{
+    //transform: translateY(-50px);
+  }
+  70%{
+    transform: translateY(0) scaleX(1) scaleY(1);
+    transform-origin: 50% 100%;
+  }
+  85%{
+    transform: translateY(0) scaleX(1.2) scaleY(.8);
+    transform-origin: 50% 100%;
+  }
+  100%{
+    transform: translateY(0) scaleX(1) scaleY(1);
+    transform-origin: 50% 100%;
+  }
+}
+
+@keyframes letterAnimDowm {
+  0%{
+    transform: translateY(0) scaleX(1) scaleY(1);
+    transform-origin: 50% 100%;
+  }
+  25%{
+    transform: translateY(0) scaleX(1.3) scaleY(.7);
+    transform-origin: 50% 100%;
+  }
+  50%{
+    transform: translateY(0) scaleX(1) scaleY(1);
+    transform-origin: 50% 100%;
+  }
+  75%{
+    transform: translateY(-20vh) scaleX(1) scaleY(1);
+  }
+  100%{
+    transform: translateY(60vh) scaleX(.9) scaleY(1.1);
+  }
+}
+
+@keyframes ScaleLetterNextDowm {
+  0%{
+    transform: translateY(0) scaleX(1) scaleY(1);
+    transform-origin: 50% 100%;
+  }
+  25%{
+    transform: translateY(0) scaleX(1.3) scaleY(.7);
+    transform-origin: 50% 100%;
+  }
+  50%{
+    transform: translateY(0) scaleX(1) scaleY(1);
+    transform-origin: 50% 100%;
+  }
+  75%{
+    transform: translateY(-20vh) scaleX(1) scaleY(1);
+  }
+  100%{
+    transform: translateY(60vh) scaleX(.9) scaleY(1.1);
+  }
+}
+
+@keyframes letterAnimClose {
+  0%{
+    transform: translateY(0);
+  }
+  100%{
+    transform: translateY(60vh);
+  }
+}
+
+@keyframes countAnim {
+  0%{
+    transform: scale(0);
+  }
+  65%{
+    transform: scale(.9);
+  }
+  100%{
+    transform: scale(.9);
+  }
+}
+@keyframes countAnimHide {
+  0%{
+    transform: scale(.9);
+  }
+  35%{
+    transform: scale(1.3);
+  }
+  65%{
+    transform: scale(0);
+  }
+  100%{
+    transform: scale(0);
+  }
+}
+
+@keyframes openLetter {
+  0%{
+    transform: scaleY(1) scaleX(1) translateY(0);
+    z-index: 1;
+  }
+  12.5%{
+    transform: scaleY(0) scaleX(.9) translateY(-7px);
+    z-index: -1;
+  }
+  25%{
+    transform: scaleY(-1) scaleX(1) translateY(-7px);
+    z-index: -1;
+  }
+  75%{
+    transform: scaleY(-1) translateY(-7px);
+    z-index: -1;
+  }
+  87.5%{
+    transform: scaleY(0) scaleX(.9) translateY(-7px);
+    z-index: -1;
+  }
+  100%{
+    transform: scaleY(1) translateY(0);
+    z-index: 1;
+  }
+}
+
+@keyframes rotateMsg {
+  0%{
+    transform: scale(.8) rotate(0deg) translateY(0px);
+    transform-origin: 50% 50%;
+  }
+  33%{
+    transform: scale(.9) rotate(180deg)translateY(-70px);
+    transform-origin: 50% calc(50% - 70px);
+  }
+  66%{
+    transform: scale(.9) rotate(360deg) translateY(-70px);
+    transform-origin: 50% calc(50% - 70px);
+  }
+  100%{
+    transform: scale(.8) rotate(360deg) translateY(0px);
+    transform-origin: 50% 50%;
+  }
+}

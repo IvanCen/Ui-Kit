@@ -10,7 +10,7 @@ class Api {
     };
   }
 
-  productApi() {
+  productApi(func) {
     const request = {
       method: 'get-catalog',
       view: 'both',
@@ -33,6 +33,7 @@ class Api {
         localStorage.setItem('productData', JSON.stringify(dataProductApi));
         return productsInfo;
       })
+      .then(func)
       .catch((err) => {
         console.log('Ошибка. Запрос не выполнен: ', err);
       });
@@ -84,6 +85,7 @@ class Api {
   promoApi(func) {
     const request = {
       method: 'get-promo',
+      format: 'universal',
       offset: 0,
       length: 3,
       outputFormat: 'json',
@@ -114,6 +116,7 @@ class Api {
   postsApi(func) {
     const request = {
       method: 'get-posts',
+      format: 'universal',
       offset: 0,
       length: 2,
       outputFormat: 'json',
@@ -447,7 +450,7 @@ class Api {
       })
       .then((userLastOrdersInfo) => {
         console.log(userLastOrdersInfo);
-        if (userLastOrdersInfo.success === true) {
+        if (userLastOrdersInfo.success) {
           userLastOrdersObj.successData = userLastOrdersInfo.successData;
           localStorage.setItem('userLastOrders', JSON.stringify(userLastOrdersObj));
         }
@@ -585,7 +588,10 @@ class Api {
         if (res.success === true) {
           localStorage.removeItem('user-sign-in');
           localStorage.removeItem('authorizationCode');
+          localStorage.removeItem('authorizationPhone');
           localStorage.removeItem('userAchievements');
+          authorizationPhone = '';
+          authorizationCode = '';
           delete userAchievements.successData;
           delete userInfoObj.successData;
           localStorage.setItem('userInfo', JSON.stringify(userInfoObj));
@@ -658,7 +664,7 @@ class Api {
       })
       .then((res) => {
         let needVibrate = false;
-        if (res.successData) {
+        if (res.success) {
           res.successData.messages.forEach((mess) => {
             if (mess.id > Number(lastUserMessagesId)) {
               lastUserMessagesId = mess.id;
@@ -672,6 +678,8 @@ class Api {
             if (typeof navigator.vibrate === 'function') {
               navigator.vibrate(3000);
             }
+            emitter.emit('msgrecive');
+            togglePageInboxDetails.rendering(res.successData.messages[0]);
           }
 
           userMessages = res;
@@ -745,11 +753,14 @@ class Api {
         if (res.success) {
           outOfStock.successData = res.successData;
           localStorage.setItem('outOfStock', JSON.stringify(outOfStock));
-          /* for (const id in outOfStock.successData.itemsAndModifiers) {
-            delete dataProductApi.successData.items[id];
-            delete dataProductApi.successData.modifiers[id];
-            delete dataProductApi.successData.ingredients[id];
-          } */
+          const catalogElements = document.querySelectorAll('.catalog__list-element');
+          catalogElements.forEach((el) => el.classList.remove('catalog__list-element--ended'));
+          Object.values(outOfStock.successData.itemsAndModifiers).forEach((id) => {
+            const cardElement = document.querySelector(`.catalog__list-element[id="${id}"]`);
+            if (cardElement) {
+              cardElement.classList.add('catalog__list-element--ended');
+            }
+          });
         }
         return res;
       })
@@ -911,6 +922,70 @@ class Api {
           dataUserSeasons.successData = res.successData;
           localStorage.setItem('dataUserSeasons', JSON.stringify(dataUserSeasons));
         }
+        return res;
+      })
+      .then(func)
+      .catch((err) => {
+        console.log('Ошибка. Запрос не выполнен: ', err);
+      });
+  }
+
+  sendMessageToSupport(messageInfo, func) {
+    let { subject = '', message = '' } = messageInfo;
+    const { phone, email, name } = userInfoObj.successData;
+    subject += `(Пользователь: ${phone}, ${email}, ${name})`;
+    const request = {
+      method: 'send-message-to-support',
+      subject,
+      message,
+      outputFormat: 'json',
+    };
+
+    fetch(this.options.baseUrl, {
+      method: 'POST',
+      headers: this.options.headers,
+      body: JSON.stringify(request),
+
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+      .then((res) => {
+        console.log(res);
+        return res;
+      })
+      .then(func)
+      .catch((err) => {
+        console.log('Ошибка. Запрос не выполнен: ', err);
+      });
+  }
+
+  getСlientСoffeeСount(func) {
+    console.log(authorizationPhone, authorizationCode);
+    const request = {
+      method: 'get-client-coffee-count',
+      phone: authorizationPhone,
+      code: authorizationCode,
+      outputFormat: 'json',
+    };
+
+    fetch(this.options.baseUrl, {
+      method: 'POST',
+      headers: this.options.headers,
+      body: JSON.stringify(request),
+
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+      .then((res) => {
+        console.log(res);
         return res;
       })
       .then(func)

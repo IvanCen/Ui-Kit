@@ -66,7 +66,6 @@ function activeRangeSlider() {
 
   function inputChanger(event) {
     const inputValue = event.target.value;
-    console.log(inputValue);
     if (rangeSlider.offsetWidth < 330) {
       rangeSliderLine.style.width = `${inputValue / 1.48}px`;
     } else {

@@ -22,7 +22,7 @@ class ToggleReward extends ToggleMainPage {
       text: ['У вас пока нет достижений, но всё еще впереди!'],
     });
 
-    this.mainPageContent.append(createTopBarIos());
+
     this.mainPageContent.append(topBar.create());
     if (!isEmptyObj(userAchievements) && userAchievements.successData.length !== 0) {
       this.mainPageContent.append(cardItemContainer.create('reward', 'card-item__container--indentation--top'));
@@ -33,7 +33,5 @@ class ToggleReward extends ToggleMainPage {
     } else {
       this.mainPageContent.append(cardText.create());
     }
-
-
   }
 }

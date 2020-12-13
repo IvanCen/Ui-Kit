@@ -102,10 +102,10 @@ class CreateNoSubscriptionsMainCard extends CreateItem {
     this.element = document.createElement(this.parameters.selector);
     this.template = `
         <div class="main-card__img-container">
-          <div style="background-image: url('[+chunkWebPath+]/img/no-subscriptions.png')" class="main-card__img"></div>
+          <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/no-subscriptions.svg]]" class="basket__empty-section-img" alt="">
         </div>
-        <div class="main-card__text-area main-card__text-area--pisition--center">
-        <h2 class="main-card__title main-card__title--size--normal">У вас еще нет активных абонементов</h2>
+        <div class="main-card__text-area main-card__text-area--position--center">
+          <h2 class="main-card__title main-card__title--size--normal">У вас еще нет активных абонементов</h2>
           <p class="main-card__text main-card__text--size--small main-card__text--theme--shadow">Приобрести их вы можете в любом магазине сети Хлебник</p>
         </div>`;
   }
@@ -137,13 +137,14 @@ class CreateSubscriptionsMainCard extends CreateItem {
       minute: 'numeric',
     }).replace('.', '').replace(' г.', ''));
     let templateAddress;
+    let shopName = '';
     if (subscriptionUserInfo) {
       date = `Действителен до ${transformationUtcToLocalDate(subscriptionUserInfo.endDate, {
         year: 'numeric',
         month: 'short',
         day: 'numeric',
       }).replace('г.', '')}`;
-      const shopName = storesDataObj.successData[subscriptionUserInfo.shopId].longTitle;
+      shopName = storesDataObj.successData[subscriptionUserInfo.shopId].longTitle;
       templateAddress = `<div class="main-card__address-container">
           <div style="background-image: url('data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-point.svg]]')" class="main-card__icon--type--point"></div>
           <span class="main-card__address">${shopName}</span>
@@ -171,7 +172,7 @@ class CreateSubscriptionsMainCard extends CreateItem {
           <div class="main-card__img-qr"></div>
         </div>
         <div class="main-card__text-area main-card__text-area--position--center">
-          <span class="main-card__text main-card__text--type--address main-card__text--indentation--bottom-small">г. Санкт-Петербург, проспект Металлистов, д 110</span>
+          <span class="main-card__text main-card__text--type--address main-card__text--indentation--bottom-small">${shopName}</span>
           <span class="main-card__text main-card__text--size--small main-card__text--theme--shadow main-card__text--indentation--bottom-small">${dateNowLocal}</span>
         </div>
       </div>`;
@@ -188,9 +189,15 @@ class CreateSubscriptionsMainCard extends CreateItem {
       this.contentContainer.insertAdjacentHTML('afterend', this.qrTemplate);
       this.qr = this.element.querySelector('.main-card__icon--type--qr');
       this.qrImage = this.element.querySelector('.main-card__img-qr');
+      let phone;
+      if (!isEmptyObj(userInfoObj)) {
+        phone = userInfoObj.successData.phone;
+      } else {
+        phone = authorizationPhone;
+      }
       const qr = new QRCode(this.qrImage,
         {
-          text: authorizationPhone,
+          text: phone.substr(1),
           colorDark: '#000000',
           colorLight: '#ffffff',
           correctLevel: QRCode.CorrectLevel.H,
@@ -215,9 +222,9 @@ class CreateSubscriptionsMainCard extends CreateItem {
     }
     /* const imgEl = this.element.querySelector('.main-card__img');
     if (!canUseWebP()) {
-      loadImg(productInfo, imgEl, 'jpg');
+      loadImg(subscriptionInfo, imgEl, 'jpg');
     } else {
-      loadImg(productInfo, imgEl, 'webp');
+      loadImg(subscriptionInfo, imgEl, 'webp');
     } */
     return super.create(this.element);
   }
@@ -287,30 +294,45 @@ class CreateInboxMainCardNews extends CreateItem {
 
   create(messageInfo) {
     const {
-      id, subject, client, timestamp, wasRead,
+      id, subject, client, timestamp, wasRead, message,
     } = messageInfo;
-
-    this.date = transformationUtcToLocalDate(timestamp);
+    this.date = transformationUtcToLocalDate(timestamp, {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    });
 
     this.element = document.createElement(this.parameters.selector);
     this.template = `
-        <div class="main-card__text-area">
-          <h2 class="main-card__title main-card__title--size--normal">${subject}</h2>
-          <span class="main-card__info main-card__info--theme--shadow">${this.date}</span>
-        </div>
+        <div class="messages__element-icon messages__element-icon--heart"></div>
+          <div class="messages__element-body">
+              <div class="messages__element-title">Системные сообщения</div>
+              <div class="messages__element-wrapper">
+                  <div class="messages__element-text">${message}</div>
+                  <div class="messages__element-date">${this.date}</div>
+              </div>
+          </div>
         `;
 
     this.element.insertAdjacentHTML('beforeend', this.template);
-    const title = this.element.querySelector('.main-card__title');
+    const title = this.element.querySelector('.messages__element-title');
 
     if (wasRead) {
       title.classList.add('main-card__title--font-weight--normal');
     }
     this.element.addEventListener('click', () => {
-      toggleModal.renderingInbox(messageInfo);
-      if (!wasRead) {
-        api.markMessageRead(client, timestamp, id);
+      togglePageInboxDetails.rendering(messageInfo);
+      if (!isEmptyObj(userMessages) && userMessages.success && userMessages.successData.messages.length !== 0 && !isEmptyObj(userInfoObj)) {
+        userMessages.successData.messages.forEach((messageInfos) => {
+          if (messageInfos.wasRead === null) {
+            api.markMessageRead(messageInfos.client, messageInfos.timestamp, messageInfos.id);
+          }
+        });
       }
+      inboxPage.checkMessages();
+      /* if (!wasRead) {
+        api.markMessageRead(client, timestamp, id);
+      } */
       title.classList.add('main-card__title--font-weight--normal');
     });
     return super.create(this.element);

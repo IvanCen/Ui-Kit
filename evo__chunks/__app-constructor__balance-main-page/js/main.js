@@ -2,27 +2,61 @@ class BalancePage {
   constructor(parameters) {
     this.parameters = parameters;
     this.rendering = this.rendering.bind(this);
+    this.render = this.render.bind(this);
+    this.initBalance = this.initBalance.bind(this);
+    this.closePage = this.closePage.bind(this);
+    this.openPage = this.openPage.bind(this);
     this.body = document.querySelector('body');
     this.mainPage = document.querySelector('.main-page');
     this.mainPageContent = document.querySelector('.main-page__content');
   }
 
   closePage() {
-    this.topBarTabs = document.querySelector('.header__top-tabs');
+    this.topBarTabs = document.querySelector('.header__top-tabs-balance');
     this.mainPageContent.classList.remove('main-page__content--size--small');
     this.mainPageContent.classList.remove('main-page__content--opened-with-tabs');
     this.mainPageContent.classList.remove('main-page__content--opened');
     this.topBarTabs.classList.add('header__top-tabs--hide');
+    this.buttonFill = document.querySelector('.button--type--fill');
+
+    if (this.buttonFill) {
+      this.buttonFill.classList.add('button--hide');
+    }
   }
 
   openPage() {
     this.mainPageContent = document.querySelector('.main-page__content-balance');
-    this.topBarTabs = document.querySelector('.header__top-tabs');
+    this.mainPageContentContainerBalance = document.querySelector('.main-page__content-container-balance');
+    this.textAreaContainerSignIn = this.mainPageContent.querySelector('.text-area-container--type--sign-in');
+    this.topBarTabs = document.querySelector('.header__top-tabs-balance');
     this.headerTitle = document.querySelector('.header__status');
     this.topBarTabs.classList.remove('header__top-tabs--hide');
+    this.balance = document.querySelector('.balance__currency-balance');
+    this.bonus = document.querySelector('.balance__currency-bonus');
+    this.buttonFill = document.querySelector('.button--type--fill');
+
+    this.buttonFill.classList.remove('button--hide');
+    if (!isEmptyObj(userInfoObj)) {
+      this.balance.textContent = `${userInfoObj.successData.balance} ₽`;
+      this.bonus.textContent = `${userInfoObj.successData.bonus} ❤`;
+    } else {
+      this.balance.textContent = '0 ₽';
+      this.bonus.textContent = '0 ❤️';
+    }
+
+    if (isEmptyObj(userInfoObj)) {
+      if (this.mainPageContentContainerBalance) {
+        this.mainPageContentContainerBalance.classList.add('main-page__content-container--hide');
+      }
+      this.textAreaContainerSignIn.classList.remove('text-area-container--hide');
+    } else {
+      this.mainPageContentContainerBalance.classList.remove('main-page__content-container--hide');
+      this.textAreaContainerSignIn.classList.add('text-area-container--hide');
+    }
+
     setTimeout(() => {
       if (this.mainPageContent) {
-        this.mainPageContent.classList.add('main-page__content--opened-with-tabs');
+        this.mainPageContent.classList.add('main-page__content--opened-with-tabs', `${isIos ? 'main-page__content--opened-with-tabs--ios' : 'main-page__content--opened-with-tabs--not--ios'}`);
         this.mainPageContent.classList.add('main-page__content--opened');
         this.headerTitle.textContent = 'Баланс';
       }
@@ -32,48 +66,54 @@ class BalancePage {
 
   rendering() {
     this.mainPageContent = document.createElement('div');
-    this.mainPageContent.classList.add('main-page__content', 'main-page__content--size--small', 'main-page__content-balance');
+    this.mainPageContent.classList.add('main-page__content', 'main-page__content--size--small', 'main-page__content-balance', `${isIos ? 'main-page__content--ios' : 'main-page__content--no-ios'}`);
     this.mainPage.prepend(this.mainPageContent);
     api.getClientApi();
     this.mainPageContent.classList.add('main-page__content--size--small');
 
-    const card = new CreateTextMainCard({
-      selector: ['div'],
-      style: ['main-card'],
-      modifier: ['--indentation--top'],
-      text: ['Войдите, что бы увидеть свой баланс'],
-    });
-    const content = new CreateTextAreaBalanceTabs({
-      selector: ['div'],
-      style: ['tab-content'],
-    });
     const tobBarTabs = new CreateTopBarTabsBalance({
       selector: ['div'],
       style: ['header__top-tabs'],
+      modifier: ['-balance'],
     });
-    const buttonJoinOrange = new CreateButton({
-      selector: ['button'],
-      style: ['button'],
+
+    const textAreaNoSignIn = new TextAreaNoSignIn({
+      selector: ['div'],
+      style: ['text-area-container'],
       modifier: [
-        '--size--big',
-        '--theme--tangerin',
-        '--theme--shadow-big',
-        '--type--fixed',
-        '-route',
+        '--hide',
+        '--type--sign-in',
+        '--indentation--big',
       ],
-      text: ['Войти'],
-      eventsOpen: [
+      eventsButton: [
         {
           type: 'click',
           callback: () => {
-            stopAction(() => {
-              returnPageObj.returnBalanceAfterSignIn = true;
-              toggleModalPageSignIn.rendering();
-            });
+            toggleModalPageSignIn.rendering();
           },
         },
       ],
     });
+
+
+    this.topBar = document.querySelector('.header--main');
+    this.topBar.append(tobBarTabs.create());
+
+    this.mainPageContent.append(textAreaNoSignIn.create());
+
+    api.getClientBonusLog();
+    api.getClientBalanceLog(this.render);
+  }
+
+  render(info) {
+    this.mainPageContentContainer = document.createElement('div');
+    this.mainPageContentContainer.classList.add('main-page__content-container', 'main-page__content-container-balance');
+
+    const content = new CreateTextAreaBalanceTabs({
+      selector: ['div'],
+      style: ['tab-content'],
+    });
+
     const buttonFill = new CreateButton({
       selector: ['button'],
       style: ['button'],
@@ -82,7 +122,8 @@ class BalancePage {
         '--theme--tangerin',
         '--theme--shadow-big',
         '--type--fixed',
-        '-route',
+        '--type--fill',
+        '--hide',
       ],
       text: ['Пополнить'],
       eventsOpen: [
@@ -96,17 +137,13 @@ class BalancePage {
         },
       ],
     });
-    this.mainPageContent.append(createTopBarIos());
 
-    this.topBar = document.querySelector('.header');
-    this.topBar.append(tobBarTabs.create());
-
-    this.mainPageContent.append(buttonJoinOrange.create());
-    this.mainPageContent.append(content.create());
-    this.mainPageContent.append(buttonFill.create());
-
+    this.mainPageContentContainer.append(content.create());
+    this.mainPageContentContainer.append(buttonFill.create());
+    this.mainPageContent.append(this.mainPageContentContainer);
     this.initBalance();
   }
+
 
   initBalance() {
     const sectionGroupTriggers = document.querySelectorAll('.balance__history-section-group');
@@ -122,7 +159,7 @@ class BalancePage {
       });
     });
 
-    const tabs = document.querySelectorAll('.header__top-tabs-element');
+    const tabs = document.querySelectorAll('.header__top-tabs-balance .header__top-tabs-element');
     tabs.forEach((tab) => {
       tab.addEventListener('click', () => {
         tabs.forEach((tab) => {

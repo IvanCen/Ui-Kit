@@ -13,7 +13,6 @@ class ToggleModalPageCard extends ToggleModalPageCardDef {
       style: ['product-card'],
     });
 
-    this.modalPageCard.append(createTopBarIos());
     this.modalPageCard.append(textArea.create(productInfo));
 
     window.addEventListener('resize', test);
@@ -53,10 +52,11 @@ class ToggleModalPageCard extends ToggleModalPageCardDef {
     }
 
     function activeTouch(container) {
-      let dragStart = 0;
-      let dragEnd = 0;
-      let offsetY = 0;
-      let offsetYOnStart = 0;
+      const INDENT = isIos ? 84 : 24;
+      let dragStart = INDENT;
+      let dragEnd = INDENT;
+      let offsetY = INDENT;
+      let offsetYOnStart = INDENT;
       let isOpen = false;
       const isMapOpen = cardOpened;
 
@@ -77,28 +77,28 @@ class ToggleModalPageCard extends ToggleModalPageCardDef {
           offsetY = container.clientHeight;
           offsetYOnStart = container.clientHeight;
         } else if (offsetY < (container.clientHeight) && action === 'end' && isOpen) {
-          offsetY = 0;
-          offsetYOnStart = 0;
+          offsetY = INDENT;
+          offsetYOnStart = INDENT;
           isOpen = !isOpen;
           cardOpened = true;
         }
         if (offsetY < 0) {
           // тут действия, если тянется дальше максимума
           if (action === 'end') {
-            offsetY = 0;
-            dragStart = 0;
-            dragEnd = 0;
-            offsetYOnStart = 0;
+            offsetY = INDENT;
+            dragStart = INDENT;
+            dragEnd = INDENT;
+            offsetYOnStart = INDENT;
           } else if (action === 'move') {
-            offsetY = 0;// уменьшапем скорость смещения в 2 раза
+            offsetY = INDENT;// уменьшапем скорость смещения в 2 раза
           }
         }
         if (action === 'open') {
           container.classList.add('card--animation');
-          offsetY = 0;
-          dragStart = 0;
-          dragEnd = 0;
-          offsetYOnStart = 0;
+          offsetY = INDENT;
+          dragStart = INDENT;
+          dragEnd = INDENT;
+          offsetYOnStart = INDENT;
           container.style.transform = `translate3d(0,${offsetY}px,0)`;
           setTimeout(() => {
             container.classList.remove('card--animation');
@@ -106,8 +106,6 @@ class ToggleModalPageCard extends ToggleModalPageCardDef {
           return;
         }
         container.style.transform = `translate3d(0,${offsetY}px,0)`;
-        const s = document.querySelector('.card__name');
-        // s.textContent = "offsetY - " + offsetY +"; container.clientHeight - " + container.clientHeight + "; container.scrollHeight - " + container.scrollHeight;
       }
 
       const panelTouch = container.querySelector('.card__touch');

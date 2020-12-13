@@ -23,6 +23,19 @@ class AccountPage {
   openPage() {
     this.mainPageContent = document.querySelector('.main-page__content-profile');
     this.headerTitle = document.querySelector('.header__status');
+    this.profileData = document.querySelector('.profile__data');
+    this.textAreaGift = document.querySelector('.text-area--type--gift');
+    const buttonLogout = document.querySelector('.profile__logout');
+
+    if (this.profileData) {
+      this.profileData.remove();
+    }
+    const userProfileTextArea = new CreateTextAreaProfile({
+      selector: ['section'],
+      style: ['profile__data'],
+      modifier: [isEmptyObj(userInfoObj) ? '--hide' : ''],
+    });
+    this.mainPageContent.prepend(userProfileTextArea.create());
     setTimeout(() => {
       if (this.mainPageContent) {
         this.mainPageContent.classList.add('main-page__content--opened');
@@ -30,22 +43,31 @@ class AccountPage {
       }
     }, 100);
     history.pushState({ state: '#' }, null, '#');
+    if (!isEmptyObj(userInfoObj)) {
+      buttonLogout.classList.remove('profile__logout--hide');
+      this.textAreaGift.classList.remove('form__group--hide');
+    } else {
+      buttonLogout.classList.add('profile__logout--hide');
+      this.textAreaGift.classList.add('form__group--hide');
+    }
   }
 
   logout(info) {
     if (info.success) {
       const userInfoSection = document.querySelector('.profile__data');
       const buttonJoin = document.querySelector('.button--join');
+      const textAreaGift = document.querySelector('.text-area--type--gift');
       const buttonLogout = document.querySelector('.profile__logout');
       userInfoSection.classList.add('profile__data--hide');
       buttonJoin.classList.remove('button--hide');
-      buttonLogout.classList.add('button--hide');
+      buttonLogout.classList.add('profile__logout--hide');
+      textAreaGift.classList.add('form__group--hide');
     }
   }
 
   rendering() {
     this.mainPageContent = document.createElement('div');
-    this.mainPageContent.classList.add('main-page__content', 'main-page__content--size--small', 'main-page__content-profile');
+    this.mainPageContent.classList.add('main-page__content', 'main-page__content--size--small', 'main-page__content-profile', `${isIos ? 'main-page__content--ios' : 'main-page__content--no-ios'}`);
     this.mainPage.append(this.mainPageContent);
     const accountButtonJoinTangerin = new CreateButton(
       {
@@ -94,19 +116,11 @@ class AccountPage {
       selector: ['div'],
       style: ['wraper'],
     });
-    const userProfileTextArea = new CreateTextAreaProfile({
-      selector: ['section'],
-      style: ['profile__data'],
-      modifier: [isEmptyObj(userInfoObj) ? '--hide' : ''],
-    });
 
     this.buttonContainer = document.createElement('div');
-    this.mainPageContent.prepend(createTopBarIos());
     this.buttonContainer.append(accountButtonJoinTangerin.create());
-    this.mainPageContent.append(userProfileTextArea.create());
-    if (!isEmptyObj(userInfoObj)) {
-      this.buttonContainer.append(accountButtonLogoutTangerin.create());
-    }
+    this.buttonContainer.append(accountButtonLogoutTangerin.create());
+
     this.mainPageContent.append(accountTextArea.create());
     this.mainPageContent.append(this.buttonContainer);
   }

@@ -21,7 +21,7 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
 
   makeOrder(info) {
     if (info.success === false) {
-      toggleModal.rendering('Что то пошло не так');
+      toggleModal.rendering({subject: 'Ошибка', text: 'Что то пошло не так'});
       toggleModal.openPage();
     } else if (info.success === true) {
       if (!isEmptyObj(basketArray)) {
@@ -30,7 +30,7 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
           this.bascketStoresSection = this.modalPageOrderReview.querySelector('.basket__shop');
           this.inputsDelivery = this.bascketDeliverySection.querySelectorAll('.form__input');
           this.inputsStores = this.bascketStoresSection.querySelectorAll('.form__input');
-          const { phone } = userInfoObj.successData;
+          const {phone} = userInfoObj.successData;
           let isToGo;
           let idPackage;
           let idStore;
@@ -48,12 +48,12 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
 
           if (idPackage) {
             this.deleteItem(idPackage);
-            basketArray.push({ id: idPackage, modifier: [] });
+            basketArray.push({id: idPackage, modifier: []});
           }
           this.inputComment = document.querySelector('.form__input-comment');
           let orderComment;
           if (this.inputComment.value !== '') {
-            orderComment = this.inputArea.value;
+            orderComment = this.inputComment.value;
           }
           this.inputPromoCode = document.querySelector('.form__input-promoCode');
           let orderPromoCode;
@@ -72,10 +72,10 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
             this.renderPayOrderPage,
           );
         } else {
-          toggleModal.rendering(info.successData.timeStatePickUp);
+          toggleModal.rendering({subject: 'Информация', text: info.successData.timeStatePickUp});
         }
       } else {
-        toggleModal.rendering('Вы ничего не положили в корзину');
+        toggleModal.rendering({subject: 'Информация', text: 'Вы ничего не положили в корзину'});
         toggleModal.openPage();
       }
     }
@@ -97,7 +97,6 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
 
   renderPayOrderPage(info) {
     function resPayOrder(payInfo) {
-      console.log(payInfo);
       if (payInfo.success) {
         let successText = 'Ваш заказ успешно оплачен';
         let successTextTimeout = 300;
@@ -109,7 +108,7 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
           link.href = payInfo.successData.payUrl;
           link.click();
         }
-        closePages();
+
         while (basketArray.length > 0) {
           basketArray.pop();
         }
@@ -117,59 +116,96 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
         emitter.emit('event:counter-changed');
 
         setTimeout(() => {
-          toggleModal.rendering(successText);
+          toggleModal.rendering({subject: 'Информация', text: successText});
         }, successTextTimeout);
       } else {
-        toggleModal.rendering(info.errors[0]);
+        toggleModal.rendering({subject: 'Ошибка', text: payInfo.errors[0]});
       }
     }
+
     const sectionPayment = document.querySelector('.basket__payment');
     const inputsPayment = sectionPayment.querySelectorAll('.form__input');
-    console.log(inputsPayment);
+    checkEmptyBasket();
+    closePages();
+    const buttonMain = document.querySelector('.main-panel__button--type--main');
+    buttonMain.click();
     if (info.success) {
       [...inputsPayment].forEach((item) => {
         if (item.checked) {
-          console.log(resPayOrder, item.id);
           api.payOrderApi(item.id, orderInfo.successData, resPayOrder);
         }
       });
       // toggleModalPagePaymentOrder.rendering(info);
     } else {
-      toggleModal.rendering(info.errors[0]);
+      toggleModal.rendering({subject: 'Ошибка', text: info.errors[0]});
     }
+  }
+
+  initContent() {
+    const accordionTriggers = this.modalPageOrderReview.querySelectorAll('.accordion__trigger');
+    const accordionShouldOpen = this.modalPageOrderReview.querySelectorAll('.basket__header-should-open');
+    const groups = this.modalPageOrderReview.querySelectorAll('.form__group--float');
+    const sectionReset = this.modalPageOrderReview.querySelectorAll('.button__reset');
+    const banners = this.modalPageOrderReview.querySelectorAll('.banner__container');
+
+    if (banners) {
+      banners.forEach((banner) => {
+        activeBanners(banner, true);
+      });
+    }
+    accordionTriggers.forEach((trigger) => {
+      trigger.addEventListener('click', (e) => {
+        const container = document.querySelector(`.accordion__container[data-id='${trigger.dataset.id}']`);
+        trigger.classList.toggle('accordion__trigger--active');
+        container.classList.toggle('accordion__container--show');
+        if (container.style.maxHeight) {
+          container.style.maxHeight = null;
+        } else {
+          container.style.maxHeight = `${container.scrollHeight}px`;
+        }
+      });
+    });
+
+    accordionShouldOpen.forEach((element) => {
+      element.click();
+    });
+
+    groups.forEach((group) => {
+      group.addEventListener('click', () => {
+        group.classList.add('form__group--focused');
+      });
+      group.querySelector('input').addEventListener('blur', () => {
+        group.classList.remove('form__group--focused');
+        if (group.querySelector('input').value) {
+          group.classList.add('form__group--not-empty');
+        } else {
+          group.classList.remove('form__group--not-empty');
+        }
+      });
+      group.click();
+      setTimeout(() => {
+        group.classList.remove('form__group--focused');
+        if (group.querySelector('input').value) {
+          group.classList.add('form__group--not-empty');
+        } else {
+          group.classList.remove('form__group--not-empty');
+        }
+      }, 40);
+    });
+
+    sectionReset.forEach((reset) => {
+      reset.addEventListener('click', () => {
+        const inputs = reset.closest('section').querySelectorAll('input');
+        inputs.forEach((input) => {
+          input.value = '';
+          input.closest('.form__group').classList.remove('form__group--not-empty');
+        });
+      });
+    });
   }
 
   rendering() {
     super.rendering();
-    const reviewTopBar = new CreateTopBarReviewOrder({
-      selector: ['div'],
-      style: ['top-bar'],
-      modifier: [
-        '--theme--dark',
-        `--size--medium${isIos ? '--ios' : ''}`,
-      ],
-      eventClose: [
-        {
-          type: 'click',
-          callback: () => {
-            this.closePage();
-            this.deletePage();
-          },
-        },
-      ],
-      isClose: true,
-      eventStores: [
-        {
-          type: 'click',
-          callback: () => {
-            stopAction(() => {
-              storesPage.rendering();
-              storesPage.openPage();
-            });
-          },
-        },
-      ],
-    });
     const reviewTopBarNew = new CreateTopBarReview({
       selector: ['div'],
       style: ['top-bar'],
@@ -184,6 +220,7 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
           callback: () => {
             this.closePage();
             this.deletePage();
+            checkEmptyBasket();
           },
         },
       ],
@@ -213,41 +250,11 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
       selector: ['div'],
       style: ['accordion-section'],
     });
-    const reviewCardItemContainer = new CreateCardItemContainerFavAndHisOrder({
-      selector: ['div'],
-      style: ['card-item__container'],
-      modifier: [
-        '--indentation--top',
-        '--type--review',
-      ],
-    });
     const cardItemReviewContainer = new CreateCardItemReviewContainer({
       selector: ['div'],
       style: ['card-item__container'],
       modifier: [
         '--type--review',
-      ],
-    });
-
-    /* const reviewCheckboxTextSlide = new CreateCheckboxTextSlide({
-      selector: ['div'],
-      style: ['checkbox-textslide'],
-    }); */
-    const reviewButton = new CreateButton({
-      selector: ['button'],
-      style: ['button'],
-      modifier: ['--color-5',
-        '--type--make-order',
-      ],
-      typeSubmit: true,
-      text: ['Пополнить'],
-    });
-
-    const reviewCardItem = new CreateCardItemReviewOrder({
-      style: ['banner__container'],
-      modifier: [
-        '--type--swipe',
-        '--border--bottom',
       ],
     });
     const reviewCardItemNew = new CreateCardItemReview({
@@ -257,66 +264,85 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
       ],
     });
 
-    const backButton = new CreateButton({
-      selector: ['button'],
-      style: ['button'],
-      modifier: ['--size--big',
-        '--theme--tangerin',
-        '--type--fixed-low',
-        '--theme--shadow-big',
+    const textAreaNoBasket = new TextAreaNoBasket({
+      style: ['text-area-container'],
+      modifier: [
+        '--hide',
+        '--empty-basket',
+      ],
+      textButton: ['К меню'],
+      eventsButton: [
+        {
+          callback: () => {
+            this.closePage();
+            this.deletePage();
+            this.mainButton = document.querySelector('.main-panel__button--type--main');
+            this.mainButton.click();
+            checkEmptyBasket();
+          },
+        },
       ],
     });
-    const titleBarEmptyBasket = new CreateTitleBar({
-      selector: ['div'],
-      style: ['title-bar'],
-      modifier: ['--indentation--top', '--size--medium'],
-      text: ['Добавьте товары в корзину, чтобы продолжить'],
-    });
-    const textAreaNoBasket = new CreateTextAreaNoBasket({
+    const textAreaNoSignIn = new TextAreaNoSignIn({
       selector: ['div'],
       style: ['text-area-container'],
-      textButton: ['К меню'],
       eventsButton: [
         {
           type: 'click',
           callback: () => {
             this.closePage();
             this.deletePage();
+            toggleModalPageSignIn.rendering();
           },
         },
       ],
     });
-    const checkboxSelect = new CreateCheckboxTextSlide({
-      selector: ['div'],
-      style: ['checkbox-textslide'],
-    });
     const textAreaResult = new CreateTextAreaResult({
       selector: ['div'],
       style: ['text-area-container'],
+      modifier: [
+        `${isIos ? '--ios' : ''}`,
+      ],
+      eventsButton: [
+        {
+          type: 'click',
+          callback: () => {
+            stopAction(() => {
+              api.getClientApi(this.checkStoreWorkTime);
+            });
+          },
+        },
+      ],
     });
 
-    this.modalPageOrderReview.append(createTopBarIos());
+
     this.modalPageOrderReview.append(reviewTopBarNew.create());
+    this.modalPageOrderReview.append(textAreaNoBasket.create());
+    if (isEmptyObj(userInfoObj)) {
+      this.modalPageOrderReview.append(textAreaNoSignIn.create());
+      this.title = document.querySelector('.header__status-basket');
+      this.title.textContent = 'Корзина';
+    } else if (basketArray.length !== 0) {
+      this.container = document.createElement('div');
+      this.container.classList.add('modal-page-order-review__content-container', `${isIos ? 'modal-page-order-review__content-container--ios' : 'modal-page-order-review__content-container--not-ios'}`);
+      this.container.append(cardItemReviewContainer.create());
+      this.container.append(formDeliver.create());
+      this.container.append(formStores.create());
+      this.container.append(formPay.create());
+      this.container.append(formPromoCode.create());
+      this.container.append(formComment.create());
+      this.container.append(formFriendPay.create());
+      this.container.append(textAreaResult.create());
+      this.modalPageOrderReview.append(this.container);
 
-    if (basketArray.length !== 0) {
-      this.modalPageOrderReview.append(cardItemReviewContainer.create());
-      this.modalPageOrderReview.append(formDeliver.create());
-      this.modalPageOrderReview.append(formStores.create());
-      this.modalPageOrderReview.append(formPay.create());
-      this.modalPageOrderReview.append(formPromoCode.create());
-      this.modalPageOrderReview.append(formComment.create());
-      this.modalPageOrderReview.append(formFriendPay.create());
-      this.modalPageOrderReview.append(textAreaResult.create());
-
-      // this.modalPageOrderReview.append(reviewButton.create());
-
-      this.accordContainer = document.querySelector('.accordion__container-review');
+      const accordContainer = document.querySelector('.accordion__container-review');
+      const inputs = this.modalPageOrderReview.querySelectorAll('.form__input-area');
 
       const productsItems = dataProductApi.successData.items;
 
       basketArray.forEach((item, index) => {
         if (typeof productsItems[Number(item.id)] !== 'undefined' && !isEmptyObj(item)) {
-          this.accordContainer.append(reviewCardItemNew.create(item));
+          accordContainer.append(reviewCardItemNew.create(item));
         } else {
           basketArray.splice(index, 1);
           localStorage.setItem('basket', JSON.stringify(basketArray));
@@ -325,18 +351,8 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
 
       countResultPriceAndAllProductCounter();
 
-      this.reviewButton = document.querySelector('.button--type--make-order');
-
       emitter.emit('event:counter-changed');
-      const banners = document.querySelectorAll('.banner__container');
-      if (banners) {
-        banners.forEach((banner) => {
-          activeBanners(banner, true);
-        });
-      }
 
-
-      const inputs = this.modalPageOrderReview.querySelectorAll('.form__input-area');
       this.modalPageOrderReview.addEventListener('scroll', () => {
         [...inputs].forEach((el) => {
           if (el.nextElementSibling.classList.contains('form__input--focused')) {
@@ -346,90 +362,13 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
       });
 
       orderComment = '';
-      activeAccordion();
       inputFlyLabel();
-
-      this.reviewButton.addEventListener('click', () => {
-        stopAction(() => {
-          api.getClientApi(this.checkStoreWorkTime);
-        });
-      });
     } else {
-      this.modalPageOrderReview.append(textAreaNoBasket.create());
+      this.emptyBasketContainerEl = document.querySelector('.text-area-container--empty-basket');
+      this.emptyBasketContainerEl.classList.remove('text-area-container--hide');
     }
 
-    function initImages() {
-      let images = document.querySelectorAll('.catalog__list-element-image');
-      images.forEach((image) => {
-        image.style.backgroundImage = `url(${image.dataset.image})`;
-      });
-
-      images = document.querySelectorAll('.basket__offers-element-image');
-      images.forEach((image) => {
-        image.style.backgroundImage = `url(${image.dataset.image})`;
-      });
-    }
-
-    function onDOMContentLoaded(e) {
-
-
-      const accordionTriggers = document.querySelectorAll('.accordion__trigger');
-      accordionTriggers.forEach((trigger) => {
-        trigger.addEventListener('click', (e) => {
-          const container = document.querySelector(`.accordion__container[data-id='${trigger.dataset.id}']`);
-          trigger.classList.toggle('accordion__trigger--active');
-          container.classList.toggle('accordion__container--show');
-          if (container.style.maxHeight) {
-            container.style.maxHeight = null;
-          } else {
-            container.style.maxHeight = `${container.scrollHeight}px`;
-          }
-        });
-      });
-
-      const accordionShouldOpen = document.querySelectorAll('.basket__header-should-open');
-      accordionShouldOpen.forEach((element) => {
-        element.click();
-      });
-
-      const groups = document.querySelectorAll('.form__group--float');
-      groups.forEach((group) => {
-        group.addEventListener('click', (e) => {
-          group.classList.add('form__group--focused');
-          //group.querySelector('input').focus();
-        });
-        group.querySelector('input').addEventListener('blur', (e) => {
-          group.classList.remove('form__group--focused');
-          if (group.querySelector('input').value) {
-            group.classList.add('form__group--not-empty');
-          } else {
-            group.classList.remove('form__group--not-empty');
-          }
-        });
-        group.click();
-        setTimeout(() => {
-          group.classList.remove('form__group--focused');
-          if (group.querySelector('input').value) {
-            group.classList.add('form__group--not-empty');
-          } else {
-            group.classList.remove('form__group--not-empty');
-          }
-        }, 40);
-      });
-
-      const sectionReset = document.querySelectorAll('.button__reset');
-      sectionReset.forEach((reset) => {
-        reset.addEventListener('click', (e) => {
-          const inputs = reset.closest('section').querySelectorAll('input');
-          inputs.forEach((input) => {
-            input.value = '';
-            input.closest('.form__group').classList.remove('form__group--not-empty');
-          });
-        });
-      });
-    }
-
-    onDOMContentLoaded();
+    this.initContent();
 
     this.openPage();
   }

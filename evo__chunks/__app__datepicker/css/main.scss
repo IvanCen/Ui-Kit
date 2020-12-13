@@ -1,0 +1,264 @@
+@import "../../_ui-kit/css/main";
+
+
+::-webkit-calendar-picker-indicator {
+  display: none;
+}
+
+.datepicker{
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  font-family: "Rubik", "Roboto", sans-serif;
+  overflow: auto;
+  display: none;
+  &--show{
+    z-index: 999999;
+    display: block;
+  }
+  &__background{
+    position: fixed;
+    left: 0;
+    top: 0;
+    background-color: rgba(0,0,0,.3);
+    width: 100%;
+    height: 100%;
+  }
+  &__container{
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding: 20px;
+    width: 100%;
+  }
+  &__calendar{
+    width: 100%;
+    box-shadow: 0px 15px 12px rgba(0, 0, 0, 0.22), 0px 19px 38px rgba(0, 0, 0, 0.3);
+    border-radius: 14px;
+    overflow: hidden;
+    background-color: #fff;
+    &-day-of-week{
+      background-color: #CA4B1A;
+      height: 32px;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 17px;
+      justify-content: center;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      text-transform: capitalize;
+    }
+    &-mandy{
+      margin: 12px 0;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 17px;
+      text-align: center;
+      color: #23211F;
+      &-month{
+        text-transform: capitalize;
+      }
+    }
+    &-picker{
+      background-color: #FF6900;
+      color: #fff;
+      padding: 14px;
+      &-month{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        &-cur{
+          font-weight: normal;
+          font-size: 24px;
+          line-height: 28px;
+          text-transform: uppercase;
+        }
+        &-list{
+          display: none;
+          &--show{
+            display: block;
+          }
+          overflow: auto;
+          position: absolute;
+          top: 0;
+          z-index: 10;
+          left: 50%;
+          transform: translateX(-50%);
+          height: calc(32px*6 + 12px);
+          max-height: calc(32px*6 + 12px);
+          background-color: #FAFAFA;
+          padding: 6px 0;
+          box-shadow: 0px 8px 10px rgba(0, 0, 0, 0.14), 0px 3px 14px rgba(0, 0, 0, 0.12), 0px 5px 5px rgba(0, 0, 0, 0.2);
+          border-radius: 4px;
+          & > div{
+            padding: 0 14px 0 8px;
+            height: 32px;
+            min-height: 32px;
+            font-weight: normal;
+            font-size: 14px;
+            line-height: 20px;
+            letter-spacing: 0.25px;
+            color: rgba(0, 0, 0, 0.87);
+            display: flex;
+            align-items: center;
+            &.today{
+              background-color: rgba(0, 0, 0, 0.08);
+            }
+            &:last-child{
+              margin-bottom: 6px;
+            }
+          }
+        }
+      }
+      &-day{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        & > div{
+          font-weight: normal;
+          font-size: 80px;
+          line-height: 95px;
+        }
+      }
+      &-year{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        &-cur{
+          font-weight: normal;
+          font-size: 24px;
+          line-height: 28px;
+          mix-blend-mode: normal;
+          color: rgba(#fff, .54);
+        }
+        &-list{
+          display: none;
+          &--show{
+            display: block;
+          }
+          overflow: auto;
+          position: absolute;
+          top: 0;
+          left: 50%;
+          transform: translateX(-50%);
+          height: calc(32px*6 + 12px);
+          max-height: calc(32px*6 + 12px);
+          background-color: #FAFAFA;
+          z-index: 10;
+          padding: 6px 0;
+          box-shadow: 0px 8px 10px rgba(0, 0, 0, 0.14), 0px 3px 14px rgba(0, 0, 0, 0.12), 0px 5px 5px rgba(0, 0, 0, 0.2);
+          border-radius: 4px;
+          & > div{
+            height: 32px;
+            min-height: 32px;
+            font-weight: normal;
+            font-size: 14px;
+            padding: 0 14px 0 8px;
+            line-height: 20px;
+            letter-spacing: 0.25px;
+            color: rgba(0, 0, 0, 0.87);
+            display: flex;
+            align-items: center;
+            &.today{
+              background-color: rgba(0, 0, 0, 0.08);
+            }
+            &:last-child{
+              margin-bottom: 6px;
+            }
+          }
+        }
+      }
+    }
+    &-weekdays{
+      width: 100%;
+      height: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      margin-bottom: 16px;
+      & > div{
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 14px;
+        text-align: center;
+        color: #919191;
+        width: 44px;
+        @media (max-width: 360px){
+          width: 36px;
+        }
+      }
+    }
+    &-days{
+      width: 100%;
+      align-items: center;
+      justify-content: space-around;
+      margin-bottom: 26px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+      & > div{
+        font-weight: normal;
+        font-size: 12px;
+        line-height: 14px;
+        height: 44px;
+        width: 44px;
+        //width: calc( (100vw - 32px)/ 7 );
+        margin: 0 auto;
+        color: #23211F;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        @media (max-width: 360px){
+          height: 36px;
+          width: 36px;
+        }
+        &.today{
+          position: relative;
+          border-radius: 50%;
+          background-color: $color;
+          color: #FFFFFF;
+        }
+        //&:hover:not(.today){
+        //  position: relative;
+        //  border-radius: 50%;
+        //  background-color: lightgrey;
+        //  color: #FFFFFF;
+        //}
+      }
+    }
+    &-buttons{
+      display: flex;
+      justify-content: flex-end;
+      padding: 0 32px 20px;
+    }
+    &-cancel{
+      text-transform: uppercase;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 17px;
+      text-align: center;
+      letter-spacing: 0.0357143em;
+      color: #919191;
+      margin-right: 39px;
+    }
+    &-accept{
+      text-transform: uppercase;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 17px;
+      text-align: center;
+      letter-spacing: 0.0357143em;
+      color: $color;
+    }
+  }
+}
+
+.prev-date, .next-date{
+  opacity: 0;
+  pointer-events: none;
+}

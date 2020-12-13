@@ -39,7 +39,6 @@ function switchAdd(productInfo) {
     }
 
     function setUserDataObj() {
-      console.log(productInfo);
       if (typeof userDataObj[productInfo.id] !== 'object') {
         userDataObj[productInfo.id] = {};
       }
@@ -108,7 +107,6 @@ function switchAddNew(productInfo, el) {
     }
 
     function setUserDataObj() {
-      console.log(productInfo);
       if (typeof userDataObj[productInfo.id] !== 'object') {
         userDataObj[productInfo.id] = {};
       }
@@ -248,7 +246,6 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
   }
 
   create(productInfo) {
-    console.log(productInfo);
     let price;
     if (!isEmptyObj(userStore)) {
       if (userStore.store.priceGroup === null) {
@@ -260,7 +257,7 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
       price = 0;
     }
 
-    if (!isEmptyObj(dataUserSeasons)) {
+    /* if (!isEmptyObj(dataUserSeasons)) {
       Object.values(dataUserSeasons.successData).forEach((item) => {
         if (dataSeasons.successData[item.id]) {
           Object.values(dataSeasons.successData[item.id].items).forEach((el) => {
@@ -270,11 +267,11 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
           });
         }
       });
-    }
+    } */
 
     this.template = `
       <button class="button text-area__button text-area__button--type--like text-area__button--position--absolute">
-        <svg class="text-area__icon text-area__icon--type--like" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <svg aria-label="Лайк!" class="text-area__icon text-area__icon--type--like" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path d="M1.8 9.80005C1.6 9.25005 1.5 8.67005 1.5 8.05005C1.5 5.15005 3.86 2.80005 6.75 2.80005C8.84 2.80005 10.66 4.03005 11.5 5.80005C11.7 6.22005 12.29 6.22005 12.5 5.80005C13.35 4.02005 15.16 2.80005 17.25 2.80005C20.14 2.80005 22.5 5.15005 22.5 8.05005C22.5 8.67005 22.39 9.27005 22.19 9.83005C21.93 10.56 21.51 11.21 20.97 11.76L12.02 20.66L3.4 12.09L3.39 12.08L3.38 12.07C3.17 11.89 2.98 11.7 2.8 11.49C2.35 10.99 2.02 10.42 1.8 9.80005Z"/>
         </svg>
       </button>
@@ -439,7 +436,6 @@ class CreateTextAreaAddinsProductCard extends CreateItem {
     this.blockLike.addEventListener('click', () => {
       this.iconsLike.classList.toggle('text-area__icon--liked');
       if (this.iconsLike.classList.contains('text-area__icon--liked')) {
-        console.log(productInfo);
         if (productInfo.modifiers !== null) {
           const modifiersArr = [];
           for (const modif in userDataObj[productInfo.id]) {
@@ -644,7 +640,6 @@ class CreateTextAreaProductCard extends CreateItem {
   }
 
   create(productInfo) {
-    console.log(productInfo);
     let price;
     if (!isEmptyObj(userStore)) {
       if (userStore.store.priceGroup === null) {
@@ -656,7 +651,7 @@ class CreateTextAreaProductCard extends CreateItem {
       price = 0;
     }
 
-    if (!isEmptyObj(dataUserSeasons)) {
+    /* if (!isEmptyObj(dataUserSeasons)) {
       Object.values(dataUserSeasons.successData).forEach((item) => {
         if (dataSeasons.successData[item.id]) {
           Object.values(dataSeasons.successData[item.id].items).forEach((el) => {
@@ -666,7 +661,7 @@ class CreateTextAreaProductCard extends CreateItem {
           });
         }
       });
-    }
+    } */
 
     this.template = `
       <div class="card__touch"></div>
@@ -758,6 +753,12 @@ class CreateTextAreaProductCard extends CreateItem {
     this.containerIngredients = this.element.querySelector('.card__info-section--ingredients');
     this.iconsLike = this.element.querySelector('.card__bookmark-icon');
     this.buttonReset = this.element.querySelector('.card__modifiers-reset');
+    this.cardContainer = this.element.querySelector('.card__container');
+
+    if (isIos) {
+      this.buttonAdd.classList.add('card__button--ios');
+      this.cardContainer.classList.add('card__container--ios');
+    }
 
     if (!isEmptyObj(outOfStock) && outOfStock.successData.itemsAndModifiers.length !== 0) {
       let active = true;
@@ -768,27 +769,25 @@ class CreateTextAreaProductCard extends CreateItem {
           break;
         }
       }
-      if (active) {
-        this.buttonAdd.addEventListener('click', () => {
-          addProductToBasket(productInfo);
-          this.cardPage.classList.add('card--animation');
-          this.cardPage.style = 'transform: translate3d(0px, 760.2283px, 0px);';
-          setTimeout(() => {
-            toggleModalPageCard.deletePage();
-          }, 1000);
-        });
-        this.iconAdd.addEventListener('click', () => {
-          addProductToBasket(productInfo);
-          this.cardPage = document.querySelector('.card');
-          this.cardPage.classList.add('card--animation');
-          this.cardPage.style = 'transform: translate3d(0px, 760.2283px, 0px);';
-          setTimeout(() => {
-            toggleModalPageCard.deletePage();
-          }, 1000);
-        });
-      }
     }
 
+    this.buttonAdd.addEventListener('click', () => {
+      addProductToBasket(productInfo);
+      this.cardPage.classList.add('card--animation');
+      this.cardPage.style = 'transform: translate3d(0px, 760.2283px, 0px);';
+      setTimeout(() => {
+        toggleModalPageCard.deletePage();
+      }, 1000);
+    });
+    this.iconAdd.addEventListener('click', () => {
+      addProductToBasket(productInfo);
+      this.cardPage = document.querySelector('.card');
+      this.cardPage.classList.add('card--animation');
+      this.cardPage.style = 'transform: translate3d(0px, 760.2283px, 0px);';
+      setTimeout(() => {
+        toggleModalPageCard.deletePage();
+      }, 1000);
+    });
 
     this.buttonReset.addEventListener('click', () => {
       delete userDataObj[productInfo.id];
@@ -853,7 +852,6 @@ class CreateTextAreaProductCard extends CreateItem {
     this.iconsLike.addEventListener('click', () => {
       this.iconsLike.classList.toggle('card__bookmark-icon--liked');
       if (this.iconsLike.classList.contains('card__bookmark-icon--liked')) {
-        console.log(productInfo);
         if (productInfo.modifiers !== null) {
           const modifiersArr = [];
           for (const modif in userDataObj[productInfo.id]) {
@@ -967,6 +965,85 @@ class CreateTextAreaAddins extends CreateItem {
   }
 }
 
+class CreateTextAreaSharesDetail extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+  }
+
+  create(productInfo) {
+    this.element = document.createElement(this.parameters.selector);
+
+    this.template = `
+      <div class="shares-detail__touch"></div>
+      <div class="shares-detail__container">
+          <div class="shares-detail__title">Получи 6-й кофе в подарок</div>
+          <ul class="shares-detail__terms">
+              <div>Условия акции</div>
+              <li>Покупай кофе в магазинах и называй свой номер на кассе</li>
+              <li>Получай каждый шестой кофе в подарок</li>
+              <li>Кофе добавиться в заказ автоматически после оплаты и при выполнении условий акции</li>
+          </ul>
+          <div class="shares-detail__images-list">
+              <div class="shares-detail__images-list-element"></div>
+              <div class="shares-detail__images-list-element"></div>
+              <div class="shares-detail__images-list-element"></div>
+              <div class="shares-detail__images-list-element"></div>
+              <div class="shares-detail__images-list-element"></div>
+              <div class="shares-detail__images-list-element"></div>
+          </div>
+      </div>
+      <div class="shares-detail__img-container shares-detail__img-container--hide">
+        <div class="shares-detail__img-qr"></div>
+      </div>
+      
+      <button class="button--hide shares-detail__button ${isIos ? 'shares-detail__button--ios' : 'shares-detail__button--no-ios'} button button--size--large button--theme--tangerin">Показать QR</button>
+    `;
+    this.element.insertAdjacentHTML('beforeend', this.template);
+
+    this.button = this.element.querySelector('.shares-detail__button');
+
+    if (productInfo.success) {
+      this.imageListElements = this.element.querySelectorAll('.shares-detail__images-list-element');
+      for (let i = 0; i < productInfo.successData.count % 6; i++) {
+        if (this.imageListElements[i]) {
+          this.imageListElements[i].classList.add('shares-detail__images-list-element--not-empty');
+        }
+      }
+
+
+      /* const qrImg = new QRCode(this.element.querySelector('.shares-detail__img-qr'),
+        {
+          text: userInfoObj.successData.phone.substr(1),
+          colorDark: '#000000',
+          colorLight: '#ffffff',
+          correctLevel: QRCode.CorrectLevel.H,
+        });
+      let openQr = false;
+      this.button.addEventListener('click', () => {
+        openQr = !openQr;
+        this.container = this.element.querySelector('.shares-detail__container');
+        this.imageContainer = this.element.querySelector('.shares-detail__img-container');
+        this.container.classList.toggle('shares-detail__container--hide');
+        this.imageContainer.classList.toggle('shares-detail__img-container--hide');
+        if (openQr) {
+          this.button.textContent = 'Скрыть QR';
+        } else {
+          this.button.textContent = 'Показать QR';
+        }
+      }); */
+    } else {
+      toggleModal.rendering({
+        subject: 'Ошибка',
+        text: productInfo.errors[0] || 'Требуется авторизация для просмотра прогресса по акции',
+      });
+      this.button.classList.add('button--type--disabled');
+    }
+
+    return super.create(this.element);
+  }
+}
+
 class CreateTextAreaAddin extends CreateItem {
   constructor(parameters) {
     super();
@@ -1064,7 +1141,7 @@ class CreateTextAreaAddinNew extends CreateItem {
       this.template = `
         <div id="${item.id}" class="card__modifiers-section-list-element">
             <div class="card__modifiers-section-list-element-promo">
-                <div class="card__modifiers-section-list-element-image" data-img="[+chunkWebPath+]/img/mod1.png">
+                <div class="card__modifiers-section-list-element-image" data-img="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-default-modif.svg]]">
                   <div class="card__modifiers-section-list-element-quantity"></div>
                 </div>
                 <div class="card__modifiers-section-list-element-count">
@@ -1112,7 +1189,7 @@ class CreateTextAreaAddinNew extends CreateItem {
               this.template = `
                 <div id="${item.id}" class="card__modifiers-section-list-element text-area--type--add-ins">
                     <div class="card__modifiers-section-list-element-promo">
-                        <div class="card__modifiers-section-list-element-image" data-img="[+chunkWebPath+]/img/mod2.png">
+                        <div class="card__modifiers-section-list-element-image" data-img="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-default-modif.svg]]">
                             <div class="card__modifiers-section-list-element-quantity">${counter}</div>
                         </div>
                         <div class="card__modifiers-section-list-element-count">
@@ -1158,64 +1235,51 @@ class CreateTextAreaAccount extends CreateItem {
 
   create() {
     this.element = document.createElement(this.parameters.selector);
-    this.template = `
-      <!--<div class="text-area text-area&#45;&#45;type&#45;&#45;privacy">
-        <div class="text-area__container text-area__container&#45;&#45;indentation&#45;&#45;small">
-          <div class="text-area__content-container text-area__content-container&#45;&#45;direction&#45;&#45;column">
-            <h2 class="text-area__title text-area__title&#45;&#45;size&#45;&#45;small text-area__title&#45;&#45;type&#45;&#45;bold">Политика конфиденциальности</h2>
-          </div>
-          <button class="button">
-            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-right.svg]]" alt="" class="text-area__icon text-area__icon&#45;&#45;position&#45;&#45;center">
-          </button>
-        </div>
-      </div>
-      <div class="text-area text-area&#45;&#45;type&#45;&#45;terms">
-        <div class="text-area__container text-area__container&#45;&#45;indentation&#45;&#45;small">
-          <h2 class="text-area__title text-area__title&#45;&#45;size&#45;&#45;small text-area__title&#45;&#45;type&#45;&#45;bold">Пользовательское соглашение</h2>
-          <button class="button">
-            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-right.svg]]" alt="" class="text-area__icon text-area__icon&#45;&#45;position&#45;&#45;center">
-          </button>
-         </div>
-       </div>  
-       <div class="text-area text-area&#45;&#45;type&#45;&#45;public">
-        <div class="text-area__container text-area__container&#45;&#45;indentation&#45;&#45;small">
-          <h2 class="text-area__title text-area__title&#45;&#45;size&#45;&#45;small text-area__title&#45;&#45;type&#45;&#45;bold">Публичная оферта</h2>
-          <button class="button">
-            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-right.svg]]" alt="" class="text-area__icon text-area__icon&#45;&#45;position&#45;&#45;center">
-          </button>
-         </div>
-       </div>  
-       <div class="text-area text-area&#45;&#45;type&#45;&#45;subscription">
-        <div class="text-area__container text-area__container&#45;&#45;indentation&#45;&#45;small">
-          <h2 class="text-area__title text-area__title&#45;&#45;size&#45;&#45;small text-area__title&#45;&#45;type&#45;&#45;bold">Абонементы</h2>
-          <button class="button">
-            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-right.svg]]" alt="" class="text-area__icon text-area__icon&#45;&#45;position&#45;&#45;center">
-          </button>
-         </div>
-       </div>-->
-       
+    this.template = `       
         <section class="profile__info">
           <div class="profile__header">
               <div class="profile__title">Информация</div>
           </div>
-          <div class="form__group profile__group text-area--type--privacy">
+          <div class="form__group profile__group profile__group-element text-area--type--gift form__group--hide">
+              <label>6 кофе в подарок</label>
+          </div>
+          <div class="form__group profile__group profile__group-element text-area--type--support">
+              <label>Поддержка</label>
+          </div>
+          <div class="form__group profile__group profile__group-element text-area--type--privacy">
               <label>Политика конфиденциальности</label>
           </div>
-          <div class="form__group profile__group text-area--type--terms">
+          <div class="form__group profile__group profile__group-element text-area--type--terms">
               <label>Пользовательское соглашение</label>
           </div>
-          <div class="form__group profile__group text-area--type--public">
+          <div class="form__group profile__group profile__group-element text-area--type--public">
               <label>Публичная оферта</label>
           </div>
         </section>
     `;
     this.element.insertAdjacentHTML('beforeend', this.template);
 
+    this.buttonSupport = this.element.querySelector('.text-area--type--support');
     this.buttonPrivacy = this.element.querySelector('.text-area--type--privacy');
     this.buttonTerms = this.element.querySelector('.text-area--type--terms');
     this.buttonPublic = this.element.querySelector('.text-area--type--public');
+    this.buttonGift = this.element.querySelector('.text-area--type--gift');
+    this.title = this.element.querySelector('.profile__title');
     // this.buttonSubscription = this.element.querySelector('.text-area--type--subscription');
+    let count = 0;
 
+    this.title.addEventListener('click', () => {
+      count++;
+      if (count % 5 === 0) {
+        alert('[~30~]');
+      }
+    });
+
+    this.buttonSupport.addEventListener('click', () => {
+      stopAction(() => {
+        toggleSubPageSupport.rendering();
+      });
+    });
     this.buttonPrivacy.addEventListener('click', () => {
       stopAction(() => {
         toggleSubPageApplication.rendering(this.setData('privacy-policy'));
@@ -1231,11 +1295,11 @@ class CreateTextAreaAccount extends CreateItem {
         toggleSubPageApplication.rendering(this.setData('public-offer'));
       });
     });
-    /*    this.buttonSubscription.addEventListener('click', () => {
+    this.buttonGift.addEventListener('click', () => {
       stopAction(() => {
-        toggleModalPageSubscription.rendering();
+        api.getСlientСoffeeСount(toggleModalPageSharesDetail.rendering);
       });
-    }); */
+    });
 
     return super.create(this.element);
   }
@@ -1248,7 +1312,6 @@ class CreateTextAreaApplication extends CreateItem {
   }
 
   create(info) {
-    console.log(info);
     this.element = document.createElement(this.parameters.selector);
     this.template = `
       <div class="text-area text-area--indentation--normal">
@@ -1446,44 +1509,6 @@ class CreateTextAreaBalanceHistory extends CreateItem {
   }
 }
 
-class CreateTextArea extends CreateItem {
-  constructor(parameters) {
-    super();
-    this.parameters = parameters;
-    this.element = document.createElement(this.parameters.selector);
-    this.template = `
-      <div class="text-area__container text-area__container--indentation--normal">
-        <div>
-          <h2 class="text-area__title text-area__title--type--${this.parameters.identifier}">${this.parameters.title}</h2>
-          <p class="text-area__text text-area__text--theme--shadow">${this.parameters.text}</p>
-        </div>
-      </div>
-      
-    `;
-  }
-
-  create() {
-    this.element.insertAdjacentHTML('beforeend', this.template);
-
-    if (this.parameters.isButton) {
-      this.textAreaContainer = this.element.querySelector('.text-area__container');
-      this.button = document.createElement('button');
-      this.button.classList.add('button');
-      this.buttonTemplate = `
-        <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-right.svg]]" alt="" class="text-area__icon text-area__icon--position--center">`;
-      this.button.insertAdjacentHTML('beforeend', this.buttonTemplate);
-      this.textAreaContainer.append(this.button);
-      if (typeof this.parameters.eventButton === 'object') {
-        for (const event of this.parameters.eventButton) {
-          this.element.addEventListener(event.type, event.callback);
-        }
-      }
-    }
-
-    return super.create(this.element);
-  }
-}
-
 class CreateTextAreaProfile extends CreateItem {
   constructor(parameters) {
     super();
@@ -1501,12 +1526,14 @@ class CreateTextAreaProfile extends CreateItem {
       email = userInfoObj.successData.email;
       const { phone } = userInfoObj.successData;
       const { birthday } = userInfoObj.successData;
+      if (birthday !== '') {
+        shortDateBirthday = new Date(`${birthday.replace(/-/g, '/')} UTC`).toLocaleString('ru', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+        }).replace('.', '').replace(' г.', '');
+      }
       phoneFormatted = phone.replace(/(\+\d)(\d{3})(\d{3})(\d{2})(\d{2})/g, '$1 ($2) $3-$4-$5') || '';
-      shortDateBirthday = new Date(`${birthday.replace(/-/g, '/')} UTC`).toLocaleString('ru', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-      }).replace('.', '').replace(' г.', '');
     }
 
     this.template = `
@@ -1514,11 +1541,11 @@ class CreateTextAreaProfile extends CreateItem {
         <div class="profile__title">Персональные данные</div>
       </div>
       <form class="form profile__form">
-        <div class="form__group profile__group" data-id="name">
+        <div class="form__group profile__group profile__group-element" data-id="name">
             <label class="profile__form-label">Имя</label>
             <input class="profile__form-input" type="text" value="${name}" readonly>
         </div>
-        <div class="form__group profile__group" data-id="birthday">
+        <div class="form__group profile__group profile__group-element" data-id="birthday">
             <label class="profile__form-label">День рождения</label>
             <input class="profile__form-input" type="text" value="${shortDateBirthday}" readonly>
         </div>
@@ -1526,7 +1553,7 @@ class CreateTextAreaProfile extends CreateItem {
             <label class="profile__form-label">Телефон</label>
             <input class="profile__form-input" type="text" value="${phoneFormatted}" readonly>
         </div>
-        <div class="form__group profile__group" data-id="email">
+        <div class="form__group profile__group profile__group-element" data-id="email">
             <label class="profile__form-label">Email</label>
             <input class="profile__form-input" type="text" value="${email}" readonly>
         </div>
@@ -1548,14 +1575,19 @@ class CreateTextAreaProfile extends CreateItem {
       });
     });
 
-    this.buttonBirthday.addEventListener('click', () => {
-      toggleSubPageEditUser.rendering({
-        titleTopBar: 'Редактировать',
-        inputLabel: 'Введите дату рождения',
-        identifier: 'birthday',
-        inputType: 'date',
+    if (!isEmptyObj(userInfoObj) && userInfoObj.successData.birthday === '') {
+      this.buttonBirthday.addEventListener('click', () => {
+        toggleSubPageEditUser.rendering({
+          titleTopBar: 'Редактировать',
+          inputLabel: '',
+          identifier: 'birthday',
+          inputType: 'text',
+        });
       });
-    });
+    } else {
+      this.buttonBirthday.classList.remove('profile__group-element');
+    }
+
 
     this.buttonEmail.addEventListener('click', () => {
       toggleSubPageEditUser.rendering({
@@ -1614,14 +1646,13 @@ class CreateTextAreaSearch extends CreateItem {
     this.element = document.createElement(this.parameters.selector);
 
     this.template = `
-    <div class="search__header">
+    <div class="search__header ${isIos ? 'search__header--ios' : 'search__header--no-ios'}">
         <div class="search__top">
-            <button class="search__close">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M18 6L6 18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M6 6L18 18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        
+        <svg class="search__close" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M10.192 0.343994L5.949 4.58599L1.707 0.343994L0.292999 1.75799L4.535 5.99999L0.292999 10.242L1.707 11.656L5.949 7.41399L10.192 11.656L11.606 10.242L7.364 5.99999L11.606 1.75799L10.192 0.343994Z" fill="white"/>
                 </svg>
-            </button>
+            
             <div class="search__status">Поиск</div>
         </div>
         <form action="" class="form search__form">
@@ -1651,8 +1682,10 @@ class CreateTextAreaSearch extends CreateItem {
 
     if (typeof this.parameters.eventCloseIcon === 'object') {
       for (const event of this.parameters.eventCloseIcon) {
-        this.iconClose.addEventListener('click', () => window.history.back());
-        this.iconClose.addEventListener(event.type, event.callback);
+        this.iconClose.addEventListener(event.type, () => {
+          window.history.back();
+          event.callback();
+        });
       }
     }
 
@@ -1676,6 +1709,7 @@ class CreateTextAreaBalanceTabs extends CreateItem {
       bonus = userInfoObj.successData.bonus;
     } else {
       balance = '0';
+      bonus = '0';
     }
     const date = new Date();
     const timeNow = [date.getHours(), date.getMinutes()].map((x) => (x < 10 ? `0${x}` : x)).join(':');
@@ -1684,7 +1718,7 @@ class CreateTextAreaBalanceTabs extends CreateItem {
       <div class="balance__container balance__container--show" data-id="1">
         <div class="balance__image balance__image--balance"></div>
         <div class="balance__content">
-            <div class="balance__currency">${balance} ₽</div>
+            <div class="balance__currency balance__currency-balance">${balance} ₽</div>
             <div class="balance__date">сегодня, ${timeNow}</div>
         </div>
         <div class="balance__history">
@@ -1695,7 +1729,7 @@ class CreateTextAreaBalanceTabs extends CreateItem {
     <div class="balance__container" data-id="2">
         <div class="balance__image balance__image--balance"></div>
         <div class="balance__content">
-            <div class="balance__currency">${bonus} ❤️</div>
+            <div class="balance__currency balance__currency-bonus">${bonus} ❤️</div>
             <div class="balance__date">сегодня, ${timeNow}</div>
         </div>
         <div class="balance__history">
@@ -1716,366 +1750,135 @@ class CreateTextAreaBalanceTabs extends CreateItem {
     return super.create(this.element);
   }
 
+
   renderContent(container, isBonus = false) {
     const reformattedLog = {};
     const log = isBonus ? userBonusLog : userBalanceLog;
 
-    log.successData.forEach((item) => {
-      const dateElems = new Date(`${item.timestamp.replace(/-/g, '/')} UTC`).toLocaleString('ru', {
-        year: 'numeric',
-        month: 'long',
-      }).replace('.', '').replace(' г', '');
-      const dateEl = dateElems[0].toUpperCase() + dateElems.slice(1);
-      if (!reformattedLog[dateEl]) {
-        reformattedLog[dateEl] = [];
-      }
-      reformattedLog[dateEl].push(item);
-    });
-    Object.entries(reformattedLog).forEach(([key, value]) => {
-      let temp = '';
-      value.forEach((el) => {
-        const date = new Date(`${el.timestamp.replace(/-/g, '/')} UTC`).toLocaleString('ru', {
+    if (!isEmptyObj(log)) {
+      log.successData.forEach((item) => {
+        const dateElems = new Date(`${item.timestamp.replace(/-/g, '/')} UTC`).toLocaleString('ru', {
           year: 'numeric',
-          month: 'short',
-          day: 'numeric',
-          hour: 'numeric',
-          minute: 'numeric',
-        }).replace('.', '').replace(' г.', '');
-        let classValue = '';
-
-        if (Math.sign(el.amount) === 1) {
-          classValue = 'balance__history-transaction-value--up';
-        } else {
-          classValue = 'balance__history-transaction-value--down';
+          month: 'long',
+        }).replace('.', '').replace(' г', '');
+        const dateEl = dateElems[0].toUpperCase() + dateElems.slice(1);
+        if (!reformattedLog[dateEl]) {
+          reformattedLog[dateEl] = [];
         }
-        this.templateBalanceEl = `
+        reformattedLog[dateEl].push(item);
+      });
+      Object.entries(reformattedLog).forEach(([key, value]) => {
+        let temp = '';
+        value.forEach((el) => {
+          const date = new Date(`${el.timestamp.replace(/-/g, '/')} UTC`).toLocaleString('ru', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+          }).replace('.', '').replace(' г.', '');
+          let classValue = '';
+
+          if (Math.sign(el.amount) === 1) {
+            classValue = 'balance__history-transaction-value--up';
+          } else {
+            classValue = 'balance__history-transaction-value--down';
+          }
+          this.templateBalanceEl = `
           <div class="balance__history-transaction">
               <div class="balance__history-transaction-date">${date}</div>
               <div class="balance__history-transaction-value ${classValue}">${el.amount} ${isBonus ? '❤' : '₽'}️</div>
           </div>
         `;
-        temp += this.templateBalanceEl;
-      });
-      this.bonusSection = document.createElement('div');
-      this.bonusSection.classList.add('balance__history-section');
-      this.templateEl = `
+          temp += this.templateBalanceEl;
+        });
+        this.bonusSection = document.createElement('div');
+        this.bonusSection.classList.add('balance__history-section');
+        this.templateEl = `
               <div class="balance__history-section-group">${key}</div>
               <div class="balance__history-section-list">${temp}</div>
             `;
-      this.bonusSection.insertAdjacentHTML('beforeend', this.templateEl);
-      container.append(this.bonusSection);
-    });
+        this.bonusSection.insertAdjacentHTML('beforeend', this.templateEl);
+        container.append(this.bonusSection);
+      });
+    }
   }
 }
 
 class CreateTextAreaResult extends CreateItem {
   constructor(parameters) {
-    super();
-    this.parameters = parameters;
-    this.element = document.createElement(this.parameters.selector);
+    super(parameters);
+
+    const { eventsButton } = this.parameters;
+
     this.template = `
       <section class="basket__result">
           <span class="basket__result-title">Итого</span>
-          <span class="basket__result-price">${this.parameters.sumPrice || ''} ₽</span>
+          <span class="basket__result-price"></span>
       </section>
-      <button type="submit" class="button button--type--make-order button--color-5">Оплатить</button>
+      <button type="submit" class="button--type--make-order button button--theme--tangerin button--theme--shadow-big button--size--large">Оплатить</button>
     `;
-  }
-
-
-  create() {
     this.element.insertAdjacentHTML('beforeend', this.template);
 
-    if (this.parameters.isButton) {
-      this.textAreaContainer = this.element.querySelector('.text-area__container');
-      this.button = document.createElement('button');
-      this.button.classList.add('button');
-      this.buttonTemplate = `
-        <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-right.svg]]" alt="" class="text-area__icon text-area__icon--position--center">`;
-      this.button.insertAdjacentHTML('beforeend', this.buttonTemplate);
-      this.textAreaContainer.append(this.button);
-      if (typeof this.parameters.eventButton === 'object') {
-        for (const event of this.parameters.eventButton) {
-          this.element.addEventListener(event.type, event.callback);
-        }
+    if (typeof eventsButton === 'object') {
+      for (const event of eventsButton) {
+        this.element.addEventListener(event.type, event.callback);
       }
     }
-
-    /* // делаем функцию подсчета стоимости корзины
-    function calcBasketPrice(catalog, basket, priceGroup, replaceItemPrice){
-      let totalAmount = 0;
-      let priceGroupKey = 'price'+priceGroup;
-      // проходимся по корзине
-      for( let basketItem of basket){
-        // получаем базовую цену элемента
-        let basketItemPrice = catalog[items][basketItem.id][priceGroupKey];
-        // подменяем цену элемента, если она была задана в подменном массиве
-        if(replaceItemPriceByActiveSeasons[basketItem.id]){
-          basketItemPrice=replaceItemPriceByActiveSeasons[basketItem.id];
-        }
-        let basketItemModifiersPrice = 0;
-        // проходимся по модификаторам товара в корзине
-        for( let modifier of basketItem.modifiers ){
-          // получаем базовую цену модификатора
-          let basketItemModifierPrice = catalog[modifiers][modifiers.id][priceGroupKey];
-          // подменяем цену элемента, если она была задана в подменном массиве
-          if(replaceItemPriceByActiveSeasons[modifiers.id]){
-            basketItemModifierPrice=replaceItemPriceByActiveSeasons[modifiers.id];
-          }
-          // умножаем на количество модификаторов в товаре
-          basketItemModifierPrice = basketItemModifierPrice*modifiers.count;
-          // прибавляем к цене модификаторов этого товара
-          basketItemModifiersPrice += basketItemModifierPrice;
-        }
-        //объединяем цену товара и модификатора
-        basketItemPrice = basketItemPrice + basketItemModifiersPrice;
-        // прибавляем к общей сумме покупки
-        totalAmount += basketItemPrice;
-
-      }
-    }
-
-// подготавливаем данные
-
-// получаем каталог
-    let catalog = localStorage.getItem('productData');
-    catalog = JSON.parse(catalog);
-    catalog = catalog.successData;
-
-// получаем корзину
-    let basket = localStorage.getItem('basket');
-    basket = JSON.parse(basket);
-// получаем магазин выбранный клиентом
-    let store = localStorage.getItem('userStore');
-    store = JSON.parse(store);
-    store = store.store;
-    let storeId = store.id;
-// получаем ценовую группу
-    let priceGroup;
-    if(store.priceGroup){
-      priceGroup = store.priceGroup;
-    }
-    else{
-      priceGroup = '';
-    }
-// создаем переменную с подменой цен
-    let replaceItemPrice={};
-
-// получаем доступные абонементы
-    let availableSeasons = localStorage.getItem('dataSeasons');
-    availableSeasons = JSON.parse(availableSeasons);
-    availableSeasons = availableSeasons.successData;
-    let replaceItemPriceByActiveSeasons = {
-
-    };
-// получаем абонементы клиента
-    let userSeasons = localStorage.getItem('dataUserSeasons');
-    if(Object.values(userSeasons).length>0){
-      // проходимся по абонементам клиента
-      for(let userSeason of Object.values(userSeasons)){
-        let seasonEndDate = new Date(userSeason.endDate);
-        // если абонемент на магазин используемый в корзине и не закончился
-        if(userSeason.shopId === storeId && seasonEndDate>(new Date)){
-          // если есть товары, цены на которые можно подменить
-          if(availableSeasons[userSeason.id]['items'] && availableSeasons[userSeason.id]['items'].length){
-            // объединяем ебъект с подменой цен абонемента с товарами указанными в абонементе
-            replaceItemPriceByActiveSeasons = Object.assign(replaceItemPriceByActiveSeasons, availableSeasons[userSeason.id]['items'];
-          }
-        }
-      }
-    }
-// объединяем объект с подменой цен с локальными объектами подмены цен(абонементы, промокоды, т.д.)
-    replaceItemPrice = Object.assign(replaceItemPrice, replaceItemPriceByActiveSeasons);
-
-// получаем стоимость товаров в корзине
-
-    calcBasketPrice(catalog, basket, priceGroup, replaceItemPrice); */
-
-    return super.create(this.element);
   }
 }
 
-class CreateTextAreaNoBasket extends CreateItem {
+class TextAreaNoSignIn extends CreateItem {
   constructor(parameters) {
-    super();
-    this.parameters = parameters;
-    this.element = document.createElement(this.parameters.selector);
-  }
+    super(parameters);
 
-  create() {
+    const { eventsButton } = this.parameters;
+
     this.template = `
       <div class="basket__empty-section">
-        <img src="[+chunkWebPath+]/img/empty-basket.svg" class="basket__empty-section-img" alt="">
-        <div class="basket__empty-section-title">У вас еще нет товаров в корзине</div>
-        <div class="basket__empty-section-text">Переходите в меню, делайте заказ и наслаждайтесь</div>
-        <button class="basket__empty-section-button button button--color-5">${this.parameters.textButton}</button>
+        <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/no-sign-in.svg]]" class="basket__empty-section-img" alt="">
+        <div class="basket__empty-section-title">Упс! Вход не выполнен</div>
+        <div class="basket__empty-section-text">Для продолжения покупок Вам необходимо авторизоваться</div>
+        <button class="basket__sign-in-button button button--theme--tangerin button--theme--shadow-big button--size--large">Перейти к авторизации</button>
     </img>
     `;
     this.element.insertAdjacentHTML('beforeend', this.template);
-    this.button = this.element.querySelector('.basket__empty-section-button');
-    if (typeof this.parameters.eventsButton === 'object') {
-      for (const event of this.parameters.eventsButton) {
-        this.button.addEventListener(event.type, event.callback);
+
+    if (typeof eventsButton === 'object') {
+      this.button = this.element.querySelector('.button');
+
+      for (const event of eventsButton) {
+        this.button.addEventListener(event.type || 'click', () => {
+          returnPageObj.returnBalanceAfterSignIn = true;
+          event.callback();
+        });
       }
     }
-    return super.create(this.element);
   }
 }
 
-class CreateTextAreaOrderHistory extends CreateItem {
+class TextAreaNoBasket extends CreateItem {
   constructor(parameters) {
-    super();
-    this.parameters = parameters;
-  }
+    super(parameters);
 
-  create() {
-    this.element = document.createElement(this.parameters.selector);
+    const { eventsButton, textButton } = this.parameters;
+
     this.template = `
-      <div class="text-area__container">
-        <div class="text-area__content-container text-area__content-container--indentation--normal text-area__content-container--direction--column">
-          <p class="text-area__title text-area__title--size--normal text-area__title--indentation--bottom-big text-area__title--theme--shadow">Выберете способ отплаты</p>
-          <div class="radio">
-            <input type="radio" class="radio__input" id="creditCard" name="radio"/>
-            <label class="radio__label radio__label--default radio__label--available" for="creditCard">Банковская карта</label>
-          </div>
-          
-          <div class="radio">
-            <input type="radio" class="radio__input" id="balance" name="radio"/>
-            <label class="radio__label radio__label--default" for="balance">Баланс (Доступно ${userInfoObj.successData.balance})</label>
-          </div>
-          <div class="radio">
-            <input type="radio" class="radio__input" id="bonus" name="radio"/>
-            <label class="radio__label radio__label--default" for="bonus">Бонусы (Доступно ${userInfoObj.successData.bonus})</label>
-          </div>
-        </div>
-      </div>
-      <div class="text-area__container text-area__container--indentation--normal">
-        <div>
-          <span class="text-area__price text-area__price--size--big">${this.parameters.number}</span>
-          <p class="text-area__text text-area__text--theme--shadow">Итого</p>
-        </div>
-      </div>
-      <button class="button button--size--big button--theme--tangerin button--type--fixed-low button--theme--shadow-big text-area__button text-area__button--open text-area__button--type--${this.parameters.identifier}">Оплатить</button>
-      <a class="text-area__link" href="" target="_blank" rel="noopener"></a>
+      <div class="basket__empty-section">
+        <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/empty-basket.svg]]" class="basket__empty-section-img" alt="">
+        <div class="basket__empty-section-title">У вас еще нет товаров в корзине</div>
+        <div class="basket__empty-section-text">Переходите в меню, делайте заказ и наслаждайтесь</div>
+        <button class="basket__empty-section-button button button--theme--tangerin button--theme--shadow-big button--size--large">${textButton}</button>
+    </img>
     `;
     this.element.insertAdjacentHTML('beforeend', this.template);
 
+    if (typeof eventsButton === 'object') {
+      this.button = this.element.querySelector('.button');
 
-    this.button = this.element.querySelector(`.text-area__button--type--${this.parameters.identifier}`);
-    this.radioInput = this.element.querySelectorAll('.radio__input');
-    [...this.radioInput].forEach((item) => {
-      for (const key in userInfoObj.successData) {
-        if (item.id === key) {
-          if (Number(userInfoObj.successData[key]) < this.parameters.number) {
-            item.disabled = true;
-            item.nextElementSibling.classList.add('radio__label--disable');
-          } else {
-            item.nextElementSibling.classList.add('radio__label--available');
-          }
-        }
-      }
-    });
-
-    this.button.addEventListener('click', () => {
-      [...this.radioInput].forEach((item) => {
-        if (item.checked) {
-          api.payOrderApi(item.id, orderInfo.successData, this.resPayOrder);
-        }
-      });
-    });
-
-    if (orderComment !== undefined && orderComment !== '') {
-      const textAreaComment = document.createElement('div');
-      textAreaComment.classList.add('text-area__container', 'text-area__container--indentation--normal');
-      const templateComment = `
-        <div>
-          <p class="text-area__text text-area__text--theme--shadow">Ваш комментарий к заказу:</p>
-          <span class="text-area__title text-area__title--size--normal">${this.parameters.comment}</span>
-        </div>
-      `;
-      textAreaComment.insertAdjacentHTML('beforeend', templateComment);
-      this.button.before(textAreaComment);
-    }
-
-    if (promoCode !== undefined && promoCode !== '') {
-      const textAreaPromoCode = document.createElement('div');
-      textAreaPromoCode.classList.add('text-area__container', 'text-area__container--indentation--normal');
-      const templateComment = `
-        <div>
-          <p class="text-area__text text-area__text--theme--shadow">Ваш промокод:</p>
-          <span class="text-area__title text-area__title--size--normal">${promoCode}</span>
-        </div>
-      `;
-      textAreaPromoCode.insertAdjacentHTML('beforeend', templateComment);
-      this.button.before(textAreaPromoCode);
-    }
-
-    /* if (!isIos) {
-      const applePayRadio = this.element.querySelector('#applePay').closest('.radio');
-      applePayRadio.remove();
-    } */
-
-    return super.create(this.element);
-  }
-}
-
-class CreateTextAreaBankInfo extends CreateItem {
-  constructor(parameters) {
-    super();
-    this.parameters = parameters;
-    this.element = document.createElement(this.parameters.selector);
-    this.template = `
-      <h2 class="text-area__title ">${this.parameters.text}</h2>
-    `;
-  }
-
-  create() {
-    this.element.insertAdjacentHTML('beforeend', this.template);
-
-    return super.create(this.element);
-  }
-}
-
-class CreateTextAreaBalanceMain extends CreateItem {
-  constructor(parameters) {
-    super();
-    this.parameters = parameters;
-    this.element = document.createElement(this.parameters.selector);
-  }
-
-  create() {
-    let balance;
-    if (userInfoObj.successData) {
-      balance = userInfoObj.successData.balance;
-    } else {
-      balance = '0';
-    }
-    const date = new Date();
-    const timeNow = [date.getHours(), date.getMinutes()].map((x) => (x < 10 ? `0${x}` : x)).join(':');
-
-    this.template = `
-
-        <div class="balance-section__header">
-            <div class="balance-section__title">Баланс</div>
-            <div class="balance-section__date">сегодня, ${timeNow}</div>
-        </div>
-        <div class="balance-section__content">
-            <div class="balance-section__container">
-                <div class="balance-section__fiat">${balance} ₽</div>
-            </div>
-            <button class="button-fill button--color-2">Пополнить</button>
-        </div>
-
-    `;
-
-    this.element.insertAdjacentHTML('beforeend', this.template);
-    this.button = this.element.querySelector('.button-fill');
-
-    if (typeof this.parameters.eventsButton === 'object') {
-      for (const event of this.parameters.eventsButton) {
-        this.button.addEventListener(event.type, event.callback);
+      for (const event of eventsButton) {
+        this.button.addEventListener(event.type || 'click', event.callback);
       }
     }
-    return super.create(this.element);
   }
 }

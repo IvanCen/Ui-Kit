@@ -12,8 +12,7 @@
   position: relative;
 
   &--indentation {
-    padding: 0 16px 20px;
-    justify-content: space-between;
+    justify-content: center;
   }
 
   &--indentation--bottom {
@@ -31,6 +30,9 @@
   &__fieldset {
     display: flex;
     flex-direction: column;
+  }
+  &__label--disabled {
+    color: $gainsboroGray;
   }
 
   &__button {
@@ -71,6 +73,9 @@
       display: none;
     }
   }
+  &--hide {
+    display: none;
+  }
 }
 
 .form__input {
@@ -92,7 +97,6 @@
   width: 100%;
   padding-top: 28px;
   padding-bottom: 0.5rem;
-  padding-right: 80px;
 
   &--font--normal {
     @extend %style-4;
@@ -251,6 +255,7 @@
 .form__text {
   @extend %style-5;
   transition: all 0.2s ease-in;
+  color: $SuvaGrey;
 
   &--success.form__text {
     @extend %style-2;
@@ -261,12 +266,14 @@
   &--error.form__text {
     color: $alizarinCrimson;
     margin-top: 20px;
+    @extend %style-4;
   }
 
   &--error-phone.form__text {
-    color: $alizarinCrimson;
     margin-top: 20px;
     min-height: 20px;
+    @extend %style-4;
+    color: $alizarinCrimson;
   }
 
   &--hide {
@@ -283,7 +290,7 @@
   }
 
   &--indentation--small{
-    margin: 10px 0;
+    margin: 0 0 56px;
   }
 }
 
@@ -335,26 +342,30 @@
 
 .form__title {
   @extend %style-4;
-  padding-top: 20px;
+  padding-top: 32px;
+  margin-bottom: 9px;
 }
 
 .last-number-input{
-  @extend %style-3;
-  display: inline-block;
-  width: 50px;
-  height: 50px;
-  padding: 5px;
-  border: 2px solid $orange;
-  border-radius: 5px;
+  width: 60px;
+  border-bottom: 1px solid #d9d9d9;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 28px;
+  display: flex;
+  align-items: center;
   text-align: center;
-  margin-right: 10px;
-  z-index: 9;
+  color: #000;
+  padding: 6px;
 }
 
 .form__input-wrapper{
-  position: relative;
-  width: 100%;
-  border-bottom: 1px solid rgba(0,0,0, .2);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 56px;
+  margin-bottom: 12px;
+
   &--last-number-inputs{
     .float-label{
       position: relative;
@@ -365,8 +376,17 @@
   }
 }
 
+.form__edit-user {
+  padding: 0 16px 24px;
+  justify-content: space-between;
+}
+
 .date-input {
   display: inline-block;
   position: relative;
+}
+
+.last-number-input--not-empty {
+  border-bottom: 1px solid #e6551e;
 }
 

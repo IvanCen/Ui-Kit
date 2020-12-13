@@ -4,10 +4,9 @@
   position: fixed;
   top: 100%;
   width: 100%;
-  left: 0;
+  left: 100%;
   z-index: 130;
   flex-grow: 1;
-  transition: all .3s ease-out;
   background-color: $white;
   display: flex;
   align-items: stretch;
@@ -19,5 +18,14 @@
 }
 
 .modal-page--open {
+  transition: top .3s ease-out;
   top: 0;
+  left: 0;
+}
+
+.modal-page--open-nav {
+  transition: left .3s ease-out;
+  top: 80px;
+  z-index: 9;
+  left: 0;
 }

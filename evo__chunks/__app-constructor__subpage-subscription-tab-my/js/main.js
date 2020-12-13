@@ -1,6 +1,6 @@
-class ToggleSubscriptionTabMy extends ToggleSubscriptionTabContent {
+class ToggleSubscriptionTabContentMy extends ToggleTabContent {
   constructor(parameters) {
-    super();
+    super(parameters);
     this.parameters = parameters;
     this.rendering = this.rendering.bind(this);
     this.renderSubscriptions = this.renderSubscriptions.bind(this);
@@ -20,7 +20,7 @@ class ToggleSubscriptionTabMy extends ToggleSubscriptionTabContent {
         qr: true,
       });
       Object.values(activeSubscriptions.successData).forEach((item) => {
-        this.subPageTabContent.append(this.mainCardSubsription.create(dataSeasons.successData[item.id], item));
+        this.tabContent.append(this.mainCardSubsription.create(dataSeasons.successData[item.id], item));
       });
     } else {
       this.mainCardNoSubscriptions = new CreateNoSubscriptionsMainCard({
@@ -28,13 +28,13 @@ class ToggleSubscriptionTabMy extends ToggleSubscriptionTabContent {
         style: ['main-card'],
         modifier: ['--position--space-between'],
       });
-      this.subPageTabContent.append(this.mainCardNoSubscriptions.create());
+      this.tabContent.append(this.mainCardNoSubscriptions.create());
     }
   }
 
-  rendering() {
+  rendering(el) {
     super.rendering();
-    this.subPageContent.append(this.subPageTabContent);
+    el.append(this.tabContent);
     api.getClientSeasons(this.renderSubscriptions);
   }
 }

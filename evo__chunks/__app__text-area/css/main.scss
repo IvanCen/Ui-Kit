@@ -17,6 +17,18 @@
 
 .text-area-container {
   padding: 0 16px 20px;
+
+  &--indentation--big {
+    padding: 0 16px 80px;
+  }
+
+  &--hide {
+    display: none;
+  }
+
+  &--ios {
+    padding: 0 16px 40px;
+  }
 }
 
 .text-area {
@@ -205,6 +217,10 @@
       color: $gray;
     }
 
+    &--size--big {
+      @extend %style-5;
+    }
+
     &--indentation--big {
       margin-bottom: 32px;
     }
@@ -383,7 +399,7 @@
     position: relative;
 
     &--hide {
-      display: none;
+      opacity: 0;
     }
 
     &--size--big {
@@ -473,4 +489,9 @@
 
 .text-area__application > p {
   margin-bottom: 10px;
+}
+
+.text {
+  @extend %style-3-5;
+
 }

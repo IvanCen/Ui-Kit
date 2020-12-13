@@ -17,7 +17,6 @@
   position: relative;
   padding: 0 0 0 35px;
   cursor: pointer;
-  @extend %style-5;
 
   &--default {
     &:before {
@@ -35,17 +34,17 @@
     color: $dimGray;
 
     &:before {
-      border: 1px solid $dimGray;
+      border: 2px solid $dimGray;
     }
 
     &:after {
-      border: 1px solid $dimGray;
+      border: 2px solid $dimGray;
     }
   }
 
   &--available {
     &:before {
-      border: 1px solid $brown;
+      border: 2px solid $brown;
     }
 
     &:after {
@@ -54,23 +53,21 @@
   }
 
   &:before {
-    content: '';
+    content: "";
     position: absolute;
-    width: 19px;
-    height: 19px;
-    //border: 1px solid $brown;
+    width: 16px;
+    height: 16px;
     border-radius: 50%;
     background: $white;
   }
 
   &:after {
-    content: '';
+    content: "";
     position: absolute;
-    width: 13px;
-    height: 13px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
-    //background: $brown;
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .5);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.5);
     opacity: 0;
     transition: .2s;
   }

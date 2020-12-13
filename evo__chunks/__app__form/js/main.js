@@ -232,68 +232,29 @@ class CreateFormInputSignIn extends CreateItem {
             <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-attention-triangle.svg]]" alt="" class="form__input-icon form__input-icon-error">
           </div>
         </label>
-        </div>
-        <p class="form__text form__text--error-phone form__text--hide"></p>
-        <div class="form__call-container">
+      </div>
+      <p class="form__text form__text--error-phone form__text--hide"></p>
+      <div class="form__call-container">
+        <div class="form__text-container">
           <div class="form__title">В течении нескольких секунд Вам поступит звонок</div>
-          <div class="form__group form__group--m-top form__group--d-ib">
-              <div class="form__input-wrapper  form__input-wrapper--last-number-inputs">
-                  <p class="form__text form__text--indentation--small">Введите последние 4 цифры входящего номера в качестве кода для входа</p>
-                  <input type="tel" inputmode="numeric" maxlength="1" class="last-number-input" name="first-phone"  autocomplete="qwe">
-                  <input type="tel" inputmode="numeric" maxlength="1" class="last-number-input" name="second-phone"  autocomplete="qwe">
-                  <input type="tel" inputmode="numeric" maxlength="1" class="last-number-input" name="third-phone"  autocomplete="off">
-                  <input type="tel" inputmode="numeric" maxlength="1" class="last-number-input" name="fourth-phone"  autocomplete="qwe">
-              </div>
-              <p class="form__text form__text--indentation--small">Вы ввели номер <span class="number-for-registration"></span>, если вы ошиблись при вводе, то <a class="form__link form__link--type--back" type="reset">исправьте номер</a></p>
-          </div>
-          <button class="button button--theme--tangerin button--size--big button--theme--shadow-big form__button form__button--type--call">Подтвердить</button>
-          <button class="button button--size--small button--theme--tangerin-transparent form__button form__button--type--again form__button--hide">Отправить код повторно</button>
+          <p class="form__text form__text--indentation--small">Введите последние 4 цифры входящего номера в качестве кода для входа</p>
         </div>
-        <p class="form__text form__text--success form__text--hide">Вы авторизованны!</p>
-        <p class="form__text form__text--error form__text--hide"></p>
-        <div class="form__inputs-container form__inputs-container--hide">
-          <div class="form__input-container form__input-container--name form__input-container--hide">
-            <h2 class="form__title">Давайте знакомиться, меня зовут Хлебник, а вас?</h2>
-            <div class="form__input">
-              <label class="form__input-underlined">
-                <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--name" minlength="2">
-                <span class="form__input-label">Имя</span>
-                <ul class="form__input-requirements">
-                  <li class="form__input-requirement form__input-requirement--type--name">Имя должно содержать больше двух букв</li>
-                </ul>
-             </label>
-           </div>
-          </div>
-          <div class="form__input-container form__input-container--birthday form__input-container--hide">
-            <h2 class="form__title">Хотите рассказать нам о своей дате рождения? Мы регулярно проводим специальные акции для именинников.</h2>  
-            <div class="form__input">
-              <label class="form__input-underlined">
-                <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--birthday" type="date" min="1900-01-01">
-                <span class="form__input-label form__input--focused">День рождения</span>
-                <ul class="form__input-requirements"></ul>
-              </label>
+        <div class="form__group form__group--m-top form__group--d-ib">
+            <div class="form__input-wrapper  form__input-wrapper--last-number-inputs">
+                <input type="tel" inputmode="numeric" maxlength="1" class="last-number-input" name="first-phone"  autocomplete="qwe">
+                <input type="tel" inputmode="numeric" maxlength="1" class="last-number-input" name="second-phone"  autocomplete="qwe">
+                <input type="tel" inputmode="numeric" maxlength="1" class="last-number-input" name="third-phone"  autocomplete="off">
+                <input type="tel" inputmode="numeric" maxlength="1" class="last-number-input" name="fourth-phone"  autocomplete="qwe" data-pos="last">
             </div>
-          </div>
-          <div class="form__input-container form__input-container--email form__input-container--hide">
-            <h2 class="form__title">Хотите подписаться на нашу рассылку? Оставьте нам свой email. В любой момент можно будет отписаться от рассылки через ссылку в каждом отправляемом нами письме.</h2> 
-            <div class="form__input">
-              <label class="form__input-underlined">
-                <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--email" type="email">
-                <span class="form__input-label">Email</span>
-                <ul class="form__input-requirements">
-                  <li class="form__input-requirement form__input-requirement--type--email">Пожалуйста введите правильный email адрес</li>
-                </ul>
-                <div class="form__input-icon-container">
-                  <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-attention-triangle.svg]]" alt="" class="form__input-icon form__input-icon-error">
-                </div>
-              </label>
-            </div>
-          </div>
-          
-        <button class="button button--size--medium button--theme--light button--theme--shadow-medium form__button--type--skip">Пропустить</button>
-        <button class="button button--theme--tangerin button--size--big button--theme--shadow-big form__button form__button--type--agree">Подтвердить</button>
-       </div>
-       <button class="button button--theme--tangerin button--size--big button--theme--shadow-big form__button form__button--type--sign-in">Подтвердить</button>
+            <p class="form__text form__text-info-number form__text--indentation--small">Вы ввели номер <span class="number-for-registration"></span>, если вы ошиблись при вводе, то <a class="form__link form__link--type--back" type="reset">исправьте номер</a></p>
+        </div>
+        <p class="form__text form__text--error form__text--error-code form__text--hide"></p>
+        <button class="button button--theme--tangerin button--size--large button--theme--shadow-big form__button form__button--type--call button--type--disabled" disabled>Подтвердить</button>
+        <button class="button button--size--large button--theme--transparent form__button form__button--type--again form__button--hide">Отправить код повторно</button>
+      </div>
+      <p class="form__text form__text--success form__text--hide">Вы авторизованны!</p>
+      <p class="form__text form__text--error form__text--hide"></p>
+     <button class="button button--theme--tangerin button--size--large button--theme--shadow-big form__button form__button--type--sign-in">Подтвердить</button>
    `;
   }
 
@@ -301,8 +262,7 @@ class CreateFormInputSignIn extends CreateItem {
     this.element.insertAdjacentHTML('beforeend', this.template);
 
     this.buttonSignIn = this.element.querySelector('.form__button--type--sign-in');
-    this.buttonSkip = this.element.querySelector('.form__button--type--skip');
-    this.buttonAgree = this.element.querySelector('.form__button--type--agree');
+
     this.buttonAgain = this.element.querySelector('.form__button--type--again');
 
     if (typeof this.parameters.events === 'object') {
@@ -310,16 +270,8 @@ class CreateFormInputSignIn extends CreateItem {
         this.buttonSignIn.addEventListener(event.type, event.callback);
       }
     }
-    if (typeof this.parameters.eventSkip === 'object') {
-      for (const event of this.parameters.eventSkip) {
-        this.buttonSkip.addEventListener(event.type, event.callback);
-      }
-    }
-    if (typeof this.parameters.eventAgree === 'object') {
-      for (const event of this.parameters.eventAgree) {
-        this.buttonAgree.addEventListener(event.type, event.callback);
-      }
-    }
+
+
     if (typeof this.parameters.eventAgain === 'object') {
       for (const event of this.parameters.eventAgain) {
         this.buttonAgain.addEventListener(event.type, () => {
@@ -333,6 +285,117 @@ class CreateFormInputSignIn extends CreateItem {
         });
       }
     }
+
+    return super.create(this.element);
+  }
+}
+
+class CreateFormInputSignInQuestions extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+    this.element = document.createElement(this.parameters.selector);
+  }
+
+  create(userInfo) {
+    if (userInfo.name === '') {
+      this.templateName = `
+        <div class="swiper-slide swiper-slide--indentation" data-id="name">
+          <div class="slide-wrapper">
+            <div class="form__input-container form__input-container--name">
+              <h2 class="form__title">Давайте знакомиться, меня зовут Хлебник, а вас?</h2>
+                <div class="form__input">
+                  <label class="form__input-underlined">
+                    <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--name" minlength="2">
+                    <span class="form__input-label">Имя</span>
+                    <ul class="form__input-requirements">
+                      <li class="form__input-requirement form__input-requirement--type--name">Имя должно содержать больше двух букв</li>
+                    </ul>
+                 </label>
+                </div>
+              </div>
+              <div class="login__buttons-for-form">
+                  <button type="submit" class="button form__button--type--next-name button--type--next-swiper button--color-5 button--type--disabled" disabled>Далее</button>
+                  <button type="skip" class="button button--size--large">Пропустить</button>
+              </div>
+              </div>
+          </div>
+        `;
+    }
+    if (userInfo.birthday === '') {
+      this.templateBirthday = `
+        <div class="swiper-slide swiper-slide--indentation" data-id="birthday">
+              <div class="slide-wrapper">
+                  <div class="form__input-container form__input-container--birthday">
+                    <h2 class="form__title">Хотите рассказать нам о своей дате рождения? Мы регулярно проводим специальные акции для именинников</h2>  
+                    <div class="form__input">
+                      <label class="form__input-underlined">
+                        <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--birthday" type="text" min="1900-01-01">
+                        <button class="date__picker"></button>
+                        <span class="form__input-label form__input--focused">День рождения</span>
+                        <ul class="form__input-requirements"></ul>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="login__buttons-for-form">
+                      <button type="submit" class="button form__button--type--next-birthday button--type--next-swiper button--color-5 button--type--disabled" disabled>Далее</button>
+                      <button type="skip" class="button button--size--large">Пропустить</button>
+                  </div>
+              </div>
+          </div>
+        `;
+    }
+    if (userInfo.email === '') {
+      this.templateEmail = `
+        <div class="swiper-slide swiper-slide--indentation" data-id="email">
+              <div class="slide-wrapper">
+                  <div class="form__input-container form__input-container--email">
+                    <h2 class="form__title">Поделитесь своим email адресом, чтобы первым узнавать о новинках</h2> 
+                    <div class="form__input">
+                      <label class="form__input-underlined">
+                        <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--email" type="email">
+                        <span class="form__input-label">Email</span>
+                        <ul class="form__input-requirements">
+                          <li class="form__input-requirement form__input-requirement--type--email">Пожалуйста введите правильный email адрес</li>
+                        </ul>
+                        <div class="form__input-icon-container">
+                          <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-attention-triangle.svg]]" alt="" class="form__input-icon form__input-icon-error">
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="login__buttons-for-form">
+                      <button type="submit" class="button form__button--type--next-email button--type--next-swiper button--color-5 button--type--disabled" disabled>Готово</button>
+                      <button type="skip" class="button button--size--large">Пропустить</button>
+                  </div>
+              </div>
+          </div>
+        `;
+    }
+    this.template = `
+        <div class="swiper-wrapper">
+          ${this.templateName || ''}
+          ${this.templateBirthday || ''}
+          ${this.templateEmail || ''}
+        </div>
+        <div class="swiper-pagination"></div>
+   `;
+
+    this.element.insertAdjacentHTML('beforeend', this.template);
+
+    this.inputAreaBirthday = this.element.querySelector('.form__input-area--type--birthday');
+    if (this.inputAreaBirthday) {
+      ['click', 'keydown', 'focus', 'keyup'].forEach((event) => {
+        this.inputAreaBirthday.addEventListener(event, (e) => {
+          e.preventDefault();
+        }, false);
+      });
+      this.inputAreaBirthday.addEventListener('click', (e) => {
+        e.preventDefault();
+        emitter.emit('inputdate', this.inputAreaBirthday);
+      });
+    }
+
 
     return super.create(this.element);
   }
@@ -370,6 +433,46 @@ class CreateFormInput extends CreateItem {
 
       setTimeout(() => this.inputArea.focus(), 200);
     }
+
+    return super.create(this.element);
+  }
+}
+
+class CreateFormInputSupport extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+  }
+
+  create() {
+    this.element = document.createElement(this.parameters.selector);
+    this.template = `
+      <div class="form__input">
+        <label class="form__input-underlined">
+          <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--subject" type="text">
+          <span class="form__input-label">Тема</span>
+          <ul class="form__input-requirements">
+            
+          </ul>
+          <div class="form__input-icon-container">
+            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-attention-triangle.svg]]" alt="" class="form__input-icon form__input-icon-error">
+          </div>
+        </label>
+      </div>
+      <div class="form__input">
+        <label class="form__input-underlined">
+          <input class="form__input-area form__input-area--font--normal form__input-area--type--fly-label form__input-area--type--message" type="text" required>
+          <span class="form__input-label">Комментарий</span>
+          <ul class="form__input-requirements">
+            
+          </ul>
+          <div class="form__input-icon-container">
+            <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-attention-triangle.svg]]" alt="" class="form__input-icon form__input-icon-error">
+          </div>
+        </label>
+      </div>
+   `;
+    this.element.insertAdjacentHTML('beforeend', this.template);
 
     return super.create(this.element);
   }
@@ -447,7 +550,7 @@ class CreateFormDeliver extends CreateItem {
   create() {
     const template = `
         <div class="basket__header accordion__trigger basket__header-should-open" data-id="2">
-            <div class="basket__title">Способ доставки</div>
+            <div class="basket__title">Упаковка</div>
         </div>
         <section class="basket__delivery-type accordion__container" data-id="2">
             <div class="form__group basket__group">
@@ -537,15 +640,15 @@ class CreateFormPay extends CreateItem {
         </div>
         <section class="basket__payment accordion__container" data-id="1">
             <div class="form__group basket__group">
-                <label class="form__label">
-                    <input id="creditCard" type="radio" class="form__input" name="payment">
+                <label class="form__label form__label--creditCard">
+                    <input id="creditCard" type="radio" class="form__input" name="payment" checked>
                     Банковская карта
                 </label>
-                <label class="form__label">
-                    <input id="balance" type="radio" class="form__input" name="payment" checked>
+                <label class="form__label form__label--balance">
+                    <input id="balance" type="radio" class="form__input" name="payment">
                     Баланс ${balance || ''}
                 </label>
-                <label class="form__label">
+                <label class="form__label form__label--bonus">
                     <input id="bonus" type="radio" class="form__input" name="payment">
                     Бонусы ${bonus || ''}
                 </label>
@@ -556,7 +659,18 @@ class CreateFormPay extends CreateItem {
 
   create() {
     this.element.insertAdjacentHTML('beforeend', this.template);
-
+    if (userInfoObj.successData.balance === '0') {
+      this.inputBalance = this.element.querySelector('#balance');
+      this.labelBalance = this.element.querySelector('.form__label--balance');
+      this.labelBalance.classList.add('form__label--disabled');
+      this.inputBalance.disabled = true;
+    }
+    if (userInfoObj.successData.bonus === '0') {
+      this.inputBonus = this.element.querySelector('#bonus');
+      this.labelBonus = this.element.querySelector('.form__label--bonus');
+      this.labelBonus.classList.add('form__label--disabled');
+      this.inputBonus.disabled = true;
+    }
     return super.create(this.element);
   }
 }
@@ -768,7 +882,7 @@ class CreateFormFriendPay extends CreateItem {
       <section class="basket__payment accordion__container" data-id="6">
           <div class="form__group form__group--float form__group--bordered">
               <label class="form__label">Номер телефона</label>
-              <input class="form__input form__input-area--type--phone-friend" type="text">
+              <input class="form__input form__input-area--type--phone-friend" inputmode="numeric" type="text">
           </div>
           <div class="form__group form__group--float form__group--bordered">
               <label class="form__label">Имя</label>
@@ -811,6 +925,34 @@ class CreateFormFriendPay extends CreateItem {
     });
 
 
+    return super.create(this.element);
+  }
+}
+
+class CreateFormMapSearch extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+    this.element = document.createElement(this.parameters.selector);
+    this.template = `
+        <input class="map-search__input" type="text">
+        <div class="reset"></div>
+   `;
+  }
+
+  create() {
+    this.element.insertAdjacentHTML('beforeend', this.template);
+
+    this.resetButton = this.element.querySelector('.reset');
+    this.input = this.element.querySelector('.map-search__input');
+
+    this.resetButton.addEventListener('click', () => {
+      stopAction(() => {
+        this.input.value = '';
+        this.mapItems = document.querySelectorAll('.map__item');
+        this.mapItems.forEach((item) => item.classList.remove('map__item--hide'));
+      });
+    });
     return super.create(this.element);
   }
 }

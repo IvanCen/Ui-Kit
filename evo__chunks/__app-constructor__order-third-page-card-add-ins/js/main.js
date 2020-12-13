@@ -85,7 +85,6 @@ class ToggleThirdPageAddinsCard extends ToggleThirdPage {
       'text-area__content-container--type--addins',
       `text-area__content-container--type--addins${isIos ? '--ios' : ''}`,
     );
-    this.thirdPage.append(createTopBarIos());
     this.thirdPage.append(addinsTopBar.create(productInfo));
     this.thirdPage.append(this.containersModifiersEl);
     this.thirdPage.append(addinsButton.create());

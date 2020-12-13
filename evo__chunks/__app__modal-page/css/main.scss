@@ -1,0 +1,29 @@
+@import "../../__app__head-style-and-script/css/main.scss";
+
+.modal-page {
+  position: fixed;
+  top: 100%;
+  width: 100%;
+  left: 0;
+  z-index: 140;
+  flex-grow: 1;
+  transition: all .3s ease-out;
+  background-color: $white;
+  display: flex;
+  align-items: stretch;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 100%;
+
+  &--opened {
+    top: 71px;
+    padding-bottom: 71px;
+
+    &-ios {
+      top: 102px;
+      padding-bottom: 153px;
+    }
+  }
+}

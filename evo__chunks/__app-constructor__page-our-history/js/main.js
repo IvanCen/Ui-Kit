@@ -23,7 +23,6 @@ class TogglePageOurHistory extends TogglePage {
     });
 
 
-    this.page.append(createTopBarIos());
     this.page.append(topBar.create());
     this.page.append(textArea.create(applicationDataObj['our-history']));
 

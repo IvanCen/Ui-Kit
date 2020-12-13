@@ -3,7 +3,7 @@
 .top-bar-search {
   position: relative;
   width: 100%;
-  border-bottom: 1px solid $gainsboroGray;
+  border-bottom: 1px solid #f7f7f7;
   padding: 50px 16px 7px;
 
    &--size--small {
@@ -29,8 +29,13 @@
   }
 
   &__info {
-    @extend %style-8;
-    color: $white;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    text-align: center;
+    color: #23211f;
+    background-color: #fff;
+    padding-top: 16px;
   }
 
   &__input {
@@ -49,10 +54,10 @@
     }
 
     &--type--touch {
-      width: 25px;
-      height: 3px;
+      width: 40px;
+      height: 4px;
       position: absolute;
-      right: calc(50% - 13px);
+      right: calc(50% - 23px);
       top: 10px;
       background-color: #d9d9d9;
       border-radius: 15px;

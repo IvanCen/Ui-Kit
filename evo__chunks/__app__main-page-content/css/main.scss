@@ -9,7 +9,7 @@
 .main-page {
   overflow-y: scroll;
   scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
 
   &--loaded {
     display: none;
@@ -39,26 +39,37 @@
   z-index: 3;
   background-color: $white;
   flex-grow: 1;
-  transition: all .3s ease-out;
-  //display: flex;
+  transition: left .3s ease-out;
   align-items: stretch;
   overflow-x: hidden;
   overflow-y: scroll;
   flex-direction: column;
   justify-content: flex-start;
-  height: calc(100vh - 80px);
+  //height: calc(100vh - 80px);
+  height: 100%;
   padding-bottom: 56px;
-  //top: 0;
-  //padding-top: 61px;
-   //убрать потом, сделанно для отображение с панелькой телефонов
+  padding-top: 80px;
 
   &--opened {
     left: 0;
   }
 
+  &--ios {
+    padding-bottom: 76px;
+    padding-top: 104px;
+  }
+
+  &--opened .shop-selector--show {
+    display: flex;
+  }
+
   &--opened-with-tabs {
-    height: calc(100vh - 126px);
-    padding: 0 16px;
+    height: 100%;
+    padding: 126px 16px 0;
+
+    &--ios {
+      padding: 150px 16px 0;
+    }
   }
 
   &--opened--bottom-bar {
@@ -80,6 +91,14 @@
     overflow-x: hidden;
     overflow-y: scroll;
     max-height: calc(100vh - 132px);
+  }
+}
+
+.main-page__content-container {
+
+  &--hide {
+    display: none;
+
   }
 }
 

@@ -7,118 +7,20 @@ if ('serviceWorker' in navigator) {
   }
 }
 
-!function (e, n, A) {
-  function o(e, n) {
-    return typeof e === n
-  }
+/*! modernizr 3.6.0 (Custom Build) | MIT *
+ * https://modernizr.com/download/?-webp-setclasses !*/
+!function(e,n,A){function o(e,n){return typeof e===n}function t(){var e,n,A,t,a,i,l;for(var f in r)if(r.hasOwnProperty(f)){if(e=[],n=r[f],n.name&&(e.push(n.name.toLowerCase()),n.options&&n.options.aliases&&n.options.aliases.length))for(A=0;A<n.options.aliases.length;A++)e.push(n.options.aliases[A].toLowerCase());for(t=o(n.fn,"function")?n.fn():n.fn,a=0;a<e.length;a++)i=e[a],l=i.split("."),1===l.length?Modernizr[l[0]]=t:(!Modernizr[l[0]]||Modernizr[l[0]]instanceof Boolean||(Modernizr[l[0]]=new Boolean(Modernizr[l[0]])),Modernizr[l[0]][l[1]]=t),s.push((t?"":"no-")+l.join("-"))}}function a(e){var n=u.className,A=Modernizr._config.classPrefix||"";if(c&&(n=n.baseVal),Modernizr._config.enableJSClass){var o=new RegExp("(^|\\s)"+A+"no-js(\\s|$)");n=n.replace(o,"$1"+A+"js$2")}Modernizr._config.enableClasses&&(n+=" "+A+e.join(" "+A),c?u.className.baseVal=n:u.className=n)}function i(e,n){if("object"==typeof e)for(var A in e)f(e,A)&&i(A,e[A]);else{e=e.toLowerCase();var o=e.split("."),t=Modernizr[o[0]];if(2==o.length&&(t=t[o[1]]),"undefined"!=typeof t)return Modernizr;n="function"==typeof n?n():n,1==o.length?Modernizr[ o [ 0 ] ]=n:(!Modernizr[ o [ 0 ] ]||Modernizr[o [ 0 ] ]instanceof Boolean||(Modernizr[ o [ 0 ] ]=new Boolean(Modernizr[ o[ 0 ] ] )),Modernizr[ o [ 0 ] ][ o [ 1 ] ]=n),a([ (n&&0!=n?"":"no-")+o.join("-") ]),Modernizr._trigger(e,n)}return Modernizr}var s=[],r=[],l={_version:"3.6.0",_config:{classPrefix:"",enableClasses:!0,enableJSClass:!0,usePrefixes:!0},_q:[],on:function(e,n){var A=this;setTimeout(function(){n(A[e])},0)},addTest:function(e,n,A){r.push({name:e,fn:n,options:A})},addAsyncTest:function(e){r.push({name:null,fn:e})}},Modernizr=function(){};Modernizr.prototype=l,Modernizr=new Modernizr;var f,u=n.documentElement,c="svg"===u.nodeName.toLowerCase();!function(){var e={}.hasOwnProperty;f=o(e,"undefined")||o(e.call,"undefined")?function(e,n){return n in e&&o(e.constructor.prototype[n],"undefined")}:function(n,A){return e.call(n,A)}}(),l._l={},l.on=function(e,n){this._l[e]||(this._l[e]=[]),this._l[e].push(n),Modernizr.hasOwnProperty(e)&&setTimeout(function(){Modernizr._trigger(e,Modernizr[e])},0)},l._trigger=function(e,n){if(this._l[e]){var A=this._l[e];setTimeout(function(){var e,o;for(e=0;e<A.length;e++)(o=A[e])(n)},0),delete this._l[e]}},Modernizr._q.push(function(){l.addTest=i}),Modernizr.addAsyncTest(function(){function e(e,n,A){function o(n){var o=n&&"load"===n.type?1==t.width:!1,a="webp"===e;i(e,a&&o?new Boolean(o):o),A&&A(n)}var t=new Image;t.onerror=o,t.onload=o,t.src=n}var n=[{uri:"data:image/webp;base64,UklGRiQAAABXRUJQVlA4IBgAAAAwAQCdASoBAAEAAwA0JaQAA3AA/vuUAAA=",name:"webp"},{uri:"data:image/webp;base64,UklGRkoAAABXRUJQVlA4WAoAAAAQAAAAAAAAAAAAQUxQSAwAAAABBxAR/Q9ERP8DAABWUDggGAAAADABAJ0BKgEAAQADADQlpAADcAD++/1QAA==",name:"webp.alpha"},{uri:"data:image/webp;base64,UklGRlIAAABXRUJQVlA4WAoAAAASAAAAAAAAAAAAQU5JTQYAAAD/////AABBTk1GJgAAAAAAAAAAAAAAAAAAAGQAAABWUDhMDQAAAC8AAAAQBxAREYiI/gcA",name:"webp.animation"},{uri:"data:image/webp;base64,UklGRh4AAABXRUJQVlA4TBEAAAAvAAAAAAfQ//73v/+BiOh/AAA=",name:"webp.lossless"}],A=n.shift();e(A.name,A.uri,function(A){if(A&&"load"===A.type)for(var o=0;o<n.length;o++)e(n[o].name,n[o].uri)})}),t(),a(s),delete l.addTest,delete l.addAsyncTest;for(var p=0;p<Modernizr._q.length;p++)Modernizr._q[p]();e.Modernizr=Modernizr}(window,document);
 
-  function t() {
-    var e, n, A, t, a, i, l;
-    for (var f in r) if (r.hasOwnProperty(f)) {
-      if (e = [], n = r[f], n.name && (e.push(n.name.toLowerCase()), n.options && n.options.aliases && n.options.aliases.length)) for (A = 0; A < n.options.aliases.length; A++) e.push(n.options.aliases[A].toLowerCase());
-      for (t = o(n.fn, "function") ? n.fn() : n.fn, a = 0; a < e.length; a++) i = e[a], l = i.split("."), 1 === l.length ? Modernizr[l[0]] = t : (!Modernizr[l[0]] || Modernizr[l[0]] instanceof Boolean || (Modernizr[l[0]] = new Boolean(Modernizr[l[0]])), Modernizr[l[0]][l[1]] = t), s.push((t ? "" : "no-") + l.join("-"))
-    }
-  }
-
-  function a(e) {
-    var n = u.className, A = Modernizr._config.classPrefix || "";
-    if (c && (n = n.baseVal), Modernizr._config.enableJSClass) {
-      var o = new RegExp("(^|\\s)" + A + "no-js(\\s|$)");
-      n = n.replace(o, "$1" + A + "js$2")
-    }
-    Modernizr._config.enableClasses && (n += " " + A + e.join(" " + A), c ? u.className.baseVal = n : u.className = n)
-  }
-
-  function i(e, n) {
-    if ("object" == typeof e) for (var A in e) f(e, A) && i(A, e[A]); else {
-      e = e.toLowerCase();
-      var o = e.split("."), t = Modernizr[o[0]];
-      if (2 == o.length && (t = t[o[1]]), "undefined" != typeof t) return Modernizr;
-      n = "function" == typeof n ? n() : n, 1 == o.length ? Modernizr[o[0]] = n : (!Modernizr[o[0]] || Modernizr[o[0]] instanceof Boolean || (Modernizr[o[0]] = new Boolean(Modernizr[o[0]])), Modernizr[o[0]][o[1]] = n), a([(n && 0 != n ? "" : "no-") + o.join("-")]), Modernizr._trigger(e, n)
-    }
-    return Modernizr
-  }
-
-  var s = [], r = [], l = {
-    _version: "3.6.0",
-    _config: {classPrefix: "", enableClasses: !0, enableJSClass: !0, usePrefixes: !0},
-    _q: [],
-    on: function (e, n) {
-      var A = this;
-      setTimeout(function () {
-        n(A[e])
-      }, 0)
-    },
-    addTest: function (e, n, A) {
-      r.push({name: e, fn: n, options: A})
-    },
-    addAsyncTest: function (e) {
-      r.push({name: null, fn: e})
-    }
-  }, Modernizr = function () {
-  };
-  Modernizr.prototype = l, Modernizr = new Modernizr;
-  var f, u = n.documentElement, c = "svg" === u.nodeName.toLowerCase();
-  !function () {
-    var e = {}.hasOwnProperty;
-    f = o(e, "undefined") || o(e.call, "undefined") ? function (e, n) {
-      return n in e && o(e.constructor.prototype[n], "undefined")
-    } : function (n, A) {
-      return e.call(n, A)
-    }
-  }(), l._l = {}, l.on = function (e, n) {
-    this._l[e] || (this._l[e] = []), this._l[e].push(n), Modernizr.hasOwnProperty(e) && setTimeout(function () {
-      Modernizr._trigger(e, Modernizr[e])
-    }, 0)
-  }, l._trigger = function (e, n) {
-    if (this._l[e]) {
-      var A = this._l[e];
-      setTimeout(function () {
-        var e, o;
-        for (e = 0; e < A.length; e++) (o = A[e])(n)
-      }, 0), delete this._l[e]
-    }
-  }, Modernizr._q.push(function () {
-    l.addTest = i
-  }), Modernizr.addAsyncTest(function () {
-    function e(e, n, A) {
-      function o(n) {
-        var o = n && "load" === n.type ? 1 == t.width : !1, a = "webp" === e;
-        i(e, a && o ? new Boolean(o) : o), A && A(n)
-      }
-
-      var t = new Image;
-      t.onerror = o, t.onload = o, t.src = n
-    }
-
-    var n = [{
-        uri: "data:image/webp;base64,UklGRiQAAABXRUJQVlA4IBgAAAAwAQCdASoBAAEAAwA0JaQAA3AA/vuUAAA=",
-        name: "webp"
-      }, {
-        uri: "data:image/webp;base64,UklGRkoAAABXRUJQVlA4WAoAAAAQAAAAAAAAAAAAQUxQSAwAAAABBxAR/Q9ERP8DAABWUDggGAAAADABAJ0BKgEAAQADADQlpAADcAD++/1QAA==",
-        name: "webp.alpha"
-      }, {
-        uri: "data:image/webp;base64,UklGRlIAAABXRUJQVlA4WAoAAAASAAAAAAAAAAAAQU5JTQYAAAD/////AABBTk1GJgAAAAAAAAAAAAAAAAAAAGQAAABWUDhMDQAAAC8AAAAQBxAREYiI/gcA",
-        name: "webp.animation"
-      }, {uri: "data:image/webp;base64,UklGRh4AAABXRUJQVlA4TBEAAAAvAAAAAAfQ//73v/+BiOh/AAA=", name: "webp.lossless"}],
-      A = n.shift();
-    e(A.name, A.uri, function (A) {
-      if (A && "load" === A.type) for (var o = 0; o < n.length; o++) e(n[o].name, n[o].uri)
-    })
-  }), t(), a(s), delete l.addTest, delete l.addAsyncTest;
-  for (var p = 0; p < Modernizr._q.length; p++) Modernizr._q[p]();
-  e.Modernizr = Modernizr
-}(window, document);
-
-let isIos;
-
-Modernizr.on('webp', function (result) {
-  if (result) {
-    isIos = false;
-  } else {
-    isIos = true
-  }
-});
+let isIos = true;
+ (async function(){
+   await Modernizr.on('webp', async function (result) {
+     if (await result) {
+       isIos = false;
+     } else {
+       isIos = true
+     }
+   });
+ })()
 try {
   let link = document.createElement('link');
   link.rel = "manifest";
@@ -148,7 +50,6 @@ function countResultPriceAndAllProductCounter() {
   let sumPrice = 0;
   const allPriceEl = document.querySelectorAll('.basket__offers-element-price-number');
   const resultPrice = document.querySelector('.basket__result-price');
-  const title = document.querySelector('.basket__title-products');
   const labelPackage = document.querySelector('.form__label--type--package');
   const input = labelPackage.querySelector('input')
   if (allPriceEl && resultPrice) {
@@ -162,9 +63,6 @@ function countResultPriceAndAllProductCounter() {
     }
     resultPrice.textContent = `${sumPrice} ₽`;
   }
-  if (title) {
-    title.textContent = `Товаров (${basketArray.length})`
-  }
 
 }
 
@@ -172,6 +70,7 @@ function initCategories() {
   const categories = document.querySelectorAll('.catalog .catalog__categories-element');
   const lists = document.querySelectorAll('.catalog .catalog__list');
   const tags = document.querySelectorAll('.catalog .catalog__tags');
+  const tagsElements = document.querySelectorAll(`.catalog .catalog__tags-element`);
   categories.forEach((cat) => {
     cat.addEventListener('click', (e) => {
       categories.forEach((btn) => {
@@ -183,10 +82,15 @@ function initCategories() {
       tags.forEach((tag) => {
         tag.classList.remove('catalog__tags--show');
       });
+      tagsElements.forEach((tag) => {
+        tag.classList.remove('catalog__tags-element--selected');
+      });
       const list = document.querySelector(`.catalog .catalog__list[data-id='${cat.getAttribute('data-id')}']`);
       const tag = document.querySelector(`.catalog .catalog__tags[data-id='${cat.getAttribute('data-id')}']`);
+      const tagElement = document.querySelector(`.catalog .catalog__tags-element[data-id='${cat.getAttribute('data-id')}']`);
       if (list) list.classList.add('catalog__list--show');
       if (tag) tag.classList.add('catalog__tags--show');
+      if (tagElement) tagElement.classList.add('catalog__tags-element--selected');
       cat.classList.add('catalog__categories-element--active');
     });
   });
@@ -204,46 +108,13 @@ function initCategories() {
   });
 }
 
-function initSliders() {
-  const swiperShares = new Swiper('.shares .swiper-container', {
-    slidesPerView: 'auto',
-    spaceBetween: 8,
-    autoHeight: true,
-  });
-
+function initCatalog() {
   const texts = document.querySelectorAll('.shares__list-element-text');
   texts.forEach((text) => {
-    if (text.textContent.length > 80) {
-      const newString = `${text.textContent.substr(0, 80)}...`;
+    if (text.textContent.length > 60) {
+      const newString = `${text.textContent.substr(0, 60)}...`;
       text.textContent = newString;
     }
-  });
-
-  const swipTagsDrinks = new Swiper('.catalog__tags-container-drinks', {
-    slidesPerView: 'auto',
-    autoHeight: true,
-  });
-  /*const swipCat = new Swiper('.catalog__categories', {
-    spaceBetween: 8,
-    slidesPerView: 'auto',
-    autoHeight: true,
-  });*/
-
-  const swipTagsFoods = new Swiper('.catalog__tags-container-foods', {
-    slidesPerView: 'auto',
-    autoHeight: true,
-  });
-
-  swipTagsDrinks.on('click', () => {
-    setTimeout(() => {
-      swipTagsDrinks.update();
-    }, 500);
-  });
-
-  swipTagsFoods.on('click', () => {
-    setTimeout(() => {
-      swipTagsFoods.update();
-    }, 500);
   });
 
   const tagsContainerFood = document.querySelector('.catalog__tags-container-foods');
@@ -285,6 +156,13 @@ function createTopBarIos() {
   return el;
 }
 
+function checkBasketCounter() {
+  const headerCounterTitle = document.querySelector('.top-bar__all-counter-order')
+  const basketTitleProductsCounter = document.querySelector('.basket__title-products')
+  basketTitleProductsCounter.textContent = `Товаров (${basketArray.length})`;
+  headerCounterTitle.textContent = basketArray.length;
+}
+
 function getNowDay() {
   const date = new Date();
   const weekday = date.getDay();
@@ -321,12 +199,12 @@ function getNowDay() {
 
 const transformationUtcToLocalDate = (data, options = {
   year: 'numeric',
-  month: 'long',
+  month: 'short',
   day: 'numeric',
   hour: 'numeric',
   minute: 'numeric',
 }) => {
-  return new Date(`${data.replace(/-/g, '/')} UTC`).toLocaleString('ru', options).replace('.', '')
+  return new Date(`${data.replace(/-/g, '/')} UTC`).toLocaleString('ru', options).replace('.', '').replace(' г.', '')
 };
 
 function counterBasket() {
@@ -381,12 +259,6 @@ function switchActive(nodeList, activeClass) {
   });
 }
 
-function setRandomPhraseTobBarMain() {
-  const phrases = ['Отличный день для кофе ☕', 'Отличный день для булочки 🥐'];
-  const title = document.querySelector('.top-bar__title--type--single');
-  title.textContent = phrases[Math.floor(Math.random() * phrases.length)];
-}
-
 function doubleFav(productInfo) {
   return itemsArray.some((el) => {
     if (el.id === productInfo.itemId) {
@@ -397,9 +269,10 @@ function doubleFav(productInfo) {
 }
 
 function addProductToBasket(productInfo) {
-  const basketPopupIcon = document.querySelector('.bottom-bar__icon-popup');
-  const basketPopupIconImg = document.querySelector('.bottom-bar__icon-popup-img');
+  /*const basketPopupIcon = document.querySelector('.bottom-bar__icon-popup');
+  const basketPopupIconImg = document.querySelector('.bottom-bar__icon-popup-img');*/
   const sizeBarButtons = document.querySelectorAll('.size-bar__button');
+  const cardButton = document.querySelector('.card__button');
   let multiplier;
   if (sizeBarButtons.length !== 0 && sizeBarButtons[0].getAttribute('multiplier') !== undefined) {
     multiplier = sizeBarButtons[0].getAttribute('multiplier');
@@ -427,7 +300,9 @@ function addProductToBasket(productInfo) {
     localStorage.setItem('basket', JSON.stringify(basketArray));
     emitter.emit('event:counter-changed');
   }
-  if (!canUseWebP()) {
+  cardButton.textContent = 'Добавлено'
+  setTimeout(()=> {cardButton.textContent = 'В корзину'}, 1000)
+  /*if (!canUseWebP()) {
     loadImg(productInfo, basketPopupIconImg, 'jpg');
   } else {
     loadImg(productInfo, basketPopupIconImg, 'webp');
@@ -436,23 +311,25 @@ function addProductToBasket(productInfo) {
   setTimeout(() => {
     basketPopupIcon.classList.remove('bottom-bar__icon-popup--open');
     basketPopupIconImg.style.backgroundImage = '';
-  }, 3000);
+  }, 3000);*/
 
   emitter.emit('event:counter-changed', {counter: basketArray.length});
 }
 
 function checkMessageInbox() {
-  const dotMessage = document.querySelector('.top-bar__icon-dot');
-  if (dotMessage && !isEmptyObj(userMessages) && userMessages.success !== false && userMessages.successData.messages.length !== 0) {
+  const buttonMessages = document.querySelector('.main-panel__button--type--messages');
+  if(buttonMessages) {
+    buttonMessages.classList.remove('main-panel__button--notification');
+  if (!isEmptyObj(userMessages) && userMessages.success !== false && userMessages.successData.messages.length !== 0 && !isEmptyObj(userInfoObj)) {
     userMessages.successData.messages.every((message) => {
       if (message.wasRead === null) {
-        dotMessage.classList.remove('top-bar__icon-dot--hide');
+        buttonMessages.classList.add('main-panel__button--notification');
         return false;
       }
       return true;
     });
+    }
   }
-
 }
 
 function closePages() {
@@ -470,21 +347,22 @@ function closePages() {
   toggleThirdPage.deletePage();
   toggleFourthPage.closePage();
   toggleFourthPage.deletePage();
-  toggleSixthPage.closePage();
-  toggleSixthPage.deletePage();
   toggleModalPageSignIn.closePage()
   toggleModalPageSignIn.deletePage()
   toggleModalPageOrderHistory.closePage()
+  toggleModalPageOrderHistory.clearPage()
   toggleModalPageOrderHistory.deletePage()
+  toggleModalPageSubscription.closePage()
+  toggleModalPageSubscription.clearPage()
+  toggleModalPageSubscription.deletePage()
   toggleModalPageOrderReview.closePage()
   toggleModalPageOrderReview.deletePage()
   toggleModalPageSearch.closePage()
-  toggleModalPageSearch.deletePage()
+  checkEmptyBasket();
 }
 
 function closeStores() {
-  toggleModalPage.closePage();
-  toggleModalPage.deletePage();
+  storesPage.closePage();
   window.history.back()
 }
 
@@ -495,23 +373,6 @@ function stopAction(func) {
     body.classList.add('stop-action');
   }
   setTimeout(() => body.classList.remove('stop-action'), 1000);
-}
-
-function openHistory() {
-  mainPage.clearPage();
-  toggleOrder.rendering();
-  toggleOrder.openPage();
-  toggleOrderHistoryContent.rendering();
-  toggleOrderMenuContent.rendering();
-  toggleOrderHitsContent.rendering();
-
-  const elements = document.querySelectorAll('.main-page__tab-content');
-  const elementsTab = document.querySelectorAll('.top-bar__tab');
-  [...elements, ...elementsTab].forEach((item) => item.classList.remove('main-page__tab-content--open', 'top-bar__tab--active'));
-  const element = document.querySelector('.main-page__tab-content--history');
-  const elementTabHistory = document.querySelector('.top-bar__tab--history');
-  element.classList.add('main-page__tab-content--open');
-  elementTabHistory.classList.add('top-bar__tab--active');
 }
 
 function isEmptyObj(obj) {
@@ -591,7 +452,6 @@ async function load_image_with_correct_extension_and_resolution(productInfo, img
   let regExp = /(assets\/images\/docs)(\/\d*\/)([\d\D]*\.)(\D+)/g;
   let productName = image.name.replace(regExp, '$3');
   let source = `https://app.xleb.ru/${image.name}_cache/${image.edit}/${imageBlockWidth}x${imageBlockHeight}/${productName}${extension}`;
-
   if (aspectRatio === 1 && document.location.hash !== 'debug' && document.location.hash !== '#debug') {
 
     imgEl.style.backgroundImage = `url(${source})`;
@@ -723,6 +583,14 @@ async function load_image_with_correct_extension_and_resolution(productInfo, img
 }
 
 function loadImgNotSquare(productInfo, imgEl, expansion, timer) {
+  let aspectRatio = 1/*0.85*/;
+  (() => {
+    load_image_with_correct_extension_and_resolution(productInfo, imgEl, expansion, 1000, aspectRatio);
+  })();
+  return '';
+}
+
+function loadImgPostsAndPromos(productInfo, imgEl, expansion, timer) {
   let aspectRatio = 0.85;
   (() => {
     load_image_with_correct_extension_and_resolution(productInfo, imgEl, expansion, 1000, aspectRatio);
@@ -732,9 +600,17 @@ function loadImgNotSquare(productInfo, imgEl, expansion, timer) {
 
 function checkEmptyBasket() {
   const basket = document.querySelector('.header__basket')
+  this.emptyBasketContainerEl = document.querySelector('.text-area-container--empty-basket');
+  this.containerEl = document.querySelector('.modal-page-order-review__content-container');
 
   if (basketArray.length === 0) {
-    basket.classList.remove('header__basket--not-empty')
+    basket.classList.remove('header__basket--not-empty');
+    basket.classList.remove('header__basket--animation');
+    if(this.emptyBasketContainerEl && this.containerEl) {
+      this.emptyBasketContainerEl.classList.remove('text-area-container--hide');
+      this.containerEl.classList.add('modal-page-order-review__content-container--hide');
+    }
+
     /*const backButton = new CreateButton({
       selector: ['button'],
       style: ['button'],
@@ -771,13 +647,40 @@ function checkEmptyBasket() {
     modalPageOrderReview.append(titleBarEmptyBasket.create());
     modalPageOrderReview.append(backButton.create());*/
   } else {
-    basket.classList.add('header__basket--not-empty')
+    basket.classList.remove('header__basket--animation')
+    basket.classList.add('header__basket--not-empty');
   }
+}
+
+function animationAddProduct() {
+  const basket = document.querySelector('.header__basket')
+  basket.classList.add('header__basket--animation');
+  setTimeout(()=>{
+    basket.classList.remove('header__basket--animation')
+  },1000)
 }
 
 function clearFriendDataInfo() {
   delete orderFriendData.friendName;
   delete orderFriendData.friendPhone;
+}
+
+function checkStore() {
+  const shopSelect = document.querySelector('.shop-selector')
+  if(isEmptyObj(userStore) && shopSelect){
+    shopSelect.classList.add('shop-selector--show')
+  } else {
+    shopSelect.classList.remove('shop-selector--show')
+  }
+}
+
+function changePriceAfterChooseStore() {
+  const catalogElements = document.querySelectorAll('.catalog__list-element');
+  catalogElements.forEach((el) => {
+    const id = el.getAttribute('id');
+    const cardElementPrice = el.querySelector('.catalog__list-element-price');
+    cardElementPrice.textContent = `${dataProductApi.successData.items[id].price} ₽`;
+  });
 }
 
 class CreateItem {
@@ -786,18 +689,25 @@ class CreateItem {
     if (typeof this.parameters !== 'object') {
       this.parameters = {};
     }
+    this.element = document.createElement(this.parameters.selector || 'div');
   }
 
-  create(element) {
-    if (typeof this.parameters.style === 'object') {
-      element.classList.add(this.parameters.style);
+  setStyles(element) {
+    const {style, modifier} = this.parameters
+
+    if (typeof style === 'object') {
+      element.classList.add(style);
     }
-    if (typeof this.parameters.modifier === 'object') {
+    if (typeof modifier === 'object') {
       const {className} = element;
-      for (const style of this.parameters.modifier) {
+      for (const style of modifier) {
         element.classList.add(className + style);
       }
     }
+  }
+
+  create(element = this.element) {
+    this.setStyles(element)
     return element;
   }
 }
@@ -936,103 +846,56 @@ function bit_rol(d, _) {
   return d << _ | d >>> 32 - _
 }
 
-class TogglePageOrderCard {
+class ToggleModalPage {
   constructor(parameters) {
-    this.parameters = parameters;
     this.body = document.querySelector('body');
-    this.page = document.querySelector('.page-order');
-    this.pageContent = document.querySelector('.page-order__content');
-    this.mainPage = document.querySelector('.main-page');
-    this.classOpen = this.parameters.classOpen;
 
-    this.closePage = this.closePage.bind(this);
-    this.deletePage = this.deletePage.bind(this);
-    this.openPage = this.openPage.bind(this);
-
+    this.parameters = parameters;
     if (typeof this.parameters !== 'object') {
       this.parameters = {};
     }
-    // let parametersString = JSON.stringify(this);
-    // console.log('TogglePage parameters'+parametersString);
   }
 
-  clearPage() {
-    // this.page = document.querySelector('.page');
-    // if (this.page !== null) {
-    //   if (this.page.childNodes.length !== 0) {
-    //     this.arrHtml = Array.from(this.page.children);
-    //     this.arrHtml.forEach((item) => item.remove());
-    //   }
-    // }
+  clearPage(el) {
+    if (el !== null) {
+      if (el.childNodes.length !== 0) {
+        this.arrHtml = Array.from(el.children);
+        this.arrHtml.forEach((item) => item.remove());
+      }
+    }
   }
 
-  deletePage() {
-    // if (this.page) {
-    //   setTimeout(() => this.page.remove(), 300);
-    // }
-  }
-
-  closePage() {
-    // this.page = document.querySelector('.page');
-    if (this.page) {
-      // this.page.querySelectorAll('button').forEach((button) => {
-      //   button.remove();
-      // });
+  closePage(el) {
+    if (el) {
       if (typeof this.parameters.classOpen === 'object') {
         for (const style of this.parameters.classOpen) {
-          this.page.classList.remove(style);
+          el.classList.remove(style);
         }
       }
-      setTimeout(() => {
-        this.body.classList.remove('body');
-        // this.clearPage();
-      }, 300);
     }
+    setTimeout(() => this.body.classList.remove('body'), 100);
   }
 
-  openPage() {
-    /**
-     * Получаем hash для ноды this.page
-     */
-    let hash = MD5(this.page.outerHTML);
-    /**
-     * Если объект с массивом нод страниц не существует, то создаем его
-     */
-    if (typeof window.preRenderPages === 'undefined') {
-      window.preRenderPages = {};
-    }
-    /**
-     * Если объект текущей ноды не существует, то записываем текущую ноду в массив(используя в качестве ключа хеш от этой ноды) и прикрепляем ее к body
-     */
-    if (typeof window.preRenderPages[hash] === 'undefined') {
-      window.preRenderPages[hash] = this.page;
-      this.body.append(this.page);
-    }
-    /**
-     * Если объект текущей ноды существует в массиве, то подменяем текущую ноду нодой из массива
-     */
-    else {
-      this.page = window.preRenderPages[hash];
-    }
+  deletePage(el) {
     setTimeout(() => {
-      this.page.classList.add(this.classOpen);
-      this.body.classList.add('body');
+      if (el) {
+        el.remove();
+      }
     }, 100);
-    history.pushState({state: '#page-order'}, null, '#page-order');
   }
 
-  rendering() {
-    let parametersString = JSON.stringify(this);
-    // let pageElement = createPage();
-    // console.log('TogglePage parameters'+pageElement.innerHTML);
-    // this.body.append(pageElement);
+  openPage(el) {
+    setTimeout(() => {
+      this.headerBasket = document.querySelector('.header__basket');
+      this.headerBasket.classList.add('header__basket--hide')
+      if (isIos) {
+        el.classList.add('modal-page--ios');
+      }
+      el.classList.add(this.parameters.classOpen);
 
-    this.page = createPageOrderCard();
-    /*let hash = MD5(this.page.outerHTML);
-    if(typeof window.preRenderPages[hash] !== 'undefined') {
-      this.page = window.preRenderPages[hash];
-    }*/
-    // this.openPage();
+      this.body.classList.add('body');
+      this.body.append(el);
+    }, 100);
   }
 }
 
@@ -1241,202 +1104,6 @@ class ToggleFourthPage {
   }
 }
 
-class ToggleFifthPage {
-  constructor(parameters) {
-    this.parameters = parameters;
-    this.body = document.querySelector('body');
-    this.fifthPage = document.querySelector('.fifth-page');
-    this.fifthPageContent = document.querySelector('.fifth-page__content');
-    this.classOpen = this.parameters.classOpen;
-
-    this.closePage = this.closePage.bind(this);
-    this.deletePage = this.deletePage.bind(this);
-    this.openPage = this.openPage.bind(this);
-
-    if (typeof this.parameters !== 'object') {
-      this.parameters = {};
-    }
-  }
-
-  clearPage() {
-    this.page = document.querySelector('.fifth-page');
-    if (this.page !== null) {
-      if (this.page.childNodes.length !== 0) {
-        this.arrHtml = Array.from(this.page.children);
-        this.arrHtml.forEach((item) => item.remove());
-      }
-    }
-  }
-
-  deletePage() {
-    setTimeout(() => {
-      if (this.fifthPage) {
-        this.fifthPage.remove()
-      }
-    }, 100);
-  }
-
-  closePage() {
-    this.fifthPage = document.querySelector('.fifth-page');
-    if (this.fifthPage) {
-      this.fifthPage.querySelectorAll('button').forEach((button) => {
-        button.remove();
-      });
-      if (typeof this.parameters.classOpen === 'object') {
-        for (const style of this.parameters.classOpen) {
-          this.fifthPage.classList.remove(style);
-        }
-      }
-      setTimeout(() => this.body.classList.remove('body'), 100);
-    }
-  }
-
-  openPage() {
-    this.fifthPage = document.querySelector('.fifth-page');
-    setTimeout(() => {
-      this.fifthPage.classList.add(this.classOpen);
-      this.body.classList.add('body');
-    }, 100);
-  }
-
-  rendering() {
-    this.body = document.querySelector('body');
-    this.body.append(createFifthPage());
-    this.fifthPage = document.querySelector('.fifth-page');
-  }
-}
-
-class ToggleSixthPage {
-  constructor(parameters) {
-    this.parameters = parameters;
-    this.body = document.querySelector('body');
-    this.sixthPage = document.querySelector('.sixth-page');
-    this.sixthPageContent = document.querySelector('.sixth-page__content');
-    this.classOpen = this.parameters.classOpen;
-
-    this.closePage = this.closePage.bind(this);
-    this.deletePage = this.deletePage.bind(this);
-    this.openPage = this.openPage.bind(this);
-
-    if (typeof this.parameters !== 'object') {
-      this.parameters = {};
-    }
-  }
-
-  clearPage() {
-    this.page = document.querySelector('.sixth-page');
-    if (this.page !== null) {
-      if (this.page.childNodes.length !== 0) {
-        this.arrHtml = Array.from(this.page.children);
-        this.arrHtml.forEach((item) => item.remove());
-      }
-    }
-  }
-
-  deletePage() {
-    setTimeout(() => {
-      if (this.sixthPage) {
-        this.sixthPage.remove()
-      }
-    }, 100);
-
-  }
-
-  closePage() {
-    this.sixthPage = document.querySelector('.sixth-page');
-    if (this.sixthPage) {
-      this.sixthPage.querySelectorAll('button').forEach((button) => {
-        button.remove();
-      });
-      if (typeof this.parameters.classOpen === 'object') {
-        for (const style of this.parameters.classOpen) {
-          this.sixthPage.classList.remove(style);
-        }
-      }
-      setTimeout(() => this.body.classList.remove('body'), 100);
-    }
-  }
-
-  openPage() {
-    this.sixthPage = document.querySelector('.sixth-page');
-    setTimeout(() => {
-      this.sixthPage.classList.add(this.classOpen);
-      this.body.classList.add('body');
-    }, 100);
-  }
-
-  rendering() {
-    this.body = document.querySelector('body');
-    this.body.append(createSixthPage());
-    this.sixthPage = document.querySelector('.sixth-page');
-  }
-}
-
-class ToggleModalPageStores {
-  constructor(parameters) {
-    this.parameters = parameters;
-    this.body = document.querySelector('body');
-    this.classOpen = this.parameters.classOpen;
-
-    this.closePage = this.closePage.bind(this);
-    this.deletePage = this.deletePage.bind(this);
-    this.openPage = this.openPage.bind(this);
-
-    if (typeof this.parameters !== 'object') {
-      this.parameters = {};
-    }
-  }
-
-  clearPage() {
-    this.modalPage = document.querySelector('.modal-page-stores');
-    if (this.modalPage !== null) {
-      if (this.modalPage.childNodes.length !== 0) {
-        this.arrHtml = Array.from(this.modalPage.children);
-        this.arrHtml.forEach((item) => item.remove());
-      }
-    }
-  }
-
-  deletePage() {
-    setTimeout(() => {
-      if (this.modalPage) {
-        this.modalPage.remove()
-      }
-    }, 100);
-  }
-
-  closePage() {
-    this.modalPage = document.querySelector('.modal-page-stores');
-    if (this.modalPage) {
-      this.modalPage.querySelectorAll('button').forEach((button) => {
-        button.remove();
-      });
-      if (typeof this.parameters.classOpen === 'object') {
-        for (const style of this.parameters.classOpen) {
-          this.modalPage.classList.remove(style);
-        }
-      }
-      setTimeout(() => this.body.classList.remove('body'), 100);
-    }
-  }
-
-  openPage() {
-    this.modalPage = document.querySelector('.modal-page-stores');
-    setTimeout(() => {
-      this.modalPage.classList.add('modal-page--open');
-      this.body.classList.add('body');
-    }, 100);
-    history.pushState({state: '#modal-page-stores'}, null, '#modal-page-stores');
-  }
-
-  rendering() {
-    this.body = document.querySelector('body');
-    this.body.append(createModalPageStores());
-    this.modalPage = document.querySelector('.modal-page-stores');
-    this.modalPageContent = this.modalPage.querySelector('.modal-page__content');
-  }
-}
-
 class ToggleModalPageSearch {
   constructor(parameters) {
     this.parameters = parameters;
@@ -1562,7 +1229,12 @@ class ToggleModalPageCardDef {
       this.body.classList.add('body');
     }, 100);
     history.pushState({state: '#card'}, null, '#card');
-    window.cardAnimation('open');
+    if(window.cardAnimation) {
+      window.cardAnimation('open');
+    }
+    if(window.sharesAnimation) {
+      window.sharesAnimation('open');
+    }
   }
 
   rendering() {
@@ -1639,73 +1311,6 @@ class ToggleModalPageOrderReviewRoot {
     this.body.append(createModalPageOrderReview());
     this.modalPageOrderReview = document.querySelector('.modal-page-order-review');
     this.modalPageOrderReviewContent = document.querySelector('.modal-page-order-review__content');
-  }
-}
-
-class ToggleModalPageOrderHistoryRoot {
-  constructor(parameters) {
-    this.parameters = parameters;
-    this.body = document.querySelector('body');
-    this.modalPageOrderHistory = document.querySelector('.modal-page-order-history');
-    this.modalPageOrderHistoryContent = document.querySelector('.modal-page-order-history__content');
-    this.classOpen = this.parameters.classOpen;
-
-    this.closePage = this.closePage.bind(this);
-    this.deletePage = this.deletePage.bind(this);
-    this.openPage = this.openPage.bind(this);
-
-    if (typeof this.parameters !== 'object') {
-      this.parameters = {};
-    }
-  }
-
-  clearPage() {
-    this.modalPageOrderHistory = document.querySelector('.modal-page-order-history');
-    if (this.modalPageOrderHistory !== null) {
-      if (this.modalPageOrderHistory.childNodes.length !== 0) {
-        this.arrHtml = Array.from(this.modalPageOrderHistory.children);
-        this.arrHtml.forEach((item) => item.remove());
-      }
-    }
-  }
-
-  deletePage() {
-    setTimeout(() => {
-      if (this.modalPageOrderHistory) {
-        this.modalPageOrderHistory.remove()
-      }
-    }, 100);
-  }
-
-  closePage() {
-    this.modalPageOrderHistory = document.querySelector('.modal-page-order-history');
-    if (this.modalPageOrderHistory) {
-      this.modalPageOrderHistory.querySelectorAll('button').forEach((button) => {
-        button.remove();
-      });
-      if (typeof this.parameters.classOpen === 'object') {
-        for (const style of this.parameters.classOpen) {
-          this.modalPageOrderHistory.classList.remove(style);
-        }
-      }
-      setTimeout(() => this.body.classList.remove('body'), 100);
-    }
-  }
-
-  openPage() {
-    this.modalPageOrderHistory = document.querySelector('.modal-page-order-history');
-    setTimeout(() => {
-      this.modalPageOrderHistory.classList.add(this.classOpen);
-      this.body.classList.add('body');
-    }, 100);
-    history.pushState({state: '#modal-page-order-history'}, null, '#modal-page-order-history');
-  }
-
-  rendering() {
-    this.body = document.querySelector('body');
-    this.body.append(createModalPageOrderHistory());
-    this.modalPageOrderHistory = document.querySelector('.modal-page-order-history');
-    this.modalPageOrderHistoryContent = document.querySelector('.modal-page-order-history__content');
   }
 }
 
@@ -1834,31 +1439,6 @@ class ToggleMainPage {
   }
 }
 
-
-class ToggleOrderTabContent {
-  constructor(parameters) {
-    this.parameters = parameters;
-    this.body = document.querySelector('body');
-    this.mainPage = document.querySelector('.main-page');
-
-    this.clearPage = this.clearPage.bind(this);
-    if (typeof this.parameters !== 'object') {
-      this.parameters = {};
-    }
-  }
-
-  rendering() {
-    this.mainPageTabContent = document.createElement('div');
-    this.mainPageTabContent.classList.add('main-page__tab-content');
-    this.mainPageContent = document.querySelector('.main-page__content');
-  }
-
-  clearPage() {
-    this.mainPageTabContent = document.querySelector('.main-page__tab-content');
-    this.mainPageTabContent.remove();
-  }
-}
-
 class ToggleInboxTabContent {
   constructor(parameters) {
     this.parameters = parameters;
@@ -1871,9 +1451,11 @@ class ToggleInboxTabContent {
     }
   }
 
-  rendering() {
+  rendering(dataId ,isOpen) {
     this.pageTabContent = document.createElement('div');
-    this.pageTabContent.classList.add('main-page__tab-content-inbox');
+    this.className = `${isOpen ? 'main-page__tab-content--open' : 'main-page__tab-content'}`
+    this.pageTabContent.classList.add('main-page__tab-content','main-page__tab-content-inbox', `${this.className}`);
+    this.pageTabContent.setAttribute('data-id', `${dataId}`)
     this.pageContent = document.querySelector('.main-page__content-inbox');
   }
 
@@ -1885,28 +1467,28 @@ class ToggleInboxTabContent {
   }
 }
 
-class ToggleSubscriptionTabContent {
+class ToggleTabContent {
   constructor(parameters) {
     this.parameters = parameters;
     this.body = document.querySelector('body');
-    this.subPage = document.querySelector('.subpage');
 
     this.clearPage = this.clearPage.bind(this);
+
     if (typeof this.parameters !== 'object') {
       this.parameters = {};
     }
+
+
   }
 
   rendering() {
-    this.subPageTabContent = document.createElement('div');
-    this.subPageTabContent.classList.add('subpage__tab-content');
-    this.subPageContent = document.querySelector('.subpage__content');
+    this.tabContent = document.createElement('div');
+    this.tabContent.classList.add('subpage__tab-content');
   }
 
   clearPage() {
-    this.subPageContent = document.querySelector('.subpage__tab-content');
-    if (this.subPageTabContent) {
-      this.subPageTabContent.remove();
+    if (this.tabContent) {
+      this.tabContent.remove();
     }
   }
 }
@@ -1978,6 +1560,7 @@ class ToggleModal {
     this.openPage();
   }
 }
+
 
 
 

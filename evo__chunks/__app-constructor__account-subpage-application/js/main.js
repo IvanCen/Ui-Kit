@@ -27,7 +27,6 @@ class ToggleSubPageApplication extends ToggleSubPage {
       modifier: [`--indentation--top${isIos ? '--ios' : ''}`],
     });
 
-    this.subPage.append(createTopBarIos());
     this.subPage.append(applicationTopBar.create());
     this.subPage.append(applicationTextArea.create(info));
 

@@ -8,8 +8,7 @@ class CreateNavigation extends CreateItem {
 
   create() {
     this.template = `
-
-        <div class="navigation-element">
+        <div class="navigation__logo">
             <svg version="1.1" id="Слой_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                  viewBox="0 0 207.59 186.67" style="enable-background:new 0 0 207.59 186.67;" xml:space="preserve" width="38" height="38">
                 <style type="text/css">
@@ -24,19 +23,19 @@ class CreateNavigation extends CreateItem {
         </div>
         <div class="navigation-element navigation-element-main navigation-element--active">Главная</div>
         <div class="navigation-element navigation-element-stores">Магазины</div>
-        <div class="navigation-element navigation-element-history">История заказов</div>
-        <div class="navigation-element navigation-element-favorite">Избранное</div>
-        <div class="navigation-element navigation-element-basket">Корзина</div>
         <div class="navigation-element navigation-element-balance">Баланс</div>
-        <div class="navigation-element navigation-element-profile">Личный кабинет</div>
         <div class="navigation-element navigation-element-inbox">Сообщения</div>
+        <div class="navigation-element navigation-element-profile">Личный кабинет</div>
+        <div class="navigation-element navigation-element-basket">Корзина</div>
+        <div class="navigation-element navigation-element-history">История заказов</div>
+        <div class="navigation-element navigation-element-subscription">Абонементы</div>
+        <!--<div class="navigation-element navigation-element-favorite">Избранное</div>-->
         <div class="navigation-element--close">
             <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle opacity="0.38" cx="24" cy="24" r="23.5" stroke="white"/>
                 <path d="M31 18.41L29.59 17L24 22.59L18.41 17L17 18.41L22.59 24L17 29.59L18.41 31L24 25.41L29.59 31L31 29.59L25.41 24L31 18.41Z" fill="white"/>
             </svg>
         </div>
-
     `;
 
     this.element.insertAdjacentHTML('beforeend', this.template);
@@ -48,10 +47,16 @@ class CreateNavigation extends CreateItem {
     this.buttonProfile = this.element.querySelector('.navigation-element-profile');
     this.buttonInbox = this.element.querySelector('.navigation-element-inbox');
     this.buttonHistory = this.element.querySelector('.navigation-element-history');
+    this.buttonSubscription = this.element.querySelector('.navigation-element-subscription');
 
     if (typeof this.parameters.eventOpenMainPage === 'object') {
       for (const event of this.parameters.eventOpenMainPage) {
         this.buttonMain.addEventListener(event.type, event.callback);
+      }
+    }
+    if (typeof this.parameters.eventOpenSubscriptionPage === 'object') {
+      for (const event of this.parameters.eventOpenSubscriptionPage) {
+        this.buttonSubscription.addEventListener(event.type, event.callback);
       }
     }
     if (typeof this.parameters.eventOpenBalancePage === 'object') {
