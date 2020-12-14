@@ -20,12 +20,24 @@ class CreateCardItemProductCardNew extends CreateItem {
     let price;
     if (!isEmptyObj(userStore)) {
       if (userStore.store.priceGroup === null) {
-        price = `${dataProductApi.successData.items[productInfo.id].price} ₽`;
+        price = `${dataProductApi.successData.items[productInfo.id].price}`;
       } else {
-        price = dataProductApi.successData.items[productInfo.id][`price${userStore.store.priceGroup} ₽`];
+        price = dataProductApi.successData.items[productInfo.id][`price${userStore.store.priceGroup}`];
       }
     } else {
       price = '';
+    }
+
+    if (!isEmptyObj(dataUserSeasons)) {
+      Object.values(dataUserSeasons.successData).forEach((item) => {
+        if (dataSeasons.successData[item.id]) {
+          Object.values(dataSeasons.successData[item.id].items).forEach((el) => {
+            if (el === productInfo.id) {
+              price = dataSeasons.successData[item.id].price;
+            }
+          });
+        }
+      });
     }
 
     this.template = `
@@ -35,7 +47,7 @@ class CreateCardItemProductCardNew extends CreateItem {
                 <div class="catalog__list-element-detail catalog__list-element-detail--type--border">
                     <div class="catalog__list-element-title">
                         <div class="catalog__list-element-name">${productInfo.name}</div>
-                        <div class="catalog__list-element-price">${price}</div>
+                        <div class="catalog__list-element-price">${price} ₽</div>
                     </div>
                     <div class="catalog__list-element-additional">
                         <div class="catalog__list-element-name">${weight}</div>
@@ -468,7 +480,7 @@ class CreateCardItemReview extends CreateItem {
       price = 0;
     }
 
-    /* if (!isEmptyObj(dataUserSeasons)) {
+    if (!isEmptyObj(dataUserSeasons)) {
       Object.values(dataUserSeasons.successData).forEach((item) => {
         if (dataSeasons.successData[item.id]) {
           Object.values(dataSeasons.successData[item.id].items).forEach((el) => {
@@ -478,7 +490,7 @@ class CreateCardItemReview extends CreateItem {
           });
         }
       });
-    } */
+    }
 
     this.template = `
           <div class="basket__offers-element banners__banner">
@@ -723,6 +735,7 @@ class CreateCardItemHistory extends CreateItem {
     this.buttonAddAll = this.elementWraper.querySelector('.title-bar__button');
     this.buttonAddAll.addEventListener('click', function () {
       for (const itemEl of Object.values(productInfo.items)) {
+        if (itemEl.itemId === 281) return;
         const modifiersArr = [];
         itemEl.modifiers.forEach((modif) => {
           modifiersArr.push({ id: modif.modificationId, count: modif.count });

@@ -21,7 +21,7 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
 
   makeOrder(info) {
     if (info.success === false) {
-      toggleModal.rendering({subject: 'Ошибка', text: 'Что то пошло не так'});
+      toggleModal.rendering({ subject: 'Ошибка', text: 'Что то пошло не так' });
       toggleModal.openPage();
     } else if (info.success === true) {
       if (!isEmptyObj(basketArray)) {
@@ -30,10 +30,13 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
           this.bascketStoresSection = this.modalPageOrderReview.querySelector('.basket__shop');
           this.inputsDelivery = this.bascketDeliverySection.querySelectorAll('.form__input');
           this.inputsStores = this.bascketStoresSection.querySelectorAll('.form__input');
-          const {phone} = userInfoObj.successData;
+          this.inputsSeasons = this.modalPageOrderReview.querySelectorAll('.form__input[name="seasons"]');
+          const { phone } = userInfoObj.successData;
           let isToGo;
           let idPackage;
           let idStore;
+          let idSeasons;
+
           this.inputsDelivery.forEach((item) => {
             if (item.checked) {
               isToGo = item.getAttribute('typeToGo') === 'toGo-withPackage' || item.getAttribute('typeToGo') === 'toGo';
@@ -46,9 +49,15 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
             }
           });
 
+          this.inputsSeasons.forEach((item) => {
+            if (item.checked) {
+              idSeasons = Number(item.getAttribute('data-id'));
+            }
+          });
+
           if (idPackage) {
             this.deleteItem(idPackage);
-            basketArray.push({id: idPackage, modifier: []});
+            basketArray.push({ id: idPackage, modifier: [] });
           }
           this.inputComment = document.querySelector('.form__input-comment');
           let orderComment;
@@ -69,13 +78,14 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
             orderFriendData,
             orderPromoCode,
             isToGo,
+            idSeasons,
             this.renderPayOrderPage,
           );
         } else {
-          toggleModal.rendering({subject: 'Информация', text: info.successData.timeStatePickUp});
+          toggleModal.rendering({ subject: 'Информация', text: info.successData.timeStatePickUp });
         }
       } else {
-        toggleModal.rendering({subject: 'Информация', text: 'Вы ничего не положили в корзину'});
+        toggleModal.rendering({ subject: 'Информация', text: 'Вы ничего не положили в корзину' });
         toggleModal.openPage();
       }
     }
@@ -116,10 +126,10 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
         emitter.emit('event:counter-changed');
 
         setTimeout(() => {
-          toggleModal.rendering({subject: 'Информация', text: successText});
+          toggleModal.rendering({ subject: 'Информация', text: successText });
         }, successTextTimeout);
       } else {
-        toggleModal.rendering({subject: 'Ошибка', text: payInfo.errors[0]});
+        toggleModal.rendering({ subject: 'Ошибка', text: payInfo.errors[0] });
       }
     }
 
@@ -137,7 +147,7 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
       });
       // toggleModalPagePaymentOrder.rendering(info);
     } else {
-      toggleModal.rendering({subject: 'Ошибка', text: info.errors[0]});
+      toggleModal.rendering({ subject: 'Ошибка', text: info.errors[0] });
     }
   }
 
@@ -250,6 +260,10 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
       selector: ['div'],
       style: ['accordion-section'],
     });
+    const formSeasons = new CreateFormSeasons({
+      selector: ['div'],
+      style: ['accordion-section'],
+    });
     const cardItemReviewContainer = new CreateCardItemReviewContainer({
       selector: ['div'],
       style: ['card-item__container'],
@@ -332,6 +346,9 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
       this.container.append(formPromoCode.create());
       this.container.append(formComment.create());
       this.container.append(formFriendPay.create());
+      if (!isEmptyObj(dataSeasons)) {
+        this.container.append(formSeasons.create());
+      }
       this.container.append(textAreaResult.create());
       this.modalPageOrderReview.append(this.container);
 

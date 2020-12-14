@@ -259,6 +259,14 @@ class CreateCatalogMain extends CreateItem {
     this.renderDrinksCategory(drinksContainer, card);
     this.renderHitsCategory(hitContainer, card);
 
+    const catalogTags = this.element.querySelector('.catalog__tags[data-id="33"]');
+    const wrapper = catalogTags.querySelector('.swiper-wrapper');
+    function active() {
+      activeBanners(wrapper);
+      wrapper.removeEventListener('touchstart', active);
+    }
+    wrapper.addEventListener('touchstart', active);
+
     return super.create(this.element);
   }
 

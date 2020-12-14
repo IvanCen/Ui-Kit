@@ -651,7 +651,7 @@ class CreateTextAreaProductCard extends CreateItem {
       price = 0;
     }
 
-    /* if (!isEmptyObj(dataUserSeasons)) {
+     if (!isEmptyObj(dataUserSeasons)) {
       Object.values(dataUserSeasons.successData).forEach((item) => {
         if (dataSeasons.successData[item.id]) {
           Object.values(dataSeasons.successData[item.id].items).forEach((el) => {
@@ -661,7 +661,7 @@ class CreateTextAreaProductCard extends CreateItem {
           });
         }
       });
-    } */
+    }
 
     this.template = `
       <div class="card__touch"></div>

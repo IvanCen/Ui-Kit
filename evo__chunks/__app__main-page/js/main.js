@@ -540,11 +540,13 @@ function renderMain() {
     }
     const swiperWraper = document.querySelector('.shares .swiper-wrapper');
     const catalogWraper = document.querySelector('.catalog .swiper-wrapper');
-    const catalogTagsWraper = document.querySelector('.catalog__tags .swiper-wrapper');
+    const catalogTagsWraper = document.querySelector('.catalog__tags[data-id="34"] .swiper-wrapper');
+    const catalogTagsWraperDrinks = document.querySelector('.catalog__tags[data-id="33"] .swiper-wrapper');
 
     activeBanners(swiperWraper);
     activeBanners(catalogWraper);
     activeBanners(catalogTagsWraper);
+    activeBanners(catalogTagsWraperDrinks);
 
     checkStore();
     initCatalog();

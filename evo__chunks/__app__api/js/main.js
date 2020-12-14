@@ -316,10 +316,10 @@ class Api {
       });
   }
 
-  makeOrderApi(phone, orderArrItems, shopId, orderComment = '', orderFriendData, promoCode = '', isToGo, func) {
+  makeOrderApi(phone, orderArrItems, shopId, orderComment = '', orderFriendData, promoCode = '', isToGo, idSeasons = '', func) {
     const { friendName = '', friendPhone = '' } = orderFriendData;
 
-    console.log(phone, orderArrItems, shopId, orderComment, friendName, friendPhone, isToGo, func);
+    console.log(idSeasons);
     let store = JSON.parse(localStorage.getItem('userStore'));
     store = store.store;
     const request = {
@@ -332,6 +332,7 @@ class Api {
       comment: orderComment,
       replaceName: friendName,
       replacePhone: friendPhone,
+      season: idSeasons,
       outputFormat: 'json',
     };
 

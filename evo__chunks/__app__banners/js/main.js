@@ -6,7 +6,6 @@ function activeBanners(containerBanners, isSwipe, funcCheckBasket = () => {
     let offsetX = 0;
     let offsetXOnStart = 0;
 
-
     function bannersAnimation(action) {
       if (offsetX > 0) {
         // тут действия, если тянется влево дальше минимума
@@ -19,7 +18,7 @@ function activeBanners(containerBanners, isSwipe, funcCheckBasket = () => {
           offsetX /= 2; // уменьшапем скорость смещения в 2 раза
         }
       }
-      const maxOffsetWidth = -1 * ((mainElementsCount - 1) * firstElementsWidth);
+      const maxOffsetWidth = (-1 * ((mainElementsCount - 1) * (firstElementsWidth) + (mainElementsCount * 8)));
       if (offsetX < maxOffsetWidth) {
         // тут действия, если тянется вправо дальше максимума
         if (action === 'end') {
@@ -68,26 +67,22 @@ function activeBanners(containerBanners, isSwipe, funcCheckBasket = () => {
 
 
     containerBanners.addEventListener('touchstart', (event) => {
-      event.stopPropagation();
       dragStart = event.touches[0].clientX;
       containerBanners.classList.remove('banner__container--with-animation');
-    }, {passive: false});
+    }, { passive: false });
 
     containerBanners.addEventListener('touchmove', (event) => {
-      event.preventDefault();
-      event.stopPropagation();
       dragEnd = event.touches[0].clientX;
       offsetX = offsetXOnStart + dragEnd - dragStart;
       bannersAnimation('move');
-    }, {passive: false});
+    }, { passive: false });
 
     containerBanners.addEventListener('touchend', (event) => {
-      event.stopPropagation();
       offsetX = Math.round(offsetX / firstElementsWidth) * firstElementsWidth;
       offsetXOnStart = offsetX;
       containerBanners.classList.add('banner__container--with-animation');
       bannersAnimation('end');
-    }, {passive: false});
+    }, { passive: false });
   }
 }
 

@@ -51,16 +51,27 @@ function countResultPriceAndAllProductCounter() {
   const allPriceEl = document.querySelectorAll('.basket__offers-element-price-number');
   const resultPrice = document.querySelector('.basket__result-price');
   const labelPackage = document.querySelector('.form__label--type--package');
-  const input = labelPackage.querySelector('input')
+  const sectionSeasons = document.querySelector('.accordion__container[data-id="7"]');
+  const inputPackage = labelPackage.querySelector('input')
+  const inputsSeasons = sectionSeasons.querySelectorAll('input')
   if (allPriceEl && resultPrice) {
     allPriceEl.forEach((el) => {
       sumPrice += Number(el.textContent);
     });
-    if (input.checked) {
+    if (inputPackage.checked) {
       if (!isEmptyObj(dataPackage)) {
         sumPrice += dataPackage.successData.price
       }
     }
+    inputsSeasons.forEach(el=> {
+      if (el.checked) {
+        const id = el.getAttribute('data-id')
+        if (!isEmptyObj(dataPackage) && id) {
+          sumPrice += Number(dataSeasons.successData[id].amount)
+        }
+      }
+    })
+
     resultPrice.textContent = `${sumPrice} ₽`;
   }
 
@@ -145,15 +156,6 @@ function createMainEl() {
   const mainPageEl = document.createElement('div');
   mainPageEl.classList.add('main-page');
   document.body.prepend(mainPageEl);
-}
-
-function createTopBarIos() {
-  const el = document.createElement('div');
-  if (isIos) {
-    el.classList.add('top-bar--ios');
-    return el;
-  }
-  return el;
 }
 
 function checkBasketCounter() {

@@ -675,6 +675,48 @@ class CreateFormPay extends CreateItem {
   }
 }
 
+class CreateFormSeasons extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+    this.element = document.createElement(this.parameters.selector);
+  }
+
+  create() {
+    this.template = `
+        <div class="basket__header basket__header--dark accordion__trigger" data-id="7">
+            <div class="basket__title">Купить абонемент</div>
+        </div>
+        <section class="accordion__container" data-id="7">
+            <div class="form__group basket__group">
+                <label class="form__label">
+                    <input type="radio" class="form__input" name="seasons" checked>
+                    Отказаться
+                </label>
+            </div>
+        </section>
+   `;
+    this.element.insertAdjacentHTML('beforeend', this.template);
+
+    Object.values(dataSeasons.successData).forEach((season) => {
+      const template = `
+        <label class="form__label">
+            <input data-id="${season.id}" type="radio" class="form__input" name="seasons">
+            ${season.title} (${season.amount} ₽)
+        </label>
+      `;
+      this.element.querySelector('.form__group').insertAdjacentHTML('beforeend', template);
+    });
+
+    const elems = this.element.querySelectorAll('.form__label');
+    elems.forEach((el) => el.addEventListener('click', (e) => {
+      countResultPriceAndAllProductCounter();
+    }));
+
+    return super.create(this.element);
+  }
+}
+
 class CreateFormPromoCode extends CreateItem {
   constructor(parameters) {
     super();

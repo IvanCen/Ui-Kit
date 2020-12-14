@@ -106,10 +106,11 @@ class ToggleModalPageOrderSearch extends ToggleModalPage {
       const item = founded[id];
       console.log(item);
       const {
-        name, price, netWeight, volume,
+        name, netWeight, volume,
       } = item;
       let {
         weight,
+        price,
       } = item;
 
       const element = document.createElement('div');
@@ -121,6 +122,19 @@ class ToggleModalPageOrderSearch extends ToggleModalPage {
         weight = `${volume} мл`;
       } else {
         weight = '';
+      }
+
+      if (!isEmptyObj(dataUserSeasons)) {
+        Object.values(dataUserSeasons.successData).forEach((itemEl) => {
+          if (dataSeasons.successData[itemEl.id]) {
+            Object.values(dataSeasons.successData[itemEl.id].items).forEach((el) => {
+              console.log(el, item.id);
+              if (el === item.id) {
+                price = dataSeasons.successData[itemEl.id].price;
+              }
+            });
+          }
+        });
       }
 
       const template = `
