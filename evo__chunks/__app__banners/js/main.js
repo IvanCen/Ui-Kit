@@ -107,7 +107,7 @@ class CreateBannersMain extends CreateItem {
   create() {
     this.element.insertAdjacentHTML('beforeend', this.template);
 
-    if (!isEmptyObj(dataPromo)) {
+    if (!isEmptyObj(dataPromo) && !isEmptyObj(dataPosts)) {
       [...dataPosts.successData, ...dataPromo.successData].forEach((banner) => {
         this.swiperSlide = document.createElement('div');
         this.swiperSlide.classList.add('swiper-slide');

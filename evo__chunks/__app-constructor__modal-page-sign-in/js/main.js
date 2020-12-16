@@ -17,6 +17,7 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
 
   /* метод возврата на прошлую страницу, берет boolean из глобального объекта выставляемое перед отрисовкой страницы */
   returnPage() {
+    api.getСlientСoffeeСount();
     toggleModalPageSignIn.closePage();
     toggleModalPageSignIn.deletePage();
     if (returnPageObj.returnMainPageAfterSignIn) {
@@ -261,14 +262,15 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
       const form = document.querySelector('.form--size--full');
       loginContainerEl.classList.add('login__container-for-swip', 'login__container--visible', 'form__inputs-container', 'form__inputs-container--hide', 'swiper-container');
       form.classList.add('form--hide');
-      window.swipLoginForms = new Swiper('.login__container-for-swip', {
+
+      /* window.swipLoginForms = new Swiper('.login__container-for-swip', {
         spaceBetween: 90,
         slidesPerView: '1',
         pagination: {
           el: '.swiper-pagination',
           type: 'bullets',
         },
-      });
+      }); */
       const loginContainer = document.querySelector('.login__container');
       const loginContainerForSwipSubmitAll = this.modalPageSignIn.querySelectorAll('.button--type--next-swiper');
       const inputs = this.modalPageSignIn.querySelectorAll('.form__input-area');
@@ -315,7 +317,8 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
                 await rateLastOrder();
               })();
             }
-            window.swipLoginForms.slideNext();
+            btn.closest('.swiper-slide').remove();
+            // window.swipLoginForms.slideNext();
           } else {
             textError.classList.remove('form__text--close', 'form__text--hide');
             textError.textContent = objUserAskInfo[nameInfo].errorText;
@@ -361,6 +364,8 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
       });
 
       inputFlyLabel();
+
+      // activeBanners(document.querySelector('.login__container'));
 
       localStorage.setItem('user-sign-in', 'true');
       const { birthday, email, name } = userInfo.successData;

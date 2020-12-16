@@ -1357,7 +1357,9 @@
     display: none;
 
     &--show {
-      display: block;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 42px;
     }
 
     &-element {
@@ -1407,6 +1409,10 @@
       &-price {
         font-weight: 500;
         text-align: end;
+
+        &--hide {
+          display: none;
+        }
       }
 
       &-detail {
@@ -1430,7 +1436,8 @@
 
       &--ended {
         position: relative;
-
+        order: 9;
+        pointer-events: none;
         &:before {
           display: block;
           content: "";
@@ -1915,6 +1922,7 @@
 .search {
 
   &__header {
+    z-index: 9;
     background-color: #35302B;
     color: white;
     width: 100%;
@@ -2050,7 +2058,8 @@
 
       &--ended {
         position: relative;
-
+        order: 9;
+        pointer-events: none;
         &:before {
           display: block;
           content: "";
@@ -2101,6 +2110,8 @@
     }
 
     &-container {
+      display: flex;
+      flex-direction: column;
       padding-bottom: 56px;
     }
 
@@ -2509,7 +2520,7 @@
     }
 
     &-container {
-      padding: 26px 16px 0;
+      padding: 26px 16px 50px;
 
       &--hide {
         display: none;

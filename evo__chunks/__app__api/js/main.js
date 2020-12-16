@@ -17,7 +17,7 @@ class Api {
       outputFormat: 'json',
 
     };
-    fetch(this.options.baseUrl, {
+    return fetch(this.options.baseUrl, {
       method: 'POST',
       headers: this.options.headers,
       body: JSON.stringify(request),
@@ -44,7 +44,7 @@ class Api {
       method: 'get-shops',
       outputFormat: 'json',
     };
-    fetch(this.options.baseUrl, {
+    return fetch(this.options.baseUrl, {
       method: 'POST',
       headers: this.options.headers,
       body: JSON.stringify(request),
@@ -76,6 +76,7 @@ class Api {
           }
           api.getShopOutOfStockItemsAndModifiers(userStore.store.id);
         }
+        return storesInfo;
       })
       .catch((err) => {
         console.log('Ошибка. Запрос не выполнен: ', err);
@@ -90,7 +91,7 @@ class Api {
       length: 3,
       outputFormat: 'json',
     };
-    fetch(this.options.baseUrl, {
+    return fetch(this.options.baseUrl, {
       method: 'POST',
       headers: this.options.headers,
       body: JSON.stringify(request),
@@ -113,7 +114,7 @@ class Api {
       });
   }
 
-  postsApi(func) {
+  postsApi() {
     const request = {
       method: 'get-posts',
       format: 'universal',
@@ -121,7 +122,7 @@ class Api {
       length: 2,
       outputFormat: 'json',
     };
-    fetch(this.options.baseUrl, {
+    return fetch(this.options.baseUrl, {
       method: 'POST',
       headers: this.options.headers,
       body: JSON.stringify(request),
@@ -138,7 +139,6 @@ class Api {
         localStorage.setItem('dataPosts', JSON.stringify(dataPosts));
         return postsInfo;
       })
-      .then(func)
       .catch((err) => {
         console.log('Ошибка. Запрос не выполнен: ', err);
       });
@@ -182,7 +182,7 @@ class Api {
       outputFormat: 'json',
     };
 
-    fetch('[~30~]', {
+    return fetch('[~30~]', {
       method: 'POST',
       headers: { 'Content-Type': 'text/html' },
       body: JSON.stringify(request),
@@ -503,7 +503,7 @@ class Api {
       outputFormat: 'json',
     };
 
-    fetch(this.options.baseUrl, {
+    return fetch(this.options.baseUrl, {
       method: 'POST',
       headers: this.options.headers,
       body: JSON.stringify(request),
@@ -538,7 +538,7 @@ class Api {
       outputFormat: 'json',
     };
 
-    fetch(this.options.baseUrl, {
+    return fetch(this.options.baseUrl, {
       method: 'POST',
       headers: this.options.headers,
       body: JSON.stringify(request),
@@ -649,7 +649,7 @@ class Api {
       outputFormat: 'json',
     };
 
-    fetch('[~30~]', {
+    return fetch('[~30~]', {
       method: 'POST',
       headers: {
         'Content-Type': 'text/html',

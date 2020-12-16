@@ -13,7 +13,7 @@ appData = {
    * @type {{birthday: string, code: string, achievements: string, balance: string, phone: string, bonus: string, name: string, orders: string, email: string}}
    */
   user: {
-    /*name: '',
+    /* name: '',
     phone: '',
     code: '',
     email: '',
@@ -21,7 +21,7 @@ appData = {
     achievements: '',
     orders: '',
     balance: '',
-    bonus: '',*/
+    bonus: '', */
   },
   information: {},
   catalog: {},

@@ -39,13 +39,14 @@ class TogglePageBalanceFill extends TogglePage {
 
       [...this.buttonSizeBar].forEach((item) => {
         if (item.checked) {
-          this.amount = Number(item.value);
-          this.userPhone = userInfoObj.successData.phone;
-          if (this.userPhone === '+79522655566' || this.userPhone === '+79818380415') {
-            api.rechargeBalanceApi(this.userPhone, this.amount, 'appWidget', this.getPayLinkYandex);
+          const amount = Number(item.value);
+          const userPhone = userInfoObj.successData.phone;
+          /* if (userPhone === '+79522655566' || userPhone === '+79818380415') {
+            api.rechargeBalanceApi(userPhone, amount, 'appWidget', this.getPayLinkYandex);
           } else {
-            api.rechargeBalanceApi(this.userPhone, this.amount, 'app', this.getPayLink);
-          }
+            api.rechargeBalanceApi(userPhone, amount, 'app', this.getPayLink);
+          } */
+          api.rechargeBalanceApi(userPhone, amount, 'app', this.getPayLink);
         }
       });
     } catch (e) {
@@ -57,11 +58,10 @@ class TogglePageBalanceFill extends TogglePage {
     this.buttonFillApplePay = this.page.querySelector('.button--type--fill-apple-pay');
     this.topBar = this.page.querySelector('.top-bar');
     this.buttonSizeBar = this.page.querySelectorAll('.form__sums input');
-    this.sizeBar = this.page.querySelector('.size-bar');
 
     [...this.buttonSizeBar].forEach((item) => {
-      if (item.classList.contains('size-bar__button--active')) {
-        this.amount = Number(item.textContent);
+      if (item.checked) {
+        this.amount = Number(item.value);
         this.userPhone = userInfoObj.successData.phone;
         if (typeof ApplePay !== 'undefined' && typeof ApplePay.makePaymentRequest === 'function') {
           ApplePay.makePaymentRequest(
@@ -73,8 +73,7 @@ class TogglePageBalanceFill extends TogglePage {
                   amount: this.amount,
                 },
               ],
-              shippingMethods: [
-              ],
+              shippingMethods: [],
               supportedNetworks: ['visa', 'masterCard', 'discover'],
               merchantCapabilities: ['3ds', 'debit', 'credit'],
               merchantIdentifier: 'merchant.ru.xleb.app',

@@ -27,7 +27,7 @@ class BalancePage {
   openPage() {
     this.mainPageContent = document.querySelector('.main-page__content-balance');
     this.mainPageContentContainerBalance = document.querySelector('.main-page__content-container-balance');
-    this.textAreaContainerSignIn = this.mainPageContent.querySelector('.text-area-container--type--sign-in');
+    this.textAreaContainerSignIn = document.querySelector('.text-area-container--zone--balance');
     this.topBarTabs = document.querySelector('.header__top-tabs-balance');
     this.headerTitle = document.querySelector('.header__status');
     this.topBarTabs.classList.remove('header__top-tabs--hide');
@@ -35,13 +35,8 @@ class BalancePage {
     this.bonus = document.querySelector('.balance__currency-bonus');
     this.buttonFill = document.querySelector('.button--type--fill');
 
-    this.buttonFill.classList.remove('button--hide');
-    if (!isEmptyObj(userInfoObj)) {
-      this.balance.textContent = `${userInfoObj.successData.balance} ₽`;
-      this.bonus.textContent = `${userInfoObj.successData.bonus} ❤`;
-    } else {
-      this.balance.textContent = '0 ₽';
-      this.bonus.textContent = '0 ❤️';
+    if (this.buttonFill) {
+      this.buttonFill.classList.remove('button--hide');
     }
 
     if (isEmptyObj(userInfoObj)) {
@@ -50,6 +45,8 @@ class BalancePage {
       }
       this.textAreaContainerSignIn.classList.remove('text-area-container--hide');
     } else {
+      this.balance.textContent = `${userInfoObj.successData.balance} ₽`;
+      this.bonus.textContent = `${userInfoObj.successData.bonus} ❤`;
       this.mainPageContentContainerBalance.classList.remove('main-page__content-container--hide');
       this.textAreaContainerSignIn.classList.add('text-area-container--hide');
     }
@@ -68,7 +65,6 @@ class BalancePage {
     this.mainPageContent = document.createElement('div');
     this.mainPageContent.classList.add('main-page__content', 'main-page__content--size--small', 'main-page__content-balance', `${isIos ? 'main-page__content--ios' : 'main-page__content--no-ios'}`);
     this.mainPage.prepend(this.mainPageContent);
-    api.getClientApi();
     this.mainPageContent.classList.add('main-page__content--size--small');
 
     const tobBarTabs = new CreateTopBarTabsBalance({
@@ -84,6 +80,7 @@ class BalancePage {
         '--hide',
         '--type--sign-in',
         '--indentation--big',
+        '--zone--balance',
       ],
       eventsButton: [
         {
@@ -98,14 +95,16 @@ class BalancePage {
 
     this.topBar = document.querySelector('.header--main');
     this.topBar.append(tobBarTabs.create());
-
     this.mainPageContent.append(textAreaNoSignIn.create());
 
-    api.getClientBonusLog();
-    api.getClientBalanceLog(this.render);
+    Promise.all([
+      api.getClientBonusLog(),
+      api.getClientBalanceLog(),
+    ])
+      .then(this.render);
   }
 
-  render(info) {
+  render() {
     this.mainPageContentContainer = document.createElement('div');
     this.mainPageContentContainer.classList.add('main-page__content-container', 'main-page__content-container-balance');
 

@@ -1,6 +1,7 @@
 const mainPageEl = document.querySelector('.main-page');
 const body = document.querySelector('body');
 
+
 /* window.onerror = (message, url, lineNo) => {
   api.sendDebugMessage(`App-test. Error: ${message} Line Number: ${lineNo}`);
 }; */
@@ -53,15 +54,15 @@ try {
   api.sendDebugMessage(e);
 }
 try {
-  authorizationCodeLet = localStorage.getItem('authorizationCode') || '';
+  authorizationCodeLet = localStorage.getItem('authorizationCode') || null;
 } catch (e) {
-  authorizationCodeLet = '';
+  authorizationCodeLet = null;
   api.sendDebugMessage(e);
 }
 try {
-  authorizationPhoneLet = localStorage.getItem('authorizationPhone') || '';
+  authorizationPhoneLet = localStorage.getItem('authorizationPhone') || null;
 } catch (e) {
-  authorizationPhoneLet = '';
+  authorizationPhoneLet = null;
   api.sendDebugMessage(e);
 }
 try {
@@ -203,7 +204,6 @@ const dataUserSeasons = dataUserSeasonsLet;
     api.storesApi();
   } */
 
-api.storesApi(); // пока каждый раз вызываем при старте
 
 if (applicationDataObj && isEmptyObj(applicationDataObj)) {
   api.getPublicDocument('both', 'privacy-policy');
@@ -231,20 +231,29 @@ function getUserInfo(info) {
   }
 }
 
-if (authorizationCode !== '' && authorizationPhone !== '') {
-  api.authorizeCallInApi(getUserInfo, authorizationCode, authorizationPhone);
-}
+Promise.all([
+  api.promoApi(),
+  api.postsApi(),
+  api.productApi(),
+  api.getMessages(),
+  api.getClientBonusLog(),
+  api.getClientBalanceLog(),
+  api.storesApi(),
+  api.authorizeCallInApi(getUserInfo, authorizationCode, authorizationPhone),
+])
+  .then((data) => {
+    console.log(data);
+    renderMain();
+    return data;
+  })
+  .catch((err) => console.log(err));
 
-api.productApi(renderMain);
 api.getClientAchievements();
 api.getClientOrdersApi();
-api.postsApi();
 api.getSeasons();
 api.getClientSeasons();
-api.getClientBonusLog();
-api.getClientBalanceLog();
 setInterval(api.getMessages, 30000);
-api.getMessages();
+
 
 const toggleInboxTabMessagesContent = new ToggleInboxTabMessagesContent();
 const toggleInboxTabLastOffersContent = new ToggleInboxTabLastOffersContent();
@@ -501,13 +510,8 @@ const mainPageFooter = new CreateFooter({
 
 function renderMain() {
   mainPageEl.prepend(mainPageTopBar.create());
-  api.promoApi(mainPage.rendering);
-  balancePage.rendering();
-  storesPage.rendering();
-  inboxPage.rendering();
-  accountPage.rendering();
-  toggleInboxTabMessagesContent.rendering();
-  toggleModalPageOrderSearch.rendering();
+  mainPage.rendering();
+
 
   mainPageEl.after(Navigation.create());
   mainPageEl.after(mainPageFooter.create());
@@ -520,17 +524,33 @@ function renderMain() {
     win.close();
   }
 
-  (function renderHashOrderCategoryPage() {
-    const buttonMain = document.querySelector('.main-panel__button--type--main');
+  if (!isEmptyObj(userInfoObj)) {
+    toggleModalPageSignIn.rendering();
+    toggleModalPageSignIn.regSuccess({ success: true, isStartApp: true, name: userInfoObj.successData.name });
+  }
 
-    setTimeout(() => {
-      buttonMain.dispatchEvent(new Event('click')); // рендерит страницу
-      if (!isEmptyObj(userInfoObj)) {
-        toggleModalPageSignIn.rendering();
-        toggleModalPageSignIn.regSuccess({ success: true, isStartApp: true, name: userInfoObj.successData.name });
-      }
-    }, 2000);
-  }());
+  const swiperWraper = document.querySelector('.shares .swiper-wrapper');
+  const catalogWraper = document.querySelector('.catalog .swiper-wrapper');
+  const catalogTagsWraper = document.querySelector('.catalog__tags[data-id="34"] .swiper-wrapper');
+  const catalogTagsWraperDrinks = document.querySelector('.catalog__tags[data-id="33"] .swiper-wrapper');
+
+  activeBanners(swiperWraper);
+  activeBanners(catalogWraper);
+  activeBanners(catalogTagsWraper);
+  activeBanners(catalogTagsWraperDrinks);
+
+  checkStore();
+  initCatalog();
+
+  balancePage.rendering();
+  storesPage.rendering();
+  inboxPage.rendering();
+  accountPage.rendering();
+  toggleInboxTabMessagesContent.rendering();
+  toggleModalPageOrderSearch.rendering();
+
+  const buttonMain = document.querySelector('.main-panel__button--type--main');
+  buttonMain.click();
 
   setTimeout(() => {
     const loader = document.querySelector('.loader');
@@ -538,19 +558,7 @@ function renderMain() {
       loader.classList.add('loader--hide');
       loader.remove();
     }
-    const swiperWraper = document.querySelector('.shares .swiper-wrapper');
-    const catalogWraper = document.querySelector('.catalog .swiper-wrapper');
-    const catalogTagsWraper = document.querySelector('.catalog__tags[data-id="34"] .swiper-wrapper');
-    const catalogTagsWraperDrinks = document.querySelector('.catalog__tags[data-id="33"] .swiper-wrapper');
-
-    activeBanners(swiperWraper);
-    activeBanners(catalogWraper);
-    activeBanners(catalogTagsWraper);
-    activeBanners(catalogTagsWraperDrinks);
-
-    checkStore();
-    initCatalog();
-  }, 5000);
+  }, 2000);
 }
 
 // api.sendDebugMessage(`${JSON.stringify(basketArray)}`);

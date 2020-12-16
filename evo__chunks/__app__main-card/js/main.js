@@ -185,7 +185,7 @@ class CreateSubscriptionsMainCard extends CreateItem {
       this.date.insertAdjacentHTML('afterend', templateAddress);
       this.contentContainer = this.element.querySelector('.main-card__content-container');
       /* eslint-disable-next-line */
-      this.qrTemplate = `<div style="background-image: url('data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-qr.svg]]')" class="main-card__icon main-card__icon--type--qr"></div>`;
+        this.qrTemplate = `<div style="background-image: url('data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-qr.svg]]')" class="main-card__icon main-card__icon--type--qr"></div>`;
       this.contentContainer.insertAdjacentHTML('afterend', this.qrTemplate);
       this.qr = this.element.querySelector('.main-card__icon--type--qr');
       this.qrImage = this.element.querySelector('.main-card__img-qr');
@@ -220,12 +220,13 @@ class CreateSubscriptionsMainCard extends CreateItem {
         }
       });
     }
-    /* const imgEl = this.element.querySelector('.main-card__img');
+
+    const imgEl = this.element.querySelector('.main-card__img');
     if (!canUseWebP()) {
       loadImg(subscriptionInfo, imgEl, 'jpg');
     } else {
       loadImg(subscriptionInfo, imgEl, 'webp');
-    } */
+    }
     return super.create(this.element);
   }
 }
@@ -321,19 +322,21 @@ class CreateInboxMainCardNews extends CreateItem {
       title.classList.add('main-card__title--font-weight--normal');
     }
     this.element.addEventListener('click', () => {
-      togglePageInboxDetails.rendering(messageInfo);
-      if (!isEmptyObj(userMessages) && userMessages.success && userMessages.successData.messages.length !== 0 && !isEmptyObj(userInfoObj)) {
-        userMessages.successData.messages.forEach((messageInfos) => {
-          if (messageInfos.wasRead === null) {
-            api.markMessageRead(messageInfos.client, messageInfos.timestamp, messageInfos.id);
-          }
-        });
-      }
-      inboxPage.checkMessages();
-      /* if (!wasRead) {
-        api.markMessageRead(client, timestamp, id);
-      } */
-      title.classList.add('main-card__title--font-weight--normal');
+      stopAction(() => {
+        togglePageInboxDetails.rendering(messageInfo);
+        if (!isEmptyObj(userMessages) && userMessages.success && userMessages.successData.messages.length !== 0 && !isEmptyObj(userInfoObj)) {
+          userMessages.successData.messages.forEach((messageInfos) => {
+            if (messageInfos.wasRead === null) {
+              api.markMessageRead(messageInfos.client, messageInfos.timestamp, messageInfos.id);
+            }
+          });
+        }
+        inboxPage.checkMessages();
+        /* if (!wasRead) {
+          api.markMessageRead(client, timestamp, id);
+        } */
+        title.classList.add('main-card__title--font-weight--normal');
+      });
     });
     return super.create(this.element);
   }

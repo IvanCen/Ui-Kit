@@ -300,7 +300,7 @@ class CreateFormInputSignInQuestions extends CreateItem {
   create(userInfo) {
     if (userInfo.name === '') {
       this.templateName = `
-        <div class="swiper-slide swiper-slide--indentation" data-id="name">
+        <div class="swiper-slide swiper-slide--indentation banners__banner" data-id="name">
           <div class="slide-wrapper">
             <div class="form__input-container form__input-container--name">
               <h2 class="form__title">Давайте знакомиться, меня зовут Хлебник, а вас?</h2>
@@ -313,18 +313,18 @@ class CreateFormInputSignInQuestions extends CreateItem {
                     </ul>
                  </label>
                 </div>
-              </div>
-              <div class="login__buttons-for-form">
-                  <button type="submit" class="button form__button--type--next-name button--type--next-swiper button--color-5 button--type--disabled" disabled>Далее</button>
-                  <button type="skip" class="button button--size--large">Пропустить</button>
-              </div>
-              </div>
-          </div>
+            </div>
+            <div class="login__buttons-for-form">
+                <button type="submit" class="button form__button--type--next-name button--type--next-swiper button--color-5 button--type--disabled" disabled>Далее</button>
+                <button type="skip" class="button button--size--large">Пропустить</button>
+            </div>
+            </div>
+        </div>
         `;
     }
     if (userInfo.birthday === '') {
       this.templateBirthday = `
-        <div class="swiper-slide swiper-slide--indentation" data-id="birthday">
+        <div class="swiper-slide swiper-slide--indentation banners__banner" data-id="birthday">
               <div class="slide-wrapper">
                   <div class="form__input-container form__input-container--birthday">
                     <h2 class="form__title">Хотите рассказать нам о своей дате рождения? Мы регулярно проводим специальные акции для именинников</h2>  
@@ -347,7 +347,7 @@ class CreateFormInputSignInQuestions extends CreateItem {
     }
     if (userInfo.email === '') {
       this.templateEmail = `
-        <div class="swiper-slide swiper-slide--indentation" data-id="email">
+        <div class="swiper-slide swiper-slide--indentation banners__banner" data-id="email">
               <div class="slide-wrapper">
                   <div class="form__input-container form__input-container--email">
                     <h2 class="form__title">Поделитесь своим email адресом, чтобы первым узнавать о новинках</h2> 
