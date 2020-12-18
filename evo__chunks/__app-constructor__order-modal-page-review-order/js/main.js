@@ -29,7 +29,7 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
           this.bascketDeliverySection = this.modalPageOrderReview.querySelector('.basket__delivery-type');
           this.bascketStoresSection = this.modalPageOrderReview.querySelector('.basket__shop');
           this.inputsDelivery = this.bascketDeliverySection.querySelectorAll('.form__input');
-          this.inputsStores = this.bascketStoresSection.querySelectorAll('.form__input');
+          this.inputsStores = this.bascketStoresSection.querySelectorAll('.form__input[name="shop"]');
           this.inputsSeasons = this.modalPageOrderReview.querySelectorAll('.form__input[name="seasons"]');
           const { phone } = userInfoObj.successData;
           let isToGo;
@@ -44,7 +44,7 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
             }
           });
           this.inputsStores.forEach((item) => {
-            if (item.checked) {
+            if (item.checked === true) {
               idStore = Number(item.getAttribute('data-id'));
             }
           });
@@ -69,7 +69,7 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
           if (this.inputPromoCode.value !== '') {
             orderPromoCode = this.inputArea.value;
           }
-
+          console.log(idStore);
           api.makeOrderApi(
             phone,
             basketArray,
@@ -98,6 +98,7 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
           userStore.store[day] = userStore.store[day].join(', ');
         }
       }
+
       api.checkWorkTimeStore(userStore.store, this.makeOrder);
     } else {
       toggleModalPageSignIn.rendering();
@@ -260,10 +261,6 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
       selector: ['div'],
       style: ['accordion-section'],
     });
-    const formSeasons = new CreateFormSeasons({
-      selector: ['div'],
-      style: ['accordion-section'],
-    });
     const cardItemReviewContainer = new CreateCardItemReviewContainer({
       selector: ['div'],
       style: ['card-item__container'],
@@ -328,6 +325,15 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
         },
       ],
     });
+    const textAreaBonusCoffee = new TextArea({
+      selector: ['div'],
+      style: ['text-area'],
+      modifier: [
+        '--theme--shadow',
+        '--indentation--small',
+      ],
+      text: 'К этому заказу, после его оплаты, автоматически добавится кофе по акции 6 кофе в подарок.',
+    });
 
 
     this.modalPageOrderReview.append(reviewTopBarNew.create());
@@ -346,9 +352,14 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
       this.container.append(formPromoCode.create());
       this.container.append(formComment.create());
       this.container.append(formFriendPay.create());
-      if (!isEmptyObj(dataSeasons)) {
-        this.container.append(formSeasons.create());
-      }
+
+      api.getClientCoffeeCount().then((data) => {
+        if (data.successData.count % 5 === 0 && data.successData.count !== 0) {
+          const basketResult = this.modalPageOrderReview.querySelector('.basket__result');
+          basketResult.after(textAreaBonusCoffee.create());
+        }
+      });
+
       this.container.append(textAreaResult.create());
       this.modalPageOrderReview.append(this.container);
 

@@ -184,7 +184,7 @@ class Api {
 
     return fetch('[~30~]', {
       method: 'POST',
-      headers: { 'Content-Type': 'text/html' },
+      headers: {'Content-Type': 'text/html'},
       body: JSON.stringify(request),
     })
       .then((res) => {
@@ -264,7 +264,7 @@ class Api {
   imageCacheQueueApi(request, func) {
     fetch('[~30~]', {
       method: 'POST',
-      headers: { 'Content-Type': 'text/html' },
+      headers: {'Content-Type': 'text/html'},
       body: JSON.stringify(request),
 
     })
@@ -317,16 +317,13 @@ class Api {
   }
 
   makeOrderApi(phone, orderArrItems, shopId, orderComment = '', orderFriendData, promoCode = '', isToGo, idSeasons = '', func) {
-    const { friendName = '', friendPhone = '' } = orderFriendData;
+    const {friendName = '', friendPhone = ''} = orderFriendData;
 
-    console.log(idSeasons);
-    let store = JSON.parse(localStorage.getItem('userStore'));
-    store = store.store;
     const request = {
       method: 'make-order',
       user: phone,
       cart: orderArrItems,
-      shopId: store.id,
+      shopId,
       promoCode,
       takeAway: isToGo,
       comment: orderComment,
@@ -336,7 +333,7 @@ class Api {
       outputFormat: 'json',
     };
 
-    fetch(this.options.baseUrl, {
+    return fetch(this.options.baseUrl, {
       method: 'POST',
       headers: this.options.headers,
       body: JSON.stringify(request),
@@ -373,7 +370,7 @@ class Api {
       outputFormat: 'json',
     };
 
-    fetch(this.options.baseUrl, {
+    return fetch(this.options.baseUrl, {
       method: 'POST',
       headers: this.options.headers,
       body: JSON.stringify(request),
@@ -591,11 +588,16 @@ class Api {
           localStorage.removeItem('authorizationCode');
           localStorage.removeItem('authorizationPhone');
           localStorage.removeItem('userAchievements');
+          localStorage.removeItem('dataUserSeasons');
+          localStorage.removeItem('userLastOrdersObj');
           authorizationPhone = '';
           authorizationCode = '';
           delete userAchievements.successData;
           delete userInfoObj.successData;
+          delete dataUserSeasons.successData;
+          delete userLastOrdersObj.successData;
           localStorage.setItem('userInfo', JSON.stringify(userInfoObj));
+          changePriceAfterChooseStore();
           mainPage.openPage();
         }
         return res;
@@ -905,7 +907,7 @@ class Api {
       outputFormat: 'json',
     };
 
-    fetch(this.options.baseUrl, {
+    return fetch(this.options.baseUrl, {
       method: 'POST',
       headers: this.options.headers,
       body: JSON.stringify(request),
@@ -932,8 +934,8 @@ class Api {
   }
 
   sendMessageToSupport(messageInfo, func) {
-    let { subject = '', message = '' } = messageInfo;
-    const { phone, email, name } = userInfoObj.successData;
+    let {subject = '', message = ''} = messageInfo;
+    const {phone, email, name} = userInfoObj.successData;
     subject += `(Пользователь: ${phone}, ${email}, ${name})`;
     const request = {
       method: 'send-message-to-support',
@@ -964,7 +966,7 @@ class Api {
       });
   }
 
-  getСlientСoffeeСount(func) {
+  getClientCoffeeCount(func) {
     console.log(authorizationPhone, authorizationCode);
     const request = {
       method: 'get-client-coffee-count',
@@ -973,7 +975,7 @@ class Api {
       outputFormat: 'json',
     };
 
-    fetch(this.options.baseUrl, {
+    return fetch(this.options.baseUrl, {
       method: 'POST',
       headers: this.options.headers,
       body: JSON.stringify(request),

@@ -463,6 +463,7 @@ function closePages() {
   toggleModalPageOrderReview.closePage()
   toggleModalPageOrderReview.deletePage()
   toggleModalPageSearch.closePage()
+  inboxPage.checkMessages();
   checkEmptyBasket();
 }
 
@@ -783,9 +784,35 @@ function changePriceAfterChooseStore() {
   const catalogElements = document.querySelectorAll('.catalog__list-element');
 
   catalogElements.forEach((el) => {
-    const id = el.getAttribute('id');
+    const id = Number(el.getAttribute('id'));
     const cardElementPrice = el.querySelector('.catalog__list-element-price');
-    cardElementPrice.textContent = `${dataProductApi.successData.items[id].price} ₽`;
+    let price;
+    if (!isEmptyObj(userStore)) {
+      if (userStore.store.priceGroup === null) {
+        price = dataProductApi.successData.items[id].price;
+      } else {
+        price = dataProductApi.successData.items[id][`price${userStore.store.priceGroup}`];
+      }
+    } else {
+      price = '';
+    }
+
+    if (!isEmptyObj(dataUserSeasons)) {
+      Object.values(dataUserSeasons.successData).forEach((item) => {
+        if (dataSeasons.successData[item.id] && dataUserSeasons.successData[item.id].shopId === userStore.store.id) {
+          Object.values(dataSeasons.successData[item.id].items).forEach((el) => {
+            if (el === id) {
+              price = dataSeasons.successData[item.id].price;
+            }
+          });
+        }
+      });
+    }
+    if(price !== '') {
+      cardElementPrice.textContent = `${price} ₽`;
+    } else {
+      cardElementPrice.textContent = '';
+    }
     cardElementPrice.classList.remove('catalog__list-element-price--hide');
   });
 }

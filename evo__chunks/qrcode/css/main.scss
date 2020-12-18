@@ -1,0 +1,20 @@
+@import "../../_ui-kit/css/main";
+
+.qrcode{
+  display: flex;
+  flex-direction: column;
+  margin: $g10 0;
+  &__img{
+    margin-top: 10px;
+    width: 125px;
+    height: 125px;
+    @include for-size(mobile){
+      width: 125px;
+      height: 125px;
+    }
+    background-size: 152px;
+    background-position: center;
+    background-image: url("[+chunkWebPath+]/img/qrcode.svg");
+    background-repeat: no-repeat;
+  }
+}

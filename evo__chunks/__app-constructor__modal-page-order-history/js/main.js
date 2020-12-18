@@ -37,7 +37,7 @@ class ToggleModalPageOrderHistory extends ToggleModalPage {
   }
 
   rendering() {
-    if (!isEmptyObj(userLastOrdersObj)) {
+    if (!isEmptyObj(userLastOrdersObj) && !isEmptyObj(userInfoObj)) {
       console.log('render');
 
       this.cardSection = new CreateCardItemHistory();

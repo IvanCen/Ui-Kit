@@ -260,6 +260,7 @@ class StoresPage {
               } else {
                 activePlacemark.options.set('iconImageHref', 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-map-point-select.svg]]');
               }
+              changePriceAfterChooseStore();
             });
 
             myMap.geoObjects.add(myCollection);

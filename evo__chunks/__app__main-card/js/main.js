@@ -129,14 +129,6 @@ class CreateSubscriptionsMainCard extends CreateItem {
     } = subscriptionInfo;
     let date = `Действителен ${duration} дней`;
 
-    const dateNowLocal = (new Date().toLocaleString('ru', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-    }).replace('.', '').replace(' г.', ''));
-    let templateAddress;
     let shopName = '';
     if (subscriptionUserInfo) {
       date = `Действителен до ${transformationUtcToLocalDate(subscriptionUserInfo.endDate, {
@@ -145,10 +137,6 @@ class CreateSubscriptionsMainCard extends CreateItem {
         day: 'numeric',
       }).replace('г.', '')}`;
       shopName = storesDataObj.successData[subscriptionUserInfo.shopId].longTitle;
-      templateAddress = `<div class="main-card__address-container">
-          <div style="background-image: url('data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-point.svg]]')" class="main-card__icon--type--point"></div>
-          <span class="main-card__address">${shopName}</span>
-        </div>`;
     }
 
     this.element = document.createElement(this.parameters.selector);
@@ -160,66 +148,95 @@ class CreateSubscriptionsMainCard extends CreateItem {
       <div class="main-card__text-area main-card__text-area--type--subscription">
         <h2 class="main-card__title main-card__title--indentation--small main-card__title--size--big">${title}</h2>
         <p class="main-card__text main-card__date main-card__text--size--small main-card__text--theme--shadow main-card__text--indentation--bottom">${date}</p>
-        
+        <div class="main-card__address-container">
+          <div style="background-image: url('data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-point.svg]]')" class="main-card__icon--type--point"></div>
+          <span class="main-card__address">${shopName}</span>
+        </div>
         <span class="main-card__text main-card__text--text--bold main-card__text--indentation--bottom-small">Условия:</span>
+        ${description}
+        <div class="basket__header basket__header--dark accordion__trigger">
+            <div class="basket__title">Купить абонемент</div>
+        </div>
+        <section class="accordion__container">
+            <div class="form__group basket__group">
+              <div class="form__group basket__group">
+                <label class="form__label form__label--creditCard">
+                    <input id="creditCard" type="radio" class="form__input" name="payment" checked>
+                    Банковская карта
+                </label>
+                <label class="form__label form__label--balance">
+                    <input id="balance" type="radio" class="form__input" name="payment">
+                    Баланс ${userInfoObj.successData.balance || ''}
+                </label>
+                <label class="form__label form__label--bonus form__label--indention--bottom">
+                    <input id="bonus" type="radio" class="form__input" name="payment">
+                    Бонусы ${userInfoObj.successData.bonus || ''}
+                </label>
+            </div>
+            <button class="button button--theme--tangerin button--size--medium">Купить</button>
+          </div>
+        </section>
       </div>
     </div>
-     <div class="main-card__content-container main-card__content-container--qr main-card__content-container--hide">
-        <div class="main-card__text-area main-card__text-area--position--center">
-          <h2 class="main-card__title main-card__title--indentation--small main-card__title--size--big">Отсканируйте код, чтобы получить скидку</h2>
-        </div>
-        <div class="main-card__img-container">
-          <div class="main-card__img-qr"></div>
-        </div>
-        <div class="main-card__text-area main-card__text-area--position--center">
-          <span class="main-card__text main-card__text--type--address main-card__text--indentation--bottom-small">${shopName}</span>
-          <span class="main-card__text main-card__text--size--small main-card__text--theme--shadow main-card__text--indentation--bottom-small">${dateNowLocal}</span>
-        </div>
-      </div>`;
+     `;
     this.element.insertAdjacentHTML('beforeend', this.template);
 
-    this.textArea = this.element.querySelector('.main-card__text-area--type--subscription');
-    this.textArea.insertAdjacentHTML('beforeend', description);
-    if (this.parameters.qr) {
-      this.date = this.element.querySelector('.main-card__date');
-      this.date.insertAdjacentHTML('afterend', templateAddress);
-      this.contentContainer = this.element.querySelector('.main-card__content-container');
-      /* eslint-disable-next-line */
-        this.qrTemplate = `<div style="background-image: url('data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-qr.svg]]')" class="main-card__icon main-card__icon--type--qr"></div>`;
-      this.contentContainer.insertAdjacentHTML('afterend', this.qrTemplate);
-      this.qr = this.element.querySelector('.main-card__icon--type--qr');
-      this.qrImage = this.element.querySelector('.main-card__img-qr');
-      let phone;
-      if (!isEmptyObj(userInfoObj)) {
-        phone = userInfoObj.successData.phone;
+    this.trigger = this.element.querySelector('.accordion__trigger');
+    this.buttonBuy = this.element.querySelector('.button');
+    this.inputs = this.element.querySelectorAll('.form__input');
+
+    this.trigger.addEventListener('click', (e) => {
+      const container = document.querySelector('.accordion__container');
+      this.trigger.classList.toggle('accordion__trigger--active');
+      container.classList.toggle('accordion__container--show');
+      if (container.style.maxHeight) {
+        container.style.maxHeight = null;
       } else {
-        phone = authorizationPhone;
+        container.style.maxHeight = `${container.scrollHeight}px`;
       }
-      const qr = new QRCode(this.qrImage,
-        {
-          text: phone.substr(1),
-          colorDark: '#000000',
-          colorLight: '#ffffff',
-          correctLevel: QRCode.CorrectLevel.H,
-        });
-      this.qr.addEventListener('click', () => {
-        this.conentContainerQr = this.element.querySelector('.main-card__content-container--qr');
-        this.conentContainerSubscription = this.element.querySelector('.main-card__content-container--subscription');
-        if (this.qr.classList.contains('main-card__icon--type--qr')) {
-          this.qr.classList.remove('main-card__icon--type--qr');
-          this.conentContainerSubscription.classList.add('main-card__content-container--hide');
-          this.conentContainerQr.classList.remove('main-card__content-container--hide');
-          this.qr.classList.add('main-card__icon--type--close');
-          this.qr.style.backgroundImage = "url('data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-close-white.svg]]')";
+    });
+
+    this.buttonBuy.addEventListener('click', () => {
+      api.makeOrderApi(
+        userInfoObj.successData.phone,
+        [],
+        userStore.store.id,
+        '',
+        {},
+        '',
+        'toGo',
+        id,
+      ).then((data) => {
+        if (data.success) {
+          [...this.inputs].forEach((item) => {
+            if (item.checked) {
+              api.payOrderApi(item.id, orderInfo.successData)
+                .then((payInfo) => {
+                  if (payInfo.success) {
+                    let successText = 'Ваш заказ успешно оплачен';
+                    let successTextTimeout = 300;
+                    if (typeof payInfo.successData.payUrl !== 'undefined') {
+                      successText = 'Если платеж был успешным, то скоро мы получим его и обновим статус вашего заказа или доставим средства на счет';
+                      successTextTimeout = 2000;
+                      const link = document.querySelector('.text-area__link');
+                      document.location.href = payInfo.successData.payUrl;
+                      link.href = payInfo.successData.payUrl;
+                      link.click();
+                    }
+                    setTimeout(() => {
+                      toggleModal.rendering({ subject: 'Информация', text: successText });
+                    }, successTextTimeout);
+                  } else {
+                    toggleModal.rendering({ subject: 'Ошибка', text: payInfo.errors[0] });
+                  }
+                }).then(() => api.getClientSeasons());
+            }
+          });
         } else {
-          this.conentContainerSubscription.classList.remove('main-card__content-container--hide');
-          this.conentContainerQr.classList.add('main-card__content-container--hide');
-          this.qr.classList.add('main-card__icon--type--qr');
-          this.qr.classList.remove('main-card__icon--type--close');
-          this.qr.style.backgroundImage = "url('data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-qr.svg]]')";
+          toggleModal.rendering({ subject: 'Ошибка', text: data.errors[0] });
         }
       });
-    }
+    });
 
     const imgEl = this.element.querySelector('.main-card__img');
     if (!canUseWebP()) {

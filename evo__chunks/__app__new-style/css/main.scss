@@ -281,8 +281,8 @@
     &-element {
       box-shadow: 0px 2px 11px rgba(0, 0, 0, 0.12);
       width: 310px;
-      height: 256px;
-      max-height: 256px;
+      height: 270px;
+      max-height: 270px;
       border-radius: 11px;
       overflow: hidden;
 
@@ -3311,7 +3311,7 @@
 
 .map-search {
   position: absolute;
-  top: 0;
+  top: 16px;
   padding: 16px;
   width: 100%;
   opacity: 0;

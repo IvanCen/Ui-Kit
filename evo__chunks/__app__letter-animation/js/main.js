@@ -7,7 +7,7 @@ function LetterAnimation() {
                             <div class="letter-front"></div>
                             <div class="letter-bottom"></div>
                             <div class="letter-top"></div>
-                            <div class="letter-count">99+</div>
+                            <div class="letter-count">1+</div>
                         </div>
                         <div class="fire">
                             <div class="fire-1"></div>

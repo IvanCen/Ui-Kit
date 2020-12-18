@@ -30,7 +30,7 @@ class CreateCardItemProductCardNew extends CreateItem {
 
     if (!isEmptyObj(dataUserSeasons)) {
       Object.values(dataUserSeasons.successData).forEach((item) => {
-        if (dataSeasons.successData[item.id]) {
+        if (dataSeasons.successData[item.id] && dataUserSeasons.successData[item.id].shopId === userStore.store.id) {
           Object.values(dataSeasons.successData[item.id].items).forEach((el) => {
             if (el === productInfo.id) {
               price = dataSeasons.successData[item.id].price;
@@ -214,7 +214,7 @@ class CreateCardItemReview extends CreateItem {
 
     if (!isEmptyObj(dataUserSeasons)) {
       Object.values(dataUserSeasons.successData).forEach((item) => {
-        if (dataSeasons.successData[item.id]) {
+        if (dataSeasons.successData[item.id] && dataUserSeasons.successData[item.id].shopId === userStore.store.id) {
           Object.values(dataSeasons.successData[item.id].items).forEach((el) => {
             if (el === productInfo.id) {
               price = dataSeasons.successData[item.id].price;
@@ -310,8 +310,8 @@ class CreateCardItemReview extends CreateItem {
           priceAllModifier += dataProductApi.successData.modifiers[modifier.id].price * modifier.count;
           const cardItemListItem = document.createElement('li');
           const template = `
-                            <div class="basket__offers-element-modifiers-list-name">${dataProductApi.successData.modifiers[modifier.id].name}</div>
-                            <div class="basket__offers-element-modifiers-list-element-price">+<span class="basket__offers-element-price-number">${dataProductApi.successData.modifiers[modifier.id].price}</span> ₽</div>
+                            <div class="basket__offers-element-modifiers-list-name">${dataProductApi.successData.modifiers[modifier.id].name} ${modifier.count}</div>
+                            <div class="basket__offers-element-modifiers-list-element-price">+<span class="basket__offers-element-price-number">${priceAllModifier}</span> ₽</div>
                         `;
           cardItemListItem.insertAdjacentHTML('beforeend', template);
           cardItemListItem.classList.add('basket__offers-element-modifiers-list-element');

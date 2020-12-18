@@ -32,12 +32,20 @@
 }
 
 .text-area {
-  padding-left: 16px;
+  //padding-left: 16px;
 
   //border-bottom: 1px solid $gainsboroGray;
 
   &--theme--light {
     background-color: $white;
+  }
+
+  &--theme--shadow {
+    color: $gray;
+  }
+
+  &--indentation--small {
+    padding-bottom: 20px;
   }
 
   &--indentation--top {

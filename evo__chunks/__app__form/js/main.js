@@ -605,7 +605,7 @@ class CreateFormStores extends CreateItem {
       } else {
         template = `
         <label class="form__label">
-            <input type="radio" class="form__input" name="shop">
+            <input type="radio" data-id="${item.id}" class="form__input" name="shop">
             ${item.shortTitle}
         </label>
    `;
@@ -684,16 +684,27 @@ class CreateFormSeasons extends CreateItem {
 
   create() {
     this.template = `
-        <div class="basket__header basket__header--dark accordion__trigger" data-id="7">
+        <div class="basket__header basket__header--dark accordion__trigger">
             <div class="basket__title">Купить абонемент</div>
         </div>
-        <section class="accordion__container" data-id="7">
+        <section class="accordion__container">
             <div class="form__group basket__group">
-                <label class="form__label">
-                    <input type="radio" class="form__input" name="seasons" checked>
-                    Отказаться
+              <div class="form__group basket__group">
+                <label class="form__label form__label--creditCard">
+                    <input id="creditCard" type="radio" class="form__input" name="payment" checked>
+                    Банковская карта
+                </label>
+                <label class="form__label form__label--balance">
+                    <input id="balance" type="radio" class="form__input" name="payment">
+                    Баланс ${userInfoObj.successData.balance || ''}
+                </label>
+                <label class="form__label form__label--bonus">
+                    <input id="bonus" type="radio" class="form__input" name="payment">
+                    Бонусы ${userInfoObj.successData.bonus || ''}
                 </label>
             </div>
+            <button class="button button--theme--tangerin button--size--medium button--theme--shadow-medium">Купить</button>
+          </div>
         </section>
    `;
     this.element.insertAdjacentHTML('beforeend', this.template);

@@ -142,400 +142,6 @@ function switchAddNew(productInfo, el) {
   });
 }
 
-class CreateTextAreaAddinsProductCard extends CreateItem {
-  constructor(parameters) {
-    super();
-    this.parameters = parameters;
-    this.element = document.createElement(this.parameters.selector);
-  }
-
-  countNutrition(obj, el, counter) {
-    Object.entries(obj).forEach(([key, value]) => {
-      if (value !== null) {
-        const nutritionEl = el.querySelector(`.text-area__info-number--${key}`);
-        if (nutritionEl) {
-          const regExp = /(\d*\.?\d*).*/gm;
-          const number = Number(nutritionEl.textContent.trim().replace(regExp, '$1'));
-          const finalNumber = (number + (value * counter)).toFixed(1);
-          nutritionEl.textContent = `${finalNumber} г`;
-        }
-      }
-    });
-  }
-
-  countPrice(productInfo, productItemModif, counter) {
-    const priceEl = this.element.querySelector('.text-area__price');
-    let price = Number(priceEl.textContent);
-    price += productItemModif.price * counter;
-    priceEl.textContent = price;
-  }
-
-  createModif(el, productItemModif, counter) {
-    const textAreaListItem = document.createElement('li');
-    const textAreaList = el.querySelector('.text-area__list');
-    textAreaListItem.classList.add('text-area__list-item');
-    textAreaListItem.id = productItemModif.id;
-    textAreaListItem.textContent = `${counter} добав${number_of(counter, ['ка', 'ки', 'ок'])} ${productItemModif.name}`;
-    textAreaList.append(textAreaListItem);
-  }
-
-  renderModifier(modifierName, el, productInfo) {
-    const descriptionArea = el.querySelector('.text-area--type--description');
-    const element = document.createElement('div');
-    element.classList.add('text-area', 'text-area--theme--light', 'text-area--type--modifier');
-    const template = `
-            <div class="text-area__container text-area__container--indentation--small">
-              <div class="text-area__content-container text-area__content-container--direction--column">
-                <h2 class="text-area__title text-area__title--size--small text-area__title--type--bold">${modifierName}</h2>
-                <ul class="text-area__list"></ul>
-              </div>
-              <button class="button">
-                <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-right.svg]]" alt="" class="text-area__icon text-area__icon--position--center">
-              </button>
-            </div>`;
-    element.insertAdjacentHTML('beforeend', template);
-
-    if (typeof userDataObj === 'object' && userDataObj[productInfo.id] !== undefined && typeof userDataObj[productInfo.id] === 'object') {
-      Object.keys(userDataObj[productInfo.id]).forEach((modifiersUserItem) => {
-        const productItemModif = dataProductApi.successData.modifiers[Number(modifiersUserItem)];
-        const counter = userDataObj[productInfo.id][modifiersUserItem];
-        if (productItemModif.category === modifierName && counter !== 0) {
-          const {
-            caffeine, carbon, cholesterol,
-            energy, energyFatValue, fats,
-            fiber, netWeight, protein,
-            saturatedFats, sodium, sugar,
-            transFats, volume,
-          } = productItemModif;
-          this.countPrice(productInfo, productItemModif, counter);
-          this.countNutrition({
-            caffeine,
-            carbon,
-            cholesterol,
-            energy,
-            energyFatValue,
-            fats,
-            fiber,
-            netWeight,
-            protein,
-            saturatedFats,
-            sodium,
-            sugar,
-            transFats,
-            volume,
-          }, el, counter);
-          this.createModif(element, productItemModif, counter);
-        }
-      });
-    }
-    element.addEventListener('click', () => {
-      stopAction(() => {
-        toggleThirdPageAddinsCard.rendering(productInfo, modifierName);
-      });
-    });
-    descriptionArea.after(element);
-  }
-
-  removeEmptyNutrition(productInfo) {
-    Object.entries(productInfo).forEach(([key, value]) => {
-      const modifEl = this.element.querySelector(`.text-area__info-number--${key}`);
-      if ((value === null || value === 0) && modifEl) {
-        modifEl.parentElement.remove();
-      }
-    });
-  }
-
-  create(productInfo) {
-    let price;
-    if (!isEmptyObj(userStore)) {
-      if (userStore.store.priceGroup === null) {
-        price = productInfo.price;
-      } else {
-        price = productInfo[`price${userStore.store.priceGroup}`];
-      }
-    } else {
-      price = 0;
-    }
-
-    /* if (!isEmptyObj(dataUserSeasons)) {
-      Object.values(dataUserSeasons.successData).forEach((item) => {
-        if (dataSeasons.successData[item.id]) {
-          Object.values(dataSeasons.successData[item.id].items).forEach((el) => {
-            if (el === productInfo.id) {
-              price = dataSeasons.successData[item.id].price;
-            }
-          });
-        }
-      });
-    } */
-
-    this.template = `
-      <button class="button text-area__button text-area__button--type--like text-area__button--position--absolute">
-        <svg aria-label="Лайк!" class="text-area__icon text-area__icon--type--like" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M1.8 9.80005C1.6 9.25005 1.5 8.67005 1.5 8.05005C1.5 5.15005 3.86 2.80005 6.75 2.80005C8.84 2.80005 10.66 4.03005 11.5 5.80005C11.7 6.22005 12.29 6.22005 12.5 5.80005C13.35 4.02005 15.16 2.80005 17.25 2.80005C20.14 2.80005 22.5 5.15005 22.5 8.05005C22.5 8.67005 22.39 9.27005 22.19 9.83005C21.93 10.56 21.51 11.21 20.97 11.76L12.02 20.66L3.4 12.09L3.39 12.08L3.38 12.07C3.17 11.89 2.98 11.7 2.8 11.49C2.35 10.99 2.02 10.42 1.8 9.80005Z"/>
-        </svg>
-      </button>
-      <div class="text-area text-area--theme--light">
-        <div class="text-area__container text-area__container--indentation--normal text-area__container--indentation--normal">
-          <span class="text-area__price text-area__price--size--big">${price}</span>
-          <div class="text-area__icon-container text-area__icon-container--open"></div>
-        </div>
-      </div>
-      <div class="text-area text-area--theme--light text-area--type--description">
-        <div class="text-area__container text-area__container--indentation--normal">
-          <div class="text-area__content-container text-area__content-container--direction--column">
-            <p class="text-area__text text-area__text--theme--shadow">${productInfo.intro}</p>
-            <div class="text-area__button-container">
-              <button class="button text-area__button text-area__button--type--share">
-                <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-upload.svg]]" alt=""
-                     class="text-area__icon text-area__icon--position--center">
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-       <div class="text-area text-area--theme--light text-area--direction--column text-area--indentation--normal text-area--indentation--top text-area--description-wraper">
-        <div class="text-area__content-container text-area__content-container--direction--row text-area__content-container--type--more">
-          <div class="text-area__text-container">
-            <h2 class="text-area__title text-area__title--size--normal">Подробная информация</h2>
-            <span class="text-area__info text-area__info--text-size--normal text-area__info--text-bold text-area__info--netWeight">
-              Масса нетто
-              <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--left text-area__info-number--netWeight">
-              ${productInfo.netWeight || ''} г</span>
-            </span>
-            <span class="text-area__info text-area__info--text-size--normal text-area__info--text-bold text-area__info--volume">
-              Объём
-              <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--left text-area__info-number--volume">
-              ${productInfo.volume || ''} мл</span>
-            </span>
-            <span class="text-area__info text-area__info--text-size--normal text-area__info--text-bold">
-              Калорий
-              <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--left text-area__info-number--energy">
-              ${productInfo.energy || ''}</span>
-            </span>
-            <span class="text-area__info text-area__info--text-size--normal text-area__info--text-bold">
-              Жиров
-              <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--left text-area__info-number--fats">
-                ${productInfo.fats || ''} г</span>
-            </span>
-                <span class="text-area__sub-info">
-                  Насыщенных жиров 
-                  <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--left text-area__info-number--saturatedFats">
-                    ${productInfo.saturatedFats || ''} г</span>
-                </span>
-                <span class="text-area__sub-info">
-                  Трансжиров
-                  <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--left text-area__info-number--transFats">
-                    ${productInfo.transFats || ''} г</span>
-                </span>
-            <span class="text-area__info text-area__info--text-size--normal text-area__info--text-bold">
-              Холестерин
-              <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--left text-area__info-number--cholesterol">
-                ${productInfo.cholesterol || ''} г</span>
-            </span>
-            <span class="text-area__info text-area__info--text-size--normal text-area__info--text-bold">
-              Натрий
-              <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--left text-area__info-number--sodium">
-                ${productInfo.sodium || ''} г</span>
-            </span>
-            <span class="text-area__info text-area__info--text-size--normal text-area__info--text-bold">
-              Углеводов
-              <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--left text-area__info-number--carbon">
-                ${productInfo.carbon || ''} г</span>
-            </span>
-                <span class="text-area__sub-info">
-                  Клетчатка
-                  <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--left text-area__info-number--fiber">
-                    ${productInfo.fiber || ''} г</span>
-                </span>
-                <span class="text-area__sub-info">
-                  Сахар
-                <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--left text-area__info-number--sugar">
-                    ${productInfo.sugar || ''} г</span>
-                </span>
-            <span class="text-area__info text-area__info--text-size--normal text-area__info--text-bold">
-              Белок
-              <span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--left text-area__info-number--protein">
-                ${productInfo.protein || ''} г</span>
-            </span>
-            <span class="text-area__info text-area__info--text-size--normal text-area__info--text-bold">
-              Кофеин<span class="text-area__info-number text-area__info--text-size--normal text-area__info-number--indentation--left text-area__info-number--caffeine">
-                ${productInfo.caffeine || ''} г</span>
-            </span>
-          </div>
-          <button class="button button--theme--chocolate text-area__button text-area__button--type--more">
-              узнать больше
-          </button>
-        </div>
-        <div class="text-area__content-container text-area__content-container--direction--column">
-          <p class="text-area__text text-area__text--indentation--small text-area__text--theme--shadow">КБЖУ блюда рассчитывается автоматически. Модификация товара приведет к перерассчету информации на этой странице. Если модификации не выбраны - будет показана информация основного рецепта.</p>
-        </div>
-    </div>
-    <div class="text-area text-area--theme--light">
-      <div class="text-area__container text-area__container--type--ingredients text-area__container--indentation--normal">
-        <div class="text-area__content-container text-area__content-container--direction--column">
-          <h2 class="text-area__title text-area__title--size--normal text-area__title--indentation--bottom">Ингредиенты</h2>
-          <span class="text-area__text text-area__text--theme--shadow text-area__text--type--ingredients"></span>
-        </div>
-       </div>
-      <div class="text-area__container--indentation--normal">
-        <div class="text-area__content-container text-area__content-container--direction--column">
-          <h2 class="text-area__title text-area__title--size--normal text-area__title--indentation--bottom">Аллергены</h2>
-          <span class="text-area__text text-area__text--theme--shadow text-area__text--type--allergens"></span>
-          <p class="text-area__text text-area__text--theme--shadow">Мы не можем гарантировать отсутствие следов продуктов, которые могут вызвать аллергию в наших блюдах, так как мы используем общее оборудование для хранения.</p>
-        </div>
-       </div>
-    </div>
-    <button class="button button--size--big button--theme--tangerin button--type--fixed-with-bottom-bar button--theme--shadow-big text-area__button--type--add-product">В корзину</button>
-    `;
-    this.element.insertAdjacentHTML('beforeend', this.template);
-
-    this.removeEmptyNutrition(productInfo);
-
-    this.buttonShare = this.element.querySelector('.text-area__button--type--share');
-    this.iconsLike = this.element.querySelector('.text-area__icon--type--like');
-    this.blockLike = document.querySelector('.main-card__content-img');
-    this.buttonMore = this.element.querySelector('.text-area__button--type--more');
-    this.buttonAdd = this.element.querySelector('.text-area__button--type--add-product');
-    this.nutritionArea = this.element.querySelector('.text-area__content-container--type--more');
-    this.introEl = this.element.querySelector('.text-area--type--description');
-    this.price = this.element.querySelector('.text-area__price');
-    this.stickersContainer = this.element.querySelector('.text-area__icon-container');
-    this.containerIngredients = this.element.querySelector('.text-area__container--type--ingredients');
-
-    if (isEmptyObj(userStore)) {
-      this.price.classList.add('text-area__price--hide');
-    } else {
-      this.price.classList.remove('text-area__price--hide');
-    }
-
-    if (productInfo.intro === '') {
-      this.introEl.remove();
-    }
-
-    if (productInfo.stickers && productInfo.stickers.length !== 0) {
-      productInfo.stickers.forEach((stickerName) => {
-        const stickerEl = document.createElement('div');
-        stickerEl.classList.add('text-area__icon', 'text-area__icon--size--big', `text-area__icon--type--${stickerName}`);
-        this.stickersContainer.prepend(stickerEl);
-      });
-    }
-
-    this.buttonMore.addEventListener('click', () => {
-      this.nutritionArea.classList.remove('text-area__content-container--type--more');
-      this.buttonMore.remove();
-    });
-    itemsArray.forEach((item) => {
-      if (item.id === productInfo.id) {
-        this.iconsLike.classList.add('text-area__icon--liked');
-      }
-    });
-    this.iconsLike.addEventListener('click', () => {
-      this.blockLike.click();
-    });
-    this.blockLike.addEventListener('click', () => {
-      this.iconsLike.classList.toggle('text-area__icon--liked');
-      if (this.iconsLike.classList.contains('text-area__icon--liked')) {
-        if (productInfo.modifiers !== null) {
-          const modifiersArr = [];
-          for (const modif in userDataObj[productInfo.id]) {
-            modifiersArr.push({ id: Number(modif), count: userDataObj[productInfo.id][modif] });
-          }
-          itemsArray.push({ id: productInfo.id, modifiers: modifiersArr });
-        } else {
-          itemsArray.push({ id: productInfo.id, modifiers: [] });
-        }
-        localStorage.setItem('items', JSON.stringify(itemsArray));
-      } else {
-        itemsArray.every((item, index) => {
-          if (item.id === dataProductApi.successData.items[productInfo.id].id) {
-            itemsArray.splice(index, 1);
-            return false;
-          }
-          return true;
-        });
-        localStorage.setItem('items', JSON.stringify(itemsArray));
-      }
-    });
-
-    this.buttonAdd.addEventListener('click', () => {
-      addProductToBasket(productInfo);
-    });
-
-    const shareData = {
-      title: productInfo.name,
-      text: productInfo.intro,
-      url: productInfo.shareLink.replace('//app.', '//'),
-    };
-    if (typeof navigator.canShare !== 'undefined' && navigator.canShare(shareData)) {
-      this.buttonShare.addEventListener('click', () => {
-        navigator.share(shareData);
-      });
-    } else {
-      this.buttonShare.style.display = 'none';
-    }
-
-    const arrModifCategoryName = [];
-    const arrModifProduct = [];
-    const arrIngredientsProduct = [];
-    const arrModifIngredients = [];
-    const arrAllIngredientsProductName = [];
-    const arrAllAllergensProductName = [];
-
-    if (productInfo.modifiers !== null) {
-      productInfo.modifiers.forEach((modifier) => {
-        arrModifCategoryName.push(dataProductApi.successData.modifiers[modifier].category);
-        arrModifProduct.push(dataProductApi.successData.modifiers[modifier]);
-        if (dataProductApi.successData.modifiers[modifier].ingredients !== null) {
-          dataProductApi.successData.modifiers[modifier].ingredients.forEach((modifierIngredient) => {
-            arrModifIngredients.push(dataProductApi.successData.ingredients[Number(modifierIngredient)]);
-          });
-        }
-      });
-    }
-    if (productInfo.ingredients !== null) {
-      productInfo.ingredients.forEach((ingredient) => {
-        arrIngredientsProduct.push(dataProductApi.successData.ingredients[ingredient]);
-      });
-    }
-
-    arrIngredientsProduct.forEach((ingredient) => {
-      if (ingredient) {
-        arrAllIngredientsProductName.push(ingredient.name);
-        if (ingredient.allergenFlag) {
-          arrAllAllergensProductName.push(ingredient.name);
-        }
-      }
-    });
-
-    const elementIngredients = this.element.querySelector('.text-area__text--type--ingredients');
-    const elementAllergens = this.element.querySelector('.text-area__text--type--allergens');
-    elementIngredients.textContent = arrAllIngredientsProductName.join(', ');
-    elementAllergens.textContent = arrAllAllergensProductName.join(', ');
-
-    if (productInfo.ingredients === null) {
-      this.containerIngredients.remove();
-    }
-
-    const unicModifName = new Set(arrModifCategoryName);
-    [...unicModifName].forEach((name) => {
-      this.renderModifier(name, this.element, productInfo);
-    });
-
-    const descriptionArea = this.element.querySelector('.text-area--description-wraper');
-    const modifiers = this.element.querySelectorAll('.text-area--type--modifier');
-    if (typeof userDataObj === 'object' && userDataObj[productInfo.id] !== undefined && !isEmptyObj(userDataObj[productInfo.id])) {
-      const buttonReset = document.createElement('button');
-      buttonReset.classList.add('text-area__button', 'text-area__button--type--reset');
-      buttonReset.textContent = 'сбросить модификаторы';
-      descriptionArea.before(buttonReset);
-      [...modifiers].pop().firstElementChild.classList.add('text-area__container--no-border');
-    }
-
-    return super.create(this.element);
-  }
-}
-
 class CreateTextAreaProductCard extends CreateItem {
   constructor(parameters) {
     super();
@@ -651,9 +257,9 @@ class CreateTextAreaProductCard extends CreateItem {
       price = 0;
     }
 
-     if (!isEmptyObj(dataUserSeasons)) {
+    if (!isEmptyObj(dataUserSeasons)) {
       Object.values(dataUserSeasons.successData).forEach((item) => {
-        if (dataSeasons.successData[item.id]) {
+        if (dataSeasons.successData[item.id] && dataUserSeasons.successData[item.id].shopId === userStore.store.id) {
           Object.values(dataSeasons.successData[item.id].items).forEach((el) => {
             if (el === productInfo.id) {
               price = dataSeasons.successData[item.id].price;
@@ -965,6 +571,20 @@ class CreateTextAreaAddins extends CreateItem {
   }
 }
 
+class TextArea extends CreateItem {
+  constructor(parameters) {
+    super();
+    this.parameters = parameters;
+  }
+
+  create(productInfo) {
+    this.element = document.createElement(this.parameters.selector);
+    this.element.textContent = this.parameters.text;
+
+    return super.create(this.element);
+  }
+}
+
 class CreateTextAreaSharesDetail extends CreateItem {
   constructor(parameters) {
     super();
@@ -1010,28 +630,6 @@ class CreateTextAreaSharesDetail extends CreateItem {
           this.imageListElements[i].classList.add('shares-detail__images-list-element--not-empty');
         }
       }
-
-
-      /* const qrImg = new QRCode(this.element.querySelector('.shares-detail__img-qr'),
-        {
-          text: userInfoObj.successData.phone.substr(1),
-          colorDark: '#000000',
-          colorLight: '#ffffff',
-          correctLevel: QRCode.CorrectLevel.H,
-        });
-      let openQr = false;
-      this.button.addEventListener('click', () => {
-        openQr = !openQr;
-        this.container = this.element.querySelector('.shares-detail__container');
-        this.imageContainer = this.element.querySelector('.shares-detail__img-container');
-        this.container.classList.toggle('shares-detail__container--hide');
-        this.imageContainer.classList.toggle('shares-detail__img-container--hide');
-        if (openQr) {
-          this.button.textContent = 'Скрыть QR';
-        } else {
-          this.button.textContent = 'Показать QR';
-        }
-      }); */
     } else {
       toggleModal.rendering({
         subject: 'Ошибка',
@@ -1297,7 +895,7 @@ class CreateTextAreaAccount extends CreateItem {
     });
     this.buttonGift.addEventListener('click', () => {
       stopAction(() => {
-        api.getСlientСoffeeСount(toggleModalPageSharesDetail.rendering);
+        api.getClientCoffeeCount(toggleModalPageSharesDetail.rendering);
       });
     });
 
@@ -1849,8 +1447,10 @@ class TextAreaNoSignIn extends CreateItem {
 
       for (const event of eventsButton) {
         this.button.addEventListener(event.type || 'click', () => {
-          returnPageObj.returnBalanceAfterSignIn = true;
-          event.callback();
+          stopAction(() => {
+            returnPageObj.returnBalanceAfterSignIn = true;
+            event.callback();
+          });
         });
       }
     }

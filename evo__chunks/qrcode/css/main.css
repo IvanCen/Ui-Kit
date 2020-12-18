@@ -1,0 +1,1 @@
+.qrcode{display:flex;flex-direction:column;margin:2.4rem 0}.qrcode__img{margin-top:10px;width:125px;height:125px;background-size:152px;background-position:center;background-image:url("[+chunkWebPath+]/img/qrcode.svg");background-repeat:no-repeat}@media(min-width: 556px){.qrcode__img{width:125px;height:125px}}

@@ -1,4 +1,36 @@
 @font-face {
+	font-family: 'Rubik';
+	src: url('https://xleb.ru[+chunkWebPath+]/css/Rubik-Regular.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Rubik';
+	src: url('https://xleb.ru[+chunkWebPath+]/css/Rubik-Bold.ttf') format('truetype');
+	font-weight: 700;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Rubik';
+	src: url('https://xleb.ru[+chunkWebPath+]/css/Rubik-Light.ttf') format('truetype');
+	font-weight: 300;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Rubik';
+	src: url('https://xleb.ru[+chunkWebPath+]/css/Rubik-Medium.ttf') format('truetype');
+	font-weight: 500;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
 	font-family: 'SF UI Text';
 	src: url('SFUIText-HeavyItalic.eot');
 	src: local('SF UI Text Heavy Italic'), local('SFUIText-HeavyItalic'),

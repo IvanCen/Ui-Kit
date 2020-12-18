@@ -25,40 +25,44 @@ class BalancePage {
   }
 
   openPage() {
-    this.mainPageContent = document.querySelector('.main-page__content-balance');
-    this.mainPageContentContainerBalance = document.querySelector('.main-page__content-container-balance');
-    this.textAreaContainerSignIn = document.querySelector('.text-area-container--zone--balance');
-    this.topBarTabs = document.querySelector('.header__top-tabs-balance');
-    this.headerTitle = document.querySelector('.header__status');
-    this.topBarTabs.classList.remove('header__top-tabs--hide');
-    this.balance = document.querySelector('.balance__currency-balance');
-    this.bonus = document.querySelector('.balance__currency-bonus');
-    this.buttonFill = document.querySelector('.button--type--fill');
+    try {
+      this.mainPageContent = document.querySelector('.main-page__content-balance');
+      this.mainPageContentContainerBalance = document.querySelector('.main-page__content-container-balance');
+      this.textAreaContainerSignIn = document.querySelector('.text-area-container--zone--balance');
+      this.topBarTabs = document.querySelector('.header__top-tabs-balance');
+      this.headerTitle = document.querySelector('.header__status');
+      this.topBarTabs.classList.remove('header__top-tabs--hide');
+      this.balance = document.querySelector('.balance__currency-balance');
+      this.bonus = document.querySelector('.balance__currency-bonus');
+      this.buttonFill = document.querySelector('.button--type--fill');
 
-    if (this.buttonFill) {
-      this.buttonFill.classList.remove('button--hide');
-    }
-
-    if (isEmptyObj(userInfoObj)) {
-      if (this.mainPageContentContainerBalance) {
-        this.mainPageContentContainerBalance.classList.add('main-page__content-container--hide');
+      if (this.buttonFill) {
+        this.buttonFill.classList.remove('button--hide');
       }
-      this.textAreaContainerSignIn.classList.remove('text-area-container--hide');
-    } else {
-      this.balance.textContent = `${userInfoObj.successData.balance} ₽`;
-      this.bonus.textContent = `${userInfoObj.successData.bonus} ❤`;
-      this.mainPageContentContainerBalance.classList.remove('main-page__content-container--hide');
-      this.textAreaContainerSignIn.classList.add('text-area-container--hide');
-    }
 
-    setTimeout(() => {
-      if (this.mainPageContent) {
-        this.mainPageContent.classList.add('main-page__content--opened-with-tabs', `${isIos ? 'main-page__content--opened-with-tabs--ios' : 'main-page__content--opened-with-tabs--not--ios'}`);
-        this.mainPageContent.classList.add('main-page__content--opened');
-        this.headerTitle.textContent = 'Баланс';
+      if (isEmptyObj(userInfoObj)) {
+        if (this.mainPageContentContainerBalance) {
+          this.mainPageContentContainerBalance.classList.add('main-page__content-container--hide');
+        }
+        this.textAreaContainerSignIn.classList.remove('text-area-container--hide');
+      } else {
+        this.balance.textContent = `${userInfoObj.successData.balance} ₽`;
+        this.bonus.textContent = `${userInfoObj.successData.bonus} ❤`;
+        this.mainPageContentContainerBalance.classList.remove('main-page__content-container--hide');
+        this.textAreaContainerSignIn.classList.add('text-area-container--hide');
       }
-    }, 100);
-    history.pushState({ state: '#' }, null, '#');
+
+      setTimeout(() => {
+        if (this.mainPageContent) {
+          this.mainPageContent.classList.add('main-page__content--opened-with-tabs', `${isIos ? 'main-page__content--opened-with-tabs--ios' : 'main-page__content--opened-with-tabs--not--ios'}`);
+          this.mainPageContent.classList.add('main-page__content--opened');
+          this.headerTitle.textContent = 'Баланс';
+        }
+      }, 100);
+      history.pushState({ state: '#' }, null, '#');
+    } catch (e) {
+      alert(e);
+    }
   }
 
   rendering() {

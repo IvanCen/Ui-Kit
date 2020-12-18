@@ -17,7 +17,13 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
 
   /* метод возврата на прошлую страницу, берет boolean из глобального объекта выставляемое перед отрисовкой страницы */
   returnPage() {
-    api.getСlientСoffeeСount();
+    Promise.all([
+      api.getClientCoffeeCount(),
+      api.getClientSeasons(),
+    ])
+      .then(() => changePriceAfterChooseStore())
+      .catch((err) => console.log(err));
+
     toggleModalPageSignIn.closePage();
     toggleModalPageSignIn.deletePage();
     if (returnPageObj.returnMainPageAfterSignIn) {
@@ -453,8 +459,16 @@ class ToggleModalPageSignIn extends ToggleModalPageSignInRoot {
       style: ['login__header'],
       modifier: [`${isIos ? '--ios' : ''}`],
       eventCloseIcon: [
-        { type: 'click', callback: this.closePage },
-        { type: 'click', callback: this.deletePage },
+        {
+          type: 'click',
+          callback: () => {
+            stopAction(() => {
+              this.returnPage();
+              this.closePage();
+              this.deletePage();
+            });
+          },
+        },
       ],
     });
     this.formInputSignIn = new CreateFormInputSignIn({
