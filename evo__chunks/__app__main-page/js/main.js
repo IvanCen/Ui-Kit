@@ -535,7 +535,7 @@ function renderMain() {
   const catalogTagsWraperDrinks = document.querySelector('.catalog__tags[data-id="33"] .swiper-wrapper');
 
   activeBanners(swiperWraper);
-  activeBanners(catalogWraper);
+  activeBanners(catalogWraper, { margin: 8, count: 4 });
   activeBanners(catalogTagsWraper);
   activeBanners(catalogTagsWraperDrinks);
 

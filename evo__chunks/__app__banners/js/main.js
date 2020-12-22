@@ -1,5 +1,4 @@
-function activeBanners(containerBanners, isSwipe, funcCheckBasket = () => {
-}) {
+function activeBanners(containerBanners, { isSwipe = false, margin = 8, count = 1 } = {}) {
   if (containerBanners) {
     let dragStart = 0;
     let dragEnd = 0;
@@ -18,7 +17,8 @@ function activeBanners(containerBanners, isSwipe, funcCheckBasket = () => {
           offsetX /= 2; // уменьшапем скорость смещения в 2 раза
         }
       }
-      const maxOffsetWidth = (-1 * ((mainElementsCount - 1) * (firstElementsWidth) + (mainElementsCount * 8)));
+      // const maxOffsetWidth = (-1 * ((mainElementsCount - 1) * (firstElementsWidth) + (mainElementsCount * 8)));
+      const maxOffsetWidth = (-1 * ((mainElementsCount - count) * (firstElementsWidth) + (mainElementsCount * margin)));
       if (offsetX < maxOffsetWidth) {
         // тут действия, если тянется вправо дальше максимума
         if (action === 'end') {

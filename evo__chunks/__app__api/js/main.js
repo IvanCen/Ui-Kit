@@ -184,7 +184,7 @@ class Api {
 
     return fetch('[~30~]', {
       method: 'POST',
-      headers: {'Content-Type': 'text/html'},
+      headers: { 'Content-Type': 'text/html' },
       body: JSON.stringify(request),
     })
       .then((res) => {
@@ -264,7 +264,7 @@ class Api {
   imageCacheQueueApi(request, func) {
     fetch('[~30~]', {
       method: 'POST',
-      headers: {'Content-Type': 'text/html'},
+      headers: { 'Content-Type': 'text/html' },
       body: JSON.stringify(request),
 
     })
@@ -317,7 +317,7 @@ class Api {
   }
 
   makeOrderApi(phone, orderArrItems, shopId, orderComment = '', orderFriendData, promoCode = '', isToGo, idSeasons = '', func) {
-    const {friendName = '', friendPhone = ''} = orderFriendData;
+    const { friendName = '', friendPhone = '' } = orderFriendData;
 
     const request = {
       method: 'make-order',
@@ -904,6 +904,7 @@ class Api {
       method: 'get-client-seasons',
       phone: authorizationPhone,
       code: authorizationCode,
+      showHidden: true,
       outputFormat: 'json',
     };
 
@@ -934,8 +935,8 @@ class Api {
   }
 
   sendMessageToSupport(messageInfo, func) {
-    let {subject = '', message = ''} = messageInfo;
-    const {phone, email, name} = userInfoObj.successData;
+    let { subject = '', message = '' } = messageInfo;
+    const { phone, email, name } = userInfoObj.successData;
     subject += `(Пользователь: ${phone}, ${email}, ${name})`;
     const request = {
       method: 'send-message-to-support',

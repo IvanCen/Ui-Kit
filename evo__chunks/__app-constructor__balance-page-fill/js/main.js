@@ -20,38 +20,34 @@ class TogglePageBalanceFill extends TogglePage {
   }
 
   setFillInfo() {
-    try {
-      this.page = document.querySelector('.page');
-      this.buttonFill = this.page.querySelector('.button--type--fill');
-      this.topBar = this.page.querySelector('.top-bar');
-      this.buttonSizeBar = this.page.querySelectorAll('.form__sums input');
-      this.sizeBar = this.page.querySelector('.balance__detail-container');
-      this.loader = document.createElement('img');
-      this.loader.classList.add('spinner');
-      this.loader.src = 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-spinner.svg]]';
-      this.topBar.after(this.loader);
+    this.page = document.querySelector('.page');
+    this.buttonFill = this.page.querySelector('.button--type--fill');
+    this.topBar = this.page.querySelector('.top-bar');
+    this.buttonSizeBar = this.page.querySelectorAll('.form__sums input');
+    this.sizeBar = this.page.querySelector('.balance__detail-container');
+    this.loader = document.createElement('img');
+    this.loader.classList.add('spinner');
+    this.loader.src = 'data:image/svg+xml;base64,[[run-snippet? &snippetName=`file-to-base64` &file=[+chunkWebPath+]/img/icon-spinner.svg]]';
+    this.topBar.after(this.loader);
 
-      this.buttonFill.classList.add('button--hide');
-      this.sizeBar.classList.add('size-bar--hide');
-      this.paymentForm = document.createElement('div');
-      this.paymentForm.id = 'payment-form';
-      this.page.append(this.paymentForm);
+    this.buttonFill.classList.add('button--hide');
+    this.sizeBar.classList.add('size-bar--hide');
+    this.paymentForm = document.createElement('div');
+    this.paymentForm.id = 'payment-form';
+    this.page.append(this.paymentForm);
 
-      [...this.buttonSizeBar].forEach((item) => {
-        if (item.checked) {
-          const amount = Number(item.value);
-          const userPhone = userInfoObj.successData.phone;
-          /* if (userPhone === '+79522655566' || userPhone === '+79818380415') {
+    [...this.buttonSizeBar].forEach((item) => {
+      if (item.checked) {
+        const amount = Number(item.value);
+        const userPhone = userInfoObj.successData.phone;
+        /* if (userPhone === '+79522655566' || userPhone === '+79818380415') {
             api.rechargeBalanceApi(userPhone, amount, 'appWidget', this.getPayLinkYandex);
           } else {
             api.rechargeBalanceApi(userPhone, amount, 'app', this.getPayLink);
           } */
-          api.rechargeBalanceApi(userPhone, amount, 'app', this.getPayLink);
-        }
-      });
-    } catch (e) {
-      alert(e);
-    }
+        api.rechargeBalanceApi(userPhone, amount, 'app', this.getPayLink);
+      }
+    });
   }
 
   setFillInfoApplePay() {

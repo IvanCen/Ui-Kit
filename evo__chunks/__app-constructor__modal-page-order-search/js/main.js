@@ -124,7 +124,9 @@ class ToggleModalPageOrderSearch extends ToggleModalPage {
         weight = '';
       }
 
-      if (!isEmptyObj(dataUserSeasons)) {
+      price = changePriceSeasons({price, id: item.id})
+
+      /* if (!isEmptyObj(dataUserSeasons)) {
         Object.values(dataUserSeasons.successData).forEach((itemEl) => {
           if (dataSeasons.successData[itemEl.id]) {
             Object.values(dataSeasons.successData[itemEl.id].items).forEach((el) => {
@@ -135,7 +137,7 @@ class ToggleModalPageOrderSearch extends ToggleModalPage {
             });
           }
         });
-      }
+      } */
 
       const template = `
         <div class="search__list-element-image">

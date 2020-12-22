@@ -127,6 +127,7 @@ class CreateSubscriptionsMainCard extends CreateItem {
     const {
       title, image, duration, id, description,
     } = subscriptionInfo;
+    const { buy = true } = this.parameters;
     let date = `Действителен ${duration} дней`;
 
     let shopName = '';
@@ -143,7 +144,7 @@ class CreateSubscriptionsMainCard extends CreateItem {
     this.template = `
     <div class="main-card__content-container main-card__content-container--subscription">
       <div class="main-card__img-container">
-        <div style="background-image: url('${image}')" class="main-card__img main-card__img--size--small"></div>
+        <div style="background-image: url('https://app.xleb.ru/${image}')" class="main-card__img main-card__img--size--small"></div>
       </div>
       <div class="main-card__text-area main-card__text-area--type--subscription">
         <h2 class="main-card__title main-card__title--indentation--small main-card__title--size--big">${title}</h2>
@@ -185,6 +186,11 @@ class CreateSubscriptionsMainCard extends CreateItem {
     this.buttonBuy = this.element.querySelector('.button');
     this.inputs = this.element.querySelectorAll('.form__input');
 
+    if (!buy) {
+      this.element.querySelector('.accordion__container').remove();
+      this.element.querySelector('.accordion__trigger').remove();
+    }
+
     this.trigger.addEventListener('click', (e) => {
       const container = document.querySelector('.accordion__container');
       this.trigger.classList.toggle('accordion__trigger--active');
@@ -224,6 +230,7 @@ class CreateSubscriptionsMainCard extends CreateItem {
                       link.click();
                     }
                     setTimeout(() => {
+                      this.trigger.click();
                       toggleModal.rendering({ subject: 'Информация', text: successText });
                     }, successTextTimeout);
                   } else {
@@ -238,12 +245,12 @@ class CreateSubscriptionsMainCard extends CreateItem {
       });
     });
 
-    const imgEl = this.element.querySelector('.main-card__img');
+    /*const imgEl = this.element.querySelector('.main-card__img');
     if (!canUseWebP()) {
       loadImg(subscriptionInfo, imgEl, 'jpg');
     } else {
       loadImg(subscriptionInfo, imgEl, 'webp');
-    }
+    }*/
     return super.create(this.element);
   }
 }
@@ -263,42 +270,6 @@ class CreateTextMainCard extends CreateItem {
   create() {
     this.element.insertAdjacentHTML('beforeend', this.template);
 
-    return super.create(this.element);
-  }
-}
-
-class CreateOrderMainCard extends CreateItem {
-  constructor(parameters) {
-    super();
-    this.parameters = parameters;
-    this.element = document.createElement(this.parameters.selector);
-    this.template = `
-        <img src="[+chunkWebPath+]/img/main-card-noimg.jpg" alt="" class="main-card__img">
-        <div class="main-card__text-area">
-          <h2 class="main-card__title main-card__title--size--normal">${this.parameters.title}</h2>
-          <p class="main-card__text">${this.parameters.text}</p>
-        </div>
-        <div class="main-card__button-container main-card__button-container--indentation--left main-card__button-container--indentation--bottom">
-          <button class="button button--size--small button--theme--tangerin main-card__button main-card__button-sign-in">Sign in</button>
-          <button class="button button--size--small button--theme--tangerin-transparent main-card__button main-card__button-join-now">Join now</button>
-        </div>`;
-  }
-
-  create() {
-    this.element.insertAdjacentHTML('beforeend', this.template);
-
-    this.buttonSignIn = this.element.querySelector('.main-card__button-sign-in');
-    this.buttonJoinNow = this.element.querySelector('.main-card__button-join-now');
-    if (typeof this.parameters.eventOpenSignInPage === 'object') {
-      for (const event of this.parameters.eventOpenSignInPage) {
-        this.buttonSignIn.addEventListener(event.type, event.callback);
-      }
-    }
-    if (typeof this.parameters.eventOpenJoinNowPage === 'object') {
-      for (const event of this.parameters.eventOpenJoinNowPage) {
-        this.buttonJoinNow.addEventListener(event.type, event.callback);
-      }
-    }
     return super.create(this.element);
   }
 }
@@ -375,50 +346,6 @@ class CreateInboxMainCard extends CreateItem {
 
   create() {
     this.element.insertAdjacentHTML('beforeend', this.template);
-
-    return super.create(this.element);
-  }
-}
-
-class CreateOrderProductMainCard extends CreateItem {
-  constructor(parameters) {
-    super();
-    this.parameters = parameters;
-    this.element = document.createElement(this.parameters.selector);
-  }
-
-  create(productInfo) {
-    this.template = `
-      <div class="main-card__content">
-        <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-close.svg]]" alt="" class="main-card__icon main-card__icon-close">
-        <div class="main-card__content-img"></div>
-        <h2 class="main-card__content-title main-card__content-title">${this.parameters.title}</h2>
-        <div class="main-card__figure main-card__figure--theme--blood main-card__figure--size--normal main-card__figure--hide"><span class="main-card__info main-card__info--out-of">Закончилось</span></div>
-      </div>`;
-    this.element.insertAdjacentHTML('beforeend', this.template);
-    this.iconClose = this.element.querySelector('.main-card__icon-close');
-    this.figure = this.element.querySelector('.main-card__figure');
-
-    if (typeof this.parameters.eventCloseIcon === 'object') {
-      for (const event of this.parameters.eventCloseIcon) {
-        this.iconClose.addEventListener(event.type, event.callback);
-      }
-    }
-    if (!isEmptyObj(outOfStock)) {
-      for (const id in outOfStock.successData.itemsAndModifiers) {
-        if (Number(id) === productInfo.id) {
-          this.figure.classList.remove('main-card__figure--hide');
-          break;
-        }
-      }
-    }
-
-    const imgEl = this.element.querySelector('.main-card__content-img');
-    if (!canUseWebP()) {
-      loadImg(productInfo, imgEl, 'jpg');
-    } else {
-      loadImg(productInfo, imgEl, 'webp');
-    }
 
     return super.create(this.element);
   }

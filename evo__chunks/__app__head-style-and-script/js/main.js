@@ -152,9 +152,7 @@ function countResultPriceAndAllProductCounter() {
   const allPriceEl = document.querySelectorAll('.basket__offers-element-price-number');
   const resultPrice = document.querySelector('.basket__result-price');
   const labelPackage = document.querySelector('.form__label--type--package');
-  const sectionSeasons = document.querySelector('.accordion__container[data-id="7"]');
   const inputPackage = labelPackage.querySelector('input')
-  const inputsSeasons = sectionSeasons.querySelectorAll('input')
   if (allPriceEl && resultPrice) {
     allPriceEl.forEach((el) => {
       sumPrice += Number(el.textContent);
@@ -164,14 +162,6 @@ function countResultPriceAndAllProductCounter() {
         sumPrice += dataPackage.successData.price
       }
     }
-    inputsSeasons.forEach(el => {
-      if (el.checked) {
-        const id = el.getAttribute('data-id')
-        if (!isEmptyObj(dataPackage) && id) {
-          sumPrice += Number(dataSeasons.successData[id].amount)
-        }
-      }
-    })
 
     resultPrice.textContent = `${sumPrice} ₽`;
   }
@@ -310,47 +300,6 @@ const transformationUtcToLocalDate = (data, options = {
   return new Date(`${data.replace(/-/g, '/')} UTC`).toLocaleString('ru', options).replace('.', '').replace(' г.', '')
 };
 
-function counterBasket() {
-  const counter = basketArray.length
-  const counterEl = document.querySelector('.bottom-bar__counter');
-  const basketIcon = document.querySelector('.bottom-bar__icon--type--basket');
-  const topBarCounters = document.querySelectorAll('.top-bar__all-counter-order');
-  const iconDot = document.querySelector('.footer__icon-dot');
-
-  if (counter > 0) {
-    iconDot.classList.add('footer__icon-dot--show');
-  } else {
-    iconDot.classList.remove('footer__icon-dot--show');
-  }
-
-  if (counterEl) {
-    counterEl.textContent = counter
-
-    if (counter > 0) {
-      basketIcon.classList.add('bottom-bar__icon--full');
-
-    } else {
-      basketIcon.classList.remove('bottom-bar__icon--full');
-    }
-
-    if (counter === 0) {
-      counterEl.style.right = '22px';
-    } else if (counter >= 20) {
-      counterEl.style.right = '18px';
-    } else if (counter >= 10) {
-      counterEl.style.right = '19px';
-    } else {
-      counterEl.style.right = '23px';
-    }
-
-  }
-
-  if (topBarCounters) {
-    [...topBarCounters].forEach(el => el.textContent = counter)
-  }
-
-}
-
 function switchActive(nodeList, activeClass) {
   [...nodeList].forEach((item) => {
     item.addEventListener('click', function () {
@@ -362,18 +311,7 @@ function switchActive(nodeList, activeClass) {
   });
 }
 
-function doubleFav(productInfo) {
-  return itemsArray.some((el) => {
-    if (el.id === productInfo.itemId) {
-      return true;
-    }
-    return false;
-  });
-}
-
 function addProductToBasket(productInfo) {
-  /*const basketPopupIcon = document.querySelector('.bottom-bar__icon-popup');
-  const basketPopupIconImg = document.querySelector('.bottom-bar__icon-popup-img');*/
   const sizeBarButtons = document.querySelectorAll('.size-bar__button');
   const cardButton = document.querySelector('.card__button');
   let multiplier;
@@ -407,16 +345,6 @@ function addProductToBasket(productInfo) {
   setTimeout(() => {
     cardButton.textContent = 'В корзину'
   }, 1000)
-  /*if (!canUseWebP()) {
-    loadImg(productInfo, basketPopupIconImg, 'jpg');
-  } else {
-    loadImg(productInfo, basketPopupIconImg, 'webp');
-  }
-  basketPopupIcon.classList.add('bottom-bar__icon-popup--open');
-  setTimeout(() => {
-    basketPopupIcon.classList.remove('bottom-bar__icon-popup--open');
-    basketPopupIconImg.style.backgroundImage = '';
-  }, 3000);*/
 
   emitter.emit('event:counter-changed', {counter: basketArray.length});
 }
@@ -465,11 +393,6 @@ function closePages() {
   toggleModalPageSearch.closePage()
   inboxPage.checkMessages();
   checkEmptyBasket();
-}
-
-function closeStores() {
-  storesPage.closePage();
-  window.history.back()
 }
 
 function stopAction(func) {
@@ -716,42 +639,6 @@ function checkEmptyBasket() {
       this.emptyBasketContainerEl.classList.remove('text-area-container--hide');
       this.containerEl.classList.add('modal-page-order-review__content-container--hide');
     }
-
-    /*const backButton = new CreateButton({
-      selector: ['button'],
-      style: ['button'],
-      modifier: ['--size--big',
-        '--theme--tangerin',
-        '--type--fixed-low',
-        '--theme--shadow-big',
-      ],
-      text: ['К меню'],
-      events: [
-        {
-          type: 'click',
-          callback: () => {
-            toggleModalPageReviewOrder.closePage();
-            toggleModalPageReviewOrder.deletePage();
-          },
-        },
-      ],
-    });
-    const titleBarEmptyBasket = new CreateTitleBar({
-      selector: ['div'],
-      style: ['title-bar'],
-      modifier: ['--indentation--top', '--size--medium'],
-      text: ['Добавьте товары в корзину, чтобы продолжить'],
-    });
-    const accordionContainer = document.querySelectorAll('.accordion__container');
-    const buttonOrder = document.querySelector('.button--type--make-order');
-    const modalPageOrderReview = document.querySelector('.modal-page-order-review');
-    const cardItemContainer = document.querySelector('.card-item__container--type--review');
-    const checkboxTextslide = document.querySelector('.checkbox-textslide');
-    const checkboxSlide = document.querySelector('.checkbox-slide');
-
-    [...accordionContainer, cardItemContainer, buttonOrder, checkboxTextslide, checkboxSlide].forEach((el) => el.remove());
-    modalPageOrderReview.append(titleBarEmptyBasket.create());
-    modalPageOrderReview.append(backButton.create());*/
   } else {
     basket.classList.remove('header__basket--animation')
     basket.classList.add('header__basket--not-empty');
@@ -780,6 +667,25 @@ function checkStore() {
   }
 }
 
+function changePriceSeasons({price, id}) {
+  if (!isEmptyObj(dataUserSeasons) && !isEmptyObj(userStore)) {
+    Object.values(dataUserSeasons.successData).forEach((userSeason) => {
+      if (dataSeasons.successData[userSeason.id] && userSeason.active === 1) {
+        Object.values(dataSeasons.successData[userSeason.id].places).forEach((place) => {
+          if (place === userStore.store.id) {
+            Object.values(dataSeasons.successData[userSeason.id].items).forEach((itemId) => {
+              if (itemId === id) {
+                return price = dataSeasons.successData[userSeason.id].price;
+              }
+            });
+          }
+        });
+      }
+    });
+  }
+  return price
+}
+
 function changePriceAfterChooseStore() {
   const catalogElements = document.querySelectorAll('.catalog__list-element');
 
@@ -797,18 +703,9 @@ function changePriceAfterChooseStore() {
       price = '';
     }
 
-    if (!isEmptyObj(dataUserSeasons)) {
-      Object.values(dataUserSeasons.successData).forEach((item) => {
-        if (dataSeasons.successData[item.id] && dataUserSeasons.successData[item.id].shopId === userStore.store.id) {
-          Object.values(dataSeasons.successData[item.id].items).forEach((el) => {
-            if (el === id) {
-              price = dataSeasons.successData[item.id].price;
-            }
-          });
-        }
-      });
-    }
-    if(price !== '') {
+    price = changePriceSeasons({price, id})
+
+    if (price !== '') {
       cardElementPrice.textContent = `${price} ₽`;
     } else {
       cardElementPrice.textContent = '';

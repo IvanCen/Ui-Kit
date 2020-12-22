@@ -28,7 +28,9 @@ class CreateCardItemProductCardNew extends CreateItem {
       price = '';
     }
 
-    if (!isEmptyObj(dataUserSeasons)) {
+    price = changePriceSeasons({ price, id: productInfo.id });
+
+    /* if (!isEmptyObj(dataUserSeasons) && !isEmptyObj(userStore)) {
       Object.values(dataUserSeasons.successData).forEach((item) => {
         if (dataSeasons.successData[item.id] && dataUserSeasons.successData[item.id].shopId === userStore.store.id) {
           Object.values(dataSeasons.successData[item.id].items).forEach((el) => {
@@ -38,7 +40,7 @@ class CreateCardItemProductCardNew extends CreateItem {
           });
         }
       });
-    }
+    } */
 
     this.template = `
                 <div class="catalog__list-element-image">
@@ -96,7 +98,7 @@ class CreateCardItemProductCardNew extends CreateItem {
       setTimeout(() => {
         this.iconsPlusIcon.classList.remove('catalog__list-element-plus-icon--active');
       }, 1000);
-      basketArray.push({id: productInfo.id, modifiers: []});
+      basketArray.push({ id: productInfo.id, modifiers: [] });
       localStorage.setItem('basket', JSON.stringify(basketArray));
       checkEmptyBasket();
       animationAddProduct();
@@ -212,7 +214,9 @@ class CreateCardItemReview extends CreateItem {
       price = 0;
     }
 
-    if (!isEmptyObj(dataUserSeasons)) {
+    price = changePriceSeasons({ price, id: productInfo.id });
+
+    /* if (!isEmptyObj(dataUserSeasons) && !isEmptyObj(userStore)) {
       Object.values(dataUserSeasons.successData).forEach((item) => {
         if (dataSeasons.successData[item.id] && dataUserSeasons.successData[item.id].shopId === userStore.store.id) {
           Object.values(dataSeasons.successData[item.id].items).forEach((el) => {
@@ -222,7 +226,7 @@ class CreateCardItemReview extends CreateItem {
           });
         }
       });
-    }
+    } */
 
     this.template = `
           <div class="basket__offers-element banners__banner">
@@ -342,7 +346,7 @@ class CreateCardItemReview extends CreateItem {
       const cardItemEl = cardItem.create(productInfo);
       cardItemContainer.append(cardItemEl);
       countResultPriceAndAllProductCounter();
-      activeBanners(cardItemEl, true, checkEmptyBasket);
+      activeBanners(cardItemEl, { isSwipe: true });
       checkEmptyBasket();
       animationAddProduct();
       const accordionTriggers = document.querySelectorAll('.basket__header-review');
@@ -365,7 +369,7 @@ class CreateCardItemHistory extends CreateItem {
   create(productInfo) {
     this.elementWraper = document.createElement('div');
     this.elementWraper.classList.add('history-order');
-    let {orderStateName, orderDate} = productInfo;
+    let { orderStateName, orderDate } = productInfo;
     const date = transformationUtcToLocalDate(orderDate);
     if (productInfo.orderStateName === 'Создан' && productInfo.paid !== 0) {
       orderStateName = 'Оплачен';
@@ -447,7 +451,7 @@ class CreateCardItemHistory extends CreateItem {
           setTimeout(() => {
             this.iconsPlusIcon.classList.remove('basket__offers-element-plus-icon--active');
           }, 1000);
-          basketArray.push({id: item.id, modifiers: [...items.modifiers]});
+          basketArray.push({ id: item.id, modifiers: [...items.modifiers] });
           localStorage.setItem('basket', JSON.stringify(basketArray));
           checkEmptyBasket();
           animationAddProduct();
@@ -470,9 +474,9 @@ class CreateCardItemHistory extends CreateItem {
         if (itemEl.itemId === 281) return;
         const modifiersArr = [];
         itemEl.modifiers.forEach((modif) => {
-          modifiersArr.push({id: modif.modificationId, count: modif.count});
+          modifiersArr.push({ id: modif.modificationId, count: modif.count });
         });
-        basketArray.push({id: itemEl.itemId, modifiers: modifiersArr});
+        basketArray.push({ id: itemEl.itemId, modifiers: modifiersArr });
       }
       localStorage.setItem('basket', JSON.stringify(basketArray));
       const wraper = this.closest('.history-order');

@@ -25,7 +25,6 @@ class BalancePage {
   }
 
   openPage() {
-    try {
       this.mainPageContent = document.querySelector('.main-page__content-balance');
       this.mainPageContentContainerBalance = document.querySelector('.main-page__content-container-balance');
       this.textAreaContainerSignIn = document.querySelector('.text-area-container--zone--balance');
@@ -60,9 +59,6 @@ class BalancePage {
         }
       }, 100);
       history.pushState({ state: '#' }, null, '#');
-    } catch (e) {
-      alert(e);
-    }
   }
 
   rendering() {

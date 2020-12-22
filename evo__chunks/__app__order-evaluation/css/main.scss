@@ -1,7 +1,7 @@
 @import "../../_ui-kit/css/main";
 
-.order-evaluation{
-  background-color: rgba(0,0,0,.4);
+.order-evaluation {
+  background-color: rgba(0, 0, 0, .4);
   overflow: hidden;
   z-index: 30;
   width: 100vw;
@@ -10,38 +10,49 @@
   left: 0;
   top: 0;
   display: none;
-  &--show{
+
+  &--show {
     display: block;
   }
-  &__field{
+
+  &__field {
     margin: 0 16px;
   }
-  &__sub-text{
+
+  &__sub-text {
     padding: 0 16px;
     font-weight: normal;
     font-size: 11px;
     line-height: 13px;
     color: #EB3800;
   }
-  &__wrapper{
+
+  &__wrapper {
     padding: 0 16px;
   }
-  &__list{
+
+  &__list {
     width: 100%;
     position: fixed;
     bottom: 0;
     left: 0;
-    height: 100vh;
+    height: 0;
     background-color: white;
     z-index: 9;
     display: flex;
     flex-direction: column;
     justify-content: stretch;
     border-radius: 14px 14px 0px 0px;
-    &--animation{
+
+    &--show {
+      height: 100vh;
+    }
+
+    &--animation {
       transition: all .3s ease;
     }
-    &-header{
+
+    &-header {
       font-weight: 500;
       font-size: 20px;
       line-height: 24px;
@@ -49,9 +60,10 @@
       color: #23211F;
       background-color: #fff;
       padding-bottom: 16px;
-      border-bottom: 1px solid rgba(#F7F7F7,1);
+      border-bottom: 1px solid rgba(#F7F7F7, 1);
     }
-    &-touch{
+
+    &-touch {
       width: 100%;
       height: 32px;
       min-height: 32px;
@@ -61,7 +73,8 @@
       background-image: url("[+chunkWebPath+]/img/touch.svg");
       border-radius: 14px 14px 0px 0px;
     }
-    &-container{
+
+    &-container {
       position: relative;
       background-color: white;
       flex: 1 0 100%;
@@ -69,30 +82,35 @@
       max-height: calc(100vh - 254px);
       padding-top: 32px;
       padding-bottom: 8px;
-      & button[type=submit]{
+
+      & button[type=submit] {
         margin-top: 30px;
         margin-bottom: 30px;
       }
-      &-element{
+
+      &-element {
         padding: 0 16px;
         display: flex;
         align-items: center;
         justify-content: space-between;
         height: 48px;
-        & > span{
+
+        & > span {
           font-weight: normal;
           font-size: 14px;
           line-height: 22px;
           color: #919191;
         }
       }
-      &-stars{
+
+      &-stars {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
         height: 100%;
-        &-element{
+
+        &-element {
           width: 25px;
           height: 100%;
           background-repeat: no-repeat;
@@ -100,7 +118,8 @@
           background-image: url("[+chunkWebPath+]/img/star.svg");
           filter: grayscale(1);
           opacity: .2;
-          &--active{
+
+          &--active {
             filter: none;
             opacity: 1;
           }
@@ -110,12 +129,13 @@
   }
 
 
-
-  &__popup{
+  &__popup {
     display: none;
-    &--show{
+
+    &--show {
       display: block;
     }
+
     background-color: white;
     padding: 24px;
     border-radius: 11px;
@@ -124,7 +144,8 @@
     right: 24px;
     top: 50%;
     transform: translateY(-50%);
-    &-header{
+
+    &-header {
       margin-bottom: 11px;
       font-style: normal;
       font-weight: 500;
@@ -133,7 +154,8 @@
       letter-spacing: 0.25px;
       color: #23211F;
     }
-    &-text{
+
+    &-text {
       margin-bottom: 16px;
       font-weight: normal;
       font-size: 13px;
@@ -141,13 +163,17 @@
       letter-spacing: 0.15px;
       color: #919191;
     }
-    &-number{}
-    &-list{
+
+    &-number {
+    }
+
+    &-list {
       margin-bottom: 24px;
       display: grid;
       grid-template-columns: repeat(6, 1fr);
       grid-gap: 10px;
-      &-element{
+
+      &-element {
         padding-bottom: 100%;
         width: 100%;
         background-image: url("[+chunkWebPath+]/img/img.png");
@@ -157,12 +183,14 @@
         background-size: cover;
       }
     }
-    &-buttons{
+
+    &-buttons {
       display: flex;
       justify-content: flex-end;
       flex-direction: row;
     }
-    &-button{
+
+    &-button {
       text-transform: uppercase;
       font-weight: 500;
       font-size: 14px;
@@ -171,7 +199,8 @@
       letter-spacing: 0.0357143em;
       color: #919191;
       margin-left: 20px;
-      &--estimate{
+
+      &--estimate {
         color: $color;
       }
     }

@@ -30,12 +30,11 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
           this.bascketStoresSection = this.modalPageOrderReview.querySelector('.basket__shop');
           this.inputsDelivery = this.bascketDeliverySection.querySelectorAll('.form__input');
           this.inputsStores = this.bascketStoresSection.querySelectorAll('.form__input[name="shop"]');
-          this.inputsSeasons = this.modalPageOrderReview.querySelectorAll('.form__input[name="seasons"]');
           const { phone } = userInfoObj.successData;
           let isToGo;
           let idPackage;
           let idStore;
-          let idSeasons;
+          const idSeasons = '';
 
           this.inputsDelivery.forEach((item) => {
             if (item.checked) {
@@ -46,12 +45,6 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
           this.inputsStores.forEach((item) => {
             if (item.checked === true) {
               idStore = Number(item.getAttribute('data-id'));
-            }
-          });
-
-          this.inputsSeasons.forEach((item) => {
-            if (item.checked) {
-              idSeasons = Number(item.getAttribute('data-id'));
             }
           });
 
@@ -107,6 +100,8 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
 
 
   renderPayOrderPage(info) {
+    console.log(info);
+
     function resPayOrder(payInfo) {
       if (payInfo.success) {
         let successText = 'Ваш заказ успешно оплачен';
@@ -161,7 +156,7 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
 
     if (banners) {
       banners.forEach((banner) => {
-        activeBanners(banner, true);
+        activeBanners(banner, { isSwipe: true });
       });
     }
     accordionTriggers.forEach((trigger) => {
@@ -332,7 +327,7 @@ class ToggleModalPageReviewOrder extends ToggleModalPageOrderReviewRoot {
         '--theme--shadow',
         '--indentation--small',
       ],
-      text: 'К этому заказу, после его оплаты, автоматически добавится кофе по акции 6 кофе в подарок.',
+      text: 'К этому заказу, после его оплаты, автоматически добавится кофе по акции "6 кофе в подарок".',
     });
 
 

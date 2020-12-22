@@ -17,10 +17,12 @@ class ToggleSubscriptionTabContentMy extends ToggleTabContent {
           '--indentation--top',
           '--indentation--bottom',
         ],
-        qr: true,
+        buy: false,
       });
       Object.values(activeSubscriptions.successData).forEach((item) => {
-        this.tabContent.append(this.mainCardSubsription.create(dataSeasons.successData[item.id], item));
+        if (item.active === 1) {
+          this.tabContent.append(this.mainCardSubsription.create(dataSeasons.successData[item.id], item));
+        }
       });
     } else {
       this.mainCardNoSubscriptions = new CreateNoSubscriptionsMainCard({
