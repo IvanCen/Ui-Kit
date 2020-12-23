@@ -311,9 +311,26 @@ function switchActive(nodeList, activeClass) {
   });
 }
 
+function editCard() {
+  if (isEditCard) {
+    basketArray.every((item, index) => {
+      if (item.id === isEditCard.id) {
+        if (JSON.stringify(item.modifiers) === JSON.stringify(isEditCard.modifiers)) {
+          basketArray.splice(index, 1);
+          return false;
+        }
+      }
+      return true;
+    });
+  }
+  isEditCard = false
+}
+
 function addProductToBasket(productInfo) {
+
+  editCard()
+
   const sizeBarButtons = document.querySelectorAll('.size-bar__button');
-  const cardButton = document.querySelector('.card__button');
   let multiplier;
   if (sizeBarButtons.length !== 0 && sizeBarButtons[0].getAttribute('multiplier') !== undefined) {
     multiplier = sizeBarButtons[0].getAttribute('multiplier');
@@ -339,14 +356,12 @@ function addProductToBasket(productInfo) {
     }
     basketArray.push({id: productInfo.id, modifiers: modifiersArr});
     localStorage.setItem('basket', JSON.stringify(basketArray));
-    emitter.emit('event:counter-changed');
   }
-  cardButton.textContent = 'Добавлено'
-  setTimeout(() => {
-    cardButton.textContent = 'В корзину'
-  }, 1000)
 
-  emitter.emit('event:counter-changed', {counter: basketArray.length});
+
+  checkEmptyBasket();
+  animationAddProduct();
+
 }
 
 function checkMessageInbox() {

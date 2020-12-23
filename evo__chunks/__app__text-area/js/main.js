@@ -12,78 +12,6 @@ function number_of(number, suffix) {
   return suffix[suffixKey];
 }
 
-function switchAdd(productInfo) {
-  const textAreaButtonAdd = document.querySelectorAll('.text-area__button--type--add');
-  [...textAreaButtonAdd].forEach((item) => {
-    const textArea = item.closest('.text-area');
-    const iconPlus = textArea.querySelector('.text-area__icon--type--plus');
-    const iconMinus = textArea.querySelector('.text-area__icon--type--minus');
-    const iconContainer = textArea.querySelector('.text-area__icon-container');
-    const allCounter = document.querySelector('.text-area__all-counter-number');
-    const title = textArea.querySelector('.text-area__title');
-    const regexp = /^(\d+\sдобав[\D]{2}\s)([\D]+)/g;
-    const replaceWord = title.textContent;
-    const titleName = replaceWord.trim().replace(regexp, '$2');
-
-    let counter = 0;
-    let allCountAdds = 0;
-
-    if (typeof userDataObj[productInfo.id] === 'object') {
-      Object.entries(userDataObj[productInfo.id]).forEach(([key, value]) => {
-        allCountAdds += value;
-
-        if (String(textArea.id) === key) {
-          counter += Number(value);
-        }
-      });
-    }
-
-    function setUserDataObj() {
-      if (typeof userDataObj[productInfo.id] !== 'object') {
-        userDataObj[productInfo.id] = {};
-      }
-      if (counter === 0) {
-        delete userDataObj[productInfo.id][textArea.id];
-      } else {
-        userDataObj[productInfo.id][textArea.id] = counter;
-      }
-      localStorage.setItem('userData', JSON.stringify(userDataObj));
-    }
-
-    iconPlus.addEventListener('click', () => {
-      counter += 1;
-      allCountAdds += 1;
-      allCounter.textContent = `${allCountAdds} добав${number_of(allCountAdds, ['ка', 'ки', 'ок'])}`;
-      title.textContent = `${counter} добав${number_of(counter, ['ка', 'ки', 'ок'])} ${titleName}`;
-      setUserDataObj();
-    });
-    iconMinus.addEventListener('click', () => {
-      if (counter >= 1) {
-        counter -= 1;
-        allCountAdds -= 1;
-        allCounter.textContent = `${allCountAdds} добав${number_of(allCountAdds, ['ка', 'ки', 'ок'])}`;
-        title.textContent = `${counter} добав${number_of(counter, ['ка', 'ки', 'ок'])} ${titleName}`;
-      }
-      if (counter === 0) {
-        title.textContent = titleName;
-        iconContainer.classList.remove('text-area__icon-container--open');
-        item.classList.add('text-area__button--open');
-        title.classList.remove('text-area__title--theme--chocolate');
-      }
-      setUserDataObj();
-    });
-    item.addEventListener('click', () => {
-      counter = 1;
-      allCountAdds += 1;
-      allCounter.textContent = `${allCountAdds} добав${number_of(allCountAdds, ['ка', 'ки', 'ок'])}`;
-      item.classList.remove('text-area__button--open');
-      iconContainer.classList.add('text-area__icon-container--open');
-      title.classList.add('text-area__title--theme--chocolate');
-      title.textContent = `${counter} добав${number_of(counter, ['ка', 'ки', 'ок'])} ${title.textContent}`;
-      setUserDataObj();
-    });
-  });
-}
 
 function switchAddNew(productInfo, el) {
   const textAreaButtonPlus = el.querySelectorAll('.card__modifiers-section-list-element-count-plus');
@@ -95,12 +23,10 @@ function switchAddNew(productInfo, el) {
 
     let counter = 0;
     let allCountAdds = 0;
-
     if (typeof userDataObj[productInfo.id] === 'object' && !isEmptyObj(userDataObj)) {
       Object.entries(userDataObj[productInfo.id]).forEach(([key, value]) => {
-        allCountAdds += value;
-
         if (String(textArea.id) === key) {
+          allCountAdds += value;
           counter += Number(value);
         }
       });
@@ -128,6 +54,7 @@ function switchAddNew(productInfo, el) {
       setUserDataObj();
     });
     iconMinus.addEventListener('click', () => {
+      console.log(counter, allCountAdds);
       if (counter >= 1) {
         counter -= 1;
         allCountAdds -= 1;
@@ -163,88 +90,6 @@ class CreateTextAreaProductCard extends CreateItem {
     });
   }
 
-  countPrice(productInfo, productItemModif, counter) {
-    const priceEl = this.element.querySelector('.text-area__price');
-    let price = Number(priceEl.textContent);
-    price += productItemModif.price * counter;
-    priceEl.textContent = price;
-  }
-
-  createModif(el, productItemModif, counter) {
-    const textAreaListItem = document.createElement('li');
-    const textAreaList = el.querySelector('.text-area__list');
-    textAreaListItem.classList.add('text-area__list-item');
-    textAreaListItem.id = productItemModif.id;
-    textAreaListItem.textContent = `${counter} добав${number_of(counter, ['ка', 'ки', 'ок'])} ${productItemModif.name}`;
-    textAreaList.append(textAreaListItem);
-  }
-
-  renderModifier(modifierName, el, productInfo) {
-    const descriptionArea = el.querySelector('.text-area--type--description');
-    const element = document.createElement('div');
-    element.classList.add('text-area', 'text-area--theme--light', 'text-area--type--modifier');
-    const template = `
-            <div class="text-area__container text-area__container--indentation--small">
-              <div class="text-area__content-container text-area__content-container--direction--column">
-                <h2 class="text-area__title text-area__title--size--small text-area__title--type--bold">${modifierName}</h2>
-                <ul class="text-area__list"></ul>
-              </div>
-              <button class="button">
-                <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-expand-direction-right.svg]]" alt="" class="text-area__icon text-area__icon--position--center">
-              </button>
-            </div>`;
-    element.insertAdjacentHTML('beforeend', template);
-
-    if (typeof userDataObj === 'object' && userDataObj[productInfo.id] !== undefined && typeof userDataObj[productInfo.id] === 'object') {
-      Object.keys(userDataObj[productInfo.id]).forEach((modifiersUserItem) => {
-        const productItemModif = dataProductApi.successData.modifiers[Number(modifiersUserItem)];
-        const counter = userDataObj[productInfo.id][modifiersUserItem];
-        if (productItemModif.category === modifierName && counter !== 0) {
-          const {
-            caffeine, carbon, cholesterol,
-            energy, energyFatValue, fats,
-            fiber, netWeight, protein,
-            saturatedFats, sodium, sugar,
-            transFats, volume,
-          } = productItemModif;
-          this.countPrice(productInfo, productItemModif, counter);
-          this.countNutrition({
-            caffeine,
-            carbon,
-            cholesterol,
-            energy,
-            energyFatValue,
-            fats,
-            fiber,
-            netWeight,
-            protein,
-            saturatedFats,
-            sodium,
-            sugar,
-            transFats,
-            volume,
-          }, el, counter);
-          this.createModif(element, productItemModif, counter);
-        }
-      });
-    }
-    element.addEventListener('click', () => {
-      stopAction(() => {
-        toggleThirdPageAddinsCard.rendering(productInfo, modifierName);
-      });
-    });
-    descriptionArea.after(element);
-  }
-
-  removeEmptyNutrition(productInfo) {
-    Object.entries(productInfo).forEach(([key, value]) => {
-      const modifEl = this.element.querySelector(`.text-area__info-number--${key}`);
-      if ((value === null || value === 0) && modifEl) {
-        modifEl.parentElement.remove();
-      }
-    });
-  }
-
   create(productInfo) {
     let price;
     if (!isEmptyObj(userStore)) {
@@ -257,19 +102,7 @@ class CreateTextAreaProductCard extends CreateItem {
       price = 0;
     }
 
-    price = changePriceSeasons({price, id: productInfo.id})
-
-    /* if (!isEmptyObj(dataUserSeasons) && !isEmptyObj(userStore)) {
-      Object.values(dataUserSeasons.successData).forEach((item) => {
-        if (dataSeasons.successData[item.id] && dataUserSeasons.successData[item.id].shopId === userStore.store.id) {
-          Object.values(dataSeasons.successData[item.id].items).forEach((el) => {
-            if (el === productInfo.id) {
-              price = dataSeasons.successData[item.id].price;
-            }
-          });
-        }
-      });
-    } */
+    price = changePriceSeasons({ price, id: productInfo.id });
 
     this.template = `
       <div class="card__touch"></div>
@@ -347,7 +180,7 @@ class CreateTextAreaProductCard extends CreateItem {
                     </div>
                 </div>
             </div>
-            <button class="button button--color-5 card__button">В корзину</button>
+            <button class="button button--theme--tangerin button--theme--shadow-big button--size--large card__button">В корзину</button>
         </div>
     `;
     this.element.insertAdjacentHTML('beforeend', this.template);
@@ -359,7 +192,7 @@ class CreateTextAreaProductCard extends CreateItem {
     this.price = this.element.querySelector('.card__price');
     this.stickersContainer = this.element.querySelector('.card__stickers');
     this.containerIngredients = this.element.querySelector('.card__info-section--ingredients');
-    this.iconsLike = this.element.querySelector('.card__bookmark-icon');
+    this.iconBookmark = this.element.querySelector('.card__bookmark-icon');
     this.buttonReset = this.element.querySelector('.card__modifiers-reset');
     this.cardContainer = this.element.querySelector('.card__container');
 
@@ -381,20 +214,11 @@ class CreateTextAreaProductCard extends CreateItem {
 
     this.buttonAdd.addEventListener('click', () => {
       addProductToBasket(productInfo);
-      this.cardPage.classList.add('card--animation');
-      this.cardPage.style = 'transform: translate3d(0px, 760.2283px, 0px);';
-      setTimeout(() => {
-        toggleModalPageCard.deletePage();
-      }, 1000);
+      toggleModalPageCard.close();
     });
     this.iconAdd.addEventListener('click', () => {
       addProductToBasket(productInfo);
-      this.cardPage = document.querySelector('.card');
-      this.cardPage.classList.add('card--animation');
-      this.cardPage.style = 'transform: translate3d(0px, 760.2283px, 0px);';
-      setTimeout(() => {
-        toggleModalPageCard.deletePage();
-      }, 1000);
+      toggleModalPageCard.close();
     });
 
     this.buttonReset.addEventListener('click', () => {
@@ -453,13 +277,13 @@ class CreateTextAreaProductCard extends CreateItem {
 
     itemsArray.forEach((item) => {
       if (item.id === productInfo.id) {
-        this.iconsLike.classList.add('card__bookmark-icon--liked');
+        this.iconBookmark.classList.add('card__bookmark-icon--liked');
       }
     });
 
-    this.iconsLike.addEventListener('click', () => {
-      this.iconsLike.classList.toggle('card__bookmark-icon--liked');
-      if (this.iconsLike.classList.contains('card__bookmark-icon--liked')) {
+    this.iconBookmark.addEventListener('click', () => {
+      this.iconBookmark.classList.toggle('card__bookmark-icon--liked');
+      if (this.iconBookmark.classList.contains('card__bookmark-icon--liked')) {
         if (productInfo.modifiers !== null) {
           const modifiersArr = [];
           for (const modif in userDataObj[productInfo.id]) {
@@ -556,23 +380,6 @@ class CreateTextAreaProductCard extends CreateItem {
   }
 }
 
-class CreateTextAreaAddins extends CreateItem {
-  constructor(parameters) {
-    super();
-    this.parameters = parameters;
-  }
-
-  create(productInfo) {
-    this.element = document.createElement(this.parameters.selector);
-
-    this.template = `
-      <button class="text-area__button text-area__button--type--reset">Очистить добавки</button>
-    `;
-    this.element.insertAdjacentHTML('beforeend', this.template);
-    return super.create(this.element);
-  }
-}
-
 class TextArea extends CreateItem {
   constructor(parameters) {
     super();
@@ -644,84 +451,6 @@ class CreateTextAreaSharesDetail extends CreateItem {
   }
 }
 
-class CreateTextAreaAddin extends CreateItem {
-  constructor(parameters) {
-    super();
-    this.parameters = parameters;
-  }
-
-  create(modifierWithTitle, productInfo) {
-    this.element = document.createElement('div');
-    this.element.classList.add('text-area__wraper');
-    this.templateTitle = `<h2 class="text-area__title text-area__title--type--uppercase text-area__title--type--bold text-area__title--type--modifier">${modifierWithTitle[0]}</h2>`;
-
-    this.element.insertAdjacentHTML('beforeend', this.templateTitle);
-    for (const item of Object.values(modifierWithTitle[1])) {
-      this.template = `
-        <div id="${item.id}" class="text-area text-area--theme--light text-area--type--add-ins">
-          <div class="text-area__container text-area__container--indentation--small text-area__container--type--modifier">
-            <div class="text-area__content-container text-area__content-container--direction--column">
-              <h3 class="text-area__title text-area__title--size--small text-area__title--type--bold text-area__title--type--modifier">${item.name}</h3>
-              <span class="text-area__price text-area__price--size--small">${item.price}</span>
-            </div>
-            <div class="text-area__icon-container">
-              <div class="text-area__icon-container text-area__icon-container--open">
-                <button class="button">
-                  <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-remove-line.svg]]" alt=""
-                       class="text-area__icon text-area__icon--type--minus text-area__icon--position--first">
-                </button>
-                <button class="button">
-                  <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-add-plus.svg]]" alt="" class="text-area__icon text-area__icon--type--plus">
-                </button>
-              </div>
-            </div>
-            <button class="button button--theme--chocolate text-area__button text-area__button--type--add text-area__button--open">
-              Добавить
-            </button>
-          </div>
-        </div>
-      `;
-      if (typeof userDataObj === 'object' && typeof userDataObj[productInfo.id] === 'object') {
-        for (const modifiersUserItem in userDataObj[productInfo.id]) {
-          if (String(item.id) === modifiersUserItem) {
-            const counter = userDataObj[productInfo.id][modifiersUserItem];
-            if (counter !== 0) {
-              this.template = `
-                <div id="${item.id}" class="text-area text-area--theme--light text-area--type--add-ins">
-                  <div class="text-area__container text-area__container--indentation--small text-area__container--type--modifier">
-                    <div class="text-area__content-container text-area__content-container--direction--column">
-                      <h3 class="text-area__title text-area__title--size--small text-area__title--type--bold text-area__title--theme--chocolate text-area__title--type--modifier">
-                        ${counter} добав${number_of(counter, ['ка', 'ки', 'ок'])} ${item.name}
-                      </h3>
-                      <span class="text-area__price text-area__price--size--small">${item.price}</span>
-                    </div>
-                    <div class="text-area__icon-container text-area__icon-container--open">
-                      <div class="text-area__icon-container text-area__icon-container--open">
-                        <button class="button">
-                          <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-remove-line.svg]]" alt=""
-                               class="text-area__icon text-area__icon--type--minus text-area__icon--position--first">
-                        </button>
-                        <button class="button">
-                          <img src="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-add-plus.svg]]" alt="" class="text-area__icon text-area__icon--type--plus">
-                        </button>
-                      </div>
-                    </div>
-                    <button class="button button--theme--chocolate text-area__button text-area__button--type--add">
-                      Добавить
-                    </button>
-                  </div>
-                </div>
-              `;
-            }
-          }
-        }
-      }
-      this.element.insertAdjacentHTML('beforeend', this.template);
-    }
-    return this.element;
-  }
-}
-
 class CreateTextAreaAddinNew extends CreateItem {
   constructor(parameters) {
     super();
@@ -741,7 +470,7 @@ class CreateTextAreaAddinNew extends CreateItem {
       this.template = `
         <div id="${item.id}" class="card__modifiers-section-list-element">
             <div class="card__modifiers-section-list-element-promo">
-                <div class="card__modifiers-section-list-element-image" data-img="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-default-modif.svg]]">
+                <div class="card__modifiers-section-list-element-image" >
                   <div class="card__modifiers-section-list-element-quantity"></div>
                 </div>
                 <div class="card__modifiers-section-list-element-count">
@@ -755,6 +484,7 @@ class CreateTextAreaAddinNew extends CreateItem {
             </div>
         </div>
       `;
+
       if (typeof userDataObj === 'object' && typeof userDataObj[productInfo.id] === 'object') {
         for (const modifiersUserItem in userDataObj[productInfo.id]) {
           if (String(item.id) === modifiersUserItem) {
@@ -789,7 +519,7 @@ class CreateTextAreaAddinNew extends CreateItem {
               this.template = `
                 <div id="${item.id}" class="card__modifiers-section-list-element text-area--type--add-ins">
                     <div class="card__modifiers-section-list-element-promo">
-                        <div class="card__modifiers-section-list-element-image" data-img="data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-default-modif.svg]]">
+                        <div class="card__modifiers-section-list-element-image" >
                             <div class="card__modifiers-section-list-element-quantity">${counter}</div>
                         </div>
                         <div class="card__modifiers-section-list-element-count">

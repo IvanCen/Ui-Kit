@@ -23,6 +23,7 @@ let timeRequest;
 const dataPackage = {};
 let AllItemsForSearch;
 let AllModifiersForSearch;
+let isEditCard = false;
 // eslint-disable-next-line prefer-const
 let storesOpened = false;
 
@@ -293,9 +294,6 @@ const toggleModalPageSubscription = new ToggleModalPageSubscription({
 });
 const toggleSubPageEditUser = new ToggleSubPageEditUser({
   classOpen: ['subpage--opened'],
-});
-const toggleThirdPageAddinsCard = new ToggleThirdPageAddinsCard({
-  classOpen: ['third-page--opened--addins'],
 });
 const toggleModalPageReviewOrder = new ToggleModalPageReviewOrder({
   classOpen: ['modal-page-order-review--opened'],

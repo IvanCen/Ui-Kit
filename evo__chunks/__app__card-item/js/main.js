@@ -30,18 +30,6 @@ class CreateCardItemProductCardNew extends CreateItem {
 
     price = changePriceSeasons({ price, id: productInfo.id });
 
-    /* if (!isEmptyObj(dataUserSeasons) && !isEmptyObj(userStore)) {
-      Object.values(dataUserSeasons.successData).forEach((item) => {
-        if (dataSeasons.successData[item.id] && dataUserSeasons.successData[item.id].shopId === userStore.store.id) {
-          Object.values(dataSeasons.successData[item.id].items).forEach((el) => {
-            if (el === productInfo.id) {
-              price = dataSeasons.successData[item.id].price;
-            }
-          });
-        }
-      });
-    } */
-
     this.template = `
                 <div class="catalog__list-element-image">
                     <div class="catalog__stickers"></div>
@@ -216,17 +204,6 @@ class CreateCardItemReview extends CreateItem {
 
     price = changePriceSeasons({ price, id: productInfo.id });
 
-    /* if (!isEmptyObj(dataUserSeasons) && !isEmptyObj(userStore)) {
-      Object.values(dataUserSeasons.successData).forEach((item) => {
-        if (dataSeasons.successData[item.id] && dataUserSeasons.successData[item.id].shopId === userStore.store.id) {
-          Object.values(dataSeasons.successData[item.id].items).forEach((el) => {
-            if (el === productInfo.id) {
-              price = dataSeasons.successData[item.id].price;
-            }
-          });
-        }
-      });
-    } */
 
     this.template = `
           <div class="basket__offers-element banners__banner">
@@ -258,6 +235,7 @@ class CreateCardItemReview extends CreateItem {
     this.iconsPlus = this.element.querySelector('.basket__offers-element-plus');
     this.price = this.element.querySelector('.basket__offers-element-price');
     this.basketEl = this.element.querySelector('.basket__offers-element');
+    this.buttonChange = this.element.querySelector('.basket__offers-element-change-btn');
     this.element.setAttribute('id', productInfo.id);
     if (!isEmptyObj(outOfStock) && outOfStock.successData.itemsAndModifiers.length !== 0) {
       for (const id in outOfStock.successData.itemsAndModifiers) {
@@ -267,16 +245,37 @@ class CreateCardItemReview extends CreateItem {
         }
       }
     }
+    this.buttonChange.addEventListener('click', (e) => {
+      isEditCard = {
+        ...productInfo,
+      };
+      console.log(isEditCard);
+
+      stopAction(() => {
+        toggleModalPageCard.closePage();
+        toggleModalPageCard.deletePage();
+        toggleThirdPage.closePage();
+        toggleThirdPage.deletePage();
+        setTimeout(() => {
+          toggleModalPageCard.rendering(dataProductApi.successData.items[productInfo.id]);
+          toggleModalPageReviewOrder.closePage();
+          toggleModalPageReviewOrder.deletePage();
+        }, 300);
+      });
+    });
+
     this.element.addEventListener('click', (e) => {
       console.log(e.target);
-      if (!e.target.classList.contains('basket__offers-element-plus') && !e.target.classList.contains('basket__offers-element-plus-icon')) {
+      if (!e.target.classList.contains('basket__offers-element-plus')
+        && !e.target.classList.contains('basket__offers-element-plus-icon')
+        && !e.target.classList.contains('basket__offers-element-change-btn')) {
         stopAction(() => {
           toggleModalPageCard.closePage();
           toggleModalPageCard.deletePage();
           toggleThirdPage.closePage();
           toggleThirdPage.deletePage();
           setTimeout(() => {
-            toggleModalPageCard.rendering(dataProductApi.successData.items[productInfo.id], false);
+            toggleModalPageCard.rendering(dataProductApi.successData.items[productInfo.id]);
             toggleModalPageReviewOrder.closePage();
             toggleModalPageReviewOrder.deletePage();
           }, 300);

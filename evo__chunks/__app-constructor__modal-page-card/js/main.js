@@ -3,8 +3,18 @@ class ToggleModalPageCard extends ToggleModalPageCardDef {
     super(parameters);
     this.parameters = parameters;
     this.rendering = this.rendering.bind(this);
+    this.close = this.close.bind(this);
   }
 
+  close() {
+    this.cardPage = document.querySelector('.card');
+    this.cardPage.classList.add('card--animation');
+    this.cardPage.style = 'transform: translate3d(0px, 760.2283px, 0px);';
+
+    setTimeout(() => {
+      this.deletePage();
+    }, 1000);
+  }
 
   rendering(productInfo) {
     super.rendering();
@@ -21,10 +31,10 @@ class ToggleModalPageCard extends ToggleModalPageCardDef {
       const container = document.querySelector('.card');
       activeTouch(container);
 
-      const images = document.querySelectorAll('.card__modifiers-section-list-element-image');
+      /* const images = document.querySelectorAll('.card__modifiers-section-list-element-image');
       images.forEach((img) => {
         img.style.backgroundImage = `url(${img.dataset.img})`;
-      });
+      }); */
 
       const sectionGroupTriggers = document.querySelectorAll('.card__info-section-name');
       sectionGroupTriggers.forEach((trigger) => {
@@ -73,6 +83,7 @@ class ToggleModalPageCard extends ToggleModalPageCardDef {
           isOpen = !isOpen;
           cardOpened = false;
           toggleModalPageCard.deletePage();
+          isEditCard = false;
         } else if (offsetY > (container.clientHeight / 5) && action === 'move' && isOpen) {
           offsetY = container.clientHeight;
           offsetYOnStart = container.clientHeight;

@@ -126,6 +126,7 @@ class TogglePageBalanceFill extends TogglePage {
     this.loader = this.page.querySelector('.spinner');
     this.loader.classList.add('spinner--hide');
     if (payInfo.success) {
+      alert(JSON.stringify(payInfo));
       document.location.href = payInfo.successData.payUrl;
     } else {
       toggleModal.rendering({ subject: 'Ошибка', text: payInfo.errors[0] });
