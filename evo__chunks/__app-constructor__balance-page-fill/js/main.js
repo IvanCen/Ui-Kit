@@ -126,7 +126,6 @@ class TogglePageBalanceFill extends TogglePage {
     this.loader = this.page.querySelector('.spinner');
     this.loader.classList.add('spinner--hide');
     if (payInfo.success) {
-      alert(JSON.stringify(payInfo));
       document.location.href = payInfo.successData.payUrl;
     } else {
       toggleModal.rendering({ subject: 'Ошибка', text: payInfo.errors[0] });
@@ -135,7 +134,6 @@ class TogglePageBalanceFill extends TogglePage {
 
   getPayLinkYandex(payInfo) {
     console.log(payInfo);
-    try {
       this.page = document.querySelector('.page');
       this.loader = this.page.querySelector('.spinner');
       this.loader.classList.add('spinner--hide');
@@ -158,9 +156,6 @@ class TogglePageBalanceFill extends TogglePage {
       } else {
         toggleModal.rendering({ subject: 'Ошибка', text: payInfo.errors[0] });
       }
-    } catch (e) {
-      alert(e);
-    }
   }
 
   rendering() {

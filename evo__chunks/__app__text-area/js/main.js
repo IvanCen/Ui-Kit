@@ -1085,7 +1085,7 @@ class CreateTextAreaBalanceTabs extends CreateItem {
     const reformattedLog = {};
     const log = isBonus ? userBonusLog : userBalanceLog;
 
-    if (!isEmptyObj(log)) {
+    if (!isEmptyObj(log) && log.success) {
       log.successData.forEach((item) => {
         const dateElems = new Date(`${item.timestamp.replace(/-/g, '/')} UTC`).toLocaleString('ru', {
           year: 'numeric',

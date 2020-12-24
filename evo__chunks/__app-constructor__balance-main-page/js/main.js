@@ -45,8 +45,10 @@ class BalancePage {
         }
         this.textAreaContainerSignIn.classList.remove('text-area-container--hide');
       } else {
-        this.balance.textContent = `${userInfoObj.successData.balance} ₽`;
-        this.bonus.textContent = `${userInfoObj.successData.bonus} ❤`;
+        if (this.balance && this.bonus && userInfoObj.successData.balance && userInfoObj.successData.bonus) {
+          this.balance.textContent = `${userInfoObj.successData.balance} ₽`;
+          this.bonus.textContent = `${userInfoObj.successData.bonus} ❤`;
+        }
         this.mainPageContentContainerBalance.classList.remove('main-page__content-container--hide');
         this.textAreaContainerSignIn.classList.add('text-area-container--hide');
       }
@@ -62,85 +64,85 @@ class BalancePage {
   }
 
   rendering() {
-    this.mainPageContent = document.createElement('div');
-    this.mainPageContent.classList.add('main-page__content', 'main-page__content--size--small', 'main-page__content-balance', `${isIos ? 'main-page__content--ios' : 'main-page__content--no-ios'}`);
-    this.mainPage.prepend(this.mainPageContent);
-    this.mainPageContent.classList.add('main-page__content--size--small');
+      this.mainPageContent = document.createElement('div');
+      this.mainPageContent.classList.add('main-page__content', 'main-page__content--size--small', 'main-page__content-balance', `${isIos ? 'main-page__content--ios' : 'main-page__content--no-ios'}`);
+      this.mainPage.prepend(this.mainPageContent);
+      this.mainPageContent.classList.add('main-page__content--size--small');
 
-    const tobBarTabs = new CreateTopBarTabsBalance({
-      selector: ['div'],
-      style: ['header__top-tabs'],
-      modifier: ['-balance'],
-    });
+      const tobBarTabs = new CreateTopBarTabsBalance({
+        selector: ['div'],
+        style: ['header__top-tabs'],
+        modifier: ['-balance'],
+      });
 
-    const textAreaNoSignIn = new TextAreaNoSignIn({
-      selector: ['div'],
-      style: ['text-area-container'],
-      modifier: [
-        '--hide',
-        '--type--sign-in',
-        '--indentation--big',
-        '--zone--balance',
-      ],
-      eventsButton: [
-        {
-          type: 'click',
-          callback: () => {
-            toggleModalPageSignIn.rendering();
+      const textAreaNoSignIn = new TextAreaNoSignIn({
+        selector: ['div'],
+        style: ['text-area-container'],
+        modifier: [
+          '--hide',
+          '--type--sign-in',
+          '--indentation--big',
+          '--zone--balance',
+        ],
+        eventsButton: [
+          {
+            type: 'click',
+            callback: () => {
+              toggleModalPageSignIn.rendering();
+            },
           },
-        },
-      ],
-    });
+        ],
+      });
 
 
-    this.topBar = document.querySelector('.header--main');
-    this.topBar.append(tobBarTabs.create());
-    this.mainPageContent.append(textAreaNoSignIn.create());
+      this.topBar = document.querySelector('.header--main');
+      this.topBar.append(tobBarTabs.create());
+      this.mainPageContent.append(textAreaNoSignIn.create());
 
-    Promise.all([
-      api.getClientBonusLog(),
-      api.getClientBalanceLog(),
-    ])
-      .then(this.render);
+      Promise.all([
+        api.getClientBonusLog(),
+        api.getClientBalanceLog(),
+      ])
+        .then(this.render);
   }
 
   render() {
-    this.mainPageContentContainer = document.createElement('div');
-    this.mainPageContentContainer.classList.add('main-page__content-container', 'main-page__content-container-balance');
+      this.mainPageContentContainer = document.createElement('div');
+      this.mainPageContentContainer.classList.add('main-page__content-container', 'main-page__content-container-balance');
 
-    const content = new CreateTextAreaBalanceTabs({
-      selector: ['div'],
-      style: ['tab-content'],
-    });
+      const content = new CreateTextAreaBalanceTabs({
+        selector: ['div'],
+        style: ['tab-content'],
+      });
 
-    const buttonFill = new CreateButton({
-      selector: ['button'],
-      style: ['button'],
-      modifier: [
-        '--size--big',
-        '--theme--tangerin',
-        '--theme--shadow-big',
-        '--type--fixed',
-        '--type--fill',
-        '--hide',
-      ],
-      text: ['Пополнить'],
-      eventsOpen: [
-        {
-          type: 'click',
-          callback: () => {
-            stopAction(() => {
-              togglePageBalanceFill.rendering();
-            });
+      const buttonFill = new CreateButton({
+        selector: ['button'],
+        style: ['button'],
+        modifier: [
+          '--size--big',
+          '--theme--tangerin',
+          '--theme--shadow-big',
+          '--type--fixed',
+          '--type--fill',
+          '--hide',
+        ],
+        text: ['Пополнить'],
+        eventsOpen: [
+          {
+            type: 'click',
+            callback: () => {
+              stopAction(() => {
+                togglePageBalanceFill.rendering();
+              });
+            },
           },
-        },
-      ],
-    });
+        ],
+      });
 
-    this.mainPageContentContainer.append(content.create());
-    this.mainPageContentContainer.append(buttonFill.create());
-    this.mainPageContent.append(this.mainPageContentContainer);
-    this.initBalance();
+      this.mainPageContentContainer.append(content.create());
+      this.mainPageContentContainer.append(buttonFill.create());
+      this.mainPageContent.append(this.mainPageContentContainer);
+      this.initBalance();
   }
 
 

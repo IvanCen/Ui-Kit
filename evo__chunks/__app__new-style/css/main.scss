@@ -506,7 +506,7 @@
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center center;
-        background-color: grey;
+        background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-default-modif.svg]]");
       }
 
       &--ended {
@@ -913,7 +913,8 @@
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
-    background-image: url("[+chunkWebPath+]/img/cofee.png");
+    background-color: #F7F7F7;
+    background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-default-modif.svg]]");
   }
 
   &__title {
@@ -1432,7 +1433,7 @@
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center center;
-        background-color: $bokaraGrey;
+        background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-default-modif.svg]]");
       }
 
       &--ended {
@@ -2055,7 +2056,7 @@
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center center;
-        background-image: url("[+chunkWebPath+]/img/WbZesfqwR-A.png");
+        background-image: url("data:image/svg+xml;base64,[[run-snippet? &snippetName='file-to-base64' &file=[+chunkWebPath+]/img/icon-default-modif.svg]]");
       }
 
       &--ended {
