@@ -409,9 +409,10 @@ class CreateTextAreaSharesDetail extends CreateItem {
           <div class="shares-detail__title">Получи 6-й кофе в подарок</div>
           <ul class="shares-detail__terms">
               <div>Условия акции</div>
-              <li>Покупай кофе в магазинах и называй свой номер на кассе</li>
+              <li>Покупай кофе в приложении</li>
               <li>Получай каждый шестой кофе в подарок</li>
               <li>Кофе добавиться в заказ автоматически после оплаты и при выполнении условий акции</li>
+              <li>При активном абонементе подарочный кофе не начисляется</li>
           </ul>
           <div class="shares-detail__images-list">
               <div class="shares-detail__images-list-element"></div>

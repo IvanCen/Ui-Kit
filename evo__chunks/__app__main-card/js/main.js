@@ -125,7 +125,7 @@ class CreateSubscriptionsMainCard extends CreateItem {
 
   create(subscriptionInfo, subscriptionUserInfo) {
     const {
-      title, image, duration, id, description,
+      title, image, duration, id, description, amount, items, places,
     } = subscriptionInfo;
     const { buy = true } = this.parameters;
     let date = `Действителен ${duration} дней`;
@@ -139,6 +139,20 @@ class CreateSubscriptionsMainCard extends CreateItem {
       }).replace('г.', '')}`;
       shopName = storesDataObj.successData[subscriptionUserInfo.shopId].longTitle;
     }
+
+    const itemsList = dataProductApi.successData.items;
+    const storesList = storesDataObj.successData;
+
+    let templateProductsList = '';
+    let templateStoresList = '';
+
+    Object.values(items).forEach((idProduct) => {
+      templateProductsList += `<li>${itemsList[idProduct].name}: ${subscriptionInfo.price} ₽</li>`;
+    });
+
+    Object.values(places).forEach((idStore) => {
+      templateStoresList += `<li>${storesList[idStore].shortTitle}</li>`;
+    });
 
     this.element = document.createElement(this.parameters.selector);
     this.template = `
@@ -155,8 +169,12 @@ class CreateSubscriptionsMainCard extends CreateItem {
         </div>
         <span class="main-card__text main-card__text--text--bold main-card__text--indentation--bottom-small">Условия:</span>
         ${description}
+        <span class="main-card__text main-card__text--text--bold main-card__text--indentation--bottom-small">Товары:</span>
+        <ul>${templateProductsList}</ul>
+        <span class="main-card__text main-card__text--text--bold main-card__text--indentation--bottom-small">Пекарни по адресу:</span>
+        <ul>${templateStoresList}</ul>
         <div class="basket__header basket__header--dark accordion__trigger">
-            <div class="basket__title">Купить абонемент</div>
+            <div class="basket__title">Купить абонемент (${amount} ₽)</div>
         </div>
         <section class="accordion__container">
             <div class="form__group basket__group">
@@ -167,11 +185,11 @@ class CreateSubscriptionsMainCard extends CreateItem {
                 </label>
                 <label class="form__label form__label--balance">
                     <input id="balance" type="radio" class="form__input" name="payment">
-                    Баланс ${userInfoObj.successData.balance || ''}
+                    Баланс ${!isEmptyObj(userInfoObj) ? userInfoObj.successData.balance : ''}
                 </label>
                 <label class="form__label form__label--bonus form__label--indention--bottom">
                     <input id="bonus" type="radio" class="form__input" name="payment">
-                    Бонусы ${userInfoObj.successData.bonus || ''}
+                    Бонусы ${!isEmptyObj(userInfoObj) ? userInfoObj.successData.bonus : ''}
                 </label>
             </div>
             <button class="button button--theme--tangerin button--size--medium">Купить</button>
@@ -203,10 +221,12 @@ class CreateSubscriptionsMainCard extends CreateItem {
     });
 
     this.buttonBuy.addEventListener('click', () => {
+      const phone = !isEmptyObj(userInfoObj) ? userInfoObj.successData.phone : '';
+      const storeId = !isEmptyObj(userStore) ? userStore.store.id : '';
       api.makeOrderApi(
-        userInfoObj.successData.phone,
+        phone,
         [],
-        userStore.store.id,
+        storeId,
         '',
         {},
         '',
@@ -245,12 +265,12 @@ class CreateSubscriptionsMainCard extends CreateItem {
       });
     });
 
-    /*const imgEl = this.element.querySelector('.main-card__img');
+    /* const imgEl = this.element.querySelector('.main-card__img');
     if (!canUseWebP()) {
       loadImg(subscriptionInfo, imgEl, 'jpg');
     } else {
       loadImg(subscriptionInfo, imgEl, 'webp');
-    }*/
+    } */
     return super.create(this.element);
   }
 }
