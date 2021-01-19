@@ -1,0 +1,548 @@
+$orange: #ff6900;
+$brown: #906848;
+$alizarinCrimson: #eb3800;
+$seaGreen: #219653;
+$sun: #eadb24;
+$bokaraGrey: #2E2925;
+$gainsboroGray: #D9D9D9;
+$gray: #787878;
+$whiteSmoke: #F7F7F7;
+$black: #000000;
+$white: #FFFFFF;
+$cinderella: #F4D7CC;
+$orange-dim: #EC8660;
+$lightGrey: #D1D1D1;
+$whitelight: #EEEEEF;
+$birch: #3E3B34;
+$nero: #141414;
+$blackPerl: #221D18;
+$SuvaGrey: #919191;
+$pattensBlue: #D8DCDE;
+$dimGray: #6B6B6B;
+$whisper: #E5E5E5;
+$ghostWhite: #F1F1F2;
+$dodgerBlue: #2F80ED;
+
+%style-1 {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 27px;
+  line-height: 34px;
+  letter-spacing: 0.32px;
+}
+
+%style-2 {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 28px;
+}
+
+%style-3 {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 17px;
+  line-height: 22px;
+  letter-spacing: 0.32px;
+}
+
+%style-3-5 {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: 0.25px;
+}
+
+%style-4 {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 19px;
+}
+
+%style-5 {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+}
+
+%style-6 {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 14px;
+}
+
+%style-7 {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 11px;
+  line-height: 16px;
+}
+
+%style-8 {
+  font-style: normal;
+  font-weight: bold;
+  font-size: 10px;
+  line-height: 15px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.calendar {
+  z-index: 2500;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  //фон тут
+  padding: 10px 20px;
+  overflow: auto;
+  left: 0;
+  top: 0;
+  background-color: rgba(0, 0, 0, .3);
+
+  &--hide {
+    display: none;
+  }
+
+  &__form {
+    width: 100%;
+    box-shadow: 0px 15px 12px rgba(0, 0, 0, 0.22), 0px 19px 38px rgba(0, 0, 0, 0.3);
+    border-radius: 14px;
+    overflow: hidden;
+    background-color: #fff;
+    left: 0;
+    top: 0;
+  }
+
+  &__day {
+    background-color: #CA4B1A;
+    height: 32px;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 17px;
+    justify-content: center;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    text-transform: capitalize;
+
+    &--hide {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+
+  &__date-container {
+    background-color: $orange;
+    padding: 14px;
+    color: $white;
+  }
+
+  &__month {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    font-weight: normal;
+    font-size: 24px;
+    line-height: 28px;
+    text-transform: uppercase;
+  }
+
+  &__day-number {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: normal;
+    font-size: 80px;
+    line-height: 95px;
+  }
+
+  &__year-number {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    color: rgba(255, 255, 255, .54);
+  }
+
+  &__grid {
+    padding: 0 6px;
+
+    &-title {
+      margin: 12px 0;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 17px;
+      text-align: center;
+      color: #23211F;
+    }
+
+    &-blocks {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+      place-items: center;
+    }
+
+    &-block {
+
+
+      &--th {
+        //Заголовки
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        margin-bottom: 16px;
+        font-weight: normal;
+        font-size: 12px;
+        line-height: 14px;
+        text-align: center;
+        color: #919191;
+        width: 44px;
+      }
+
+      &--td {
+        //Обычные ячейки
+        font-weight: normal;
+        font-size: 12px;
+        line-height: 14px;
+        height: 44px;
+        width: 44px;
+        margin: 0 auto;
+        color: #23211f;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      &--active {
+        //Выбранный день
+        position: relative;
+        border-radius: 50%;
+        background-color: $orange;
+        color: #FFFFFF;
+      }
+    }
+
+    &-buttons {
+      display: grid;
+      grid-gap: 32px;
+      place-items: center;
+      grid-template-columns: repeat(7, 1fr);
+      padding: 0 32px 20px;
+    }
+
+    &-submit-button {
+      text-transform: uppercase;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 17px;
+      text-align: center;
+      letter-spacing: .0357143em;
+      color: $orange;
+    }
+
+    &-skip-button {
+      text-transform: uppercase;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 17px;
+      text-align: center;
+      letter-spacing: .0357143em;
+      color: #919191;
+      grid-column-start: 5;
+    }
+  }
+
+  &__fields {
+    display: block;
+    opacity: 0;
+    overflow: auto;
+    position: absolute;
+    top: -30%;
+    left: 0;
+    transform: translateX(-50%);
+    height: calc(32px * 6 + 12px);
+    max-height: calc(32px * 6 + 12px);
+    background-color: #FAFAFA;
+    z-index: 10;
+    padding: 6px 0;
+    box-shadow: 0px 8px 10px rgba(0, 0, 0, 0.14), 0px 3px 14px rgba(0, 0, 0, 0.12), 0px 5px 5px rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+  }
+
+  &__field {
+
+    &--hide {
+      display: none;
+    }
+  }
+}
+
+.login {
+  z-index: 2000;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  overflow: auto;
+  padding: 19px 24px;
+  background-color: white;
+  background-repeat: no-repeat;
+  background-position: right top;
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQwIiBoZWlnaHQ9IjI0MSIgdmlld0JveD0iMCAwIDI0MCAyNDEiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0xODcuMjU4IDAuMTI1QzIzMi4wMDIgMC4xMjUgMjY4LjI1IDM1Ljc2NDMgMjY4LjI1IDc5Ljc1ODFDMjY4LjI1IDE0OS44NzMgMTM0LjUgMjQwLjg3NSAxMzQuNSAyNDAuODc1QzEzNC41IDI0MC44NzUgMC43NDk4NCAxNDkuODczIDAuNzQ5ODQgNzkuNzU4MUMwLjgwMzYxOSAzNS43NjQzIDM3LjA1MTEgMC4xMjUgODEuNzk1OCAwLjE3Nzg3N0M4OC4wMzQyIDAuMTc3ODc3IDk0LjIxODkgMC45MTgxNTggMTAwLjI5NiAyLjI5Mjk3QzgxLjc5NTggMjYuOTMzOCA3Ny45Nzc0IDU5LjQwMDQgOTAuMjM5MiA4Ny41MzExQzkwLjUwODEgODguMjcxMyA5MS4zNjg2IDg4LjY0MTUgOTIuMTIxNSA4OC4zNzcxQzkyLjYwNTUgODguMTY1NiA5Mi45ODIgODcuNzQyNiA5My4wMzU3IDg3LjIxMzhDMTAxLjgwMiAzOS40NjU3IDEzOC44MDIgMC4xMjUgMTg3LjI1OCAwLjEyNVpNMTg3LjIwNCA0Ny4wOEMxNjguODY1IDQ3LjA4IDE1My45NjggNjEuNzI3IDE1My45NjggNzkuNzU4MUMxNTMuOTY4IDk3Ljc4OTIgMTY4Ljg2NSAxMTIuNDM2IDE4Ny4yMDQgMTEyLjQzNkMyMDUuNTQzIDExMi40MzYgMjIwLjQ0IDk3Ljc4OTIgMjIwLjQ0IDc5Ljc1ODFDMjIwLjQ0IDYxLjcyNyAyMDUuNTQzIDQ3LjA4IDE4Ny4yMDQgNDcuMDhaIiBmaWxsPSIjRjdGN0Y3Ii8+Cjwvc3ZnPgo=");
+  flex-direction: column;
+  justify-content: space-between;
+  /*
+  Общий фон тут
+   */
+  &__close {
+    width: 18px;
+    height: 18px;
+    margin-bottom: 19px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-image: url("data:image/svg+xml,%3Csvg width='18' height='18' viewBox='0 0 18 18' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15.7502 0L8.9992 6.75L2.2498 0L0 2.25L6.7494 9L0 15.75L2.2498 18L8.9992 11.25L15.7502 18L18 15.75L11.2506 9L18 2.25L15.7502 0Z' fill='%23919191'/%3E%3C/svg%3E%0A");
+  }
+
+  &__container {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    height: 90%;
+  }
+
+  /*
+  Экран входа 1
+   */
+  &__set-phone {
+
+    & > .login__header {
+      margin-bottom: 120px;
+    }
+
+  }
+
+  /*
+  Экран входа ввод кода
+   */
+  &__set-code {
+
+  }
+
+  /*
+  Экран входа ввод пользователя
+   */
+  &__set-user {
+
+  }
+
+  /*
+  Экран входа ввод даты рождения
+   */
+  &__set-birthday {
+
+  }
+
+  /*
+  Экран входа ввод email
+   */
+  &__set-email {
+
+  }
+
+  /*
+  Основные блоки
+   */
+  &__header {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding-top: 20px;
+  }
+
+  &__footer {
+    padding-top: 34px;
+  }
+
+  /*
+  Текстовые блоки
+   */
+  &__title {
+    font-weight: 500;
+    font-size: 34px;
+    line-height: 41px;
+    letter-spacing: 0.41px;
+  }
+
+  &__subtitle {
+    @extend %style-4;
+    padding-top: 32px;
+    margin-bottom: 9px;
+    font-weight: bold;
+  }
+
+  &__description {
+    @extend %style-5;
+    color: $SuvaGrey;
+  }
+
+  &__errors {
+    color: $alizarinCrimson;
+    margin-top: 20px;
+    @extend %style-4;
+  }
+
+  /*
+  Кнопки
+   */
+  &__submit-button {
+    border: 0;
+    box-sizing: border-box;
+    transition: all .2s ease-out;
+    background: $orange;
+    color: $white;
+    font-weight: 500;
+    width: 100%;
+    height: 48px;
+    border-radius: 24px;
+    min-height: 48px;
+  }
+
+  &__edit-number-button {
+    text-decoration: underline;
+  }
+
+  &__go-back-button {
+    font-weight: 600;
+    width: 100%;
+    height: 48px;
+    border-radius: 24px;
+    min-height: 48px;
+    font-size: 14px;
+    line-height: 17px;
+    align-self: flex-end;
+  }
+
+  &__skip-button {
+    display: block;
+    margin: 0 auto;
+    color: #919191;
+    font-weight: 600;
+    width: 100%;
+    height: 48px;
+    border-radius: 24px;
+    min-height: 48px;
+  }
+
+  /*
+  Поля ввода
+   */
+  &__field {
+    position: relative;
+
+    &--calendar {
+
+    }
+
+    &-title {
+      position: absolute;
+      top: -15px;
+      left: 0;
+      line-height: 147.6%;
+      color: $orange;
+      transition: top .2s;
+      font-weight: normal;
+      @extend %style-6;
+    }
+  }
+
+  &__text-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    visibility: hidden;
+    opacity: 0;
+
+    &-overlay {
+      display: block;
+      border-bottom: 1px solid;
+      width: 100%;
+      padding-bottom: 8px;
+      border-color: $orange;
+      @extend %style-4;
+
+      &-single {
+        padding-bottom: 24px;
+      }
+
+      /*
+      Визуально перекрывает input, сохраняя фокус в input поле
+       */
+      &--size-4 {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        border-bottom: none;
+        padding-top: 28px;
+      }
+
+      &-part {
+
+        &-code {
+          display: block;
+          text-align: center;
+          border-bottom: 1px solid #d9d9d9;
+          font-weight: 500;
+          font-size: 24px;
+          line-height: 28px;
+          color: #000;
+          padding: 6px;
+          width: 60px;
+
+          &:focus {
+            border-bottom: 1px solid $orange;
+          }
+
+          &:active {
+            border-bottom: 1px solid $orange;
+          }
+
+          &:hover {
+            border-bottom: 1px solid $orange;
+          }
+        }
+      }
+    }
+  }
+
+  &__user-data-position {
+    display: grid;
+    grid-gap: 6px;
+    width: min-content;
+    grid-auto-flow: column;
+    margin: auto;
+    padding-top: 15px;
+
+    &-point {
+      width: 8px;
+      height: 8px;
+      background: #EFEFEF;
+      border-radius: 50%;
+
+      &--active {
+        background: $orange;
+      }
+    }
+  }
+}

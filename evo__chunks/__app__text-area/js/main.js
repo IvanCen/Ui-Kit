@@ -912,7 +912,7 @@ class CreateTextAreaProfile extends CreateItem {
           titleTopBar: 'Редактировать',
           inputLabel: '',
           identifier: 'birthday',
-          inputType: 'text',
+          inputType: 'date',
         });
       });
     } else {

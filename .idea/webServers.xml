@@ -10,7 +10,7 @@
         </fileTransfer>
       </webServer>
       <webServer id="b467ecb2-bf80-4d66-bea4-f03986fc6ba6" name="test-app.xleb.ru" url="http://84.38.181.95">
-        <fileTransfer rootFolder="/home/admin/web/demo.xleb.ru/public_html/assets/chunks" accessType="SFTP" host="84.38.181.95" port="22" sshConfigId="3c5145f7-1be8-4339-9eae-51a5e8f085a2" sshConfig="admin@84.38.181.95:22 password">
+        <fileTransfer rootFolder="/home/admin/web/demo.xleb.ru/public_html/assets" accessType="SFTP" host="84.38.181.95" port="22" sshConfigId="3c5145f7-1be8-4339-9eae-51a5e8f085a2" sshConfig="admin@84.38.181.95:22 password">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>

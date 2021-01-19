@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <!--<meta name="viewport" content="width=360px, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">-->
+    <meta name="viewport" content="width=360px">
+    <meta name="description" content="Приложение Хлебник">
+    <title>Хлебник</title>
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="ivan.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+
+
+    <nav class="home-menu home-menu--hidden">
+
+    </nav>
+    <!--<div class="calendar">
+        <form class="calendar__form">
+            <div class="calendar__fields">
+                &lt;!&ndash;Невидимый блок&ndash;&gt;
+                <select name="year">
+                    <option>1990</option>
+                    <option>1989</option>
+                    <option>1987</option>
+                    &lt;!&ndash;И так далее&ndash;&gt;
+                </select>
+                <select name="month">
+                    <option value="01">Январь</option>
+                    <option value="02">Февраль</option>
+                    &lt;!&ndash;И так далее&ndash;&gt;
+                </select>
+                <select name="days">
+                    <option value="01">1</option>
+                    <option value="02">2</option>
+                    &lt;!&ndash;И так далее&ndash;&gt;
+                    <option value="31" disabled>31</option>
+                    &lt;!&ndash;Для дней, которых нет в месяце добавляется атрибут disabled&ndash;&gt;
+                </select>
+            </div>
+                <div class="calendar__day">Пятница</div>
+            <div class="calendar__date-container">
+                <div class="calendar__month">март</div>
+                <div class="calendar__day-number">13</div>
+                <div class="calendar__year-number">1990</div>
+            </div>
+            <div class="calendar__grid">
+                <div class="calendar__grid-title">Март 1990</div>
+                <div class="calendar__grid-blocks">
+                    <div class="calendar__grid-block calendar__grid-block&#45;&#45;th">Пн</div>
+                    <div class="calendar__grid-block calendar__grid-block&#45;&#45;th">Вт</div>
+                    <div class="calendar__grid-block calendar__grid-block&#45;&#45;th">Ср</div>
+                    <div class="calendar__grid-block calendar__grid-block&#45;&#45;th">Чт</div>
+                    <div class="calendar__grid-block calendar__grid-block&#45;&#45;th">Пт</div>
+                    <div class="calendar__grid-block calendar__grid-block&#45;&#45;th">Сб</div>
+                    <div class="calendar__grid-block calendar__grid-block&#45;&#45;th">Вс</div>
+                    <div class="calendar__grid-block calendar__grid-block&#45;&#45;td">1</div>
+                    <div class="calendar__grid-block calendar__grid-block&#45;&#45;td calendar__grid-block&#45;&#45;active">2</div>
+                </div>
+                <div class="calendar__grid-buttons">
+                    <button type="button" class="calendar__grid-skip-button">Отмена</button>
+                    <button type="submit" class="calendar__grid-submit-button">Ок</button>
+                </div>
+            </div>
+        </form>
+    </div>-->
+    <div class="login">
+        <button class="login__close" type="button"></button>
+        <!--<form class="login__set-phone">
+            <div class="login__header">
+                <div class="login__title">Вход</div>
+            </div>
+            <div class="login__body">
+                <label class="login__field">
+                    <input type="text" class="login__text-input" name="phone">
+                    <span class="login__field-title">Введите номер телефона</span>
+                    &lt;!&ndash;Ниже блок перекрывающий поле ввода, в котором отображается текст с примененной маской или разбитый на группы, как в случае ввода кода&ndash;&gt;
+                    <span class="login__text-input-overlay">
+                        <span class="login__text-input-overlay-part">+7 (900) 000-00-00</span>
+                    </span>
+                </label>
+            </div>
+            <div class="login__footer">
+                <button class="login__submit-button" type="button">Подтвердить</button>
+            </div>
+        </form>-->
+        <!--<form class="login__set-code">
+            <div class="login__header">
+                <div class="login__title">Вход</div>
+                <div class="login__subtitle">В течение нескольких секунд Вам поступит звонок</div>
+                <div class="login__description">Введите последние 4 цифры входящего номера в качестве кода для входа</div>
+            </div>
+            <div class="login__body">
+                <label class="login__field">
+                    <input type="text" class="login__text-input" name="verifyCode" value="12f3fff">
+                    &lt;!&ndash;Ниже блок перекрывающий поле ввода, в котором отображается текст с примененной маской или разбитый на группы, как в случае ввода кода&ndash;&gt;
+                    <span class="login__text-input-overlay login__text-input-overlay&#45;&#45;size-4">
+                        <span class="login__text-input-overlay-part login__text-input-overlay-part-code">1</span>
+                        <span class="login__text-input-overlay-part login__text-input-overlay-part-code">2</span>
+                        <span class="login__text-input-overlay-part login__text-input-overlay-part-code">3</span>
+                        <span class="login__text-input-overlay-part login__text-input-overlay-part-code">4</span>
+                    </span>
+                </label>
+                <div class="login__description">Вы ввели номер <span class="login__entered-phone-number">+7 (911) 000-00-00</span>, если Вы ошиблись при вводе, то <button class="login__edit-number-button" type="button">исправьте номер</button></div>
+                <div class="login__errors">*Код не подошел, введите правильный</div>
+            </div>
+            <div class="login__footer">
+                <button class="login__submit-button" type="button">Подтвердить</button>
+                <button class="login__go-back-button" type="button">Код не пришел?</button>
+            </div>
+        </form>-->
+        <!--<form class="login__container login__set-user">
+            <div class="login__header">
+                <div class="login__title">Вход</div>
+                <div class="login__subtitle">Давайте знакомиться, меня зовут Хлебник, а Вас?</div>
+            </div>
+            <div class="login__body">
+                <label class="login__field">
+                    <input type="text" class="login__text-input" name="name">
+                    &lt;!&ndash;Ниже блок перекрывающий поле ввода, в котором отображается текст с примененной маской или разбитый на группы, как в случае ввода кода&ndash;&gt;
+                    <span class="login__text-input-overlay login__text-input-overlay-single">
+                        <span class="login__text-input-overlay-part"></span>
+                    </span>
+                    <span class="login__field-title">Введите имя</span>
+                </label>
+            </div>
+            <div class="login__footer">
+                <button class="login__submit-button" type="button">Далее</button>
+                <button class="login__skip-button" type="button">Пропустить</button>
+                <div class="login__user-data-position">
+                    <div class="login__user-data-position-point login__user-data-position-point&#45;&#45;active"></div>
+                    <div class="login__user-data-position-point"></div>
+                    <div class="login__user-data-position-point"></div>
+                </div>
+            </div>
+        </form>-->
+        <form class="login__container login__set-birthday">
+            <div class="login__header">
+                <div class="login__title">Вход</div>
+                <div class="login__subtitle">Хотите рассказать нам о своей дате рождения? Мы регулярно проводим специальные акции для именинников</div>
+            </div>
+            <div class="login__body">
+                <label class="login__field login__field--calendar">
+                    <span class="login__field-title">Введите дату рождения</span>
+                    <input type="date" class="login__text-input" name="birthday" value="31-01-2020"><!--При клике на input будет запускаться календарь-->
+                    <!--Ниже блок перекрывающий поле ввода, в котором отображается текст с примененной маской или разбитый на группы, как в случае ввода кода-->
+                    <span class="login__text-input-overlay">
+                        <span class="login__text-input-overlay-part">31 января 2020</span>
+                    </span>
+                </label>
+            </div>
+            <div class="login__footer">
+                <button class="login__submit-button" type="button">Далее</button>
+                <button class="login__skip-button" type="button">Пропустить</button>
+                <div class="login__user-data-position">
+                    <div class="login__user-data-position-point"></div>
+                    <div class="login__user-data-position-point login__user-data-position-point--active"></div>
+                    <div class="login__user-data-position-point"></div>
+                </div>
+            </div>
+        </form>
+        <!--<form class="login__container login__set-email">
+            <div class="login__header">
+                <div class="login__title">Вход</div>
+                <div class="login__subtitle">Поделитесь своим email адресом, чтобы первым узнавать о новинках</div>
+            </div>
+            <div class="login__body">
+                <label class="login__field">
+                    <input type="email" class="login__text-input" name="email" value="vasia@gmail.com">
+                    &lt;!&ndash;Ниже блок перекрывающий поле ввода, в котором отображается текст с примененной маской или разбитый на группы, как в случае ввода кода&ndash;&gt;
+                    <span class="login__text-input-overlay login__text-input-overlay-single">
+                        <span class="login__text-input-overlay-part"></span>
+                    </span>
+                  <span class="login__field-title ">Email</span>
+                </label>
+            </div>
+            <div class="login__footer">
+                <button class="login__submit-button" type="button">Готово</button>
+                <button class="login__skip-button" type="button">Пропустить</button>
+                <div class="login__user-data-position">
+                    <div class="login__user-data-position-point"></div>
+                    <div class="login__user-data-position-point"></div>
+                    <div class="login__user-data-position-point login__user-data-position-point&#45;&#45;active"></div>
+                </div>
+            </div>
+        </form>-->
+    </div>
+
+    <div class="modal modal--hidden modal--need-login">
+        <div class="modal__content">
+            <div class="modal__icon modal__icon--crying-man"></div>
+            <div class="modal__title">Упс! Вход не выполнен</div>
+            <div class="modal__description">Для просмотра данной страницы Вам необходимо авторизоваться</div>
+            <div class="modal__buttons">
+                <button class="modal__button modal__button--skip" type="button">Позже</button>
+                <button class="modal__button modal__button--submit" type="button">Войти</button>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="main-block main-block--home" data-state="home">
+            <div class="main-block__pages">
+                <div class="main-block__page home-page">
+                    <button class="home-page__burger" type="button" aria-label="Открыть главное меню"></button><!--Открывает-->
+                    <div class="header">
+                        <div class="header__part">
+                            <div class="header__burger"></div>
+                            <div class="header__title">Главная</div>
+                        </div>
+                        <div class="header__part">
+                            <button class="header__cart" aria-label="Открыть корзину"></button>
+                        </div>
+                    </div>
+                    <div class="header-shadow"></div>
+                    <div class="sells">
+                        <div class="sells__title">Акции</div>
+                        <div class="sells__list">
+                            <div class="sells__list-wrapper">
+                                <!--<div class="sells__sell">-->
+                                    <!--<div class="sells__sell-picture"></div>-->
+                                    <!--<div class="sells__sell-title">Осеннее меню</div>-->
+                                    <!--<div class="sells__sell-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidi...</div>-->
+                                <!--</div>-->
+                                <!--<div class="sells__sell">-->
+                                    <!--<div class="sells__sell-picture"></div>-->
+                                    <!--<div class="sells__sell-title">Осеннее меню</div>-->
+                                    <!--<div class="sells__sell-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidi...</div>-->
+                                <!--</div>-->
+                                <!--<div class="sells__sell">-->
+                                    <!--<div class="sells__sell-picture"></div>-->
+                                    <!--<div class="sells__sell-title">Осеннее меню</div>-->
+                                    <!--<div class="sells__sell-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidi...</div>-->
+                                <!--</div>-->
+                                <!--<div class="sells__sell">-->
+                                    <!--<div class="sells__sell-picture"></div>-->
+                                    <!--<div class="sells__sell-title">Осеннее меню</div>-->
+                                    <!--<div class="sells__sell-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidi...</div>-->
+                                <!--</div>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="main-block__page map-page">
+                    <div class="header">
+                        <div class="header__part">
+                            <div class="header__burger"></div>
+                            <div class="header__title">Магазины</div>
+                        </div>
+                    </div>
+                    <div class="header-shadow"></div>
+                </div>
+                <div class="main-block__page balance-page balance-page--balance" data-state="balance">
+                    <div class="header">
+                        <div class="header__part">
+                            <div class="header__burger"></div>
+                            <div class="header__title">Баланс</div>
+                        </div>
+                    </div>
+                    <div class="header-nav">
+                        <button class="header-nav__button header-nav__button--balance" data-href="balance">Счет</button>
+                        <button class="header-nav__button header-nav__button--bonus" data-href="bonus">Бонусы</button>
+                    </div>
+                    <div class="header-shadow"></div>
+
+
+
+                    <div class="--hide-it-if-logged">
+                        <div class="need-alert-block">
+                            <div class="need-alert-block__icon"></div>
+                            <div class="need-alert-block__title">Упс! Вход не выполнен</div>
+                            <div class="--hide-it-if-balance">
+                                <div class="need-alert-block__description">Для просмотра бонусов Вам необходимо авторизоваться</div>
+                            </div>
+                            <div class="--hide-it-if-bonus">
+                                <div class="need-alert-block__description">Для просмотра баланса Вам необходимо авторизоваться</div>
+                            </div>
+                            <button type="button" class="need-alert-block__button">Перейти к авторизации</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="main-block__page messages-page messages-page--inbox" data-state="inbox">
+                    <div class="header">
+                        <div class="header__part">
+                            <div class="header__burger"></div>
+                            <div class="header__title">Сообщения</div>
+                        </div>
+                    </div>
+                    <div class="header-nav">
+                        <button class="header-nav__button header-nav__button--inbox" data-href="inbox">Входящие</button>
+                        <button class="header-nav__button header-nav__button--promo" data-href="promo">Последние предложения</button>
+                    </div>
+                    <div class="header-shadow"></div>
+                    <div class="--hide-it-if-logged">
+                        <div class="need-alert-block">
+                            <div class="need-alert-block__icon"></div>
+                            <div class="need-alert-block__title">Упс! Вход не выполнен</div>
+                            <div class="--hide-it-if-inbox">
+                                <div class="need-alert-block__description">Для просмотра персональных предложений Вам необходимо авторизоваться</div>
+                            </div>
+                            <div class="--hide-it-if-promo">
+                                <div class="need-alert-block__description">Для просмотра сообщений данных Вам необходимо авторизоваться</div>
+                            </div>
+                            <button type="button" class="need-alert-block__button">Перейти к авторизации</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="main-block__page profile-page">
+                    <div class="header">
+                        <div class="header__part">
+                            <div class="header__burger"></div>
+                            <div class="header__title">Профиль</div>
+                        </div>
+                    </div>
+                    <div class="header-shadow"></div>
+                    <div class="profile-page__fieldset">
+                        <div class="profile-page__fieldset-title">Персональные данные</div>
+                        <div class="--hide-it-if-logged">
+                            <div class="need-alert-block">
+                                <div class="need-alert-block__icon"></div>
+                                <div class="need-alert-block__title">Упс! Вход не выполнен</div>
+                                <div class="need-alert-block__description">Для просмотра персональных данных Вам необходимо авторизоваться</div>
+                                <button type="button" class="need-alert-block__button">Перейти к авторизации</button>
+                            </div>
+                        </div>
+                        <div class="--show-it-if-logged">
+                            <div class="profile-page__fieldset-list">
+                                <div class="profile-page__field"></div>
+                                <div class="profile-page__field"></div>
+                                <div class="profile-page__field"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-page__fieldset">
+                        <div class="profile-page__fieldset-title">Информация</div>
+                        <div class="profile-page__fieldset-list">
+                            <div class="profile-page__field"></div>
+                            <div class="profile-page__field"></div>
+                            <div class="profile-page__field"></div>
+                            <div class="profile-page__field"></div>
+                        </div>
+                    </div>
+                    <div class="profile-page__fieldset">
+                        <div class="profile-page__fieldset-title">button.</div>
+                        <div class="profile-page__fieldset-list">
+                            <div class="profile-page__field"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="need-shop-alert">
+                <div class="need-shop-alert__title">Для отображения цен, выберите магазин</div>
+                <button class="need-shop-alert__button">Выбрать</button>
+            </div>
+            <nav class="bottom-navigation">
+                <div class="bottom-navigation__buttons">
+                    <button class="bottom-navigation__button bottom-navigation__button--home" data-href="home">
+                        <span class="bottom-navigation__button-icon"></span>
+                        <span class="bottom-navigation__button-title">Главная</span>
+                        <span class="bottom-navigation__button-dot"></span>
+                    </button>
+                    <button class="bottom-navigation__button bottom-navigation__button--map" data-href="map">
+                        <span class="bottom-navigation__button-icon"></span>
+                        <span class="bottom-navigation__button-title">Магазины</span>
+                        <span class="bottom-navigation__button-dot"></span>
+                    </button>
+                    <button class="bottom-navigation__button bottom-navigation__button--balance" data-href="balance">
+                        <span class="bottom-navigation__button-icon"></span>
+                        <span class="bottom-navigation__button-title">Баланс</span>
+                        <span class="bottom-navigation__button-dot"></span>
+                    </button>
+                    <button class="bottom-navigation__button bottom-navigation__button--messages" data-href="messages">
+                        <span class="bottom-navigation__button-icon"></span>
+                        <span class="bottom-navigation__button-title">Сообщения</span>
+                        <span class="bottom-navigation__button-dot"></span>
+                    </button>
+                    <button class="bottom-navigation__button bottom-navigation__button--profile" data-href="profile">
+                        <span class="bottom-navigation__button-icon"></span>
+                        <span class="bottom-navigation__button-title">Профиль</span>
+                        <span class="bottom-navigation__button-dot"></span>
+                    </button>
+                </div>
+            </nav>
+    </div>
+    <script src="main.js"></script>
+    <script src="ivan.js"></script>
+</body>
+</html>

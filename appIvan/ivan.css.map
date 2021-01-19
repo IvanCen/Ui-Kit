@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAAA,SAAS,CACP,OAAO,CAAE,IAAI,CACb,QAAQ,CAAE,KAAK,CACf,KAAK,CAAE,IAAI,CACX,MAAM,CAAE,IAAI,CAqDd,MAAM,CACJ,OAAO,CAAE,IAAI,CACb,QAAQ,CAAE,KAAK,CACf,KAAK,CAAE,IAAI,CACX,MAAM,CAAE,IAAI",
+"sources": ["ivan.scss"],
+"names": [],
+"file": "ivan.css"
+}
